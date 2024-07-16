@@ -26,7 +26,7 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<GetAnnouncementByIdRequest, CreateAnnouncementItemViewModel>
         , IRequestHandler<UpdateAnnouncementRequest, bool>
         , IRequestHandler<DeleteAnnouncementRequest, bool>
-        , IRequestHandler<GetTournamentPromotionsByStatusRequest, IEnumerable<PromotionConfigModel>>
+        , IRequestHandler<GetTournamentPromotionsByStatusRequest, IEnumerable<PromotionConfigViewModel>>
     {
         private readonly IPromotionService promotionService;
         private readonly IPromotionCampaignService promotionCampaignService;
@@ -231,15 +231,32 @@ namespace GamesAdmin.Site.Features.Promotions
         public Task<bool> Handle(DeleteAnnouncementRequest request, CancellationToken cancellationToken)
         => promotionService.DeleteAnnouncement(request.Id);
 
-        public async Task<IEnumerable<PromotionConfigModel>> Handle(GetTournamentPromotionsByStatusRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<PromotionConfigViewModel>> Handle(GetTournamentPromotionsByStatusRequest request, CancellationToken cancellationToken)
         {
             var promotions = (await promotionCampaignService.GetCampaignByStatus(request.Status)).ToList();
+            ConvertPromotionTimesToDefaultTimeZone(promotions);
+            var promotionViewModels = MapPromotionsToViewModels(promotions);
+            return promotionViewModels;
+        }
+
+        private void ConvertPromotionTimesToDefaultTimeZone(List<PromotionConfigModel> promotions)
+        {
             foreach (var promotion in promotions)
             {
                 promotion.StartDateTime = TimeZoneInfo.ConvertTimeFromUtc(promotion.StartDateTime, appSettings.DefaultTimeZone);
                 promotion.EndDateTime = TimeZoneInfo.ConvertTimeFromUtc(promotion.EndDateTime, appSettings.DefaultTimeZone);
             }
-            return promotions;
+        }
+
+        private List<PromotionConfigViewModel> MapPromotionsToViewModels(List<PromotionConfigModel> promotions)
+        {
+            var promotionViewModels = promotions.Select(promotion =>
+            {
+                var promotionViewModel = mapper.Map<PromotionConfigViewModel>(promotion);
+                return promotionViewModel;
+            }).ToList();
+
+            return promotionViewModels;
         }
     }
 }

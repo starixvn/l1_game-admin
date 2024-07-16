@@ -53,6 +53,7 @@ namespace GamesAdmin.Site.Features.Promotions.Mapper
             CreateMap<OperatorModel, OperatorViewModel>();
             CreateMap<CurrencyGroupsModel, CurrencyGroupsViewModel>();
             CreateMap<WinningPrizeModel, WinningPrizeViewModel>();
+            CreateMap<PromotionConfigModel, PromotionConfigViewModel>();      
         }
     }
 }

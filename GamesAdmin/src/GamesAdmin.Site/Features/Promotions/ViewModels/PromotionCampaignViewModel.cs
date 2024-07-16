@@ -16,24 +16,3 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public List<WinningPrizeViewModel> WinningPrizes { get; set; }
     }
 }
-public class OperatorViewModel
-{
-    public string OperatorId { get; set; }
-    public string ExcludedSiteNames { get; set; }
-    public List<CurrencyGroupsViewModel> CurrencyGroups { get; set; }
-}
-
-public class CurrencyGroupsViewModel
-{
-    public string CurrencyGroupId { get; set; }
-    public double OtherGameMinBet { get; set; }
-    public double SlotGameMinBet { get; set; }
-    public bool Enabled { get; set; }
-    public string CurrencyName { get; set; }
-}
-
-public class WinningPrizeViewModel
-{
-    public string Ranking { get; set; }
-    public int Value { get; set; }
-}

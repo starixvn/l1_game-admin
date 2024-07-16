@@ -1,9 +1,12 @@
 ﻿@using GamesAdmin.Core.Models.Promotion;
+@using GamesAdmin.Site.Features.Promotions.ViewModels;
 @using GamesAdmin.Site.Features._Shared;
 @using GamesAdmin.Core.Enumeration;
 @using GamesAdmin.Site.Extensions;
-@model IEnumerable<PromotionConfigModel>
-
+@model IEnumerable<PromotionConfigViewModel>
+@{
+    var promotions = Model;
+}
 <table class="table table-bordered sticky-table">
     <thead>
         <tr>
@@ -28,83 +31,11 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.Any())
+        @if (promotions.Any())
         {
-            foreach (var promotion in Model)
+            @foreach (var promotion in promotions)
             {
-                var rowSpan = promotion.Operators.Sum(o => o.CurrencyGroups.Count);
-                bool isFirstRow = true;
-
-                foreach (var operatorModel in promotion.Operators)
-                {
-                    var rowSpanOperator = operatorModel.CurrencyGroups.Count();
-                    bool isOperatorFirstRow = true;
-                    foreach (var currencyGroup in operatorModel.CurrencyGroups)
-                    {
-                        <tr>
-                            @if (isFirstRow)
-                            {
-                                <td rowspan="@rowSpan" class="text-center">@promotion.Name</td>
-                                <td rowspan="@rowSpan" class="text-center">@promotion.PromotionId</td>
-                                <td rowspan="@rowSpan" width="150px">
-                                    @foreach (var prize in promotion.WinningPrizes)
-                                    {
-                                        <div>@prize.Ranking : @prize.Value</div>
-                                    }
-                                </td>
-                            }
-                            @if (isOperatorFirstRow)
-                            {
-                                <td rowspan="@rowSpanOperator">@operatorModel.OperatorId</td>
-                                isOperatorFirstRow = false;
-                            }
-                            <td width="200px">
-                                <div><strong>@currencyGroup.CurrencyName</strong></div>
-                                <div>Slot games: @currencyGroup.SlotGameMinBet</div>
-                                <div>Other games: @currencyGroup.OtherGameMinBet</div>
-                            </td>
-                            <td class="text-center">
-                                @if (currencyGroup.Enabled)
-                                {
-                                    <i class="icon-check"></i>
-                                }
-                                else
-                                {
-                                    <i class="icon-cancel"></i>
-                                }
-                            </td>
-                            @if (Context.HasAdminPermission())
-                            {
-                                <td class="text-center"><i class="icon-edit"></i></td>
-                            }
-                            @if (isFirstRow)
-                            {
-                                <td rowspan="@rowSpan" class="text-center" width="200px">@promotion.StartDateTime.ToString("MM/dd/yyyy hh:mm tt")</td>
-                                <td rowspan="@rowSpan" class="text-center" width="200px">@promotion.EndDateTime.ToString("MM/dd/yyyy hh:mm tt")</td>
-                                <td rowspan="@rowSpan" class="text-center text-success"><a href="#">View</a></td>
-                                <td rowspan="@rowSpan" class="text-center @(promotion.HasAnnouncement ? "text-success" : "text-danger")">@(promotion.HasAnnouncement ? "Linked" : "Unlinked")</td>
-                                @if (Context.HasAdminPermission())
-                                {
-                                    <td rowspan="@rowSpan" class="text-center">
-                                        <a type="button" class="btn btn-success btn-lg"
-                                           data-ajax="true"
-                                           data-ajax-mode="replace"
-                                           data-ajax-update="#promotion-modal .modal-content"
-                                           data-ajax-success="promotion.openUpdatePromotionForm"
-                                           asp-route-id="@promotion.PromotionId"
-                                           asp-action="Update">
-                                            Edit
-                                        </a>
-                                        <button type="button" class="btn btn-danger btn-lg" onclick="promotion.openDeleteModal('@promotion.PromotionId')">
-                                            Delete
-                                        </button>
-                                    </td>
-                                }
-                                isFirstRow = false;
-                            }
-                        </tr>
-                    }
-                }
+                @Html.Raw(promotion.GetOperatorsHtml(Context.HasAdminPermission()))
             }
         }
         else
