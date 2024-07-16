@@ -34,7 +34,6 @@ public class CurrencyGroupsViewModel
 
 public class WinningPrizeViewModel
 {
-    public string Name { get; set; }
+    public string Ranking { get; set; }
     public int Value { get; set; }
-    public int Quantity { get; set; }
 }
