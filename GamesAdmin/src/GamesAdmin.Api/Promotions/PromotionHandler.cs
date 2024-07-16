@@ -22,6 +22,7 @@ namespace GamesAdmin.Api.Promotions
         , IRequestHandler<UpdateAnnouncementRequest, bool>
         , IRequestHandler<DeleteAnnouncementRequest, bool>
         , IRequestHandler<GetPromotionCampaignByStatusRequest, IEnumerable<PromotionConfigModel>>
+        , IRequestHandler<GetPromotionCampaignByIdRequest, PromotionConfigModel>
     {
         private readonly IPromotionService promotionService;
         private readonly INotificationService notificationService;
@@ -69,5 +70,8 @@ namespace GamesAdmin.Api.Promotions
 
         public Task<IEnumerable<PromotionConfigModel>> Handle(GetPromotionCampaignByStatusRequest request, CancellationToken cancellationToken)
         => promotionCampaignService.GetByStatus(request.Status);
+
+        public Task<PromotionConfigModel> Handle(GetPromotionCampaignByIdRequest request, CancellationToken cancellationToken)
+        => promotionCampaignService.GetById(request.Id);
     }
 }

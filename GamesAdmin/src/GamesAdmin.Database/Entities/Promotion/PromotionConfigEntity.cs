@@ -39,5 +39,5 @@ public class WinningPrize
 
     public int Value { get; set; }
 
-    public int Quanlity { get; set; }
+    public int Quantity { get; set; }
 }

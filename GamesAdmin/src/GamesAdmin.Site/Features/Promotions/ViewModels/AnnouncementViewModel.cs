@@ -5,5 +5,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
     public class AnnouncementViewModel : Notification
     {
         public PromotionViewModel Promotion { get; set; }
+
+        public PromotionCampaignViewModel PromotionCampaign { get; set; }
     }
 }

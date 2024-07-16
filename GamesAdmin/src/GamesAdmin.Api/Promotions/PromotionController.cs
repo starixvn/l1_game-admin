@@ -67,5 +67,9 @@ namespace GamesAdmin.Api.Promotions
         [HttpGet("getCampaignByStatus")]
         public Task<IEnumerable<PromotionConfigModel>> GetCampaignByStatus(string status)
            => mediator.Send(new GetPromotionCampaignByStatusRequest(status));
+
+        [HttpGet("getCampaignById")]
+        public Task<PromotionConfigModel> GetCampaignById(string id)
+           => mediator.Send(new GetPromotionCampaignByIdRequest(id));
     }
 }

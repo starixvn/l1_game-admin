@@ -3,6 +3,8 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.Promotions.ViewModels;
 using GamesAdmin.Site.Extensions;
 using System.Linq;
+using GamesAdmin.Core.Models.Promotion;
+using GamesAdmin.Core;
 
 namespace GamesAdmin.Site.Features.Promotions.Mapper
 {
@@ -35,6 +37,22 @@ namespace GamesAdmin.Site.Features.Promotions.Mapper
 
             CreateMap<Notification, AnnouncementViewModel>()
                 .AfterMap<AnnouncementMappingAction>();
+
+            CreateMap<PromotionCampaignViewModel, PromotionConfigModel>()
+              .ForMember(dest => dest.Id, opt => opt.MapFrom(src => int.Parse(src.Id)))
+              .ForMember(dest => dest.StartDateTime,
+                    opt => opt.MapFrom(src => DateTimeExtensions.ParseDateTime(src.StartDate, src.StartTime)))
+                .ForMember(dest => dest.EndDateTime,
+                    opt => opt.MapFrom(src => DateTimeExtensions.ParseDateTime(src.EndDate, src.EndTime)))
+              .ForMember(dest => dest.Operators, opt => opt.MapFrom(src => src.Operators))
+              .ForMember(dest => dest.WinningPrizes, opt => opt.MapFrom(src => src.WinningPrizes))
+              .ForMember(dest => dest.HasAnnouncement, opt => opt.Ignore())
+              .ForMember(dest => dest.UpdatedTime, opt => opt.Ignore());
+
+            CreateMap<PromotionConfigModel, PromotionCampaignViewModel>();
+            CreateMap<OperatorModel, OperatorViewModel>();
+            CreateMap<CurrencyGroupsModel, CurrencyGroupsViewModel>();
+            CreateMap<WinningPrizeModel, WinningPrizeViewModel>();
         }
     }
 }

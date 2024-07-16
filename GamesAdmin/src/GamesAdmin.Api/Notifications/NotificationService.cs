@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -148,11 +149,17 @@ namespace GamesAdmin.Api.Notifications
 
         public async Task<IEnumerable<Notification>> GetPromotionAnnouncementByStatus(string status)
         {
+            bool isAllStatus = status.Equals(PromotionStatus.AllValue);
+            bool isEnabledStatus = status.Equals(PromotionStatus.EnabledValue);
+            byte promotionDisplayKind = byte.Parse(NotificationDisplayKind.Promotion.Value);
+            byte promotionCampaignDisplayKind = byte.Parse(NotificationDisplayKind.PromotionCampaign.Value);
             var entities = status.Equals(PromotionStatus.AllValue)
-                ? await notificationRepository
-                    .FilterByAsync(entity => entity.DisplayKind == byte.Parse(NotificationDisplayKind.Promotion.Value))
-                : await notificationRepository
-                    .FilterByAsync(entity => entity.DisplayKind == byte.Parse(NotificationDisplayKind.Promotion.Value) && entity.Enabled == status.Equals(PromotionStatus.EnabledValue));
+                ? await notificationRepository.FilterByAsync(entity => entity.DisplayKind == promotionDisplayKind 
+                ||entity.DisplayKind == promotionCampaignDisplayKind)
+                : await notificationRepository.FilterByAsync(entity =>
+                (entity.DisplayKind == promotionDisplayKind ||
+                entity.DisplayKind == promotionCampaignDisplayKind) &&
+                entity.Enabled == isEnabledStatus);
             return entities.Select(a => ConvertToPromotionAnnouncement(a));
         }
 

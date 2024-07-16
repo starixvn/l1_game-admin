@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using GamesAdmin.Api.ChatBot;
-using GamesAdmin.Api.Currencies;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -25,7 +24,7 @@ namespace GamesAdmin.Api.Promotions
 
         //Task<bool> Create(PromotionConfigModel model);
 
-        //Task<PromotionConfigModel> GetById(string id);
+        Task<PromotionConfigModel> GetById(string id);
 
         //Task<bool> Update(PromotionConfigModel model);
 
@@ -39,16 +38,20 @@ namespace GamesAdmin.Api.Promotions
         private readonly ISentryClient sentryClient;
         private readonly IMapper mapper;
         private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
+        private readonly IChatBotService chatBotService;
+        private readonly INotificationService notificationService;
 
         public PromotionCampaignService(IGenericRepository<PromotionConfigEntity> promotionCampaignRepository,
             ISentryClient sentryClient,
             IMapper mapper,
-            IGenericRepository<CurrencyGroupEntity> currencyGroupRepository)
+            IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
+            INotificationService notificationService)
         {
             this.promotionCampaignRepository = promotionCampaignRepository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
             this.currencyGroupRepository = currencyGroupRepository;
+            this.notificationService = notificationService;
         }
 
         public async Task<IEnumerable<PromotionConfigModel>> GetByStatus(string status)
@@ -101,6 +104,11 @@ namespace GamesAdmin.Api.Promotions
                     return promotionModel;
                 }).ToList();
 
+                for (var index = 0; index < promotions.Count; index++)
+                {
+                    var announcement = await notificationService.GetPromotionAnnouncementByPromotionId(promotions[index].Id);
+                    promotions[index].HasAnnouncement = announcement != null;
+                }
                 return promotions;
             }
             catch (Exception ex)
@@ -108,6 +116,12 @@ namespace GamesAdmin.Api.Promotions
                 sentryClient.CaptureException(ex);
                 return null;
             }
+        }
+
+        public async Task<PromotionConfigModel> GetById(string id)
+        {
+            var promotion = await promotionCampaignRepository.FindByIdAsync(id);
+            return mapper.Map<PromotionConfigModel>(promotion);
         }
 
     }

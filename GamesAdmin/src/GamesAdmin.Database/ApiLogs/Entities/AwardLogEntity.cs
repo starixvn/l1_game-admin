@@ -1,7 +1,4 @@
-﻿using System;
-using GamesAdmin.Core.Models.ApiLogs;
-
-namespace GamesAdmin.Database.ApiLogs.Entities
+﻿namespace GamesAdmin.Database.ApiLogs.Entities
 {
     internal class AwardLogEntity : ApiLogEntity
     {
@@ -13,24 +10,10 @@ namespace GamesAdmin.Database.ApiLogs.Entities
     public class AwardLogRequestEntity : ApiLogRequestEntity
     {
         public string Seq { get; set; }
-
         public string SiteId { get; set; }
-
-        public string Domain { get; set; }
-
-        public string BrowserUserAgent { get; set; }
-
-        public string Currency { get; set; }
-
-        public string Language { get; set; }
-
-        public string IP { get; set; }
-
-        public int MemberId { get; set; }
-
-        public byte AppType { get; set; }
-
-        public Auth Auth { get; set; }
+        public string Amount { get; set; }
+        public int PromotionId { get; set; } 
+        public string Currency { get; set; } 
     }
 
     public class AwardLogResultEntity : ApiLogResultEntity

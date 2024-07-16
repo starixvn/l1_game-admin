@@ -18,7 +18,8 @@ namespace GamesAdmin.Api.Promotions.Mappers
             CreateMap<PromotionModel, PromotionEntity>()
                 .ForMember(dest => dest.GameId, opt => opt.MapFrom(src => (int)src.GameId));
 
-            CreateMap<PromotionConfigEntity, PromotionConfigModel>();
+            CreateMap<PromotionConfigEntity, PromotionConfigModel>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(src => src.Id.ToString()));
             CreateMap<Operator, OperatorModel>();
             CreateMap<CurrencyGroup, CurrencyGroupsModel>();
             CreateMap<WinningPrize, WinningPrizeModel>();

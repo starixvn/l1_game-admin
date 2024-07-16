@@ -180,7 +180,16 @@ namespace GamesAdmin.Site.Features.Promotions
             {
                 if (!string.IsNullOrEmpty(a.PromotionId))
                 {
-                    a.Promotion = mapper.Map<PromotionViewModel>(await promotionService.GetById(a.PromotionId));
+                    if (a.DisplayKind.Value == NotificationDisplayKind.Promotion.Value)
+                    {
+                        var promotion = await promotionService.GetById(a.PromotionId);
+                        a.Promotion = mapper.Map<PromotionViewModel>(promotion);
+                    }
+                    else if (a.DisplayKind.Value == NotificationDisplayKind.PromotionCampaign.Value)
+                    {
+                        var campaign = await promotionCampaignService.GetCampaignById(a.PromotionId);
+                        a.PromotionCampaign = mapper.Map<PromotionCampaignViewModel>(campaign);
+                    }
                 }
             }
             return announcements;

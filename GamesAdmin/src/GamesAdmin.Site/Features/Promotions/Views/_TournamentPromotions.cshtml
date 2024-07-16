@@ -13,7 +13,10 @@
             <th>Operators</th>
             <th>Valid min bet</th>
             <th>Status</th>
-            <th>Settings</th>
+            @if (Context.HasAdminPermission())
+            {
+                <th>Settings</th>
+            }
             <th>Start date (GMT+7)</th>
             <th>End date (GMT+7)</th>
             <th>Leaderboard</th>
@@ -34,6 +37,8 @@
 
                 foreach (var operatorModel in promotion.Operators)
                 {
+                    var rowSpanOperator = operatorModel.CurrencyGroups.Count();
+                    bool isOperatorFirstRow = true;
                     foreach (var currencyGroup in operatorModel.CurrencyGroups)
                     {
                         <tr>
@@ -48,8 +53,11 @@
                                     }
                                 </td>
                             }
-                           
-                            <td>@operatorModel.OperatorId</td>
+                            @if (isOperatorFirstRow)
+                            {
+                                <td rowspan="@rowSpanOperator">@operatorModel.OperatorId</td>
+                                isOperatorFirstRow = false;
+                            }
                             <td width="200px">
                                 <div><strong>@currencyGroup.CurrencyName</strong></div>
                                 <div>Slot games: @currencyGroup.SlotGameMinBet</div>
@@ -65,13 +73,16 @@
                                     <i class="icon-cancel"></i>
                                 }
                             </td>
-                            <td class="text-center"><i class="icon-edit"></i></td>
+                            @if (Context.HasAdminPermission())
+                            {
+                                <td class="text-center"><i class="icon-edit"></i></td>
+                            }
                             @if (isFirstRow)
                             {
                                 <td rowspan="@rowSpan" class="text-center" width="200px">@promotion.StartDateTime.ToString("MM/dd/yyyy hh:mm tt")</td>
                                 <td rowspan="@rowSpan" class="text-center" width="200px">@promotion.EndDateTime.ToString("MM/dd/yyyy hh:mm tt")</td>
                                 <td rowspan="@rowSpan" class="text-center text-success"><a href="#">View</a></td>
-                                <td rowspan="@rowSpan" class="text-center text-success">Linked</td>
+                                <td rowspan="@rowSpan" class="text-center @(promotion.HasAnnouncement ? "text-success" : "text-danger")">@(promotion.HasAnnouncement ? "Linked" : "Unlinked")</td>
                                 @if (Context.HasAdminPermission())
                                 {
                                     <td rowspan="@rowSpan" class="text-center">

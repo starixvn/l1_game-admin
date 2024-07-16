@@ -5,6 +5,7 @@ namespace GamesAdmin.Core.Models.Promotion
 {
     public class PromotionConfigModel
     {
+        public string Id { get; set; }
         public int PromotionId { get; set; }
         public string Name { get; set; }
         public DateTime StartDateTime { get; set; }
@@ -13,6 +14,7 @@ namespace GamesAdmin.Core.Models.Promotion
         public string Status { get; set; }
         public List<OperatorModel> Operators { get; set; }
         public List<WinningPrizeModel> WinningPrizes { get; set; }
+        public bool HasAnnouncement { get; set; }
     } 
 }
 public class OperatorModel
@@ -37,5 +39,5 @@ public class WinningPrizeModel
 
     public int Value { get; set; }
 
-    public int Quanlity { get; set; }
+    public int Quantity { get; set; }
 }

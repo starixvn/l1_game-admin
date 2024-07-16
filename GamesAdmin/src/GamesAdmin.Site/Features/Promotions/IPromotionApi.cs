@@ -45,5 +45,8 @@ namespace GamesAdmin.Site.Features.Promotions
 
         [Get("/promotion/getCampaignByStatus")]
         Task<IEnumerable<PromotionConfigModel>> GetCampaignByStatus(string status);
+
+        [Get("/promotion/getCampaignById")]
+        Task<PromotionConfigModel> GetCampaignById(string id);
     }
 }

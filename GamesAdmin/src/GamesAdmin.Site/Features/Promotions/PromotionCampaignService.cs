@@ -7,6 +7,8 @@ namespace GamesAdmin.Site.Features.Promotions
     public interface IPromotionCampaignService
     {
         Task<IEnumerable<PromotionConfigModel>> GetCampaignByStatus(string status);
+
+        Task<PromotionConfigModel> GetCampaignById(string id);
     }
     public class PromotionCampaignService  : IPromotionCampaignService
     {
@@ -19,5 +21,8 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<IEnumerable<PromotionConfigModel>> GetCampaignByStatus(string status)
             => promotionApi.GetCampaignByStatus(status);
+
+        public Task<PromotionConfigModel> GetCampaignById(string id)
+            => promotionApi.GetCampaignById(id);
     }
 }
