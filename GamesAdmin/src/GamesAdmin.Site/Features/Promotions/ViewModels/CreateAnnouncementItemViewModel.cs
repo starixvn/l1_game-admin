@@ -11,14 +11,16 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
     public class CreateAnnouncementItemViewModel
     {
         public string Id { get; set; }
-        public NotificationDisplayKind DisplayKind => Promotions?.Count() > 0 ? NotificationDisplayKind.Promotion : NotificationDisplayKind.PromotionCampaign;
+        public NotificationDisplayKind DisplayKind => NotificationDisplayKind.Promotion;
         public bool Enabled { get; set; }
         public Dictionary<string, string> Title { get; set; } = Language.EmptyLanguages;
         public Dictionary<string, string> Messages { get; set; } = Language.EmptyLanguages;
         public DateTime StartTime { get; set; } = DateTime.Now;
         public DateTime EndTime { get; set; } = DateTime.Now;
         public string PromotionId { get; set; }
-        
+
+        public bool IsHappyHoursAnnouncement => Promotions?.Count() > 0 ? true : false;
+
         public IEnumerable<PromotionModel> Promotions { get; set; }
 
         public IEnumerable<PromotionConfigViewModel> PromotionCampaigns { get; set; }

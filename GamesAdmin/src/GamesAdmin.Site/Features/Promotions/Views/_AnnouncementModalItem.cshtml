@@ -49,7 +49,7 @@
         </div>
     </td>
     
-    @if(Model.DisplayKind.Value == NotificationDisplayKind.Promotion.Value)
+    @if (Model.IsHappyHoursAnnouncement)
     {
         <td class="text-center" rowspan="6">
             <div>
@@ -68,6 +68,17 @@
     }
     else
     {
+        <td hidden class="text-center" rowspan="6">
+            <div>
+                <label asp-for="StartTime">From</label>
+                <input type="text" class="form-control time-picker" asp-for="StartTime" value="@Model.StartTime.ToString(DateTimeExtensions.DateTimeFormat)" id="startTime-@unique">
+            </div>
+            <br />
+            <div>
+                <label asp-for="EndTime">To</label>
+                <input type="text" class="form-control time-picker" asp-for="EndTime" value="@Model.EndTime.ToString(DateTimeExtensions.DateTimeFormat)" id="endTime-@unique">
+            </div>
+        </td>
         <td class="text-center" rowspan="6">   
             @Model.GetStatusPromotionDisplay(@Model.PromotionId)
         </td>

@@ -223,8 +223,11 @@ namespace GamesAdmin.Site.Features.Promotions
             if (!string.IsNullOrEmpty(model.PromotionId))
             {
                 var promotion = await promotionService.GetById(model.PromotionId);
-                model.GameName = Game.FromGameId(promotion.GameId).Value;
-                model.GameId = (int)promotion.GameId;
+                if(promotion != null)
+                {
+                    model.GameName = Game.FromGameId(promotion.GameId).Value;
+                    model.GameId = (int)promotion.GameId;
+                }
             }
             return await promotionService.UpdateAnnouncement(model);
         }

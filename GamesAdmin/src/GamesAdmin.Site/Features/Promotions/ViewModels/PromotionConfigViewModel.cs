@@ -96,7 +96,7 @@ public class WinningPrizeViewModel
 {
     public string Ranking { get; set; }
     public int Value { get; set; }
-    public string DisplayValue => Value.ToString("N0");
+    public string DisplayValue => Value.ToString();
 }
 
 public class OperatorViewModel
@@ -113,7 +113,7 @@ public class CurrencyGroupsViewModel
     public double SlotGameMinBet { get; set; }
     public double OtherGameMinBet { get; set; }
     public bool Enabled { get; set; }
-    public string DisplaySlotGameMinBet => SlotGameMinBet.ToString("N1");
-    public string DisplayOtherGameMinBet => OtherGameMinBet.ToString("N1");
+    public string DisplaySlotGameMinBet => SlotGameMinBet.ToString();
+    public string DisplayOtherGameMinBet => OtherGameMinBet.ToString();
     public string StatusIcon => Enabled ? "icon-check" : "icon-cancel";
 }
