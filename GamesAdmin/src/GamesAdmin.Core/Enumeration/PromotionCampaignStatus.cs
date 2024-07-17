@@ -4,11 +4,11 @@
     {
         public const string AllValue = "all";
         public const string RunningValue = "running";
-        public const string CompletedValue = "finished";
+        public const string CompletedValue = "completed";
 
         public static readonly PromotionStatus All = new PromotionStatus(AllValue, "All");
         public static readonly PromotionStatus Running = new PromotionStatus(RunningValue, "Running");
-        public static readonly PromotionStatus Completed = new PromotionStatus(CompletedValue, "Finished");
+        public static readonly PromotionStatus Completed = new PromotionStatus(CompletedValue, "Completed");
 
         public PromotionCampaignStatus()
         {

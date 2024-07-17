@@ -11,7 +11,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
     public class CreateAnnouncementItemViewModel
     {
         public string Id { get; set; }
-        public NotificationDisplayKind DisplayKind => NotificationDisplayKind.Promotion;
+        public NotificationDisplayKind DisplayKind => Promotions?.Count() > 0 ? NotificationDisplayKind.Promotion : NotificationDisplayKind.PromotionCampaign;
         public bool Enabled { get; set; }
         public Dictionary<string, string> Title { get; set; } = Language.EmptyLanguages;
         public Dictionary<string, string> Messages { get; set; } = Language.EmptyLanguages;
@@ -20,9 +20,13 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public string PromotionId { get; set; }
         public IEnumerable<PromotionModel> Promotions { get; set; }
 
+        public IEnumerable<PromotionConfigViewModel> PromotionCampaigns { get; set; }
+
         public IEnumerable<SelectListItem> PromotionListItem => Promotions?.Select(promotion => new SelectListItem(GetDisplayPromotion(promotion), promotion.PromotionId))
                                                                             .Prepend(new SelectListItem("None", string.Empty));
 
+        public IEnumerable<SelectListItem> PromotionCampaignListItem => PromotionCampaigns?.Select(promotionCampaign => new SelectListItem(GetDisplayPromotionCampaign(promotionCampaign), promotionCampaign.Id))
+                                                                            .Prepend(new SelectListItem("None", string.Empty));
         public string GetDisplayPromotion(PromotionModel promotion)
         {
             var gameName = Game.FromGameId(promotion.GameId).DisplayName;
@@ -31,6 +35,12 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                 $" to {promotion.EndDateTime.ToDateFormat()}, {promotion.StartDateTime.ToTimeFormat()} - {promotion.EndDateTime.ToTimeFormat()}"
                 : $"{gameName} - From {promotion.StartDateTime.ToString(DateTimeExtensions.DateTimeFormat)}" +
                 $" to {promotion.EndDateTime.ToString(DateTimeExtensions.DateTimeFormat)}";
+        }
+
+        public string GetDisplayPromotionCampaign(PromotionConfigViewModel promotionCampaign)
+        {
+            return $"{promotionCampaign.Name} - From {promotionCampaign.StartDateTime.ToString(DateTimeExtensions.DateTimeFormat)}" +
+                $" to {promotionCampaign.EndDateTime.ToString(DateTimeExtensions.DateTimeFormat)}";
         }
     }
 }

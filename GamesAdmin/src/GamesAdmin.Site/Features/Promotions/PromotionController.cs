@@ -131,7 +131,11 @@ namespace GamesAdmin.Site.Features.Promotions
             var existingPromotions = (await mediator.Send(new GetPromotionByStatusRequest(PromotionStatus.AllValue)))
                 .Where(promotion => (!promotion.HasAnnouncement && promotion.Status.Equals(PromotionStatus.EnabledValue)) || promotion.PromotionId.Equals(viewModel.PromotionId))
                 .ToList();
+            var existingPromotionCampaigns = (await mediator.Send(new GetTournamentPromotionsByStatusRequest(PromotionCampaignStatus.AllValue)))
+                .Where(promotion => (!promotion.HasAnnouncement) || promotion.Id.Equals(viewModel.PromotionId))
+                .ToList();
             viewModel.Promotions = existingPromotions;
+            viewModel.PromotionCampaigns = existingPromotionCampaigns;
             return PartialView("_AnnouncementModalItem", viewModel);
         }
 

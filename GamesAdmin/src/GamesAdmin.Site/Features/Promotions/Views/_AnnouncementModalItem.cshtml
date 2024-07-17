@@ -59,9 +59,18 @@
             <input type="text" class="form-control time-picker" asp-for="EndTime" value="@Model.EndTime.ToString(DateTimeExtensions.DateTimeFormat)" id="endTime-@unique">
         </div>
     </td>
-    <td class="text-center" rowspan="6">
-        <select asp-items="@Model.PromotionListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
-    </td>
+    @if(Model.DisplayKind.Value == NotificationDisplayKind.Promotion.Value)
+    {
+        <td class="text-center" rowspan="6">
+            <select asp-items="@Model.PromotionListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
+        </td>
+    }
+    else
+    {
+        <td class="text-center" rowspan="6">
+            <select asp-items="@Model.PromotionCampaignListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
+        </td>
+    }
     @if (string.IsNullOrEmpty(Model.Id))
     {
         <td class="text-center" rowspan="6">

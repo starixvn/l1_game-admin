@@ -7,6 +7,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 {
     public class PromotionConfigViewModel
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public int PromotionId { get; set; }
         public List<WinningPrizeViewModel> WinningPrizes { get; set; }
