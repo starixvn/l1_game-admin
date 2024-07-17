@@ -6,7 +6,6 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
     {
         public bool IsHappyHours { get; set; } = false;
         public PromotionViewModel Promotion { get; set; }
-
         public PromotionCampaignViewModel PromotionCampaign { get; set; }
     }
 }

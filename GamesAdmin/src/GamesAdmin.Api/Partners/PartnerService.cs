@@ -34,6 +34,8 @@ namespace GamesAdmin.Api.Partners
         Task<bool> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites);
 
         Task<bool> UpdateSuperPlayers(string partnerId, string[] superPlayers);
+
+        Task<IEnumerable<Partner>> GetByIdsAsync(List<string> ids);
     }
 
     public class PartnerService : IPartnerService
@@ -272,6 +274,12 @@ namespace GamesAdmin.Api.Partners
                 sentryClient.CaptureException(ex);
                 return false;
             }
+        }
+
+        public async Task<IEnumerable<Partner>> GetByIdsAsync(List<string> ids)
+        {
+            var entities =  await partnerRepository.FilterByAsync(partner => ids.Contains(partner.PartnerId));
+            return entities.Select(entity => mapper.Map<Partner>(entity));
         }
     }
 }

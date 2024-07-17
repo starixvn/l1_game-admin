@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities.Promotion
@@ -13,7 +12,6 @@ namespace GamesAdmin.Database.Entities.Promotion
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
         public DateTime UpdatedTime { get; set; }
-        public string Status { get; set; }
         public List<Operator> Operators { get; set; }
         public List<WinningPrize> WinningPrizes { get; set; }
     }

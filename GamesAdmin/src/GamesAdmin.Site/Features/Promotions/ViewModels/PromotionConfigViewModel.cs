@@ -15,6 +15,8 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
         public bool HasAnnouncement { get; set; }
+
+        public string Status { get; set; }
         public string StartDateTimeString => StartDateTime.ToString("MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
         public string EndDateTimeString => EndDateTime.ToString("MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
 
@@ -24,7 +26,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
             return html;
         }
 
-        public string GetOperatorsHtml(bool hasAdminPermission)
+        public string GetTournamentHtml(bool hasAdminPermission)
         {
             var html = "";
             var promotionRowSpan = Operators.Sum(o => o.CurrencyGroups.Count);
@@ -47,7 +49,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
                     if (isFirstOperatorRow)
                     {
-                        html += $"<td rowspan=\"{operatorRowSpan}\">{operatorModel.OperatorId}</td>";
+                        html += $"<td rowspan=\"{operatorRowSpan}\">{operatorModel.OperatorName}</td>";
                         isFirstOperatorRow = false;
                     }
 
@@ -75,7 +77,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                         if (hasAdminPermission)
                         {
                             html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">" +
-                                    $"<a type=\"button\" class=\"btn btn-success btn-lg\" data-ajax=\"true\" data-ajax-mode=\"replace\" data-ajax-update=\"#promotion-modal .modal-content\" data-ajax-success=\"promotion.openUpdatePromotionForm\" asp-route-id=\"{PromotionId}\" asp-action=\"Update\">Edit</a>" +
+                                    $"<a type=\"button\" class=\"btn btn-success btn-lg\" data-ajax=\"true\" data-ajax-mode=\"replace\" data-ajax-update=\"#promotion-modal .modal-content\" data-ajax-success=\"promotion.openUpdatePromotionForm\" asp-route-id=\"{PromotionId}\" asp-action=\"Update\">  Edit  </a>" +                                  
                                     $"<button type=\"button\" class=\"btn btn-danger btn-lg\" onclick=\"promotion.openDeleteModal('{PromotionId}')\">Delete</button>" +
                                     "</td>";
                         }
@@ -100,6 +102,8 @@ public class WinningPrizeViewModel
 public class OperatorViewModel
 {
     public string OperatorId { get; set; }
+
+    public string OperatorName { get; set; }
     public List<CurrencyGroupsViewModel> CurrencyGroups { get; set; }
 }
 

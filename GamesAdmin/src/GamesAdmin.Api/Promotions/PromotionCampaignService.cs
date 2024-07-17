@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Notifications;
+using GamesAdmin.Api.Partners;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
@@ -38,20 +37,22 @@ namespace GamesAdmin.Api.Promotions
         private readonly ISentryClient sentryClient;
         private readonly IMapper mapper;
         private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
-        private readonly IChatBotService chatBotService;
+        private readonly IPartnerService partnerService;
         private readonly INotificationService notificationService;
 
         public PromotionCampaignService(IGenericRepository<PromotionConfigEntity> promotionCampaignRepository,
             ISentryClient sentryClient,
             IMapper mapper,
             IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IPartnerService partnerService)
         {
             this.promotionCampaignRepository = promotionCampaignRepository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
             this.currencyGroupRepository = currencyGroupRepository;
             this.notificationService = notificationService;
+            this.partnerService = partnerService;
         }
 
         public async Task<IEnumerable<PromotionConfigModel>> GetByStatus(string status)
@@ -60,8 +61,9 @@ namespace GamesAdmin.Api.Promotions
             {
                 var entities = await GetPromotionEntitiesByStatus(status);
                 var currencyDict = await GetCurrencyDictionary(entities);
+                var partnerDict = await GetPartnersDictionary(entities);
 
-                var promotions = MapEntitiesToModels(entities, currencyDict);
+                var promotions = MapEntitiesToModels(entities, currencyDict, partnerDict);
                 await SetPromotionAnnouncements(promotions);
 
                 return promotions;
@@ -106,11 +108,23 @@ namespace GamesAdmin.Api.Promotions
 
             var objectIdCurrencyGroupIds = currencyGroupIds.Select(id => new ObjectId(id)).ToList();
             var currencies = await currencyGroupRepository.FilterByAsync(currency => objectIdCurrencyGroupIds.Contains(currency.Id));
-
             return currencies.ToDictionary(c => c.Id.ToString(), c => c.Name);
         }
 
-        private List<PromotionConfigModel> MapEntitiesToModels(List<PromotionConfigEntity> entities, Dictionary<string, string> currencyDict)
+        private async Task<Dictionary<string, string>> GetPartnersDictionary(List<PromotionConfigEntity> entities)
+        {
+            var operatorIds = entities
+               .SelectMany(e => e.Operators)
+               .Select(cg => cg.OperatorId)
+               .Distinct()
+               .ToList();
+
+            var partnerIds = operatorIds.Select(id => id).ToList();       
+            var partners = await partnerService.GetByIdsAsync(partnerIds);
+            return partners.ToDictionary(c => c.PartnerId, c => c.Name);
+        }
+
+        private List<PromotionConfigModel> MapEntitiesToModels(List<PromotionConfigEntity> entities, Dictionary<string, string> currencyDict, Dictionary<string, string> partnerDict)
         {
             return entities.Select(entity =>
             {
@@ -118,6 +132,10 @@ namespace GamesAdmin.Api.Promotions
 
                 foreach (var operatorModel in promotionModel.Operators)
                 {
+                    if (partnerDict.TryGetValue(operatorModel.OperatorId, out var partnerName))
+                    {
+                        operatorModel.OperatorName = partnerName;
+                    }
                     foreach (var currencyGroup in operatorModel.CurrencyGroups)
                     {
                         if (currencyDict.TryGetValue(currencyGroup.CurrencyGroupId, out var currencyName))

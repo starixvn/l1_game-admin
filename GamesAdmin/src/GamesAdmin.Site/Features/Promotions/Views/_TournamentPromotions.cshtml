@@ -35,7 +35,7 @@
         {
             @foreach (var promotion in promotions)
             {
-                @Html.Raw(promotion.GetOperatorsHtml(Context.HasAdminPermission()))
+                @Html.Raw(promotion.GetTournamentHtml(Context.HasAdminPermission()))
             }
         }
         else

@@ -16,5 +16,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
         public List<OperatorViewModel> Operators { get; set; }
         public List<WinningPrizeViewModel> WinningPrizes { get; set; }
+
+        public string Status { get; set; }
     }
 }
