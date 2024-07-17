@@ -6,6 +6,8 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
     public class PromotionCampaignViewModel
     {
         public string Id { get; set; }
+
+        public string Name { get; set; }
         public bool Enabled { get; set; }
         public DateTime StartDate { get; set; } = DateTime.Now;
         public DateTime EndDate { get; set; } = DateTime.Now.AddDays(1);

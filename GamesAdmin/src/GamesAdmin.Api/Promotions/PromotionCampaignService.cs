@@ -58,57 +58,12 @@ namespace GamesAdmin.Api.Promotions
         {
             try
             {
-                List<PromotionConfigEntity> entities;
-                if (status.Equals(PromotionCampaignStatus.AllValue))
-                {
-                    entities = promotionCampaignRepository.AsQueryable()
-                        .OrderByDescending(promotion => promotion.StartDateTime)
-                        .ToList();
-                }
-                else
-                {
-                    entities = (await promotionCampaignRepository.FilterByAsync(entity => entity.Status.Equals(status)))
-                        .OrderByDescending(promotion => promotion.StartDateTime)
-                        .ToList();
-                }
+                var entities = await GetPromotionEntitiesByStatus(status);
+                var currencyDict = await GetCurrencyDictionary(entities);
 
-                // Flatten the list of currency group IDs
-                var currencyGroupIds = entities
-                    .SelectMany(e => e.Operators)
-                    .SelectMany(o => o.CurrencyGroups)
-                    .Select(cg => cg.CurrencyGroupId)
-                    .Distinct()
-                    .ToList();
+                var promotions = MapEntitiesToModels(entities, currencyDict);
+                await SetPromotionAnnouncements(promotions);
 
-                var objectIdCurrencyGroupIds = currencyGroupIds.Select(id => new ObjectId(id)).ToList();
-                // Fetch all necessary currencies in a single query
-                var currencies = await currencyGroupRepository.FilterByAsync(currency => objectIdCurrencyGroupIds.Contains(currency.Id));
-                var currencyDict = currencies.ToDictionary(c => c.Id.ToString(), c => c.Name);
-
-                // Map entities to models and set currency names
-                var promotions = entities.Select(entity =>
-                {
-                    var promotionModel = mapper.Map<PromotionConfigModel>(entity);
-
-                    foreach (var operatorModel in promotionModel.Operators)
-                    {
-                        foreach (var currencyGroup in operatorModel.CurrencyGroups)
-                        {
-                            if (currencyDict.TryGetValue(currencyGroup.CurrencyGroupId, out var currencyName))
-                            {
-                                currencyGroup.CurrencyName = currencyName;
-                            }
-                        }
-                    }
-
-                    return promotionModel;
-                }).ToList();
-
-                for (var index = 0; index < promotions.Count; index++)
-                {
-                    var announcement = await notificationService.GetPromotionAnnouncementByPromotionId(promotions[index].Id);
-                    promotions[index].HasAnnouncement = announcement != null;
-                }
                 return promotions;
             }
             catch (Exception ex)
@@ -117,6 +72,74 @@ namespace GamesAdmin.Api.Promotions
                 return null;
             }
         }
+
+        private async Task<List<PromotionConfigEntity>> GetPromotionEntitiesByStatus(string status)
+        {
+            if (status.Equals(PromotionCampaignStatus.AllValue))
+            {
+                return promotionCampaignRepository.AsQueryable()
+                    .OrderByDescending(promotion => promotion.StartDateTime)
+                    .ToList();
+            }
+            else if (status.Equals(PromotionCampaignStatus.RunningValue))
+            {
+                return (await promotionCampaignRepository.FilterByAsync(entity => entity.StartDateTime <= DateTime.UtcNow && DateTime.UtcNow <= entity.EndDateTime))
+                    .OrderByDescending(promotion => promotion.StartDateTime)
+                    .ToList();
+            }
+            else
+            {
+                return (await promotionCampaignRepository.FilterByAsync(entity => DateTime.UtcNow > entity.EndDateTime))
+                    .OrderByDescending(promotion => promotion.StartDateTime)
+                    .ToList();
+            }
+        }
+
+        private async Task<Dictionary<string, string>> GetCurrencyDictionary(List<PromotionConfigEntity> entities)
+        {
+            var currencyGroupIds = entities
+                .SelectMany(e => e.Operators)
+                .SelectMany(o => o.CurrencyGroups)
+                .Select(cg => cg.CurrencyGroupId)
+                .Distinct()
+                .ToList();
+
+            var objectIdCurrencyGroupIds = currencyGroupIds.Select(id => new ObjectId(id)).ToList();
+            var currencies = await currencyGroupRepository.FilterByAsync(currency => objectIdCurrencyGroupIds.Contains(currency.Id));
+
+            return currencies.ToDictionary(c => c.Id.ToString(), c => c.Name);
+        }
+
+        private List<PromotionConfigModel> MapEntitiesToModels(List<PromotionConfigEntity> entities, Dictionary<string, string> currencyDict)
+        {
+            return entities.Select(entity =>
+            {
+                var promotionModel = mapper.Map<PromotionConfigModel>(entity);
+
+                foreach (var operatorModel in promotionModel.Operators)
+                {
+                    foreach (var currencyGroup in operatorModel.CurrencyGroups)
+                    {
+                        if (currencyDict.TryGetValue(currencyGroup.CurrencyGroupId, out var currencyName))
+                        {
+                            currencyGroup.CurrencyName = currencyName;
+                        }
+                    }
+                }
+
+                return promotionModel;
+            }).ToList();
+        }
+
+        private async Task SetPromotionAnnouncements(List<PromotionConfigModel> promotions)
+        {
+            foreach (var promotion in promotions)
+            {
+                var announcement = await notificationService.GetPromotionAnnouncementByPromotionId(promotion.Id);
+                promotion.HasAnnouncement = announcement != null;
+            }
+        }
+
 
         public async Task<PromotionConfigModel> GetById(string id)
         {

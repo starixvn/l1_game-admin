@@ -184,6 +184,7 @@ namespace GamesAdmin.Site.Features.Promotions
                     {
                         var promotion = await promotionService.GetById(a.PromotionId);
                         a.Promotion = mapper.Map<PromotionViewModel>(promotion);
+                        a.IsHappyHours = true;
                     }
                     else if (a.DisplayKind.Value == NotificationDisplayKind.PromotionCampaign.Value)
                     {

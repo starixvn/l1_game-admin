@@ -11,21 +11,43 @@
 @functions{
     public string GetDisplayPromotion(AnnouncementViewModel viewModel)
     {
-        if (viewModel.Promotion == null)
+        if (viewModel.IsHappyHours)
+        {
+            return GetHappyHoursPromotionDisplay(viewModel.Promotion);
+        }
+        else
+        {
+            return GetPromotionCampaignDisplay(viewModel.PromotionCampaign);
+        }
+    }
+    public string GetHappyHoursPromotionDisplay(PromotionViewModel promotion)
+    {
+        if (promotion == null)
         {
             return string.Empty;
         }
-        var gameName = Game.FromGameId(viewModel.Promotion.GameId).DisplayName;
-        return viewModel.Promotion.IsDaily ?
-            $"{gameName} - From {viewModel.Promotion.StartDate.ToDateFormat()}<br />" +
-            $"to {viewModel.Promotion.EndDate.ToDateFormat()}, {viewModel.Promotion.StartTime.ToTimeFormat()} - {viewModel.Promotion.EndTime.ToTimeFormat()}"
-            : $"{gameName} - From {viewModel.Promotion.StartDate.ToDateFormat()} {viewModel.Promotion.StartTime.ToTimeFormat()}<br />" +
-            $"to {viewModel.Promotion.EndDate.ToDateFormat()} {viewModel.Promotion.EndTime.ToTimeFormat()}";
+
+        var gameName = Game.FromGameId(promotion.GameId).DisplayName;
+        return promotion.IsDaily
+            ? $"{gameName} - From {promotion.StartDate.ToDateFormat()}<br />" +
+              $"to {promotion.EndDate.ToDateFormat()}, {promotion.StartTime.ToTimeFormat()} - {promotion.EndTime.ToTimeFormat()}"
+            : $"{gameName} - From {promotion.StartDate.ToDateFormat()} {promotion.StartTime.ToTimeFormat()}<br />" +
+              $"to {promotion.EndDate.ToDateFormat()} {promotion.EndTime.ToTimeFormat()}";
+    }
+
+    public string GetPromotionCampaignDisplay(PromotionCampaignViewModel promotionCampaign)
+    {
+        if (promotionCampaign == null)
+        {
+            return string.Empty;
+        }
+        return $"{promotionCampaign.Name} - From {promotionCampaign.StartDate.ToDateFormat()} {promotionCampaign.StartTime.ToTimeFormat()}<br />" +
+            $"to {promotionCampaign.EndDate.ToDateFormat()} {promotionCampaign.EndTime.ToTimeFormat()}";
     }
 
     public string GetDisplayDateTime(AnnouncementViewModel viewModel)
     {
-        return $"From {viewModel.StartTime?.ToTimeFormat()} {viewModel.StartTime?.ToDateFormat()}<br />to {viewModel.EndTime?.ToTimeFormat()} {viewModel.EndTime?.ToDateFormat()}";
+        return viewModel.IsHappyHours ? $"From {viewModel.StartTime?.ToTimeFormat()} {viewModel.StartTime?.ToDateFormat()}<br />to {viewModel.EndTime?.ToTimeFormat()} {viewModel.EndTime?.ToDateFormat()}" : "No Available";
     }
 
     public void RenderMessageRow(string language, AnnouncementViewModel viewModel, bool hasAdminPermission)

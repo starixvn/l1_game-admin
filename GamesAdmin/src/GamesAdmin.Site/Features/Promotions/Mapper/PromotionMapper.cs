@@ -49,7 +49,8 @@ namespace GamesAdmin.Site.Features.Promotions.Mapper
               .ForMember(dest => dest.HasAnnouncement, opt => opt.Ignore())
               .ForMember(dest => dest.UpdatedTime, opt => opt.Ignore());
 
-            CreateMap<PromotionConfigModel, PromotionCampaignViewModel>();
+            CreateMap<PromotionConfigModel, PromotionCampaignViewModel>()
+              .AfterMap<PromotionCampaignMappingAction>();
             CreateMap<OperatorModel, OperatorViewModel>();
             CreateMap<CurrencyGroupsModel, CurrencyGroupsViewModel>();
             CreateMap<WinningPrizeModel, WinningPrizeViewModel>();
