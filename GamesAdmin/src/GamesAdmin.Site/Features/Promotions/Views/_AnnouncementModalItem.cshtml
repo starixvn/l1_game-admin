@@ -62,7 +62,13 @@
             </div>
         </td>
         <td class="text-center" rowspan="6">
-            <select asp-for="PromotionType" asp-items="Model.PromotionTypeList" class="form-control select-promotion-mapping" id="promotionType-@unique" onchange="promotionAnnouncement.togglePromotionType(this, '@unique')"></select>
+            <div id="selecttype" class="form-group row">
+                <label for="promotionType-@unique" class="col-sm-2 col-form-label">Type</label>
+                <div class="col-sm-10">
+                    <select asp-items="Model.PromotionTypeList" class="form-control" id="promotionType-@unique" onchange="promotionAnnouncement.togglePromotionType(this, '@unique')"></select>
+                </div>
+            </div>
+            <br>
             <span id="promotionListContainer-@unique">
                 <select asp-items="@Model.PromotionListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique-promotion"></select>
             </span>

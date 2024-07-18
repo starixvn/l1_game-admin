@@ -18,7 +18,6 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public DateTime StartTime { get; set; } = DateTime.Now;
         public DateTime EndTime { get; set; } = DateTime.Now.AddDays(1);
         public string PromotionId { get; set; }
-        public string PromotionType { get; set; }
         public bool IsHappyHoursAnnouncement => DisplayKind?.Value == NotificationDisplayKind.Promotion.Value;
 
         public IEnumerable<PromotionModel> Promotions { get; set; }
