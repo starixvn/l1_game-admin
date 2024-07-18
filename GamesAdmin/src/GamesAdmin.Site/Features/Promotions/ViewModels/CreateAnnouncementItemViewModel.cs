@@ -11,15 +11,15 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
     public class CreateAnnouncementItemViewModel
     {
         public string Id { get; set; }
-        public NotificationDisplayKind DisplayKind => NotificationDisplayKind.Promotion;
+        public NotificationDisplayKind DisplayKind { get; set; }
         public bool Enabled { get; set; }
         public Dictionary<string, string> Title { get; set; } = Language.EmptyLanguages;
         public Dictionary<string, string> Messages { get; set; } = Language.EmptyLanguages;
         public DateTime StartTime { get; set; } = DateTime.Now;
-        public DateTime EndTime { get; set; } = DateTime.Now;
+        public DateTime EndTime { get; set; } = DateTime.Now.AddDays(1);
         public string PromotionId { get; set; }
-
-        public bool IsHappyHoursAnnouncement => Promotions?.Count() > 0 ? true : false;
+        public string PromotionType { get; set; }
+        public bool IsHappyHoursAnnouncement => DisplayKind?.Value == NotificationDisplayKind.Promotion.Value;
 
         public IEnumerable<PromotionModel> Promotions { get; set; }
 
@@ -30,6 +30,14 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
         public IEnumerable<SelectListItem> PromotionCampaignListItem => PromotionCampaigns?.Select(promotionCampaign => new SelectListItem(GetDisplayPromotionCampaign(promotionCampaign), promotionCampaign.Id))
                                                                             .Prepend(new SelectListItem("None", string.Empty));
+
+        public IEnumerable<SelectListItem> PromotionTypeList = new List<SelectListItem>
+        {
+            new SelectListItem { Value = NotificationDisplayKind.PromotionValue, Text = NotificationDisplayKind.Promotion.DisplayName },
+
+            new SelectListItem { Value = NotificationDisplayKind.PromotionCampaignValue, Text = NotificationDisplayKind.PromotionCampaign.DisplayName }
+        };
+
         public string GetDisplayPromotion(PromotionModel promotion)
         {
             var gameName = Game.FromGameId(promotion.GameId).DisplayName;
@@ -48,8 +56,8 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
         public string GetStatusPromotionDisplay(string promotionId)
         {
-            var promotionCampaign = PromotionCampaigns.Where(pc => pc.Id.Equals(promotionId)).FirstOrDefault();
-            return promotionCampaign.Status;
+            var promotionCampaign = PromotionCampaigns?.Where(pc => pc.Id.Equals(promotionId)).FirstOrDefault();
+            return promotionCampaign?.Status;
         }
     }
 }

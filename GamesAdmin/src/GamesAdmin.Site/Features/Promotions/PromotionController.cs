@@ -113,6 +113,8 @@ namespace GamesAdmin.Site.Features.Promotions
             var viewModel = new CreateAnnouncementItemViewModel();
             viewModel.Promotions = (await mediator.Send(new GetPromotionByStatusRequest(PromotionStatus.Enabled.Value)))
                 .Where(promotion => !promotion.HasAnnouncement);
+            viewModel.PromotionCampaigns = (await mediator.Send(new GetTournamentPromotionsByStatusRequest(PromotionCampaignStatus.All.Value)))
+                .Where(promotion => !promotion.HasAnnouncement);
             return PartialView("_AnnouncementModalItem", viewModel);
         }
 

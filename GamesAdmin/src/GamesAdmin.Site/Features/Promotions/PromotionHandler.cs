@@ -184,7 +184,6 @@ namespace GamesAdmin.Site.Features.Promotions
                     {
                         var promotion = await promotionService.GetById(a.PromotionId);
                         a.Promotion = mapper.Map<PromotionViewModel>(promotion);
-                        a.IsHappyHours = true;
                     }
                     else if (a.DisplayKind.Value == NotificationDisplayKind.PromotionCampaign.Value)
                     {
@@ -204,8 +203,13 @@ namespace GamesAdmin.Site.Features.Promotions
                 if (!string.IsNullOrEmpty(models[index].PromotionId))
                 {
                     var promotion = await promotionService.GetById(models[index].PromotionId);
-                    models[index].GameName = Game.FromGameId(promotion.GameId).Value;
-                    models[index].GameId = (int)promotion.GameId;
+                    if (promotion != null)
+                    {
+                        models[index].GameName = Game.FromGameId(promotion.GameId).Value;
+                        models[index].GameId = (int)promotion.GameId;
+                        models[index].DisplayKind = NotificationDisplayKind.Promotion;
+                    }
+                    else models[index].DisplayKind = NotificationDisplayKind.PromotionCampaign;
                 }
             }
             return await this.promotionService.CreateAnnouncements(models);
