@@ -182,7 +182,8 @@ namespace GamesAdmin.Site.Features.Promotions
                 OperatorId = "ONEworks_VG",
                 Amount = 1,
                 Currency = "INH",
-                SiteId = "333333"
+                SiteId = "333333",
+                GameTypeId = 9999
             };
 
             return PartialView("_Award", viewModel);

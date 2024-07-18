@@ -17,5 +17,7 @@ namespace GamesAdmin.Core.Models.Promotion
         public string PlayerId { get; set; }
 
         public string SiteId { get; set; }
+
+        public int GameTypeId { get; set; }
     }
 }
