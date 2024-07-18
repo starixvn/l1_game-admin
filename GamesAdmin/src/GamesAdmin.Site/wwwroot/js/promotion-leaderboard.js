@@ -17,6 +17,6 @@
     return {
         openAwardPlayerModal: openModal(leaderboardElements.viewWinningPlayerForm),
         onAwardSuccess: () => { console.log("onAwardSuccess"); },
-        onAwardFailed: () => { console.log("onAwardFailed"); }
+        onAwardFailed: () => { console.log("onAwardFailed"); } 
     }
 }(jQuery));

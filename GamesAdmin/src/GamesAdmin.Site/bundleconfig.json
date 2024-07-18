@@ -323,6 +323,7 @@
   {
     "outputFileName": "wwwroot/js/promotion-leaderboard.min.js",
     "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
       "wwwroot/js/promotion-leaderboard.js"
     ]
   }
