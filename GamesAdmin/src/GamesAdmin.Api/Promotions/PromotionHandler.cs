@@ -5,6 +5,7 @@ using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Promotions.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Promotion;
+using GamesAdmin.Core.OWResults;
 using MediatR;
 
 namespace GamesAdmin.Api.Promotions
@@ -23,16 +24,23 @@ namespace GamesAdmin.Api.Promotions
         , IRequestHandler<DeleteAnnouncementRequest, bool>
         , IRequestHandler<GetPromotionCampaignByStatusRequest, IEnumerable<PromotionConfigModel>>
         , IRequestHandler<GetPromotionCampaignByIdRequest, PromotionConfigModel>
+        , IRequestHandler<AwardWinningPlayerRequest, OWResult>
     {
         private readonly IPromotionService promotionService;
         private readonly INotificationService notificationService;
         private readonly IPromotionCampaignService promotionCampaignService;
+        private readonly IAwardService awardService;
 
-        public PromotionHandler(IPromotionService promotionService, INotificationService notificationService, IPromotionCampaignService promotionCampaignService)
+        public PromotionHandler(
+            IPromotionService promotionService, 
+            INotificationService notificationService, 
+            IPromotionCampaignService promotionCampaignService,
+            IAwardService awardService)
         {
             this.promotionService = promotionService;
             this.notificationService = notificationService;
             this.promotionCampaignService = promotionCampaignService;
+            this.awardService = awardService;
         }
 
         public Task<IEnumerable<PromotionModel>> Handle(GetPromotionByStatusRequest request, CancellationToken cancellationToken)
@@ -73,5 +81,8 @@ namespace GamesAdmin.Api.Promotions
 
         public Task<PromotionConfigModel> Handle(GetPromotionCampaignByIdRequest request, CancellationToken cancellationToken)
         => promotionCampaignService.GetById(request.Id);
+
+        public Task<OWResult> Handle(AwardWinningPlayerRequest request, CancellationToken cancellationToken)
+            => awardService.AwardWinningPlayer(request);
     }
 }

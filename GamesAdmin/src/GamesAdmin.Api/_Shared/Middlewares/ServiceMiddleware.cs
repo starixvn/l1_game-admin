@@ -73,6 +73,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IHoldemPokerReportService, HoldemPokerReportService>();
             services.AddScoped<IPromotionService, PromotionService>();
             services.AddScoped<IPromotionCampaignService, PromotionCampaignService>();
+            services.AddScoped<IAwardService, AwardService>();
             services.AddScoped<ILobbyService, LobbyService>();
             services.AddScoped<IDomainService, DomainService>();
             services.AddScoped<IRTPVerifyService, RTPVeirfyService>();
@@ -101,6 +102,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IRTPServiceApi>(appSettings.RtpCheckerServiceSettings.Url, refitSettings));
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
+            services.AddSingleton(RestService.For<IAwardGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
             services.AddScoped<ITicketHandler, TicketHandler>();
             services.AddScoped<IBacBall1VoidGameService, BacBall1VoidGameService>();

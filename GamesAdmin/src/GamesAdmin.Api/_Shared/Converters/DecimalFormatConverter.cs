@@ -8,7 +8,7 @@ namespace GamesAdmin.Api._Shared.Converters
     {
         public override decimal ReadJson(JsonReader reader, Type objectType, [AllowNull] decimal existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return (decimal)reader.Value;
+            return Convert.ToDecimal(reader.Value);
         }
 
         public override void WriteJson(JsonWriter writer, [AllowNull] decimal value, JsonSerializer serializer)

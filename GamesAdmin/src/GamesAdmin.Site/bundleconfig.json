@@ -319,5 +319,11 @@
     "inputFiles": [
       "wwwroot/js/game-monitor.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/promotion-leaderboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/promotion-leaderboard.js"
+    ]
   }
 ]

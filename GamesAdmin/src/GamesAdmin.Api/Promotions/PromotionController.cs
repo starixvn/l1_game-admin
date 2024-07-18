@@ -5,6 +5,7 @@ using GamesAdmin.Api.Promotions.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Promotion;
+using GamesAdmin.Core.OWResults;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -71,5 +72,9 @@ namespace GamesAdmin.Api.Promotions
         [HttpGet("getCampaignById")]
         public Task<PromotionConfigModel> GetCampaignById(string id)
            => mediator.Send(new GetPromotionCampaignByIdRequest(id));
+
+        [HttpPost("award")]
+        public Task<OWResult> Award(AwardWinningPlayerRequest request)
+           => mediator.Send(request);
     }
 }

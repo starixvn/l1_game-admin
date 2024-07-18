@@ -2,6 +2,9 @@
 using System.Globalization;
 using System;
 using System.Linq;
+using System.Security.Policy;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.Promotions.ViewModels
 {
@@ -26,7 +29,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
             return html;
         }
 
-        public string GetTournamentHtml(bool hasAdminPermission)
+        public string GetTournamentHtml(bool hasAdminPermission, IUrlHelper urlHelper)
         {
             var html = "";
             var promotionRowSpan = Operators.Sum(o => o.CurrencyGroups.Count);
@@ -72,7 +75,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                     {
                         html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{StartDateTimeString}</td>";
                         html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{EndDateTimeString}</td>";
-                        html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center text-success\"><a href=\"#\">View</a></td>";
+                        html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center text-success\"><a href=\"{urlHelper.Action("leaderboard")}\">View</a></td>";
                         html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center {(HasAnnouncement ? "text-success" : "text-danger")}\">{(HasAnnouncement ? "Linked" : "Unlinked")}</td>";
                         if (hasAdminPermission)
                         {

@@ -156,5 +156,36 @@ namespace GamesAdmin.Site.Features.Promotions
             var result = await mediator.Send(new DeleteAnnouncementRequest(id));
             return Json(result);
         }
+
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Award([Bind] AwardWinningPlayerRequest request)
+        {
+            var result = await mediator.Send(request);
+
+            return Json(result);
+        }
+
+        public IActionResult Leaderboard()
+        {
+            var viewModel = new LeaderboardViewModel();
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult ViewAward(int promotionId, string playerId)
+        {
+            var viewModel = new AwardViewModel 
+            { 
+                PromotionId = 1, 
+                PlayerId = "1111",
+                OperatorId = "ONEworks_VG",
+                Amount = 1,
+                Currency = "INH",
+                SiteId = "333333"
+            };
+
+            return PartialView("_Award", viewModel);
+        }
     }
 }

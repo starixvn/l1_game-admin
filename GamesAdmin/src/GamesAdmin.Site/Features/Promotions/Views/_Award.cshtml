@@ -1,0 +1,68 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model GamesAdmin.Site.Features.Promotions.ViewModels.AwardViewModel
+@{
+}
+<div class="modal-header">
+    <h5 class="modal-title">Winning Player</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<form class="form" data-ajax="true" data-ajax-method="POST" asp-action="Award"
+      data-ajax-loading="#spinner"
+      data-ajax-success="promotionLeaderboard.onAwardSuccess"
+      data-ajax-failure="promotionLeaderboard.onAwardFailed"
+      id="view-winning-player-form">
+    <div class="modal-body">
+        @if (Model.Result != null && Model.Result.IsSuccessful() == true)
+        {
+            <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>@Model.Result.ErrorDescription</span></div>
+        }
+
+        @if (Model.Result != null && Model.Result.IsSuccessful() == false)
+        {
+            <div class="message-error hidden-cls" id="failedMsg">
+                <i class="icon-cancel"></i>
+                <span>Error: @Model.Result.ErrorCode - @Model.Result.ErrorMessage - @Model.Result.ErrorDescription</span>
+            </div>
+        }
+
+        <div class="form-group form-row">
+            <label asp-for="PlayerId" class="control-label"></label>
+            <input type="text" asp-for="PlayerId" class="form-control" value="@Model.PlayerId" />
+        </div>
+
+        <div class="form-group form-row">
+            <label asp-for="SiteId" class="control-label"></label>
+            <input type="text" asp-for="SiteId" class="form-control" value="@Model.SiteId" />
+        </div>
+
+        <div class="form-group form-row">
+            <label asp-for="PromotionId" class="control-label"></label>
+            <input type="text" asp-for="PromotionId" class="form-control" value="@Model.PromotionId" />
+        </div>
+
+        <div class="form-group form-row">
+            <label asp-for="Currency" class="control-label"></label>
+            <input type="text" asp-for="Currency" class="form-control" value="@Model.Currency" />
+        </div>
+
+        <div class="form-group form-row">
+            <label asp-for="Amount" class="control-label"></label>
+            <input type="text" asp-for="Amount" class="form-control" value="@Model.Amount" />
+        </div>
+
+        <div class="form-group form-row">
+            <label asp-for="OperatorId" class="control-label"></label>
+            <input type="text" asp-for="OperatorId" class="form-control" value="@Model.OperatorId" />
+        </div>
+
+        <div class=" modal-footer">
+            <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn-submit">Save</button>
+        </div>
+    </div>
+</form>

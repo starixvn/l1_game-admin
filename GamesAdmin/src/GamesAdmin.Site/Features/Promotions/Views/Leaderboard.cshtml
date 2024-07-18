@@ -1,0 +1,41 @@
+﻿@using GamesAdmin.Site.Features._Shared;
+@model GamesAdmin.Site.Features.Promotions.ViewModels.LeaderboardViewModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+This is leaderboard page
+
+
+<a class="btn-add add-item mb-1"
+   data-ajax="true"
+   data-ajax-mode="replace"
+   data-ajax-update="#award-modal .modal-content"
+   data-ajax-success="promotionLeaderboard.openAwardPlayerModal"
+   asp-action="ViewAward">
+    View Award
+</a>
+
+
+<div class="modal fade" id="award-modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog modal-md promotion-model">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/jquery-datetimepicker/jquery.datetimepicker.full.js"></script>
+        <script src="~/lib/select2/dist/js/select2.min.js"></script>
+        <script src="~/js/promotion-leaderboard.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/promotion-leaderboard.min.js" asp-append-version="true"></script>
+    </environment>
+}

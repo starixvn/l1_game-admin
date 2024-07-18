@@ -1,4 +1,6 @@
 ﻿using GamesAdmin.Core.Models.Promotion;
+using GamesAdmin.Core.OWResults;
+using GamesAdmin.Site.Features.Promotions.Requests;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,6 +11,8 @@ namespace GamesAdmin.Site.Features.Promotions
         Task<IEnumerable<PromotionConfigModel>> GetCampaignByStatus(string status);
 
         Task<PromotionConfigModel> GetCampaignById(string id);
+
+        Task<OWResult> Award(AwardWinningPlayerRequest request);
     }
     public class PromotionCampaignService  : IPromotionCampaignService
     {
@@ -24,5 +28,8 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<PromotionConfigModel> GetCampaignById(string id)
             => promotionApi.GetCampaignById(id);
+
+        public Task<OWResult> Award(AwardWinningPlayerRequest request)
+             => promotionApi.Award(request);
     }
 }

@@ -7,6 +7,7 @@ using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Promotion;
+using GamesAdmin.Core.OWResults;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.GameSettings;
@@ -27,6 +28,7 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<UpdateAnnouncementRequest, bool>
         , IRequestHandler<DeleteAnnouncementRequest, bool>
         , IRequestHandler<GetTournamentPromotionsByStatusRequest, IEnumerable<PromotionConfigViewModel>>
+        , IRequestHandler<AwardWinningPlayerRequest, OWResult>
     {
         private readonly IPromotionService promotionService;
         private readonly IPromotionCampaignService promotionCampaignService;
@@ -266,5 +268,8 @@ namespace GamesAdmin.Site.Features.Promotions
 
             return promotionViewModels;
         }
+
+        public Task<OWResult> Handle(AwardWinningPlayerRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.Award(request);
     }
 }

@@ -113,6 +113,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IPromotionApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IPromotionService, PromotionService>();
             services.AddScoped<IPromotionCampaignService, PromotionCampaignService>();
+ 
 
             services.AddSingleton(RestService.For<ILobbyApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<ILobbyService, LobbyService>();
