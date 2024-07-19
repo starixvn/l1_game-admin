@@ -53,5 +53,8 @@ namespace GamesAdmin.Site.Features.Promotions
 
         [Post("/promotion/award")]
         Task<OWResult> Award(AwardWinningPlayerRequest request);
+
+        [Post("/promotion/createTournament")]
+        Task<bool> CreateTournament(PromotionConfigModel model);
     }
 }

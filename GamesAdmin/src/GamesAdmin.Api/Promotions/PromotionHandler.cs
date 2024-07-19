@@ -25,6 +25,7 @@ namespace GamesAdmin.Api.Promotions
         , IRequestHandler<GetPromotionCampaignByStatusRequest, IEnumerable<PromotionConfigModel>>
         , IRequestHandler<GetPromotionCampaignByIdRequest, PromotionConfigModel>
         , IRequestHandler<AwardWinningPlayerRequest, OWResult>
+        , IRequestHandler<CreateTournamentRequest, bool>
     {
         private readonly IPromotionService promotionService;
         private readonly INotificationService notificationService;
@@ -84,5 +85,8 @@ namespace GamesAdmin.Api.Promotions
 
         public Task<OWResult> Handle(AwardWinningPlayerRequest request, CancellationToken cancellationToken)
             => awardService.AwardWinningPlayer(request);
+
+        public Task<bool> Handle(CreateTournamentRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.Create(request.Model);
     }
 }

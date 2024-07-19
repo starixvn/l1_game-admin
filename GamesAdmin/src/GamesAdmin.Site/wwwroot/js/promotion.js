@@ -3,6 +3,7 @@
         modal: "#promotion-modal",
         filterForm: "#promotion-form",
         formAdd: '#add-new-promotion-form',
+        formAddTournament: '#add-new-tournament-form',
         odds: '#promotion-game-odds',
         selectGameName: '#promotionGameName',
         formUpdate: '#update-promotion-form',
@@ -83,10 +84,48 @@
         });
     }
 
+    function addRanking () {
+        var prizeList = document.getElementById('prize-list');
+        var prizeIndex = prizeList.querySelectorAll('[id^="ranking-"]').length;
+
+        var newRankingCol = document.createElement('div');
+        newRankingCol.classList.add('form-group', 'col-md-2');
+        var rankingLabel = document.createElement('label');
+        rankingLabel.textContent = 'Ranking';
+        var rankingInput = document.createElement('input');
+        rankingInput.type = 'text';
+        rankingInput.classList.add('form-control', 'text-center');
+        rankingInput.name = 'WinningPrizes[' + prizeIndex + '].Ranking';
+        newRankingCol.appendChild(rankingLabel);
+        newRankingCol.appendChild(rankingInput);
+
+        var newAmountCol = document.createElement('div');
+        newAmountCol.classList.add('form-group', 'col-md-3');
+        var amountLabel = document.createElement('label');
+        amountLabel.textContent = 'Win Amount';
+        var amountInput = document.createElement('input');
+        amountInput.type = 'number';
+        amountInput.value = 0;
+        amountInput.classList.add('form-control', 'text-center');
+        amountInput.name = 'WinningPrizes[' + prizeIndex + '].Value';
+        newAmountCol.appendChild(amountLabel);
+        newAmountCol.appendChild(amountInput);
+
+        var newSpaceCol = document.createElement('div');
+        newSpaceCol.classList.add('form-group', 'col-md-1');     
+
+        prizeList.appendChild(newRankingCol);
+        prizeList.appendChild(newAmountCol);
+        prizeList.appendChild(newSpaceCol);
+    }
+
     return {
         openAddNewPromotionForm: function () {
             openModal(promotionElement.formAdd)();
             getOddsByGame($(promotionElement.selectGameName).val())
+        },
+        openAddNewTournamentForm: function () {
+            openModal(promotionElement.formAddTournament)();
         },
         getOddsByGame,
         onCreatePromotionSuccess: function (data) {
@@ -105,7 +144,8 @@
             showMessage({ success: false, message: promotionMessage.updateUnsuccess });
         },
         deletePromotion,
-        openDeleteModal
+        openDeleteModal,
+        addRanking
     }
 }(jQuery));
 

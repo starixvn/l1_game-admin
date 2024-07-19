@@ -39,7 +39,7 @@ namespace GamesAdmin.Site.Features.Promotions.Mapper
                 .AfterMap<AnnouncementMappingAction>();
 
             CreateMap<PromotionCampaignViewModel, PromotionConfigModel>()
-              .ForMember(dest => dest.Id, opt => opt.MapFrom(src => int.Parse(src.Id)))
+              .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
               .ForMember(dest => dest.StartDateTime,
                     opt => opt.MapFrom(src => DateTimeExtensions.ParseDateTime(src.StartDate, src.StartTime)))
                 .ForMember(dest => dest.EndDateTime,
@@ -52,8 +52,11 @@ namespace GamesAdmin.Site.Features.Promotions.Mapper
             CreateMap<PromotionConfigModel, PromotionCampaignViewModel>()
               .AfterMap<PromotionCampaignMappingAction>();
             CreateMap<OperatorModel, OperatorViewModel>();
+            CreateMap<OperatorViewModel, OperatorModel>();
             CreateMap<CurrencyGroupsModel, CurrencyGroupsViewModel>();
             CreateMap<WinningPrizeModel, WinningPrizeViewModel>();
+            CreateMap<CurrencyGroupsViewModel, CurrencyGroupsModel>();
+            CreateMap<WinningPrizeViewModel, WinningPrizeModel>();
             CreateMap<PromotionConfigModel, PromotionConfigViewModel>();      
         }
     }

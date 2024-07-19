@@ -8,6 +8,7 @@ namespace GamesAdmin.Database.Entities.Promotion
     public class PromotionConfigEntity : MiniGameBaseEntity
     {
         public int PromotionId { get; set; }
+        public string Status { get; set; }
         public string Name { get; set; }
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }

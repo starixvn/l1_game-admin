@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Partners;
 using GamesAdmin.Core.Enumeration;
@@ -12,6 +13,7 @@ using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Promotions
@@ -21,7 +23,7 @@ namespace GamesAdmin.Api.Promotions
     {
         Task<IEnumerable<PromotionConfigModel>> GetByStatus(string status);
 
-        //Task<bool> Create(PromotionConfigModel model);
+        Task<bool> Create(PromotionConfigModel model);
 
         Task<PromotionConfigModel> GetById(string id);
 
@@ -77,25 +79,30 @@ namespace GamesAdmin.Api.Promotions
 
         private async Task<List<PromotionConfigEntity>> GetPromotionEntitiesByStatus(string status)
         {
+            Func<IQueryable<PromotionConfigEntity>, IQueryable<PromotionConfigEntity>> orderBy = query => query.OrderByDescending(promotion => promotion.StartDateTime);
+
+            // Define the filters for each status
+            var filters = new Dictionary<string, Expression<Func<PromotionConfigEntity, bool>>>
+            {
+                { PromotionCampaignStatus.RunningValue, entity => entity.StartDateTime <= DateTime.UtcNow && DateTime.UtcNow <= entity.EndDateTime },
+                { PromotionCampaignStatus.NotStartedValue, entity => DateTime.UtcNow <= entity.StartDateTime },
+                { PromotionCampaignStatus.CompletedValue, entity => DateTime.UtcNow > entity.EndDateTime }
+            };  
+
             if (status.Equals(PromotionCampaignStatus.AllValue))
             {
-                return promotionCampaignRepository.AsQueryable()
-                    .OrderByDescending(promotion => promotion.StartDateTime)
-                    .ToList();
+                return orderBy(promotionCampaignRepository.AsQueryable()).ToList();
             }
-            else if (status.Equals(PromotionCampaignStatus.RunningValue))
+
+            if (filters.TryGetValue(status, out var filter))
             {
-                return (await promotionCampaignRepository.FilterByAsync(entity => entity.StartDateTime <= DateTime.UtcNow && DateTime.UtcNow <= entity.EndDateTime))
-                    .OrderByDescending(promotion => promotion.StartDateTime)
-                    .ToList();
+                var filteredEntities = await promotionCampaignRepository.FilterByAsync(filter);
+                return orderBy(filteredEntities.AsQueryable()).ToList();
             }
-            else
-            {
-                return (await promotionCampaignRepository.FilterByAsync(entity => DateTime.UtcNow > entity.EndDateTime))
-                    .OrderByDescending(promotion => promotion.StartDateTime)
-                    .ToList();
-            }
+
+            throw new ArgumentException("Invalid status value", nameof(status));
         }
+
 
         private async Task<Dictionary<string, string>> GetCurrencyDictionary(List<PromotionConfigEntity> entities)
         {
@@ -158,11 +165,19 @@ namespace GamesAdmin.Api.Promotions
             }
         }
 
-
         public async Task<PromotionConfigModel> GetById(string id)
         {
             var promotion = await promotionCampaignRepository.FindByIdAsync(id);
             return mapper.Map<PromotionConfigModel>(promotion);
+        }
+
+        public async Task<bool> Create(PromotionConfigModel model)
+        {
+            var entity = mapper.Map<PromotionConfigEntity>(model);
+            entity.Status = "new";
+            await promotionCampaignRepository.InsertOneAsync(entity);
+            //await chatBotService.NotifyCreatePromotion(model);
+            return true;
         }
 
     }

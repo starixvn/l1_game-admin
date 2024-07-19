@@ -29,6 +29,7 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<DeleteAnnouncementRequest, bool>
         , IRequestHandler<GetTournamentPromotionsByStatusRequest, IEnumerable<PromotionConfigViewModel>>
         , IRequestHandler<AwardWinningPlayerRequest, OWResult>
+        , IRequestHandler<CreateTournamentRequest, MessageResult>
     {
         private readonly IPromotionService promotionService;
         private readonly IPromotionCampaignService promotionCampaignService;
@@ -271,5 +272,51 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<OWResult> Handle(AwardWinningPlayerRequest request, CancellationToken cancellationToken)
             => promotionCampaignService.Award(request);
+
+        public async Task<MessageResult> Handle(CreateTournamentRequest request, CancellationToken cancellationToken)
+        {
+            var messageResult = await ValidateTournament(request.Model);
+            if (messageResult.Success)
+            {
+                var success = await this.promotionCampaignService.Create(mapper.Map<PromotionConfigModel>(request.Model));
+                return new MessageResult(success, string.Empty);
+            }
+            return messageResult;
+        }
+
+        private async Task<MessageResult> ValidateTournament(PromotionCampaignViewModel viewModel)
+        {
+            var model = mapper.Map<PromotionConfigModel>(viewModel);
+            if (model.StartDateTime >= model.EndDateTime)
+            {
+                return new MessageResult(false, "Invalid date or time");
+            }
+            else
+            {
+                var existingPromotions = await this.promotionCampaignService.GetCampaignByStatus(PromotionCampaignStatus.AllValue);
+                if (existingPromotions.Any(promotion => !ValidateTournamentDateTime(model, promotion)))
+                {
+                    return new MessageResult(false, "Overlap date or time with another promotion");
+                }
+            }
+            return new MessageResult(true, string.Empty);
+        }
+
+        private bool ValidateTournamentDateTime(PromotionConfigModel model, PromotionConfigModel existingPromotion)
+        {
+            if (!string.IsNullOrEmpty(model.Id) && model.Id.Equals(existingPromotion.Id))
+            {
+                return true;
+            }
+            if (model.StartDateTime >= existingPromotion.EndDateTime || model.EndDateTime <= existingPromotion.StartDateTime)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+                //return ValidateTime(model, existingPromotion);
+            }
+        }
     }
 }

@@ -33,6 +33,10 @@ namespace GamesAdmin.Api.Promotions
         public Task<bool> Create(PromotionModel model)
            => mediator.Send(new CreatePromotionRequest(model));
 
+        [HttpPost("createTournament")]
+        public Task<bool> CreateTournament(PromotionConfigModel model)
+        => mediator.Send(new CreateTournamentRequest(model));
+
         [HttpGet("getById")]
         public Task<PromotionModel> GetById(string id)
            => mediator.Send(new GetPromotionByIdRequest(id));

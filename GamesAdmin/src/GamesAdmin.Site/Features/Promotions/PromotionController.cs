@@ -52,6 +52,28 @@ namespace GamesAdmin.Site.Features.Promotions
             return PartialView("_AddPromotion", viewModel);
         }
 
+        [HttpGet]
+        public IActionResult CreateTournament()
+        {
+            var viewModel = new PromotionCampaignViewModel();
+            viewModel.WinningPrizes = new List<WinningPrizeViewModel>
+        {
+            new WinningPrizeViewModel { Ranking = "1", Value = 0 },
+            new WinningPrizeViewModel { Ranking = "2", Value = 0 },
+            new WinningPrizeViewModel { Ranking = "3", Value = 0 }
+        };
+            return PartialView("_AddTournament", viewModel);
+        }
+
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> CreateTournament([Bind] PromotionCampaignViewModel model)
+        {
+            var result = await mediator.Send(new CreateTournamentRequest(model));
+
+            return Json(result);
+        }
+
         [HttpPost, Audit]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind] CreatePromotionViewModel model)

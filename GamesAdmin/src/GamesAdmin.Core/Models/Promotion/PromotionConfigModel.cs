@@ -29,7 +29,7 @@ namespace GamesAdmin.Core.Models.Promotion
             }
             else
             {
-                return "Not Started";
+                return "Hasn't Started";
             }
         }
     } 
