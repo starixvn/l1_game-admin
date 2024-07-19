@@ -95,6 +95,7 @@
                 </div>
             </td>
             <td class="text-center" rowspan="6">
+                <label>Type: @Model.DisplayKind</label>
                 <select asp-items="@Model.PromotionListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
             </td>
         }
@@ -115,6 +116,7 @@
                 @Model.GetStatusPromotionDisplay(@Model.PromotionId)
             </td>
             <td class="text-center" rowspan="6">
+                <label>Type: @Model.DisplayKind</label>
                 <select asp-items="@Model.PromotionCampaignListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
             </td>
         }
