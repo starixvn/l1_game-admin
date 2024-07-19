@@ -65,7 +65,7 @@
             <div class="form-group">
                 <label>Type</label>
                 <div>
-                    <select asp-items="Model.PromotionTypeList" class="form-control" id="promotionType-@unique" onchange="promotionAnnouncement.togglePromotionType(this, '@unique')"></select>
+                    <select asp-items="Model.PromotionTypeList" class="form-control select-promotion-mapping" id="promotionType-@unique" onchange="promotionAnnouncement.togglePromotionType(this, '@unique')"></select>
                 </div>
             </div>
             <div class="form-group">
