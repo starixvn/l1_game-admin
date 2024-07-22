@@ -17,6 +17,7 @@ namespace GamesAdmin.Database.Entities.Promotion
         public List<WinningPrize> WinningPrizes { get; set; }
     }
 }
+
 public class Operator
 {
     public string OperatorId { get; set; }

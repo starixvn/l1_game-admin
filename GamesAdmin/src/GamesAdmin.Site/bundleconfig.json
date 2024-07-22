@@ -324,7 +324,15 @@
     "outputFileName": "wwwroot/js/promotion-leaderboard.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/promotion-leaderboard.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/promotion-leaderboard.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/promotion-leaderboard.min.css"
     ]
   }
 ]

@@ -30,6 +30,7 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<GetTournamentPromotionsByStatusRequest, IEnumerable<PromotionConfigViewModel>>
         , IRequestHandler<AwardWinningPlayerRequest, OWResult>
         , IRequestHandler<CreateTournamentRequest, MessageResult>
+        , IRequestHandler<GetLeaderboardRequest, IEnumerable<AwardWinningPlayer>>
     {
         private readonly IPromotionService promotionService;
         private readonly IPromotionCampaignService promotionCampaignService;
@@ -230,7 +231,7 @@ namespace GamesAdmin.Site.Features.Promotions
             if (!string.IsNullOrEmpty(model.PromotionId))
             {
                 var promotion = await promotionService.GetById(model.PromotionId);
-                if(promotion != null)
+                if (promotion != null)
                 {
                     model.GameName = Game.FromGameId(promotion.GameId).Value;
                     model.GameId = (int)promotion.GameId;
@@ -314,5 +315,8 @@ namespace GamesAdmin.Site.Features.Promotions
             }   
             return false;
         }
+
+        public Task<IEnumerable<AwardWinningPlayer>> Handle(GetLeaderboardRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.GetLeaderboard(request);
     }
 }

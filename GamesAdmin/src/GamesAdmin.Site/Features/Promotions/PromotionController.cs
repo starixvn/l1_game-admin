@@ -179,6 +179,21 @@ namespace GamesAdmin.Site.Features.Promotions
             return Json(result);
         }
 
+        public IActionResult Leaderboard(int promotionId)
+        {
+            var viewModel = new LeaderboardViewModel(promotionId);
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetLeaderboard(int promotionId, string playerName, bool isTestCurrency)
+        {
+            var request = new GetLeaderboardRequest(promotionId, playerName, isTestCurrency);
+            var viewModel = await mediator.Send(request);
+
+            return PartialView("_LeaderboardTable", viewModel);
+        }
+
         [HttpPost, Audit]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Award([Bind] AwardWinningPlayerRequest request)
@@ -188,18 +203,12 @@ namespace GamesAdmin.Site.Features.Promotions
             return Json(result);
         }
 
-        public IActionResult Leaderboard()
-        {
-            var viewModel = new LeaderboardViewModel();
-            return View(viewModel);
-        }
-
         [HttpGet]
         public IActionResult ViewAward(int promotionId, string playerId)
         {
-            var viewModel = new AwardViewModel 
-            { 
-                PromotionId = 1, 
+            var viewModel = new AwardViewModel
+            {
+                PromotionId = 1,
                 PlayerId = "1111",
                 OperatorId = "ONEworks_VG",
                 Amount = 1,

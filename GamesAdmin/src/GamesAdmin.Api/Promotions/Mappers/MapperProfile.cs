@@ -4,6 +4,7 @@ using GamesAdmin.Database.Entities;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database.Entities.Promotion;
+using MongoDB.Driver.Core.Authentication;
 
 namespace GamesAdmin.Api.Promotions.Mappers
 {
@@ -23,6 +24,8 @@ namespace GamesAdmin.Api.Promotions.Mappers
             CreateMap<Operator, OperatorModel>();
             CreateMap<CurrencyGroup, CurrencyGroupsModel>();
             CreateMap<WinningPrize, WinningPrizeModel>();
+            CreateMap<PromotionLeaderboardEntity, AwardWinningPlayer>()
+                .ForMember(dest => dest.Point, opt => opt.MapFrom(src => src.PointInBaseCurrency));
 
             CreateMap<PromotionConfigModel, PromotionConfigEntity>()   
                 .ForMember(dest => dest.Id, opt => opt.Ignore());

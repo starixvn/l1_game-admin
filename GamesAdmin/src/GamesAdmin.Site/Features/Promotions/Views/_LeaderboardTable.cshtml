@@ -1,0 +1,102 @@
+﻿@using System.Text;
+@using GamesAdmin.Site.Features._Shared;
+@using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Site.Extensions;
+@using GamesAdmin.Core.Models.Promotion;
+
+@model IEnumerable<AwardWinningPlayer>
+@{
+    var hasAdminPermission = Context.HasAdminPermission();
+    var isCompleted = Model.FirstOrDefault()?.CompletedPromotion ?? false;
+    var isTestCurrency = Model.FirstOrDefault()?.IsTestCurrency ?? false;
+}
+
+@if (isCompleted)
+{
+    @if (!isTestCurrency && hasAdminPermission)
+    {
+        <div class="ml-5">
+            <button class="btn-add mt-3 mb-5" id="btn-confirm-payment" onclick="promotionLeaderboard.openAwardTournamentModal()">Confirm payment</button>
+        </div>
+    }
+    <div class="d-none" id="award-tournament-table">
+        <table class="table table-light table-bordered stripe">
+            <thead>
+                <tr class="text-center">
+                    <th>Ranking</th>
+                    <th>Operator</th>
+                    <th>Player name</th>
+                    <th>Currency</th>
+                    <th>Total points</th>
+                    <th>Reward Amonut</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var item in Model)
+                    {
+                        if (item.AwardedAmount > 0)
+                        {
+                            <tr class="text-center">
+                                <td>@item.Ranking</td>
+                                <td>@item.OperatorId</td>
+                                <td>@item.PlayerName</td>
+                                <td>@item.Currency</td>
+                                <td>@item.Point</td>
+                                <td>@item.AwardedAmount</td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<table id="leaderboard-table" class="table table-bordered stripe table-light">
+    <thead>
+        <tr>
+            <th>Ranking</th>
+            <th>Operator</th>
+            <th>Player name</th>
+            <th>Nickname</th>
+            <th>Currency</th>
+            <th>Site name</th>
+            <th>Total points</th>
+            @if (isCompleted)
+            {
+                <th>Paid Status</th>
+                <th>Paid Date (GMT +7)</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">@(item.IsTestCurrency ? "-" : item.Ranking.ToString())</td>
+                    <td class="text-center">@item.OperatorId</td>
+                    <td class="text-center">@item.PlayerName</td>
+                    <td class="text-center">@item.Nickname</td>
+                    <td class="text-center">@item.Currency</td>
+                    <td class="text-center">@item.SiteName</td>
+                    <td class="text-center">@item.Point</td>
+                    @if (isCompleted)
+                    {
+                        <td class="text-center">
+                            @if (!item.IsTestCurrency)
+                            {
+                                <span>@(item.IsAwarded ? "Paid" : item.AwardedAmount > 0 ? "Unpaid" : "")</span>
+                            }
+                            @if (item.IsTestCurrency && !item.IsAwarded && hasAdminPermission)
+                            {
+                                <button type="button" class="btn btn-info btn-lg">Award</button>
+                            }
+                        </td>
+                        <td class="text-center">@(item.IsAwarded ? @item.AwardedTime.ToAsiaDateTimeFromUTC().ToDateFormat() : "")</td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>

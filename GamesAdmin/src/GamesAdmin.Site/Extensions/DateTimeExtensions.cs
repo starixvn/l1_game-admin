@@ -44,6 +44,11 @@ namespace GamesAdmin.Site.Extensions
             return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0, DateTimeKind.Utc).AddHours(-AsiaTime);
         }
 
+        public static DateTime ToAsiaDateTimeFromUTC(this DateTime date)
+        {
+            return date.AddHours(AsiaTime);
+        }
+
         public static string ToReportDateTimeFormat(this DateTime date, TimeZoneInfo timezone)
         {
             if (date == default)

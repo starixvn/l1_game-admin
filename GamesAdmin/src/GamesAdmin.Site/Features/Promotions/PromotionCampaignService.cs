@@ -16,8 +16,11 @@ namespace GamesAdmin.Site.Features.Promotions
         Task<bool> Create(PromotionConfigModel model);
 
         Task<OWResult> Award(AwardWinningPlayerRequest request);
+
+        Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request);
     }
-    public class PromotionCampaignService  : IPromotionCampaignService
+
+    public class PromotionCampaignService : IPromotionCampaignService
     {
         private readonly IPromotionApi promotionApi;
 
@@ -37,5 +40,8 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<bool> Create(PromotionConfigModel model)
         => promotionApi.CreateTournament(model);
+
+        public Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request)
+             => promotionApi.GetLeaderboard(request.PromotionId, request.PlayerName, request.IsTestCurrency);
     }
 }

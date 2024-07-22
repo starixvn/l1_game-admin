@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Partners;
+using GamesAdmin.Api.Promotions.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Currencies;
 using GamesAdmin.Database.Entities.Promotion;
+using GamesAdmin.Core.Extensions;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Sentry;
@@ -14,10 +17,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Api.Promotions
 {
-
     public interface IPromotionCampaignService
     {
         Task<IEnumerable<PromotionConfigModel>> GetByStatus(string status);
@@ -29,12 +32,14 @@ namespace GamesAdmin.Api.Promotions
         //Task<bool> Update(PromotionConfigModel model);
 
         //Task<bool> Delete(string id);
-    }
 
+        Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request);
+    }
 
     public class PromotionCampaignService : IPromotionCampaignService
     {
         private readonly IGenericRepository<PromotionConfigEntity> promotionCampaignRepository;
+        private readonly IGenericRepository<PromotionLeaderboardEntity> promotionLeaderboardRepository;
         private readonly ISentryClient sentryClient;
         private readonly IMapper mapper;
         private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
@@ -42,6 +47,7 @@ namespace GamesAdmin.Api.Promotions
         private readonly INotificationService notificationService;
 
         public PromotionCampaignService(IGenericRepository<PromotionConfigEntity> promotionCampaignRepository,
+            IGenericRepository<PromotionLeaderboardEntity> promotionLeaderboardRepository,
             ISentryClient sentryClient,
             IMapper mapper,
             IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
@@ -49,6 +55,7 @@ namespace GamesAdmin.Api.Promotions
             IPartnerService partnerService)
         {
             this.promotionCampaignRepository = promotionCampaignRepository;
+            this.promotionLeaderboardRepository = promotionLeaderboardRepository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
             this.currencyGroupRepository = currencyGroupRepository;
@@ -86,7 +93,7 @@ namespace GamesAdmin.Api.Promotions
                 { PromotionCampaignStatus.RunningValue, entity => entity.StartDateTime <= DateTime.UtcNow && DateTime.UtcNow <= entity.EndDateTime },
                 { PromotionCampaignStatus.NotStartedValue, entity => DateTime.UtcNow <= entity.StartDateTime },
                 { PromotionCampaignStatus.CompletedValue, entity => DateTime.UtcNow > entity.EndDateTime }
-            };  
+            };
 
             if (status.Equals(PromotionCampaignStatus.AllValue))
             {
@@ -101,7 +108,6 @@ namespace GamesAdmin.Api.Promotions
 
             throw new ArgumentException("Invalid status value", nameof(status));
         }
-
 
         private async Task<Dictionary<string, string>> GetCurrencyDictionary(List<PromotionConfigEntity> entities)
         {
@@ -125,7 +131,7 @@ namespace GamesAdmin.Api.Promotions
                .Distinct()
                .ToList();
 
-            var partnerIds = operatorIds.Select(id => id).ToList();       
+            var partnerIds = operatorIds.Select(id => id).ToList();
             var partners = await partnerService.GetByIdsAsync(partnerIds);
             return partners.ToDictionary(c => c.PartnerId, c => c.Name);
         }
@@ -172,7 +178,6 @@ namespace GamesAdmin.Api.Promotions
 
         public async Task<bool> Create(PromotionConfigModel model)
         {
-
             var entity = mapper.Map<PromotionConfigEntity>(model);
             var partners = await partnerService.GetAll();
             var partnerIds = partners
@@ -209,6 +214,25 @@ namespace GamesAdmin.Api.Promotions
         public PromotionConfigEntity GetPromotionWithMaxIdAsync()
         {
             return promotionCampaignRepository.AsQueryable().OrderByDescending(p => p.PromotionId).First();
+        }
+
+        public async Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request)
+        {
+            var promotion = await promotionCampaignRepository.FindOneAsync(e => e.PromotionId == request.PromotionId);
+            var awardWinningPlayers = await promotionLeaderboardRepository
+                .Collection()
+                .Find(x => x.PromotionId == request.PromotionId)
+                .SortByDescending(p => p.PointInBaseCurrency)
+                .ThenBy(p => p.DataSourceTimeStamp)
+                .ToListAsync();
+
+            return awardWinningPlayers.Select((entity, index) =>
+            {
+                var data = mapper.Map<AwardWinningPlayer>(entity);
+                data.Ranking = index + 1;
+                data.CompletedPromotion = promotion.Status == PromotionCampaignStatus.CompletedValue;
+                return data;
+            }).Where(e => e.IsTestCurrency == request.IsTestCurrency && (string.IsNullOrEmpty(request.PlayerName) || e.PlayerName == request.PlayerName || e.PlayerId == request.PlayerName));
         }
     }
 }

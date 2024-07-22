@@ -10,7 +10,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.Promotions
 {
-    public class PromotionHandler 
+    public class PromotionHandler
         : IRequestHandler<GetPromotionByStatusRequest, IEnumerable<PromotionModel>>
         , IRequestHandler<GetPromotionByGameIdRequest, IEnumerable<PromotionModel>>
         , IRequestHandler<CreatePromotionRequest, bool>
@@ -26,6 +26,7 @@ namespace GamesAdmin.Api.Promotions
         , IRequestHandler<GetPromotionCampaignByIdRequest, PromotionConfigModel>
         , IRequestHandler<AwardWinningPlayerRequest, OWResult>
         , IRequestHandler<CreateTournamentRequest, bool>
+        , IRequestHandler<GetLeaderboardRequest, IEnumerable<AwardWinningPlayer>>
     {
         private readonly IPromotionService promotionService;
         private readonly INotificationService notificationService;
@@ -33,8 +34,8 @@ namespace GamesAdmin.Api.Promotions
         private readonly IAwardService awardService;
 
         public PromotionHandler(
-            IPromotionService promotionService, 
-            INotificationService notificationService, 
+            IPromotionService promotionService,
+            INotificationService notificationService,
             IPromotionCampaignService promotionCampaignService,
             IAwardService awardService)
         {
@@ -88,5 +89,8 @@ namespace GamesAdmin.Api.Promotions
 
         public Task<bool> Handle(CreateTournamentRequest request, CancellationToken cancellationToken)
             => promotionCampaignService.Create(request.Model);
+
+        public Task<IEnumerable<AwardWinningPlayer>> Handle(GetLeaderboardRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.GetLeaderboard(request);
     }
 }

@@ -75,7 +75,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                         {
                             html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{StartDateTimeString}</td>";
                             html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{EndDateTimeString}</td>";
-                            html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center text-success\"><a href=\"{urlHelper.Action("leaderboard")}\">View</a></td>";
+                            html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center text-success\"><a href=\"{urlHelper.Action("leaderboard")}?promotionId={PromotionId}\">View</a></td>";
                             html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center {(HasAnnouncement ? "text-success" : "text-danger")}\">{(HasAnnouncement ? "Linked" : "Unlinked")}</td>";
                             if (hasAdminPermission)
                             {
@@ -114,7 +114,8 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                     {
                         html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{StartDateTimeString}</td>";
                         html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{EndDateTimeString}</td>";
-                        html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center text-success\"><a href=\"{urlHelper.Action("leaderboard")}\">View</a></td>";
+                        html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center text-success\">" +
+                            $"<a href=\"{urlHelper.Action("leaderboard")}?promotionId={PromotionId}\">View</a></td>";
                         html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center {(HasAnnouncement ? "text-success" : "text-danger")}\">{(HasAnnouncement ? "Linked" : "Unlinked")}</td>";
                         if (hasAdminPermission)
                         {
@@ -132,9 +133,9 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
             return html;
         }
-
     }
 }
+
 public class WinningPrizeViewModel
 {
     public string Ranking { get; set; }

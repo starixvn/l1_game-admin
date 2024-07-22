@@ -80,5 +80,9 @@ namespace GamesAdmin.Api.Promotions
         [HttpPost("award")]
         public Task<OWResult> Award(AwardWinningPlayerRequest request)
            => mediator.Send(request);
+
+        [HttpGet("leaderboard")]
+        public Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(int promotionId, string playerName, bool isTestCurrency)
+           => mediator.Send(new GetLeaderboardRequest(promotionId, playerName, isTestCurrency));
     }
 }
