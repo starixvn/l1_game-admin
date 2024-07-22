@@ -172,7 +172,32 @@ namespace GamesAdmin.Api.Promotions
 
         public async Task<bool> Create(PromotionConfigModel model)
         {
+
             var entity = mapper.Map<PromotionConfigEntity>(model);
+            var partners = await partnerService.GetAll();
+            var partnerIds = partners
+                .Select(e => e.PartnerId)
+                .Distinct()
+                .ToList();
+
+            var currencyGroups = await currencyGroupRepository.FilterByAsync(currency => partnerIds.Contains(currency.PartnerId));
+            var currencyList = currencyGroups.ToList();
+
+            entity.Operators = partners.Select(partner => new Operator
+            {
+                OperatorId = partner.PartnerId,
+                ExcludedSiteNames = "",
+                CurrencyGroups = currencyList
+                    .Where(c => c.PartnerId == partner.PartnerId)
+                    .Select(c => new CurrencyGroup
+                    {
+                        CurrencyGroupId = c.Id.ToString(),
+                        OtherGameMinBet = 2,
+                        SlotGameMinBet = 0.2,
+                        Enabled = c.Enabled
+                    })
+                    .ToList()
+            }).ToList();
             var promotion = this.GetPromotionWithMaxIdAsync();
             entity.Status = "new";
             entity.PromotionId = promotion != null ? promotion.PromotionId + 1 : 1;
@@ -181,11 +206,9 @@ namespace GamesAdmin.Api.Promotions
             return true;
         }
 
-
         public PromotionConfigEntity GetPromotionWithMaxIdAsync()
         {
-            return promotionCampaignRepository.AsQueryable().OrderByDescending(ex => ex.PromotionId).First();
+            return promotionCampaignRepository.AsQueryable().OrderByDescending(p => p.PromotionId).First();
         }
-
     }
 }
