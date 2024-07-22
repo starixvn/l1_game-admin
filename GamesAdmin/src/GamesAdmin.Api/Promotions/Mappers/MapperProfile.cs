@@ -23,6 +23,12 @@ namespace GamesAdmin.Api.Promotions.Mappers
             CreateMap<Operator, OperatorModel>();
             CreateMap<CurrencyGroup, CurrencyGroupsModel>();
             CreateMap<WinningPrize, WinningPrizeModel>();
+
+            CreateMap<PromotionConfigModel, PromotionConfigEntity>()   
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<OperatorModel, Operator>();
+            CreateMap<CurrencyGroupsModel, CurrencyGroup>();
+            CreateMap<WinningPrizeModel, WinningPrize>();
         }
     }
 }

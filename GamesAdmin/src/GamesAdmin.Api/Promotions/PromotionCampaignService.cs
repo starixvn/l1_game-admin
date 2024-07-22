@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Partners;
 using GamesAdmin.Core.Enumeration;
@@ -174,10 +173,18 @@ namespace GamesAdmin.Api.Promotions
         public async Task<bool> Create(PromotionConfigModel model)
         {
             var entity = mapper.Map<PromotionConfigEntity>(model);
+            var promotion = this.GetPromotionWithMaxIdAsync();
             entity.Status = "new";
+            entity.PromotionId = promotion != null ? promotion.PromotionId + 1 : 1;
+            entity.UpdatedTime = DateTime.UtcNow;
             await promotionCampaignRepository.InsertOneAsync(entity);
-            //await chatBotService.NotifyCreatePromotion(model);
             return true;
+        }
+
+
+        public PromotionConfigEntity GetPromotionWithMaxIdAsync()
+        {
+            return promotionCampaignRepository.AsQueryable().OrderByDescending(ex => ex.PromotionId).First();
         }
 
     }

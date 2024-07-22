@@ -311,12 +311,8 @@ namespace GamesAdmin.Site.Features.Promotions
             if (model.StartDateTime >= existingPromotion.EndDateTime || model.EndDateTime <= existingPromotion.StartDateTime)
             {
                 return true;
-            }
-            else
-            {
-                return false;
-                //return ValidateTime(model, existingPromotion);
-            }
+            }   
+            return false;
         }
     }
 }
