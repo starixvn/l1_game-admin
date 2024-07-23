@@ -1,8 +1,8 @@
 ﻿@using System.Text;
 @using GamesAdmin.Site.Features._Shared;
-@using GamesAdmin.Core.Enumeration;
-@using GamesAdmin.Site.Extensions;
+@using GamesAdmin.Core.Extensions;
 @using GamesAdmin.Core.Models.Promotion;
+@using GamesAdmin.Site.Extensions;
 
 @model IEnumerable<AwardWinningPlayer>
 @{
@@ -13,7 +13,7 @@
 
 @if (isCompleted)
 {
-    @if (!isTestCurrency && hasAdminPermission)
+    @if (!isTestCurrency && hasAdminPermission && Model.Any(e=>e.IsAwarded != true && e.AwardedAmount > 0))
     {
         <div class="ml-5">
             <button class="btn-add mt-3 mb-5" id="btn-confirm-payment" onclick="promotionLeaderboard.openAwardTournamentModal()">Confirm payment</button>
@@ -35,7 +35,7 @@
                 @{
                     foreach (var item in Model)
                     {
-                        if (item.AwardedAmount > 0)
+                        if (item.AwardedAmount > 0 && !item.IsAwarded)
                         {
                             <tr class="text-center">
                                 <td>@item.Ranking</td>
@@ -93,7 +93,7 @@
                                 <button type="button" class="btn btn-info btn-lg">Award</button>
                             }
                         </td>
-                        <td class="text-center">@(item.IsAwarded ? @item.AwardedTime.ToAsiaDateTimeFromUTC().ToDateFormat() : "")</td>
+                        <td class="text-center">@(item.IsAwarded ? @item.AwardedTime.ToGMT7().ToDateFormat() : "")</td>
                     }
                 </tr>
             }
