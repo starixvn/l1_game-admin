@@ -138,22 +138,16 @@ namespace GamesAdmin.Api._Shared.Helpers
         }
 
         public static List<SettingChangedModel> GetJackpotChangedModel(
-            GameConfigEntity oldConfig, Jackpot jackpot, List<StakeLevel> stakeLevels)
+            GameConfigEntity oldConfig, Jackpot jackpot)
         {
             var changedSettings = new List<SettingChangedModel>
             {
                 new SettingChangedModel("ExcludeTestCurrency", oldConfig.SlotsConfig.Jackpot.ExcludeTestCurrency.ToString(), jackpot.ExcludeTestCurrency.ToString()),
-                new SettingChangedModel("BotContributionRatio", oldConfig.SlotsConfig.Jackpot.BotContributionRatio.ToString(), jackpot.BotContributionRatio.ToString()),
-                new SettingChangedModel("PlayerContributionRatio", oldConfig.SlotsConfig.Jackpot.PlayerContributionRatio.ToString(), jackpot.PlayerContributionRatio.ToString()),
+                new SettingChangedModel("MinorPool", oldConfig.SlotsConfig.Jackpot.Pools.Minor.ToString(), jackpot.Pools.Minor.ToString()),
+                new SettingChangedModel("MajorPool", oldConfig.SlotsConfig.Jackpot.Pools.Major.ToString(), jackpot.Pools.Major.ToString()),
+                new SettingChangedModel("GrandPool", oldConfig.SlotsConfig.Jackpot.Pools.Grand.ToString(), jackpot.Pools.Grand.ToString()),
                 new SettingChangedModel("WinningRatio", oldConfig.SlotsConfig.Jackpot.WinningRatio.ToString(), jackpot.WinningRatio.ToString()),
             };
-
-            for (var i = 0; i < stakeLevels.Count; i++)
-            {
-                var setting = new SettingChangedModel($"Stake level {i + 1}", GetValue(oldConfig.SlotsConfig.StakeLevels[i]), GetValue(stakeLevels[i]));
-
-                changedSettings.Add(setting);
-            }
 
             return changedSettings;
         }

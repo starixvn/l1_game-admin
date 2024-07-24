@@ -243,15 +243,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                await mediator.Send(new UpdateJackpotRequest(
-                    viewModel.Name,
-                    new Jackpot(
-                        viewModel.JackpotViewModel.JackpotEnabled,
-                        viewModel.JackpotViewModel.WinningRatio.ConvertPercentValue(),
-                        viewModel.JackpotViewModel.PlayerContribution.ConvertPercentValue(),
-                        viewModel.JackpotViewModel.BotContribution.ConvertPercentValue(),
-                        viewModel.JackpotViewModel.ExcludeTestCurrency),
-                    viewModel.JackpotViewModel.StakeLevels));
+                await mediator.Send(new UpdateJackpotRequest(viewModel.Name, mapper.Map<Jackpot>(viewModel.JackpotViewModel)));
 
                 return Json(true);
             }

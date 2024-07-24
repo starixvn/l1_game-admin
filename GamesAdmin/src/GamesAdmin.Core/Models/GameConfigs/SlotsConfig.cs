@@ -23,7 +23,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public byte Mode { get; set; }
         public double BigWinRatio { get; set; }
         public Bonus Bonus { get; set; }
-        public List<StakeLevel> StakeLevels { get; set; }
+        public double[] BetLevels { get; set; }
         public Dictionary<string, Dictionary<string, double>> Icons { get; set; }
         public Jackpot Jackpot { get; set; }
         public Dictionary<string, int[][]> SymbolWeight { get; set; }
@@ -44,20 +44,24 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
     public class Jackpot
     {
+        public Jackpot()
+        {
+
+        }
+
         public Jackpot(
             bool enabled,
             double winingAmount,
-            double playerContribution,
-            double botContribution,
+            JackpotPools pools,
             bool excludeTestCurrency = false,
-            string allowedCurrency = "INH")
+            string allowedCurrency = "INH"
+            )
         {
             Enabled = enabled;
             WinningRatio = winingAmount;
-            PlayerContributionRatio = playerContribution;
-            BotContributionRatio = botContribution;
             ExcludeTestCurrency = excludeTestCurrency;
             AllowedCurrency = (allowedCurrency ?? string.Empty).Trim();
+            Pools = pools;
         }
 
         public bool Enabled { get; set; }
@@ -66,10 +70,29 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
         public double WinningRatio { get; set; }
 
-        public double PlayerContributionRatio { get; set; }
-
-        public double BotContributionRatio { get; set; }
+        public JackpotPools Pools { get; set; }
 
         public string AllowedCurrency { get; set; }
     }
+
+    public class JackpotPools
+    {
+        public Pool Minor { get; set; }
+        public Pool Major { get; set; }
+        public Pool Grand { get; set; }
+    }
+
+    public class Pool
+    {
+        public double Init { get; set; }
+        public UserPoolSettings PlayerSettings { get; set; }
+        public UserPoolSettings BotSettings { get; set; }
+    }
+
+    public class UserPoolSettings
+    {
+        public double Contrib { get; set; }
+        public double Alloc { get; set; }
+    }
+
 }

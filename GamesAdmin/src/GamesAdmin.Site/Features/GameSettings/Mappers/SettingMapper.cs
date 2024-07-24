@@ -34,21 +34,15 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.MaxBet, opt => opt.MapFrom(src => src.BetLimit.MaxBet))
                 .ForMember(dest => dest.Icons, opt => opt.MapFrom(src => src.SlotsConfig.Icons));
 
-            CreateMap<SlotsConfig, JackpotViewModel>()
-                .ForMember(dest => dest.WinningRatio, opt => opt.MapFrom(src => src.Jackpot.WinningRatio.ToPercentage()))
-                .ForMember(dest => dest.PlayerContribution, opt => opt.MapFrom(src => src.Jackpot.PlayerContributionRatio.ToPercentage()))
-                .ForMember(dest => dest.BotContribution, opt => opt.MapFrom(src => src.Jackpot.BotContributionRatio.ToPercentage()))
-                .ForMember(dest => dest.ExcludeTestCurrency, opt => opt.MapFrom(src => src.Jackpot.ExcludeTestCurrency))
-                .ForMember(dest => dest.JackpotEnabled, opt => opt.MapFrom(src => src.Jackpot.Enabled))
-                .ForMember(dest => dest.AllowedCurrency, opt => opt.MapFrom(src => src.Jackpot.AllowedCurrency));
+
+            CreateMap<Jackpot, JackpotViewModel>();
+            CreateMap<JackpotViewModel, Jackpot>();
 
             CreateMap<SlotsConfig, SlotViewModel>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.Mode))
                 .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.Bonus.Min))
                 .ForMember(dest => dest.MaxBonus, opt => opt.MapFrom(src => src.Bonus.Max))
-                .ForMember(dest => dest.JackpotWinningAmount, opt => opt.MapFrom(src => src.Jackpot.WinningRatio.ToPercentage()))
-                .ForMember(dest => dest.PlayerJackpotContribution, opt => opt.MapFrom(src => src.Jackpot.PlayerContributionRatio.ToPercentage()))
-                .ForMember(dest => dest.BotJackpotContribution, opt => opt.MapFrom(src => src.Jackpot.BotContributionRatio.ToPercentage()))
+                .ForMember(dest => dest.Jackpot, opt => opt.MapFrom(src => src.Jackpot))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ToPercentage()));
 
 
@@ -67,15 +61,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             CreateMap<AddViewModel, SlotsConfig>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ConvertPercentValue()))
-                .ForMember(dest => dest.StakeLevels, opt => opt.MapFrom(src => ConvertStakeLevels(src.Stakes, src.Jackpots, src.BotRatios)))
-                .ForMember(dest => dest.Bonus, opt => opt.MapFrom(src => new Bonus(src.MinBonus, src.MaxBonus)))
-                .ForMember(dest => dest.Jackpot, opt => opt.MapFrom(src => new Jackpot(
-                    src.EnableJackpot,
-                    src.WinningRatio.ConvertPercentValue(),
-                    src.PlayerJackpotContribution.ConvertPercentValue(),
-                    src.BotJackpotContribution.ConvertPercentValue(),
-                    false,
-                    src.AllowedCurrency)));
+                .ForMember(dest => dest.BetLevels, opt => opt.MapFrom(src => ConvertStakeLevels(src.Stakes, src.Jackpots, src.BotRatios)))
+                .ForMember(dest => dest.Bonus, opt => opt.MapFrom(src => new Bonus(src.MinBonus, src.MaxBonus)));
 
             CreateMap<AddViewModel, CascadingSlotsConfig>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))

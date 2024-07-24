@@ -41,7 +41,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig);
 
-        Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
+        Task<bool> UpdateJackpot(string name, Jackpot jackpot);
 
         Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig);
 
@@ -393,26 +393,16 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels)
+        public async Task<bool> UpdateJackpot(string name, Jackpot jackpot)
         {
             try
             {
-                if (await IsDifferentStakes(name, stakeLevels))
-                {
-                    throw new InvalidOperationException($"Stakes of game {name} are different.");
-                }
-
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetJackpotChangedModel(gameEntity, jackpot, stakeLevels);
+                var changedSettings = SettingHelper.GetJackpotChangedModel(gameEntity, jackpot);
                 sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
-                    .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
-                    .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.AllowedCurrency, jackpot.AllowedCurrency);
+                    .Set(field => field.SlotsConfig.Jackpot, jackpot);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
@@ -426,12 +416,12 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        private async Task<bool> IsDifferentStakes(string name, List<StakeLevel> stakeLevels)
+        private async Task<bool> IsDifferentStakes(string name, double[] betLevels)
         {
             var gameConfig = await GetByName(name);
 
-            var updatedStakes = stakeLevels.OrderBy(x => x.Stake).Select(x => x.Stake).ToArray();
-            var currentStakes = gameConfig.SlotsConfig.StakeLevels.OrderBy(x => x.Stake).Select(x => x.Stake).ToArray();
+            var updatedStakes = betLevels.OrderBy(level => level);
+            var currentStakes = gameConfig.SlotsConfig.BetLevels.OrderBy(level => level);
             var diffs = updatedStakes.Except(currentStakes);
 
             return diffs.Any();

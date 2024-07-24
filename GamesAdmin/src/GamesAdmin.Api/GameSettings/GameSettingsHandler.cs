@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.GameSettings;
 using GamesAdmin.Api.GameSettings.Requests;
-using GamesAdmin.Api.GlobalConfigs;
 using GamesAdmin.Core.Models;
 using MediatR;
 
@@ -75,7 +74,7 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateGeneralConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers);
 
         public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateJackpot(request.Name, request.Jackpot, request.StakeLevels);
+        => gameService.UpdateJackpot(request.Name, request.Jackpot);
 
         public Task<bool> Handle(UpdateSlotConfigRequest request, CancellationToken cancellationToken)
             => gameService.UpdateSlotConfig(request.Name, request.BotEnabled, request.SlotsConfig);

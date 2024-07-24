@@ -1,32 +1,21 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Extensions;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
-    public class JackpotViewModel
+    public class JackpotViewModel 
     {
-        public List<StakeLevel> StakeLevels { get; set; }
+        public bool Enabled { get; set; }
 
-        public bool JackpotEnabled { get; set; }
-
-        [DisplayName("Exclude Test Currency Contribution")]
         public bool ExcludeTestCurrency { get; set; }
 
-        [DisplayName("Jackpot Winning (%)")]
         public double WinningRatio { get; set; }
 
-        [DisplayName("Jackpot Service Fee (%)")]
         public double JackpotServiceFee => WinningRatio.ReversePercent();
 
-        [DisplayName("Bot Contribution (%)")]
-        public double BotContribution { get; set; }
+        public JackpotPools Pools { get; set; }
 
-        [DisplayName("Player Contribution (%)")]
-        public double PlayerContribution { get; set; }
-
-        [DisplayName("Allowed Currency")]
-        public string AllowedCurrency { get; set; } = "INH";
+        public string AllowedCurrency { get; set; }
     }
 }

@@ -8,18 +8,15 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
     {
         public UpdateJackpotRequest(
             string name,
-            Jackpot jackpot,
-            List<StakeLevel> stakeLevels)
+            Jackpot jackpot
+           )
         {
             Name = name;
             Jackpot = jackpot;
-            StakeLevels = stakeLevels;
         }
 
         public string Name { get; set; }
 
         public Jackpot Jackpot { get; set; }
-
-        public List<StakeLevel> StakeLevels { get; set; }
     }
 }

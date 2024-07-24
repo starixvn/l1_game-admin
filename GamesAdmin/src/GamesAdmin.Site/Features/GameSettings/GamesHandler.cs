@@ -143,7 +143,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     case GameType.Slots:
                         viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.SlotsConfig);
                         viewModel.PayoutViewModel.IconOdds = GenerateIconOdds(game.SlotsConfig.Icons);
-                        viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig);
+                        viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig.Jackpot);
                         viewModel.SystemType = systemSettings.System;
                         break;
 
