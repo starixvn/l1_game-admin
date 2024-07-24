@@ -156,7 +156,8 @@
             }
         }).done(function (content) {
             if (content) {
-                $('#currency-group-game-setting').html(content);              
+                $('#currency-group-game-setting').html(content);  
+                loadSiteInclusion();
             }          
         });
     }

@@ -5,6 +5,7 @@
 @section Styles {
     <link href="~/lib/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/game-management.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
 @{
@@ -66,9 +67,9 @@
             <div class="modal-body game-details-content" id="operatorSettingContent">
                 ...
             </div>
-            <label class="result-label mr-5" id="result-label"></label>
+            
             <div class="modal-footer">
-
+                <label class="result-label col-6" id="result-label"></label>
                 <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
                 @if (Context.HasAdminPermission())
                 {

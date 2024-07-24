@@ -3,6 +3,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database.Entities;
 using System.Collections.Generic;
 using System.Linq;
@@ -328,5 +329,42 @@ namespace GamesAdmin.Api._Shared.Helpers
         private static string GetValue(Bonus bonus) => $"Min: {bonus.Min} - Max: {bonus.Max}";
 
         private static string GetValue(StakeLevel stakeLevel) => $"Initial Amount: {stakeLevel.Jackpot} - Bot Ratio: {stakeLevel.BotRatio}";
+
+        public static List<SettingChangedModel> GetPromotionTournamentChangeModel(PromotionConfigModel oldConfig, PromotionConfigModel newConfig)
+        {
+            var oldListOperators = FormatOperators(oldConfig.Operators);
+            var oldListWinningPrizes = FormatWinningPrizes(oldConfig.WinningPrizes);
+
+            var newListOperators = FormatOperators(newConfig.Operators);
+            var newListWinningPrizes = FormatWinningPrizes(newConfig.WinningPrizes);
+
+            var changedSettings = new List<SettingChangedModel>
+            {
+                new SettingChangedModel("Promotion Name", oldConfig.Name, newConfig.Name),
+                new SettingChangedModel("Start Date Time", oldConfig.StartDateTime.ToString(), newConfig.StartDateTime.ToString()),
+                new SettingChangedModel("End Date Time", oldConfig.EndDateTime.ToString(), newConfig.EndDateTime.ToString()),
+                new SettingChangedModel("Operators", oldListOperators, newListOperators),
+                new SettingChangedModel("Winning Prizes", oldListWinningPrizes, newListWinningPrizes),
+            };
+
+            return changedSettings;
+        }
+
+        public static string FormatOperators(List<OperatorModel> operators)
+        {
+            return string.Join("\r\n", operators.Select(o =>
+            {
+                var currencyGroupsFormatted = string.Join("\r\n\t", o.CurrencyGroups.Select(cg =>
+                    $"+ Currency ID: {cg.CurrencyGroupId}, Slot Game Min Bet: {cg.SlotGameMinBet}, Other Game Min Bet: {cg.OtherGameMinBet}, Enabled: {cg.Enabled}"));
+
+                return $"- {o.OperatorId}\r\n\t+ Included Sites: {o.IncludedSiteNames}\r\n\t{currencyGroupsFormatted}";
+            }));
+        }
+
+        public static string FormatWinningPrizes(List<WinningPrizeModel> winningPrizes)
+        {
+            return string.Join("\r\n\t", winningPrizes.Select(wp =>
+                $"- Ranking {wp.Ranking}, Value: {wp.Value}"));
+        }
     }
 }

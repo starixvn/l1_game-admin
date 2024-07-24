@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
+using GamesAdmin.Api._Shared.Helpers;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.Promotions.Requests;
+using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -43,6 +47,7 @@ namespace GamesAdmin.Api.Promotions
         private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
         private readonly IPartnerService partnerService;
         private readonly INotificationService notificationService;
+        private readonly IChatBotService chatBotService;
 
         public PromotionCampaignService(IGenericRepository<PromotionConfigEntity> promotionCampaignRepository,
             IGenericRepository<PromotionLeaderboardEntity> promotionLeaderboardRepository,
@@ -50,7 +55,8 @@ namespace GamesAdmin.Api.Promotions
             IMapper mapper,
             IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
             INotificationService notificationService,
-            IPartnerService partnerService)
+            IPartnerService partnerService,
+            IChatBotService chatBotService)
         {
             this.promotionCampaignRepository = promotionCampaignRepository;
             this.promotionLeaderboardRepository = promotionLeaderboardRepository;
@@ -59,6 +65,7 @@ namespace GamesAdmin.Api.Promotions
             this.currencyGroupRepository = currencyGroupRepository;
             this.notificationService = notificationService;
             this.partnerService = partnerService;
+            this.chatBotService = chatBotService;
         }
 
         public async Task<IEnumerable<PromotionConfigModel>> GetByStatus(string status)
@@ -197,6 +204,7 @@ namespace GamesAdmin.Api.Promotions
             entity.PromotionId = promotion != null ? promotion.PromotionId + 1 : 1;
             entity.UpdatedTime = DateTime.UtcNow;
             await promotionCampaignRepository.InsertOneAsync(entity);
+            await chatBotService.NotifyCreatePromotionTournament(model);
             return true;
         }
 
@@ -211,13 +219,16 @@ namespace GamesAdmin.Api.Promotions
 
             if (entity != null)
             {
+                var oldConfig = mapper.Map<PromotionConfigModel>(entity);
                 var modelMapper = mapper.Map<PromotionConfigEntity>(model);
+                var changedSettings = SettingHelper.GetPromotionTournamentChangeModel(oldConfig, model);
+                sentryClient.CaptureChangedSettings("Promoion Tournament", "Configs", string.Empty, changedSettings);
                 var update = Builders<PromotionConfigEntity>.Update
                     .Set(field => field.WinningPrizes, modelMapper.WinningPrizes)
                     .Set(field => field.Operators, modelMapper.Operators);
 
                 await promotionCampaignRepository.UpdateAsync(promotion => promotion.Id == entity.Id, update);
-
+                await chatBotService.NotifyUpdatePromotionTournament(model);
                 return true;
             }
             return false;

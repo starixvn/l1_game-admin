@@ -4,7 +4,6 @@ using GamesAdmin.Site.Features.Promotions.ViewModels;
 using GamesAdmin.Site.Extensions;
 using System.Linq;
 using GamesAdmin.Core.Models.Promotion;
-using GamesAdmin.Core;
 
 namespace GamesAdmin.Site.Features.Promotions.Mapper
 {

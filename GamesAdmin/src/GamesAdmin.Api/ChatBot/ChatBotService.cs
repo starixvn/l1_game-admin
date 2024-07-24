@@ -57,6 +57,9 @@ namespace GamesAdmin.Api.ChatBot
         private const string MessageAddPromotion = "Added new promotion for game **{0}**:\r\n{1}";
         private const string MessageUpdatePromotion = "Edited promotion for game **{0}**:\r\n{1}";
         private const string MessagePromotion = "**Status: **{0}\r\n**Boosted Odds**: {1}\r\n**Type**: {2}\r\n**From**: {3}\r\n**To**: {4}";
+        private const string MessageAddPromotionTournament = "Added new Tournament: **{0}**:\r\n{1}";
+        private const string MessageEdiPromotionTournament = "Edit Tournament: **{0}**:\r\n{1}";
+        private const string MessagePromotionTournament = "**List of operators**:\r\n {0}\r\n**Winning Prizes**:\r\n {1}\r\n**From**: {2}\r\n**To**: {3}";
         private const int CacheExpireInMinutes = 60 * 24;
 
         private readonly IAppSettings appSettings;
@@ -348,14 +351,35 @@ namespace GamesAdmin.Api.ChatBot
             return await Task.FromResult(new ChatBotResult());
         }
 
-        public Task<ChatBotResult> NotifyCreatePromotionTournament(PromotionConfigModel promotion)
+        private string GetMessagePromotionTournament(string template, PromotionConfigModel promotion)
         {
-            throw new NotImplementedException();
+            var messageListOperators = SettingHelper.FormatOperators(promotion.Operators);
+            var messageListWinningPrizes = SettingHelper.FormatWinningPrizes(promotion.WinningPrizes);
+            var promotionTournamentMessage = string.Format(
+                MessagePromotionTournament,
+                messageListOperators,
+                messageListWinningPrizes,
+                promotion.StartDateTime.ToStringAtGMT7(),
+                promotion.EndDateTime.ToStringAtGMT7());
+
+            return string.Format(template, promotion.Name, promotionTournamentMessage);
+        }
+        public async Task<ChatBotResult> NotifyCreatePromotionTournament(PromotionConfigModel promotion)
+        {
+            var message = GetMessagePromotionTournament(MessageAddPromotionTournament, promotion);         
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token,
+               appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament,
+               message));
+            return await Task.FromResult(new ChatBotResult());
         }
 
-        public Task<ChatBotResult> NotifyUpdatePromotionTournament(PromotionConfigModel promotion)
+        public async Task<ChatBotResult> NotifyUpdatePromotionTournament(PromotionConfigModel promotion)
         {
-            throw new NotImplementedException();
+            var message = GetMessagePromotionTournament(MessageEdiPromotionTournament, promotion);
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token,
+               appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament,
+               message));
+            return await Task.FromResult(new ChatBotResult());
         }
     }
 }
