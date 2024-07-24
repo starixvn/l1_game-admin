@@ -8,10 +8,10 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public string Id { get; set; }
         public string Name { get; set; }
         public bool Enabled { get; set; }
-        public DateTime StartDate { get; set; } = DateTime.Now;
-        public DateTime EndDate { get; set; } = DateTime.Now;
-        public DateTime StartTime { get; set; } = DateTime.Now;
-        public DateTime EndTime { get; set; } = DateTime.Now;
+        public DateTime StartDate { get; set; } = DateTime.UtcNow;
+        public DateTime EndDate { get; set; } = DateTime.UtcNow;
+        public DateTime StartTime { get; set; } = DateTime.UtcNow;
+        public DateTime EndTime { get; set; } = DateTime.UtcNow;
         public List<OperatorViewModel> Operators { get; set; }
         public List<WinningPrizeViewModel> WinningPrizes { get; set; } = new List<WinningPrizeViewModel>();
 

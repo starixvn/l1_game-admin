@@ -15,8 +15,8 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public bool Enabled { get; set; }
         public Dictionary<string, string> Title { get; set; } = Language.EmptyLanguages;
         public Dictionary<string, string> Messages { get; set; } = Language.EmptyLanguages;
-        public DateTime StartTime { get; set; } = DateTime.Now;
-        public DateTime EndTime { get; set; } = DateTime.Now.AddDays(1);
+        public DateTime StartTime { get; set; } = DateTime.UtcNow;
+        public DateTime EndTime { get; set; } = DateTime.UtcNow.AddDays(1);
         public string PromotionId { get; set; }
         public bool IsHappyHoursAnnouncement => DisplayKind?.Value == NotificationDisplayKind.Promotion.Value;
 
