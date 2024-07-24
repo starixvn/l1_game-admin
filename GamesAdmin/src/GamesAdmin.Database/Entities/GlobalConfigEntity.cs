@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using GamesAdmin.Database.Attributes;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("global_configs")]
-    public class GlobalConfigEntity : MiniGameBaseEntity
+    public class GlobalConfigEntity
     {
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        public DateTime Time { get; set; }
+
         public GlobalConfigEntity()
         {
             Time = DateTime.UtcNow;

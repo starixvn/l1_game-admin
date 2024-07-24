@@ -21,23 +21,23 @@ namespace GamesAdmin.Api.GlobalConfigs
     {
         private readonly ISentryClient sentryClient;
         private readonly IMapper mapper;
-        private readonly IGenericRepository<GlobalConfigEntity> globalConfigRepository;
+        private readonly IMongoCollection<GlobalConfigEntity> collection;
 
         public GlobalConfigService(
             ISentryClient sentryClient,
             IMapper mapper,
-            IGenericRepository<GlobalConfigEntity> globalConfigRepository)
+            IMongoDatabase database)
         {
             this.sentryClient = sentryClient;
             this.mapper = mapper;
-            this.globalConfigRepository = globalConfigRepository;
+            this.collection = database.GetCollection<GlobalConfigEntity>(Document.GetCollectionName(typeof(GlobalConfigEntity)));
         }
 
         public async Task<GlobalConfig> GetGlobalConfigByType(GlobalConfigType type)
         {
             try
             {
-                var globalConfig = await globalConfigRepository.FindOneAsync(config => config.Type == type.Value);
+                var globalConfig = await collection.Find(config => config.Type == type.Value).FirstOrDefaultAsync();
 
                 return mapper.Map<GlobalConfig>(globalConfig);
             }
