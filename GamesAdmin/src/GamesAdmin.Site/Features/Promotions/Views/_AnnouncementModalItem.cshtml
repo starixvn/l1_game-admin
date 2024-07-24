@@ -2,10 +2,13 @@
 @using GamesAdmin.Site.Features.Promotions.ViewModels;
 @using GamesAdmin.Core.Enumeration;
 @using GamesAdmin.Site.Extensions;
+@using GamesAdmin.Site._Shared.Configurations;
+@inject IAppSettings appSetting;
 @model CreateAnnouncementItemViewModel
 
 @{
     var unique = string.IsNullOrEmpty(Model.Id) ? DateTime.Now.Ticks.ToString() : Model.Id;
+    Model.ConvertToTimeZone(appSetting.DefaultTimeZone);
 }
 @functions{
     private void RenderMessageRow(string language, string unique, string title, string message)

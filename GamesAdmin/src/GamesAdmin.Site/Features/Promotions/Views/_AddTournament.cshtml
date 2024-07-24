@@ -1,5 +1,7 @@
 ﻿@using GamesAdmin.Site.Extensions;
 @using GamesAdmin.Site.Features.Promotions.ViewModels;
+@using GamesAdmin.Site._Shared.Configurations;
+@inject IAppSettings appSetting;
 @model PromotionCampaignViewModel;
 <div class="modal-header">
     <h5 class="modal-title">Add New Tournament</h5>
@@ -7,7 +9,9 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-
+@{
+    Model.ConvertToTimeZone(appSetting.DefaultTimeZone);
+}
 <form class="form" data-ajax="true" data-ajax-method="POST" asp-action="CreateTournament"
       data-ajax-loading="#spinner"
       data-ajax-success="promotion.onCreatePromotionSuccess"

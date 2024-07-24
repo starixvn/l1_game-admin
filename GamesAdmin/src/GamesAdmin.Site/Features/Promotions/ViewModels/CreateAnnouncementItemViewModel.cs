@@ -52,5 +52,11 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
             return $"{promotionCampaign.Name} - From {promotionCampaign.StartDateTime.ToString(DateTimeExtensions.DateTimeFormat)}" +
                 $" to {promotionCampaign.EndDateTime.ToString(DateTimeExtensions.DateTimeFormat)}";
         }
+
+        public void ConvertToTimeZone(TimeZoneInfo timeZone)
+        {
+            StartTime = TimeZoneInfo.ConvertTimeFromUtc(StartTime, timeZone);
+            EndTime = TimeZoneInfo.ConvertTimeFromUtc(EndTime, timeZone);
+        }
     }
 }

@@ -14,5 +14,13 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public DateTime EndTime { get; set; } = DateTime.Now;
         public List<OperatorViewModel> Operators { get; set; }
         public List<WinningPrizeViewModel> WinningPrizes { get; set; } = new List<WinningPrizeViewModel>();
+
+        public void ConvertToTimeZone(TimeZoneInfo timeZone)
+        {
+            StartDate = TimeZoneInfo.ConvertTimeFromUtc(StartDate, timeZone);
+            EndDate = TimeZoneInfo.ConvertTimeFromUtc(EndDate, timeZone);
+            StartTime = TimeZoneInfo.ConvertTimeFromUtc(StartTime, timeZone);
+            EndTime = TimeZoneInfo.ConvertTimeFromUtc(EndTime, timeZone);
+        }
     }
 }

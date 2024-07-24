@@ -107,7 +107,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
                     html += $"<td rowspan=\"{rowspanDefault}\">{operatorModel.OperatorName}</td>";
 
-                    html += "<td colspan=\"2\" width=\"200px\">No currency groups available</td>";
+                    html += "<td colspan=\"2\" width=\"200px\"></td>";
 
                     if (hasAdminPermission)
                     {
