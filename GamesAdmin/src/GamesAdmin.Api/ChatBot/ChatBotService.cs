@@ -14,6 +14,7 @@ using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Currencies;
@@ -38,6 +39,12 @@ namespace GamesAdmin.Api.ChatBot
         Task<ChatBotResult> NotifyCreatePromotion(PromotionModel promotion);
 
         Task<ChatBotResult> NotifyUpdatePromotion(PromotionModel promotion);
+
+        Task<ChatBotResult> NotifyConfirmPaymentPromotionTournament(string promotionTitle,
+            DateTime startDate,
+            DateTime endDate,
+            IEnumerable<AwardWinningPlayer> winners,
+            IEnumerable<AwardWinningPlayer> failers);
     }
 
     public class ChatBotService : IChatBotService
@@ -47,7 +54,6 @@ namespace GamesAdmin.Api.ChatBot
         private const string MessageUpdatePromotion = "Edited promotion for game **{0}**:\r\n{1}";
         private const string MessagePromotion = "**Status: **{0}\r\n**Boosted Odds**: {1}\r\n**Type**: {2}\r\n**From**: {3}\r\n**To**: {4}";
         private const int CacheExpireInMinutes = 60 * 24;
-
 
         private readonly IAppSettings appSettings;
         private readonly IChatBotApi chatBotApi;
@@ -318,6 +324,24 @@ namespace GamesAdmin.Api.ChatBot
                 sentry.CaptureMessage($"{ex} - {playerId}", Sentry.Protocol.SentryLevel.Warning);
                 return "- Unknown";
             }
+        }
+
+        public async Task<ChatBotResult> NotifyConfirmPaymentPromotionTournament(string promotionTitle,
+            DateTime startDate,
+            DateTime endDate,
+            IEnumerable<AwardWinningPlayer> winners,
+            IEnumerable<AwardWinningPlayer> failers)
+        {
+            var template = "The administrator has confirmed the payment for the **{0}**:\r\n**From**: {1}\r\n**To**: {2}\r\n**List of winners**:\r\n\t\t{3}";
+            var messageListWinners = string.Join("\r\n\t\t", winners.Select(e => $"- {e.PlayerName}/{e.PlayerId}, {e.Currency}, TotalPoints: {e.Point}, WinAmount: {e.Amount}"));
+            var message = string.Format(template, promotionTitle, startDate.ToStringAtGMT7(), endDate.ToStringAtGMT7(), messageListWinners);
+
+            var messageListFailers = failers.Any() ? "\r\n**The request fails**: " + string.Join(", ", failers.Select(e => $"{e.PlayerName}/{e.PlayerId}")) : string.Empty;
+
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token,
+                appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament,
+                message + messageListFailers));
+            return await Task.FromResult(new ChatBotResult());
         }
     }
 }

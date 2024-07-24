@@ -78,12 +78,20 @@ namespace GamesAdmin.Api.Promotions
            => mediator.Send(new GetPromotionCampaignByIdRequest(id));
 
         [HttpPost("award")]
-        public Task<OWResult> Award(AwardWinningPlayerRequest request)
-           => mediator.Send(request);
+        public async Task<OWResult> Award(AwardWinningPlayerRequest request)
+        {
+            var awardPlayer = await mediator.Send(request);
+            // TODO: correct return type
+            return new OWResult { ErrorCode = awardPlayer.IsAwarded ? 0 : 1 };
+        }
 
         [HttpGet("leaderboard")]
         public Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(int promotionId, string playerName, bool isTestCurrency)
            => mediator.Send(new GetLeaderboardRequest(promotionId, playerName, isTestCurrency));
+
+        [HttpPost("awardTournament")]
+        public Task<bool> AwardTournament(AwardTournamentRequest request)
+            => mediator.Send(request);
 
         [HttpPost("updateTournament")]
         public Task<bool> UpdateTournament(PromotionConfigModel model)

@@ -24,10 +24,11 @@ namespace GamesAdmin.Api.Promotions
         , IRequestHandler<DeleteAnnouncementRequest, bool>
         , IRequestHandler<GetPromotionCampaignByStatusRequest, IEnumerable<PromotionConfigModel>>
         , IRequestHandler<GetPromotionCampaignByIdRequest, PromotionConfigModel>
-        , IRequestHandler<AwardWinningPlayerRequest, OWResult>
+        , IRequestHandler<AwardWinningPlayerRequest, AwardWinningPlayer>
         , IRequestHandler<CreateTournamentRequest, bool>
         , IRequestHandler<GetLeaderboardRequest, IEnumerable<AwardWinningPlayer>>
         , IRequestHandler<UpdateTournamentRequest, bool>
+        , IRequestHandler<AwardTournamentRequest, bool>
     {
         private readonly IPromotionService promotionService;
         private readonly INotificationService notificationService;
@@ -85,8 +86,8 @@ namespace GamesAdmin.Api.Promotions
         public Task<PromotionConfigModel> Handle(GetPromotionCampaignByIdRequest request, CancellationToken cancellationToken)
         => promotionCampaignService.GetById(request.Id);
 
-        public Task<OWResult> Handle(AwardWinningPlayerRequest request, CancellationToken cancellationToken)
-            => awardService.AwardWinningPlayer(request);
+        public Task<AwardWinningPlayer> Handle(AwardWinningPlayerRequest request, CancellationToken cancellationToken)
+        => awardService.AwardWinningPlayer(request);
 
         public Task<bool> Handle(CreateTournamentRequest request, CancellationToken cancellationToken)
             => promotionCampaignService.Create(request.Model);
@@ -96,5 +97,8 @@ namespace GamesAdmin.Api.Promotions
 
         public Task<bool> Handle(UpdateTournamentRequest request, CancellationToken cancellationToken)
             => promotionCampaignService.Update(request.Model);
+
+        public Task<bool> Handle(AwardTournamentRequest request, CancellationToken cancellationToken)
+           => awardService.AwardTournament(request);
     }
 }

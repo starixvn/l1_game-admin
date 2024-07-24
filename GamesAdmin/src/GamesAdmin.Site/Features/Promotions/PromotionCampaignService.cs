@@ -19,6 +19,8 @@ namespace GamesAdmin.Site.Features.Promotions
 
         Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request);
 
+        Task<bool> AwardTournament(AwardTournamentRequest request);
+
         Task<bool> Update(PromotionConfigModel model);
     }
 
@@ -45,6 +47,9 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request)
              => promotionApi.GetLeaderboard(request.PromotionId, request.PlayerName, request.IsTestCurrency);
+
+        public Task<bool> AwardTournament(AwardTournamentRequest request)
+             => promotionApi.AwardTournament(request);
 
         public Task<bool> Update(PromotionConfigModel model)
             => promotionApi.updateTournament(model);

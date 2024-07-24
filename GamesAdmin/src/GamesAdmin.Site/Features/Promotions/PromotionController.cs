@@ -196,7 +196,17 @@ namespace GamesAdmin.Site.Features.Promotions
 
         [HttpPost, Audit]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Award([Bind] AwardWinningPlayerRequest request)
+        public async Task<IActionResult> AwardTournament(int promotionId)
+        {
+            var request = new AwardTournamentRequest(promotionId);
+            var result = await mediator.Send(request);
+
+            return Json(result);
+        }
+
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> AwardPlayer([Bind] AwardWinningPlayerRequest request)
         {
             var result = await mediator.Send(request);
 

@@ -34,6 +34,7 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<AwardWinningPlayerRequest, OWResult>
         , IRequestHandler<CreateTournamentRequest, MessageResult>
         , IRequestHandler<GetLeaderboardRequest, IEnumerable<AwardWinningPlayer>>
+        , IRequestHandler<AwardTournamentRequest, bool>
         , IRequestHandler<GetUpdateOperatorSettingRequest, UpdateOperatorSettingViewModel>
         , IRequestHandler<GetCurrencySettingRequest, EditCurrencyGroupSettingViewModel>
         , IRequestHandler<UpdateTournamentRequest, MessageResult>
@@ -324,12 +325,15 @@ namespace GamesAdmin.Site.Features.Promotions
             if (model.StartDateTime >= existingPromotion.EndDateTime || model.EndDateTime <= existingPromotion.StartDateTime)
             {
                 return true;
-            }   
+            }
             return false;
         }
 
         public Task<IEnumerable<AwardWinningPlayer>> Handle(GetLeaderboardRequest request, CancellationToken cancellationToken)
             => promotionCampaignService.GetLeaderboard(request);
+
+        public Task<bool> Handle(AwardTournamentRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.AwardTournament(request);
 
         public async Task<UpdateOperatorSettingViewModel> Handle(GetUpdateOperatorSettingRequest request, CancellationToken cancellationToken)
         {
@@ -347,7 +351,7 @@ namespace GamesAdmin.Site.Features.Promotions
         {
             var result = new EditCurrencyGroupSettingViewModel();
             var promotion = await promotionCampaignService.GetCampaignById(request.Id);
-            var currentOperator = promotion.Operators.Where(o=>o.OperatorId == request.OperatorId).FirstOrDefault();
+            var currentOperator = promotion.Operators.Where(o => o.OperatorId == request.OperatorId).FirstOrDefault();
             if (currentOperator != null)
             {
                 result.IncludedSiteNames = currentOperator.IncludedSiteNames;
@@ -362,7 +366,7 @@ namespace GamesAdmin.Site.Features.Promotions
             result.OperatorId = request.OperatorId;
             result.GroupId = request.GroupId;
             result.Id = request.Id;
-           
+
             return result;
         }
 
@@ -371,7 +375,7 @@ namespace GamesAdmin.Site.Features.Promotions
             var model = new PromotionConfigModel();
             var promotion = await promotionCampaignService.GetCampaignById(request.Model.Id);
             MapCurrencyGroupSettings(request.Model, promotion);
-            var success =  await promotionCampaignService.Update(model);
+            var success = await promotionCampaignService.Update(model);
             return new MessageResult(success, string.Empty);
         }
 
@@ -382,7 +386,6 @@ namespace GamesAdmin.Site.Features.Promotions
 
             if (operatorModel != null)
             {
-
                 var currencyGroup = operatorModel.CurrencyGroups.FirstOrDefault(cg => cg.CurrencyGroupId == source.GroupId);
 
                 if (currencyGroup != null)
