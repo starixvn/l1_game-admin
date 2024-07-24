@@ -208,7 +208,7 @@ namespace GamesAdmin.Api.Promotions
         public async Task<bool> Update(PromotionConfigModel model)
         {
             var entity = await promotionCampaignRepository.FindByIdAsync(model.Id);
-        
+
             if (entity != null)
             {
                 var modelMapper = mapper.Map<PromotionConfigEntity>(model);
@@ -228,7 +228,7 @@ namespace GamesAdmin.Api.Promotions
             var promotion = await promotionCampaignRepository.FindOneAsync(e => e.PromotionId == request.PromotionId);
             var awardWinningPlayers = await promotionLeaderboardRepository
                 .Collection()
-                .Find(x => x.PromotionId == request.PromotionId)
+                .Find(x => x.PromotionId == request.PromotionId && x.IsTestCurrency == request.IsTestCurrency)
                 .SortByDescending(p => p.PointInBaseCurrency)
                 .ThenBy(p => p.DataSourceTimeStamp)
                 .ToListAsync();
@@ -239,7 +239,7 @@ namespace GamesAdmin.Api.Promotions
                 data.Ranking = index + 1;
                 data.CompletedPromotion = promotion.Status == PromotionCampaignStatus.CompletedValue;
                 return data;
-            }).Where(e => e.IsTestCurrency == request.IsTestCurrency && (string.IsNullOrEmpty(request.PlayerName) || e.PlayerName == request.PlayerName || e.PlayerId == request.PlayerName));
+            }).Where(e => string.IsNullOrEmpty(request.PlayerName) || e.PlayerName == request.PlayerName || e.PlayerId == request.PlayerName);
         }
     }
 }
