@@ -59,5 +59,8 @@ namespace GamesAdmin.Site.Features.Promotions
 
         [Get("/promotion/leaderboard")]
         Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(int promotionId, string playerName, bool isTestCurrency);
+
+        [Post("/promotion/updateTournament")]
+        Task<bool> updateTournament(PromotionConfigModel model);
     }
 }

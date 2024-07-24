@@ -9,7 +9,8 @@
         formUpdate: '#update-promotion-form',
         modalDelete: '#promotion-modal-delete',
         deleteId: '#delete-promotion-id',
-        resultLabel: '#result-label'
+        resultLabel: '#result-label',
+        formTournamentSettings: "#update-currency-group-setting-form"
     };
     let promotionMessage = {
         createSuccess: 'Add Successfully!',
@@ -119,6 +120,112 @@
         prizeList.appendChild(newSpaceCol);
     }
 
+    function showOperatorSetting(id, operatorId, operatorName) {
+        console.log("showOperatorSetting", id, operatorId, operatorName);
+        $.ajax({
+            method: "GET",
+            url: "/Promotion/UpdateOperatorSettings",
+            data: {
+                id,
+                operatorId,
+                operatorName
+            }
+        }).done(function (content) {
+            if (content) {
+                $('#operatorSettingContent').html(content);
+                $('#operatorSettingModal').modal('show')
+                loadDefaultSetting();
+            }
+        });
+    }
+
+    function loadDefaultSetting () {
+        loadSettingGroup($('#Id')[0].value, $('#OperatorId')[0].value, $('#groupId')[0].value);
+    }
+
+    function loadSettingGroup(id, operatorId, groupId) {
+        $.ajax({
+            method: "GET",
+            url: "/Promotion/GetCurrencyGroupSetting",
+            data: {
+                id,
+                operatorId,
+                groupId
+            }
+        }).done(function (content) {
+            if (content) {
+                $('#currency-group-game-setting').html(content);              
+            }          
+        });
+    }
+
+    function onChangeGroup(id, operatorId) {
+        loadSettingGroup(id, operatorId, $('#GroupId')[0].value);
+    }
+
+    function toggleTab (tabName) {
+        console.log("ok");
+        $('#setting').hide();
+        $('#site-inclusions').hide();
+
+        $('#site-inclusions-tab-header').removeClass("active");
+        $('#setting-tab-header').removeClass("active");
+
+        const id = '#' + tabName;
+        const headerId = '#' + tabName + '-tab-header';
+
+        tabName == 'setting' && loadDefaultSetting();
+        tabName == 'site-inclusions' && loadSiteInclusion();
+
+
+        $(id).show();
+        $(headerId).addClass("active");
+    }
+
+    function loadSiteInclusion() {     
+        var siteInclusions = $('#IncludedSiteNames')[0].value;
+        $('#siteInclusions').val(siteInclusions);    
+    }
+
+    function onSubmit  (isContinue) {
+        if (isContinue) {
+            $('#operatorSettingModal').on('hide.bs.modal', function (event) {
+                location.reload();
+            });
+        }
+
+        if ($('#setting').css('display') && $('#setting').css('display') !== 'none') {
+            updateSetting(isContinue, this.modalHandlerOnUpdate);
+        }
+
+        if ($('#site-inclusions').css('display') && $('#site-inclusions').css('display') !== 'none') {
+            updateSetting(isContinue, this.modalHandlerOnUpdate);
+        }
+    }
+
+    function updateSetting (isContinue, modalHandlerOnUpdate) {
+        var $form = $('#update-currency-group-setting-form');
+        if ($form.valid()) {
+            var data = $('#update-currency-group-setting-form').serializeArray();     
+            console.log("updateSetting", data);
+            $.ajax({
+                method: "POST",
+                url: '/Promotion/UpdateOperatorSettings',
+                dataType: 'json',
+                data,
+            }).done(function (result) {
+                if (result.success) {
+                    $('#currency-group-successMsg').show();
+                }
+                else {
+                    $('#currency-group-failedMsg').show();
+                }
+
+                modalHandlerOnUpdate(isContinue);
+            });
+        }
+    }
+
     return {
         openAddNewPromotionForm: function () {
             openModal(promotionElement.formAdd)();
@@ -145,7 +252,14 @@
         },
         deletePromotion,
         openDeleteModal,
-        addRanking
+        addRanking,
+        openOperatorSettingsForm: function () {
+            openModal(promotionElement.formTournamentSettings)();
+        },
+        showOperatorSetting,
+        onChangeGroup,
+        toggleTab,
+        onSubmit
     }
 }(jQuery));
 

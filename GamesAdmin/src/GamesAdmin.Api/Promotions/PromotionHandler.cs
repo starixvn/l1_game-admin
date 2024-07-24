@@ -27,6 +27,7 @@ namespace GamesAdmin.Api.Promotions
         , IRequestHandler<AwardWinningPlayerRequest, OWResult>
         , IRequestHandler<CreateTournamentRequest, bool>
         , IRequestHandler<GetLeaderboardRequest, IEnumerable<AwardWinningPlayer>>
+        , IRequestHandler<UpdateTournamentRequest, bool>
     {
         private readonly IPromotionService promotionService;
         private readonly INotificationService notificationService;
@@ -92,5 +93,8 @@ namespace GamesAdmin.Api.Promotions
 
         public Task<IEnumerable<AwardWinningPlayer>> Handle(GetLeaderboardRequest request, CancellationToken cancellationToken)
             => promotionCampaignService.GetLeaderboard(request);
+
+        public Task<bool> Handle(UpdateTournamentRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.Update(request.Model);
     }
 }

@@ -1,0 +1,53 @@
+﻿@model GamesAdmin.Site.Features.Promotions.ViewModels.UpdateOperatorSettingViewModel
+
+@{
+    ViewData["Title"] = "Operator Settings";
+}
+
+<div>
+    <ul class="nav nav-custom" id="setting-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="setting-tab-header" href="#" onclick="promotion.toggleTab('setting')">Setting</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="site-inclusions-tab-header" href="#" onclick="promotion.toggleTab('site-inclusions')">Site Exclusion</a>
+        </li>
+    </ul>
+</div>
+<form form class="card-body form" id="update-currency-group-setting-form">
+    <input readonly hidden id="groupId" asp-for="@Model.GroupSelectList.FirstOrDefault().Value" />
+    <input readonly hidden asp-for="@Model.OperatorId" />
+    <input readonly hidden asp-for="@Model.Id" />
+
+    <div class="form-group">
+        <div class="col-4">
+            <label class="control-label" for="PartnerIds">Operator : <b>@Model.OperatorName</b></label>
+        </div>
+
+    </div>
+    <div class="form-group" id="setting">
+        <div class="form-group row ml-0">
+            <div class="col-3 mt-3 pb-3">
+                <label class="control-label">Currency Group: </label>
+            </div>
+            <div class="col-4">
+                <select class="form-control"
+                        asp-items="Model.GroupSelectList"
+                        asp-for="GroupId"
+                        onchange="promotion.onChangeGroup('@Model.Id','@Model.OperatorId')">
+                </select>
+            </div>
+        </div>
+      
+        <div class="card-body" id="currency-group-game-setting">
+        </div>
+    </div>
+    <div id="site-inclusions" style="display:none;">
+        <br />    
+        <div class="text-message ml-4">
+            <label class="font-weight-bold">Input the site name to be offered the promotion:</label>
+            <br />
+            <textarea rows="3" cols="50" id="siteInclusions" placeholder="Names are separated by ';'"></textarea>
+        </div>
+    </div>
+</form>

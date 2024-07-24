@@ -21,7 +21,7 @@ namespace GamesAdmin.Database.Entities.Promotion
 public class Operator
 {
     public string OperatorId { get; set; }
-    public string ExcludedSiteNames { get; set; }
+    public string IncludedSiteNames { get; set; }
     public List<CurrencyGroup> CurrencyGroups { get; set; }
 }
 

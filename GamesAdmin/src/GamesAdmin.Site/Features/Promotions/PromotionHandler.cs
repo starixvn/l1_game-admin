@@ -10,10 +10,13 @@ using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Core.OWResults;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
+using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.GameSettings;
+using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Promotions.Requests;
 using GamesAdmin.Site.Features.Promotions.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Promotions
 {
@@ -31,19 +34,28 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<AwardWinningPlayerRequest, OWResult>
         , IRequestHandler<CreateTournamentRequest, MessageResult>
         , IRequestHandler<GetLeaderboardRequest, IEnumerable<AwardWinningPlayer>>
+        , IRequestHandler<GetUpdateOperatorSettingRequest, UpdateOperatorSettingViewModel>
+        , IRequestHandler<GetCurrencySettingRequest, EditCurrencyGroupSettingViewModel>
+        , IRequestHandler<UpdateTournamentRequest, MessageResult>
     {
         private readonly IPromotionService promotionService;
         private readonly IPromotionCampaignService promotionCampaignService;
         private readonly IMapper mapper;
         private readonly IAppSettings appSettings;
+        private readonly ICurrencyGroupService currencyGroupService;
+        private readonly IPartnerService partnerService;
 
         public PromotionHandler(IPromotionService promotionService, IGameSettingService gameService, IMapper mapper, IAppSettings appSettings,
-            IPromotionCampaignService promotionCampaignService)
+            IPromotionCampaignService promotionCampaignService,
+            ICurrencyGroupService currencyGroupService,
+            IPartnerService partnerService)
         {
             this.promotionService = promotionService;
             this.mapper = mapper;
             this.appSettings = appSettings;
             this.promotionCampaignService = promotionCampaignService;
+            this.currencyGroupService = currencyGroupService;
+            this.partnerService = partnerService;
         }
 
         public async Task<IEnumerable<PromotionModel>> Handle(GetPromotionByStatusRequest request, CancellationToken cancellationToken)
@@ -318,5 +330,78 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<IEnumerable<AwardWinningPlayer>> Handle(GetLeaderboardRequest request, CancellationToken cancellationToken)
             => promotionCampaignService.GetLeaderboard(request);
+
+        public async Task<UpdateOperatorSettingViewModel> Handle(GetUpdateOperatorSettingRequest request, CancellationToken cancellationToken)
+        {
+            var result = new UpdateOperatorSettingViewModel();
+            var currencyGroups = (await currencyGroupService.GetByPartner(request.OperatorId, group => group.Enabled)).ToList();
+            result.OperatorId = request.OperatorId;
+            result.OperatorName = request.OperatorName;
+            result.Id = request.Id;
+            result.GroupSelectList = currencyGroups.Select(group => new SelectListItem(group.Name, group.Id)).ToList();
+
+            return result;
+        }
+
+        public async Task<EditCurrencyGroupSettingViewModel> Handle(GetCurrencySettingRequest request, CancellationToken cancellationToken)
+        {
+            var result = new EditCurrencyGroupSettingViewModel();
+            var promotion = await promotionCampaignService.GetCampaignById(request.Id);
+            var currentOperator = promotion.Operators.Where(o=>o.OperatorId == request.OperatorId).FirstOrDefault();
+            if (currentOperator != null)
+            {
+                result.IncludedSiteNames = currentOperator.IncludedSiteNames;
+                var currencyGroup = currentOperator.CurrencyGroups.FirstOrDefault(cg => cg.CurrencyGroupId == request.GroupId);
+                if (currencyGroup != null)
+                {
+                    result.SlotGamesMinBet = currencyGroup.SlotGameMinBet;
+                    result.OtherGamesMinBet = currencyGroup.OtherGameMinBet;
+                    result.Enabled = currencyGroup.Enabled;
+                }
+            }
+            result.OperatorId = request.OperatorId;
+            result.GroupId = request.GroupId;
+            result.Id = request.Id;
+           
+            return result;
+        }
+
+        public async Task<MessageResult> Handle(UpdateTournamentRequest request, CancellationToken cancellationToken)
+        {
+            var model = new PromotionConfigModel();
+            var promotion = await promotionCampaignService.GetCampaignById(request.Model.Id);
+            MapCurrencyGroupSettings(request.Model, promotion);
+            var success =  await promotionCampaignService.Update(model);
+            return new MessageResult(success, string.Empty);
+        }
+
+        public void MapCurrencyGroupSettings(EditCurrencyGroupSettingViewModel source, PromotionConfigModel destination)
+        {
+            // Find the specific operator
+            var operatorModel = destination.Operators.FirstOrDefault(o => o.OperatorId == source.OperatorId);
+
+            if (operatorModel != null)
+            {
+
+                var currencyGroup = operatorModel.CurrencyGroups.FirstOrDefault(cg => cg.CurrencyGroupId == source.GroupId);
+
+                if (currencyGroup != null)
+                {
+                    // Update the values
+                    currencyGroup.SlotGameMinBet = source.SlotGamesMinBet;
+                    currencyGroup.OtherGameMinBet = source.OtherGamesMinBet;
+                    currencyGroup.Enabled = source.Enabled;
+                    operatorModel.IncludedSiteNames = source.IncludedSiteNames;
+                }
+                else
+                {
+                    Console.WriteLine("Currency group not found.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Operator not found.");
+            }
+        }
     }
 }

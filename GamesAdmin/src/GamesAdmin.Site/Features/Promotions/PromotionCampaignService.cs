@@ -18,6 +18,8 @@ namespace GamesAdmin.Site.Features.Promotions
         Task<OWResult> Award(AwardWinningPlayerRequest request);
 
         Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request);
+
+        Task<bool> Update(PromotionConfigModel model);
     }
 
     public class PromotionCampaignService : IPromotionCampaignService
@@ -43,5 +45,8 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request)
              => promotionApi.GetLeaderboard(request.PromotionId, request.PlayerName, request.IsTestCurrency);
+
+        public Task<bool> Update(PromotionConfigModel model)
+            => promotionApi.updateTournament(model);
     }
 }

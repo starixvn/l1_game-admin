@@ -53,7 +53,6 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                         if (isFirstOperatorRow)
                         {
                             html += $"<td rowspan=\"{operatorRowSpan}\">{operatorModel.OperatorName}</td>";
-                            isFirstOperatorRow = false;
                         }
 
                         html += $"<td width=\"200px\">" +
@@ -66,10 +65,17 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                                 $"<i class=\"{currencyGroup.StatusIcon}\"></i>" +
                                 "</td>";
 
-                        if (hasAdminPermission)
+                        if (isFirstOperatorRow)
                         {
-                            html += "<td class=\"text-center\"><i class=\"icon-edit\"></i></td>";
+                            if (hasAdminPermission)
+                            {
+                                html += $"<td class=\"text-center\" rowspan=\"{operatorRowSpan}\">" +
+                                    $"<i class=\"icon-edit\" onclick='promotion.showOperatorSetting(\"{Id}\", \"{operatorModel.OperatorId}\", \"{operatorModel.OperatorName}\")'></i>" +
+                                    $"</td>";
+                            }
+                            isFirstOperatorRow = false;
                         }
+                     
 
                         if (isFirstPromotionRow)
                         {
@@ -146,9 +152,9 @@ public class WinningPrizeViewModel
 public class OperatorViewModel
 {
     public string OperatorId { get; set; }
-
     public string OperatorName { get; set; }
     public List<CurrencyGroupsViewModel> CurrencyGroups { get; set; }
+    public string IncludedSiteNames { get;set; }
 }
 
 public class CurrencyGroupsViewModel

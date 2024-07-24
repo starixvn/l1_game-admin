@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.Promotions.Requests;
@@ -29,7 +30,7 @@ namespace GamesAdmin.Api.Promotions
 
         Task<PromotionConfigModel> GetById(string id);
 
-        //Task<bool> Update(PromotionConfigModel model);
+        Task<bool> Update(PromotionConfigModel model);
 
         //Task<bool> Delete(string id);
 
@@ -191,7 +192,7 @@ namespace GamesAdmin.Api.Promotions
             entity.Operators = partners.Select(partner => new Operator
             {
                 OperatorId = partner.PartnerId,
-                ExcludedSiteNames = "",
+                IncludedSiteNames = "",
                 CurrencyGroups = currencyList
                     .Where(c => c.PartnerId == partner.PartnerId)
                     .Select(c => new CurrencyGroup
@@ -214,6 +215,22 @@ namespace GamesAdmin.Api.Promotions
         public PromotionConfigEntity GetPromotionWithMaxIdAsync()
         {
             return promotionCampaignRepository.AsQueryable().OrderByDescending(p => p.PromotionId).First();
+        }
+
+        public async Task<bool> Update(PromotionConfigModel model)
+        {
+            var entity = await promotionCampaignRepository.FindByIdAsync(model.Id);
+            if (entity != null)
+            {
+                var update = Builders<PromotionConfigEntity>.Update
+                    .Set(field => field.WinningPrizes, entity.WinningPrizes)
+                    .Set(field => field.Operators, entity.Operators);
+
+                await promotionCampaignRepository.UpdateAsync(promotion => promotion.Id == entity.Id, update);
+
+                return true;
+            }
+            return false;
         }
 
         public async Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request)

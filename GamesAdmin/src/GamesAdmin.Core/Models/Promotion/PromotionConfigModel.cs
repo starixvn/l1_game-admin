@@ -38,7 +38,7 @@ public class OperatorModel
 {
     public string OperatorId { get; set; }
     public string OperatorName { get; set; }
-    public string ExcludedSiteNames { get; set; }
+    public string IncludedSiteNames { get; set; }
     public List<CurrencyGroupsModel> CurrencyGroups { get; set; }
 }
 

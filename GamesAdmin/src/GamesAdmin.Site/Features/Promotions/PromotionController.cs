@@ -219,5 +219,22 @@ namespace GamesAdmin.Site.Features.Promotions
 
             return PartialView("_Award", viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateOperatorSettings(string id, string operatorId, string operatorName)
+            => PartialView("_UpdateOperatorSetting", await mediator.Send(new GetUpdateOperatorSettingRequest(id, operatorId, operatorName)));
+
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateOperatorSettings(EditCurrencyGroupSettingViewModel model)
+        {
+            var result = await mediator.Send(new UpdateTournamentRequest(model));
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCurrencyGroupSetting(string id, string operatorId, string groupId)
+           => PartialView("_EditCurrencyGroupSetting", await mediator.Send(new GetCurrencySettingRequest(id, operatorId, groupId)));
     }
 }
