@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.Promotions.Requests;
@@ -9,7 +8,6 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Currencies;
 using GamesAdmin.Database.Entities.Promotion;
-using GamesAdmin.Core.Extensions;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Sentry;
@@ -18,7 +16,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Api.Promotions
 {
@@ -193,16 +190,7 @@ namespace GamesAdmin.Api.Promotions
             {
                 OperatorId = partner.PartnerId,
                 IncludedSiteNames = "",
-                CurrencyGroups = currencyList
-                    .Where(c => c.PartnerId == partner.PartnerId)
-                    .Select(c => new CurrencyGroup
-                    {
-                        CurrencyGroupId = c.Id.ToString(),
-                        OtherGameMinBet = 2,
-                        SlotGameMinBet = 0.2,
-                        Enabled = c.Enabled
-                    })
-                    .ToList()
+                CurrencyGroups = new List<CurrencyGroup>()
             }).ToList();
             var promotion = this.GetPromotionWithMaxIdAsync();
             entity.Status = "new";
@@ -220,11 +208,13 @@ namespace GamesAdmin.Api.Promotions
         public async Task<bool> Update(PromotionConfigModel model)
         {
             var entity = await promotionCampaignRepository.FindByIdAsync(model.Id);
+        
             if (entity != null)
             {
+                var modelMapper = mapper.Map<PromotionConfigEntity>(model);
                 var update = Builders<PromotionConfigEntity>.Update
-                    .Set(field => field.WinningPrizes, entity.WinningPrizes)
-                    .Set(field => field.Operators, entity.Operators);
+                    .Set(field => field.WinningPrizes, modelMapper.WinningPrizes)
+                    .Set(field => field.Operators, modelMapper.Operators);
 
                 await promotionCampaignRepository.UpdateAsync(promotion => promotion.Id == entity.Id, update);
 

@@ -17,7 +17,9 @@
         createUnsuccess: 'Cannot Add Promotion!',
         updateSuccess: 'Edit Successfully!',
         updateUnsuccess: 'Cannot Edit Promotion!',
-        deleteUnsuccess: 'Cannot Delete Promotion'
+        deleteUnsuccess: 'Cannot Delete Promotion',
+        messageUpdateSuccess: "Updated successfully",
+        messageUpdateUnsuccess: "Error"
     };
 
     function openModal(formId) {
@@ -195,18 +197,21 @@
         }
 
         if ($('#setting').css('display') && $('#setting').css('display') !== 'none') {
-            updateSetting(isContinue, this.modalHandlerOnUpdate);
+            updateSetting(isContinue, modalHandlerOnUpdate);
         }
 
         if ($('#site-inclusions').css('display') && $('#site-inclusions').css('display') !== 'none') {
-            updateSetting(isContinue, this.modalHandlerOnUpdate);
+            updateSetting(isContinue, modalHandlerOnUpdate);
         }
     }
 
     function updateSetting (isContinue, modalHandlerOnUpdate) {
         var $form = $('#update-currency-group-setting-form');
         if ($form.valid()) {
-            var data = $('#update-currency-group-setting-form').serializeArray();     
+            var siteInclusions = $('#siteInclusions').val();        
+            var data = $('#update-currency-group-setting-form').serializeArray();
+            data = data.filter(item => item.name !== 'IncludedSiteNames');
+            data.push({ name: "IncludedSiteNames", value: siteInclusions });
             console.log("updateSetting", data);
             $.ajax({
                 method: "POST",
@@ -215,15 +220,27 @@
                 data,
             }).done(function (result) {
                 if (result.success) {
-                    $('#currency-group-successMsg').show();
+                    showMessage({ success: true, message: promotionMessage.messageUpdateSuccess });
                 }
                 else {
-                    $('#currency-group-failedMsg').show();
+                    showMessage({ success: false, message: promotionMessage.messageUpdateUnsuccess });
                 }
 
                 modalHandlerOnUpdate(isContinue);
             });
         }
+    }
+
+    function modalHandlerOnUpdate (isContinue) {
+        setTimeout(function () {
+            $('#updateBtn').prop('disabled', false);
+            $(promotionElement.resultLabel).hide();
+
+            if (!isContinue) {
+                $('#operatorSettingModal').modal('hide');
+                location.reload();
+            }
+        }, 1000);
     }
 
     return {

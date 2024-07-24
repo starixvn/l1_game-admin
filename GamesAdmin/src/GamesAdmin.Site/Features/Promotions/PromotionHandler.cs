@@ -372,33 +372,38 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public async Task<MessageResult> Handle(UpdateTournamentRequest request, CancellationToken cancellationToken)
         {
-            var model = new PromotionConfigModel();
             var promotion = await promotionCampaignService.GetCampaignById(request.Model.Id);
-            MapCurrencyGroupSettings(request.Model, promotion);
-            var success = await promotionCampaignService.Update(model);
+            MapOperatorSettings(request.Model, promotion);
+            var success =  await promotionCampaignService.Update(promotion);
             return new MessageResult(success, string.Empty);
         }
 
-        public void MapCurrencyGroupSettings(EditCurrencyGroupSettingViewModel source, PromotionConfigModel destination)
+        public void MapOperatorSettings(EditCurrencyGroupSettingViewModel source, PromotionConfigModel destination)
         {
-            // Find the specific operator
             var operatorModel = destination.Operators.FirstOrDefault(o => o.OperatorId == source.OperatorId);
 
             if (operatorModel != null)
             {
+                operatorModel.IncludedSiteNames = source.IncludedSiteNames;
                 var currencyGroup = operatorModel.CurrencyGroups.FirstOrDefault(cg => cg.CurrencyGroupId == source.GroupId);
 
                 if (currencyGroup != null)
                 {
-                    // Update the values
                     currencyGroup.SlotGameMinBet = source.SlotGamesMinBet;
                     currencyGroup.OtherGameMinBet = source.OtherGamesMinBet;
                     currencyGroup.Enabled = source.Enabled;
-                    operatorModel.IncludedSiteNames = source.IncludedSiteNames;
                 }
                 else
                 {
-                    Console.WriteLine("Currency group not found.");
+                    var newCurrencyGroup = new CurrencyGroupsModel
+                    {
+                        CurrencyGroupId = source.GroupId,
+                        SlotGameMinBet = source.SlotGamesMinBet,
+                        OtherGameMinBet = source.OtherGamesMinBet,
+                        Enabled = source.Enabled,
+                    };
+
+                    operatorModel.CurrencyGroups.Add(newCurrencyGroup);
                 }
             }
             else

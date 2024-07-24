@@ -66,11 +66,13 @@
             <div class="modal-body game-details-content" id="operatorSettingContent">
                 ...
             </div>
+            <label class="result-label mr-5" id="result-label"></label>
             <div class="modal-footer">
+
                 <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                @if (true)
+                @if (Context.HasAdminPermission())
                 {
-                    <button type="button" class="btn btn-submit" id="updateInclusionsBtn" onclick="promoion.onSubmit(true)">Save & Continue</button>
+                    <button type="button" class="btn btn-submit" id="updateInclusionsBtn" onclick="promotion.onSubmit(true)">Save & Continue</button>
                     <button type="button" class="btn btn-submit" id="updateInclusionsBtn" onclick="promotion.onSubmit()">Save</button>
                 }
             </div>

@@ -16,7 +16,6 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
         public bool HasAnnouncement { get; set; }
-
         public string Status { get; set; }
         public string StartDateTimeString => StartDateTime.ToString("MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
         public string EndDateTimeString => EndDateTime.ToString("MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
@@ -32,10 +31,10 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
             var html = "";
             var rowspanDefault = 1;
             bool isFirstPromotionRow = true;
+            var promotionRowSpan = Operators.Sum(o => o.CurrencyGroups.Count > 0 ? o.CurrencyGroups.Count : 1);
             foreach (var operatorModel in Operators)
             {
-                var operatorRowSpan = operatorModel?.CurrencyGroups?.Count;
-                var promotionRowSpan = operatorRowSpan > 0 ? Operators?.Sum(o => o.CurrencyGroups.Count) : Operators.Count;
+                var operatorRowSpan = operatorModel.CurrencyGroups.Count > 0 ? operatorModel.CurrencyGroups.Count : 1;
                 bool isFirstOperatorRow = true;
 
                 if (operatorModel?.CurrencyGroups?.Count() > 0)
@@ -113,7 +112,9 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
                     if (hasAdminPermission)
                     {
-                        html += "<td class=\"text-center\"><i class=\"icon-edit\"></i></td>";
+                        html += $"<td class=\"text-center\" rowspan=\"{rowspanDefault}\">" +
+                                    $"<i class=\"icon-edit\" onclick='promotion.showOperatorSetting(\"{Id}\", \"{operatorModel.OperatorId}\", \"{operatorModel.OperatorName}\")'></i>" +
+                                    $"</td>";
                     }
 
                     if (isFirstPromotionRow)
