@@ -16,7 +16,6 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
         public bool HasAnnouncement { get; set; }
-        public string Status { get; set; }
         public string StartDateTimeString => StartDateTime.ToString("MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
         public string EndDateTimeString => EndDateTime.ToString("MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
 

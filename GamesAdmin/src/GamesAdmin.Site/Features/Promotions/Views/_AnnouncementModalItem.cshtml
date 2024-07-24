@@ -48,19 +48,19 @@
             <textarea class="form-control" rows="2" asp-for="Messages[Language.EN]" id="message-@Language.EN-@unique"></textarea>
         </div>
     </td>
+    <td class="text-center" rowspan="6">
+        <div>
+            <label asp-for="StartTime">From</label>
+            <input type="text" class="form-control time-picker" asp-for="StartTime" value="@Model.StartTime.ToString(DateTimeExtensions.DateTimeFormat)" id="startTime-@unique">
+        </div>
+        <br />
+        <div>
+            <label asp-for="EndTime">To</label>
+            <input type="text" class="form-control time-picker" asp-for="EndTime" value="@Model.EndTime.ToString(DateTimeExtensions.DateTimeFormat)" id="endTime-@unique">
+        </div>
+    </td>
     @if (Model.DisplayKind == null)
-    {
-        <td class="text-center" rowspan="6">
-            <div>
-                <label asp-for="StartTime">From</label>
-                <input type="text" class="form-control time-picker" asp-for="StartTime" value="@Model.StartTime.ToString(DateTimeExtensions.DateTimeFormat)" id="startTime-@unique">
-            </div>
-            <br />
-            <div>
-                <label asp-for="EndTime">To</label>
-                <input type="text" class="form-control time-picker" asp-for="EndTime" value="@Model.EndTime.ToString(DateTimeExtensions.DateTimeFormat)" id="endTime-@unique">
-            </div>
-        </td>
+    {    
         <td class="text-center" rowspan="6">
             <div class="form-group">
                 <label>Type</label>
@@ -82,18 +82,7 @@
     else
     {
         @if (Model.IsHappyHoursAnnouncement)
-        {
-            <td class="text-center" rowspan="6">
-                <div>
-                    <label asp-for="StartTime">From</label>
-                    <input type="text" class="form-control time-picker" asp-for="StartTime" value="@Model.StartTime.ToString(DateTimeExtensions.DateTimeFormat)" id="startTime-@unique">
-                </div>
-                <br />
-                <div>
-                    <label asp-for="EndTime">To</label>
-                    <input type="text" class="form-control time-picker" asp-for="EndTime" value="@Model.EndTime.ToString(DateTimeExtensions.DateTimeFormat)" id="endTime-@unique">
-                </div>
-            </td>
+        {          
             <td class="text-center" rowspan="6">
                 <label>Type: @Model.DisplayKind</label>
                 <select asp-items="@Model.PromotionListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
@@ -101,20 +90,6 @@
         }
         else
         {
-            <td hidden class="text-center" rowspan="6">
-                <div>
-                    <label asp-for="StartTime">From</label>
-                    <input type="text" class="form-control time-picker" asp-for="StartTime" value="@Model.StartTime.ToString(DateTimeExtensions.DateTimeFormat)" id="startTime-@unique">
-                </div>
-                <br />
-                <div>
-                    <label asp-for="EndTime">To</label>
-                    <input type="text" class="form-control time-picker" asp-for="EndTime" value="@Model.EndTime.ToString(DateTimeExtensions.DateTimeFormat)" id="endTime-@unique">
-                </div>
-            </td>
-            <td class="text-center" rowspan="6">
-                @Model.GetStatusPromotionDisplay(@Model.PromotionId)
-            </td>
             <td class="text-center" rowspan="6">
                 <label>Type: @Model.DisplayKind</label>
                 <select asp-items="@Model.PromotionCampaignListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>

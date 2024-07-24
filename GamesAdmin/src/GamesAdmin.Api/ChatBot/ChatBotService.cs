@@ -45,6 +45,10 @@ namespace GamesAdmin.Api.ChatBot
             DateTime endDate,
             IEnumerable<AwardWinningPlayer> winners,
             IEnumerable<AwardWinningPlayer> failers);
+
+        Task<ChatBotResult> NotifyCreatePromotionTournament(PromotionConfigModel promotion);
+
+        Task<ChatBotResult> NotifyUpdatePromotionTournament(PromotionConfigModel promotion);
     }
 
     public class ChatBotService : IChatBotService
@@ -342,6 +346,16 @@ namespace GamesAdmin.Api.ChatBot
                 appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament,
                 message + messageListFailers));
             return await Task.FromResult(new ChatBotResult());
+        }
+
+        public Task<ChatBotResult> NotifyCreatePromotionTournament(PromotionConfigModel promotion)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ChatBotResult> NotifyUpdatePromotionTournament(PromotionConfigModel promotion)
+        {
+            throw new NotImplementedException();
         }
     }
 }

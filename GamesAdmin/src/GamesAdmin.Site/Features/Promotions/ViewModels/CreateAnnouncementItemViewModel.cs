@@ -52,11 +52,5 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
             return $"{promotionCampaign.Name} - From {promotionCampaign.StartDateTime.ToString(DateTimeExtensions.DateTimeFormat)}" +
                 $" to {promotionCampaign.EndDateTime.ToString(DateTimeExtensions.DateTimeFormat)}";
         }
-
-        public string GetStatusPromotionDisplay(string promotionId)
-        {
-            var promotionCampaign = PromotionCampaigns?.Where(pc => pc.Id.Equals(promotionId)).FirstOrDefault();
-            return promotionCampaign?.Status;
-        }
     }
 }

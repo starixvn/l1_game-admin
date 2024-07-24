@@ -47,7 +47,7 @@
 
     public string GetDisplayDateTime(AnnouncementViewModel viewModel)
     {
-        return viewModel.IsHappyHours ? $"From {viewModel.StartTime?.ToTimeFormat()} {viewModel.StartTime?.ToDateFormat()}<br />to {viewModel.EndTime?.ToTimeFormat()} {viewModel.EndTime?.ToDateFormat()}" : viewModel?.PromotionCampaign?.Status;
+        return $"From {viewModel.StartTime?.ToTimeFormat()} {viewModel.StartTime?.ToDateFormat()}<br />to {viewModel.EndTime?.ToTimeFormat()} {viewModel.EndTime?.ToDateFormat()}";
     }
 
     public void RenderMessageRow(string language, AnnouncementViewModel viewModel, bool hasAdminPermission)
