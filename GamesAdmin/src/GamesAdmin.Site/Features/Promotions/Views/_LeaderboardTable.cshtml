@@ -84,13 +84,20 @@
                     @if (isCompleted)
                     {
                         <td class="text-center">
-                            @if (!item.IsTestCurrency)
+                            @if (item.IsAwarded)
                             {
-                                <span>@(item.IsAwarded ? "Paid" : item.AwardedAmount > 0 ? "Unpaid" : "")</span>
+                                <span>Paid</span>
                             }
-                            @if (item.IsTestCurrency && !item.IsAwarded && hasAdminPermission)
+                            else
                             {
-                                <button type="button" class="btn btn-info btn-lg">Award</button>
+                                if (!item.IsTestCurrency && item.AwardedAmount > 0)
+                                {
+                                    <span>Unpaid</span>
+                                }
+                                @if (item.IsTestCurrency && hasAdminPermission)
+                                {
+                                    <button type="button" class="btn btn-info btn-lg">Award</button>
+                                }
                             }
                         </td>
                         <td class="text-center">@(item.IsAwarded ? @item.AwardedTime.ToGMT7().ToDateFormat() : "")</td>
