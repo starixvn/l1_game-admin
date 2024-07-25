@@ -1,5 +1,4 @@
-﻿@using System.Text;
-@using GamesAdmin.Site.Features._Shared;
+﻿@using GamesAdmin.Site.Features._Shared;
 @using GamesAdmin.Core.Extensions;
 @using GamesAdmin.Core.Models.Promotion;
 @using GamesAdmin.Site.Extensions;
@@ -33,7 +32,8 @@
             <th>Total points</th>
             @if (isCompleted)
             {
-                if(!isTestCurrency){
+                if (!isTestCurrency)
+                {
                     <th>Reward Amount</th>
                 }
                 <th>Paid Status</th>
@@ -45,9 +45,9 @@
         @{
             foreach (var item in Model)
             {
-                <tr class ="text-center">
+                <tr class="text-center">
                     <td>@(item.IsTestCurrency ? "-" : item.Ranking.ToString())</td>
-                    <td>@item.OperatorId</td>
+                    <td>@item.OperatorName</td>
                     <td>@item.PlayerName</td>
                     <td>@item.Nickname</td>
                     <td>@item.Currency</td>
@@ -55,10 +55,11 @@
                     <td>@item.Point</td>
                     @if (isCompleted)
                     {
-                        if(!isTestCurrency){
-                            <td>@(item.AwardedAmount > 0 ? item.AwardedAmount.ToString():"")</td>
+                        if (!isTestCurrency)
+                        {
+                            <td>@(item.AwardedAmount > 0 ? item.AwardedAmount.ToString() : "")</td>
                         }
-                        <td >
+                        <td>
                             @if (item.IsAwarded)
                             {
                                 <span>Paid</span>
@@ -71,7 +72,10 @@
                                 }
                                 @if (item.IsTestCurrency && hasAdminPermission)
                                 {
-                                    <button type="button" class="btn btn-info btn-lg" onclick="promotionLeaderboard.openAwardTestPlayer('@item.OperatorId','@item.PlayerId','@item.PlayerName','@item.Currency',@item.Point,@item.AwardedAmount)">Confirm Payment</button>
+                                    <button type="button" class="btn btn-info btn-lg"
+                                            onclick="promotionLeaderboard.openAwardTestPlayer('@item.OperatorId','@item.PlayerId','@item.PlayerName','@item.Currency',@item.Point,@item.AwardedAmount)">
+                                        Confirm Payment
+                                    </button>
                                 }
                             }
                         </td>

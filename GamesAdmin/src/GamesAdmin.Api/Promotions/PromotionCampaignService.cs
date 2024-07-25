@@ -6,7 +6,6 @@ using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.Promotions.Requests;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -260,12 +259,14 @@ namespace GamesAdmin.Api.Promotions
                 .SortByDescending(p => p.PointInBaseCurrency)
                 .ThenBy(p => p.DataSourceTimeStamp)
                 .ToListAsync();
+            var partner = await partnerService.GetAll();
 
             return awardWinningPlayers.Select((entity, index) =>
             {
                 var data = mapper.Map<AwardWinningPlayer>(entity);
                 data.Ranking = index + 1;
                 data.CompletedPromotion = promotion.Status == PromotionCampaignStatus.CompletedValue;
+                data.OperatorName = partner.First(o => o.PartnerId == data.OperatorId)?.Name;
                 return data;
             }).Where(e => string.IsNullOrEmpty(request.PlayerName) || e.PlayerName == request.PlayerName || e.PlayerId == request.PlayerName);
         }
@@ -278,11 +279,13 @@ namespace GamesAdmin.Api.Promotions
                 .SortByDescending(p => p.PointInBaseCurrency)
                 .ThenBy(p => p.DataSourceTimeStamp)
                 .ToListAsync();
+            var partner = await partnerService.GetAll();
 
             return awardWinningPlayers.Select((entity, index) =>
             {
                 var data = mapper.Map<AwardWinningPlayer>(entity);
                 data.Ranking = index + 1;
+                data.OperatorName = partner.First(o => o.PartnerId == data.OperatorId)?.Name;
                 return data;
             });
         }

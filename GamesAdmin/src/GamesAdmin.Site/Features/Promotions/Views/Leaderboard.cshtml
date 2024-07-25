@@ -5,7 +5,7 @@
     <link href="~/css/promotion-leaderboard.min.css" rel="stylesheet" asp-append-version="true" />
 }
 @{
-    ViewData["Title"] = "Leader Board - Promotion";
+    ViewData["Title"] = "Leaderboard";
 }
 
 <form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetLeaderboard"
@@ -18,12 +18,12 @@
     <div class="form-row align-items-center">
         <input hidden asp-for=PromotionId />
         <div class="col-auto">
-            <label class="control-label">Player Name/ Player Id</label>
-            <input type="text" class="form-control" asp-for=PlayerName placeholder="Player Name" />
+            <label class="control-label">Username/PlayerId</label>
+            <input type="text" class="form-control" asp-for=PlayerName />
         </div>
         <div class="col-auto mt-5">
             <input class="from-check-input" type="checkbox" asp-for=IsTestCurrency />
-            <label class="form-check-label">Only Test Currency</label>
+            <label class="form-check-label">Testing Currency Only</label>
         </div>
         <div class="col-auto list-buttons ml-4">
             <button type="submit" class="btn-submit">Submit</button>
