@@ -22,9 +22,17 @@
         }
     }
 
-    function openAwardTournamentModal() {
-        $(leaderboardElements.awardTournamentModal).find(leaderboardElements.modalBody).html($(leaderboardElements.awardTournamentTable).html());
-        openModal(leaderboardElements.awardTournamentModal)();
+    function openAwardTournamentModal(promotionId) {
+        $.ajax({
+            method: "GET",
+            url: "/Promotion/GetTournamentWinningPlayers",
+            data: { promotionId }
+        }).done(function (content) {
+            if (content) {
+                $(leaderboardElements.awardTournamentModal).find(leaderboardElements.modalBody).html(content);
+                openModal(leaderboardElements.awardTournamentModal)();
+            }
+        });
     }
 
     function onUpsert(modalId, data) {

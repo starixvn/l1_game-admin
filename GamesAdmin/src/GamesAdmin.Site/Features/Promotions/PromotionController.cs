@@ -194,6 +194,14 @@ namespace GamesAdmin.Site.Features.Promotions
             return PartialView("_LeaderboardTable", viewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetTournamentWinningPlayers(int promotionId)
+        {
+            var viewModel = await mediator.Send(new GetTournamentWinningPlayersRequest(promotionId));
+
+            return PartialView("_TournamentWinningPlayers", viewModel);
+        }
+
         [HttpPost, Audit]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> AwardTournament(int promotionId)

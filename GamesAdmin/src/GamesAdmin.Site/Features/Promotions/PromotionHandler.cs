@@ -34,6 +34,7 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<AwardWinningPlayerRequest, OWResult>
         , IRequestHandler<CreateTournamentRequest, MessageResult>
         , IRequestHandler<GetLeaderboardRequest, IEnumerable<AwardWinningPlayer>>
+        , IRequestHandler<GetTournamentWinningPlayersRequest, IEnumerable<AwardWinningPlayer>>
         , IRequestHandler<AwardTournamentRequest, bool>
         , IRequestHandler<GetUpdateOperatorSettingRequest, UpdateOperatorSettingViewModel>
         , IRequestHandler<GetCurrencySettingRequest, EditCurrencyGroupSettingViewModel>
@@ -331,6 +332,9 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<IEnumerable<AwardWinningPlayer>> Handle(GetLeaderboardRequest request, CancellationToken cancellationToken)
             => promotionCampaignService.GetLeaderboard(request);
+
+        public Task<IEnumerable<AwardWinningPlayer>> Handle(GetTournamentWinningPlayersRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.GetTournamentWinningPlayers(request);
 
         public Task<bool> Handle(AwardTournamentRequest request, CancellationToken cancellationToken)
             => promotionCampaignService.AwardTournament(request);

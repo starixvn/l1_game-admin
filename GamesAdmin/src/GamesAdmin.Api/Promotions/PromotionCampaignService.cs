@@ -36,6 +36,8 @@ namespace GamesAdmin.Api.Promotions
         Task<bool> Delete(string id);
 
         Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request);
+
+        Task<IEnumerable<AwardWinningPlayer>> GetTournamentWinningPlayers(int promotionId);
     }
 
     public class PromotionCampaignService : IPromotionCampaignService
@@ -268,6 +270,22 @@ namespace GamesAdmin.Api.Promotions
             }).Where(e => string.IsNullOrEmpty(request.PlayerName) || e.PlayerName == request.PlayerName || e.PlayerId == request.PlayerName);
         }
 
+        public async Task<IEnumerable<AwardWinningPlayer>> GetTournamentWinningPlayers(int promotionId)
+        {
+            var awardWinningPlayers = await promotionLeaderboardRepository
+                .Collection()
+                .Find(x => x.PromotionId == promotionId && x.AwardedAmount > 0 && x.IsAwarded != true)
+                .SortByDescending(p => p.AwardedAmount)
+                .ToListAsync();
+
+            return awardWinningPlayers.Select((entity, index) =>
+            {
+                var data = mapper.Map<AwardWinningPlayer>(entity);
+                data.Ranking = index + 1;
+                return data;
+            });
+        }
+        
         public async Task<bool> Delete(string id)
         {
             var entity = await promotionCampaignRepository.FindByIdAsync(id);

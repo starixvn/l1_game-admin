@@ -60,6 +60,9 @@ namespace GamesAdmin.Site.Features.Promotions
         [Get("/promotion/leaderboard")]
         Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(int promotionId, string playerName, bool isTestCurrency);
 
+        [Get("/promotion/tournamentWinningPlayers")]
+        Task<IEnumerable<AwardWinningPlayer>> GetTournamentWinningPlayers(int promotionId);
+
         [Post("/promotion/awardTournament")]
         Task<bool> AwardTournament(AwardTournamentRequest request);
 
