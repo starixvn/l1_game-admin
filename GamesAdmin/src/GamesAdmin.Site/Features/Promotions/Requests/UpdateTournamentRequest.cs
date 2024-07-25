@@ -6,11 +6,11 @@ namespace GamesAdmin.Site.Features.Promotions.Requests
 {
     public class UpdateTournamentRequest : IRequest<MessageResult>
     {
-        public UpdateTournamentRequest(EditCurrencyGroupSettingViewModel model)
+        public UpdateTournamentRequest(PromotionCampaignViewModel model)
         {
             Model = model;
         }
 
-        public EditCurrencyGroupSettingViewModel Model { get; }
+        public PromotionCampaignViewModel Model { get; }
     }
 }

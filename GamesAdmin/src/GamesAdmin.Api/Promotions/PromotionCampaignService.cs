@@ -31,9 +31,9 @@ namespace GamesAdmin.Api.Promotions
 
         Task<PromotionConfigModel> GetById(string id);
 
-        Task<bool> Update(PromotionConfigModel model);
+        Task<bool> Update(PromotionConfigModel model, string type);
 
-        //Task<bool> Delete(string id);
+        Task<bool> Delete(string id);
 
         Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request);
     }
@@ -90,7 +90,7 @@ namespace GamesAdmin.Api.Promotions
 
         private async Task<List<PromotionConfigEntity>> GetPromotionEntitiesByStatus(string status)
         {
-            Func<IQueryable<PromotionConfigEntity>, IQueryable<PromotionConfigEntity>> orderBy = query => query.OrderByDescending(promotion => promotion.StartDateTime);
+            Func<IQueryable<PromotionConfigEntity>, IQueryable<PromotionConfigEntity>> orderBy = query => query.Where(q=> q.Status != "deleted").OrderByDescending(promotion => promotion.StartDateTime);
 
             // Define the filters for each status
             var filters = new Dictionary<string, Expression<Func<PromotionConfigEntity, bool>>>
@@ -204,7 +204,7 @@ namespace GamesAdmin.Api.Promotions
             entity.PromotionId = promotion != null ? promotion.PromotionId + 1 : 1;
             entity.UpdatedTime = DateTime.UtcNow;
             await promotionCampaignRepository.InsertOneAsync(entity);
-            await chatBotService.NotifyCreatePromotionTournament(model);
+            await chatBotService.NotifyCreatePromotionTournament(model, PromotionTournamentTypeUpdate.CreateTournament);
             return true;
         }
 
@@ -213,25 +213,40 @@ namespace GamesAdmin.Api.Promotions
             return promotionCampaignRepository.AsQueryable().OrderByDescending(p => p.PromotionId).First();
         }
 
-        public async Task<bool> Update(PromotionConfigModel model)
+        public async Task<bool> Update(PromotionConfigModel model, string type)
         {
             var entity = await promotionCampaignRepository.FindByIdAsync(model.Id);
 
-            if (entity != null)
+            if (entity == null)
             {
-                var oldConfig = mapper.Map<PromotionConfigModel>(entity);
-                var modelMapper = mapper.Map<PromotionConfigEntity>(model);
-                var changedSettings = SettingHelper.GetPromotionTournamentChangeModel(oldConfig, model);
-                sentryClient.CaptureChangedSettings("Promoion Tournament", "Configs", string.Empty, changedSettings);
-                var update = Builders<PromotionConfigEntity>.Update
-                    .Set(field => field.WinningPrizes, modelMapper.WinningPrizes)
-                    .Set(field => field.Operators, modelMapper.Operators);
-
-                await promotionCampaignRepository.UpdateAsync(promotion => promotion.Id == entity.Id, update);
-                await chatBotService.NotifyUpdatePromotionTournament(model);
-                return true;
+                return false;
             }
-            return false;
+
+            var oldConfig = mapper.Map<PromotionConfigModel>(entity);
+            var modelMapper = mapper.Map<PromotionConfigEntity>(model);
+            var changedSettings = SettingHelper.GetPromotionTournamentChangeModel(oldConfig, model);
+            sentryClient.CaptureChangedSettings("Promotion Tournament", "Configs", string.Empty, changedSettings);
+
+            UpdateDefinition<PromotionConfigEntity> update;
+
+            if (type.Equals(PromotionTournamentTypeUpdate.OperatorSetting))
+            {
+                update = Builders<PromotionConfigEntity>.Update
+                    .Set(field => field.Operators, modelMapper.Operators);
+            }
+            else
+            {
+                update = Builders<PromotionConfigEntity>.Update
+                    .Set(field => field.Name, modelMapper.Name)
+                    .Set(field => field.StartDateTime, modelMapper.StartDateTime)
+                    .Set(field => field.EndDateTime, modelMapper.EndDateTime)
+                    .Set(field => field.WinningPrizes, modelMapper.WinningPrizes);
+            }
+
+            await promotionCampaignRepository.UpdateAsync(promotion => promotion.Id == entity.Id, update);
+            await chatBotService.NotifyUpdatePromotionTournament(model, type);
+
+            return true;
         }
 
         public async Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request)
@@ -251,6 +266,18 @@ namespace GamesAdmin.Api.Promotions
                 data.CompletedPromotion = promotion.Status == PromotionCampaignStatus.CompletedValue;
                 return data;
             }).Where(e => string.IsNullOrEmpty(request.PlayerName) || e.PlayerName == request.PlayerName || e.PlayerId == request.PlayerName);
+        }
+
+        public async Task<bool> Delete(string id)
+        {
+            var entity = await promotionCampaignRepository.FindByIdAsync(id);
+            if (entity != null)
+            {
+                var update = Builders<PromotionConfigEntity>.Update.Set(field => field.Status, PromotionStatus.Deleted.Value);
+                await promotionCampaignRepository.UpdateAsync(promotion => promotion.Id.Equals(ObjectId.Parse(id)), update);
+                return true;
+            }
+            return false;
         }
     }
 }

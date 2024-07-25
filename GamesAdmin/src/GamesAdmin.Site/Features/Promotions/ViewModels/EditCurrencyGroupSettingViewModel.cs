@@ -14,6 +14,8 @@
         public double OtherGamesMinBet { get; set; } = 0;
 
         public string IncludedSiteNames { get; set; }
+
+        public string Status { get; set; }
     }
 
 }

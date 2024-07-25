@@ -10,7 +10,8 @@
         modalDelete: '#promotion-modal-delete',
         deleteId: '#delete-promotion-id',
         resultLabel: '#result-label',
-        formTournamentSettings: "#update-currency-group-setting-form"
+        formTournamentSettings: "#update-currency-group-setting-form",
+        modalEdit: '#edit-tournament-modal',
     };
     let promotionMessage = {
         createSuccess: 'Add Successfully!',
@@ -53,6 +54,7 @@
                 $('.modal-footer .btn-submit').prop('disabled', false);
                 $(promotionElement.filterForm).submit();
                 $(promotionElement.modal).modal('hide');
+                $(promotionElement.modalEdit).modal('hide');
             }, 1000);
         }
         showMessage({ success, message });
@@ -74,6 +76,23 @@
         $.ajax({
             method: "POST",
             url: "/Promotion/Delete",
+            data: { id: $(promotionElement.deleteId).val() }
+        }).done(function (deleted) {
+            $(promotionElement.modalDelete).modal('hide');
+            if (deleted) {
+                $(promotionElement.filterForm).submit();
+            } else {
+                alert(promotionMessage.deleteUnsuccess);
+            }
+        }).fail(function () {
+            alert(promotionMessage.deleteUnsuccess);
+        });
+    }
+
+    function deleteTournament() {
+        $.ajax({
+            method: "POST",
+            url: "/Promotion/DeleteTournament",
             data: { id: $(promotionElement.deleteId).val() }
         }).done(function (deleted) {
             $(promotionElement.modalDelete).modal('hide');
@@ -122,15 +141,15 @@
         prizeList.appendChild(newSpaceCol);
     }
 
-    function showOperatorSetting(id, operatorId, operatorName) {
-        console.log("showOperatorSetting", id, operatorId, operatorName);
+    function showOperatorSetting(id, operatorId, operatorName, status) {
         $.ajax({
             method: "GET",
             url: "/Promotion/UpdateOperatorSettings",
             data: {
                 id,
                 operatorId,
-                operatorName
+                operatorName,
+                status
             }
         }).done(function (content) {
             if (content) {
@@ -244,6 +263,21 @@
         }, 1000);
     }
 
+    function openEditModal(id) {
+        $.ajax({
+            method: "GET",
+            url: "/Promotion/UpdateTournament",
+            data: {
+                id   
+            }
+        }).done(function (content) {
+            if (content) {
+                $('#edit-tournament-form').html(content);
+                $('#edit-tournament-modal').modal('show')
+            }
+        });
+    }
+
     return {
         openAddNewPromotionForm: function () {
             openModal(promotionElement.formAdd)();
@@ -277,7 +311,9 @@
         showOperatorSetting,
         onChangeGroup,
         toggleTab,
-        onSubmit
+        onSubmit,
+        openEditModal,
+        deleteTournament
     }
 }(jQuery));
 

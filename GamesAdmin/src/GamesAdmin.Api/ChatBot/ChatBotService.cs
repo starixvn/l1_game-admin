@@ -46,9 +46,9 @@ namespace GamesAdmin.Api.ChatBot
             IEnumerable<AwardWinningPlayer> winners,
             IEnumerable<AwardWinningPlayer> failers);
 
-        Task<ChatBotResult> NotifyCreatePromotionTournament(PromotionConfigModel promotion);
+        Task<ChatBotResult> NotifyCreatePromotionTournament(PromotionConfigModel promotion, string type);
 
-        Task<ChatBotResult> NotifyUpdatePromotionTournament(PromotionConfigModel promotion);
+        Task<ChatBotResult> NotifyUpdatePromotionTournament(PromotionConfigModel promotion, string type);
     }
 
     public class ChatBotService : IChatBotService
@@ -59,7 +59,7 @@ namespace GamesAdmin.Api.ChatBot
         private const string MessagePromotion = "**Status: **{0}\r\n**Boosted Odds**: {1}\r\n**Type**: {2}\r\n**From**: {3}\r\n**To**: {4}";
         private const string MessageAddPromotionTournament = "Added new Tournament: **{0}**:\r\n{1}";
         private const string MessageEdiPromotionTournament = "Edit Tournament: **{0}**:\r\n{1}";
-        private const string MessagePromotionTournament = "**List of operators**:\r\n {0}\r\n**Winning Prizes**:\r\n {1}\r\n**From**: {2}\r\n**To**: {3}";
+        
         private const int CacheExpireInMinutes = 60 * 24;
 
         private readonly IAppSettings appSettings;
@@ -351,31 +351,51 @@ namespace GamesAdmin.Api.ChatBot
             return await Task.FromResult(new ChatBotResult());
         }
 
-        private string GetMessagePromotionTournament(string template, PromotionConfigModel promotion)
+        private string GetMessagePromotionTournament(string template, PromotionConfigModel promotion, string type)
         {
-            var messageListOperators = SettingHelper.FormatOperators(promotion.Operators);
-            var messageListWinningPrizes = SettingHelper.FormatWinningPrizes(promotion.WinningPrizes);
-            var promotionTournamentMessage = string.Format(
-                MessagePromotionTournament,
-                messageListOperators,
-                messageListWinningPrizes,
-                promotion.StartDateTime.ToStringAtGMT7(),
-                promotion.EndDateTime.ToStringAtGMT7());
+            string messageListOperators = SettingHelper.FormatOperators(promotion.Operators);
+            string messageListWinningPrizes = SettingHelper.FormatWinningPrizes(promotion.WinningPrizes);
+
+            string promotionTournamentMessage;
+
+            if (type.Equals(PromotionTournamentTypeUpdate.CreateTournament))
+            {
+                promotionTournamentMessage = string.Format(
+                    "**List of operators**:\r\n {0}\r\n**Winning Prizes**:\r\n {1}\r\nStart Time: {2}\r\nEnd Time: {3}",
+                    messageListOperators,
+                    messageListWinningPrizes,
+                    promotion.StartDateTime.ToStringAtGMT7(),
+                    promotion.EndDateTime.ToStringAtGMT7());
+            }
+            else if (type.Equals(PromotionTournamentTypeUpdate.OperatorSetting))
+            {
+                promotionTournamentMessage = string.Format(
+                    "**List of operators**:\r\n {0}",
+                    messageListOperators);
+            }
+            else
+            {
+                promotionTournamentMessage = string.Format(
+                    "**Winning Prizes**:\r\n {0}\r\n**Start Time**: {1}\r\n**End Time**: {2}",
+                    messageListWinningPrizes,
+                    promotion.StartDateTime.ToStringAtGMT7(),
+                    promotion.EndDateTime.ToStringAtGMT7());
+            }
 
             return string.Format(template, promotion.Name, promotionTournamentMessage);
         }
-        public async Task<ChatBotResult> NotifyCreatePromotionTournament(PromotionConfigModel promotion)
+        public async Task<ChatBotResult> NotifyCreatePromotionTournament(PromotionConfigModel promotion, string type)
         {
-            var message = GetMessagePromotionTournament(MessageAddPromotionTournament, promotion);         
+            var message = GetMessagePromotionTournament(MessageAddPromotionTournament, promotion, type);         
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token,
                appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament,
                message));
             return await Task.FromResult(new ChatBotResult());
         }
 
-        public async Task<ChatBotResult> NotifyUpdatePromotionTournament(PromotionConfigModel promotion)
+        public async Task<ChatBotResult> NotifyUpdatePromotionTournament(PromotionConfigModel promotion, string type)
         {
-            var message = GetMessagePromotionTournament(MessageEdiPromotionTournament, promotion);
+            var message = GetMessagePromotionTournament(MessageEdiPromotionTournament, promotion, type);
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token,
                appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament,
                message));

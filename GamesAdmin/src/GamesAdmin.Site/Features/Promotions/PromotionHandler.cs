@@ -37,26 +37,26 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<AwardTournamentRequest, bool>
         , IRequestHandler<GetUpdateOperatorSettingRequest, UpdateOperatorSettingViewModel>
         , IRequestHandler<GetCurrencySettingRequest, EditCurrencyGroupSettingViewModel>
+        , IRequestHandler<UpdateOperatorSettingRequest, MessageResult>
         , IRequestHandler<UpdateTournamentRequest, MessageResult>
+        , IRequestHandler<GetTournamentByIdRequest, PromotionCampaignViewModel>
+        , IRequestHandler<DeleteTournamentRequest, bool>
     {
         private readonly IPromotionService promotionService;
         private readonly IPromotionCampaignService promotionCampaignService;
         private readonly IMapper mapper;
         private readonly IAppSettings appSettings;
         private readonly ICurrencyGroupService currencyGroupService;
-        private readonly IPartnerService partnerService;
 
         public PromotionHandler(IPromotionService promotionService, IGameSettingService gameService, IMapper mapper, IAppSettings appSettings,
             IPromotionCampaignService promotionCampaignService,
-            ICurrencyGroupService currencyGroupService,
-            IPartnerService partnerService)
+            ICurrencyGroupService currencyGroupService)
         {
             this.promotionService = promotionService;
             this.mapper = mapper;
             this.appSettings = appSettings;
             this.promotionCampaignService = promotionCampaignService;
             this.currencyGroupService = currencyGroupService;
-            this.partnerService = partnerService;
         }
 
         public async Task<IEnumerable<PromotionModel>> Handle(GetPromotionByStatusRequest request, CancellationToken cancellationToken)
@@ -342,6 +342,7 @@ namespace GamesAdmin.Site.Features.Promotions
             result.OperatorId = request.OperatorId;
             result.OperatorName = request.OperatorName;
             result.Id = request.Id;
+            result.Status = request.Status;
             result.GroupSelectList = currencyGroups.Select(group => new SelectListItem(group.Name, group.Id)).ToList();
 
             return result;
@@ -363,6 +364,7 @@ namespace GamesAdmin.Site.Features.Promotions
                     result.Enabled = currencyGroup.Enabled;
                 }
             }
+            result.Status = promotion.Status;
             result.OperatorId = request.OperatorId;
             result.GroupId = request.GroupId;
             result.Id = request.Id;
@@ -370,11 +372,11 @@ namespace GamesAdmin.Site.Features.Promotions
             return result;
         }
 
-        public async Task<MessageResult> Handle(UpdateTournamentRequest request, CancellationToken cancellationToken)
+        public async Task<MessageResult> Handle(UpdateOperatorSettingRequest request, CancellationToken cancellationToken)
         {
             var promotion = await promotionCampaignService.GetCampaignById(request.Model.Id);
             MapOperatorSettings(request.Model, promotion);
-            var success =  await promotionCampaignService.Update(promotion);
+            var success =  await promotionCampaignService.Update(promotion, PromotionTournamentTypeUpdate.OperatorSetting);
             return new MessageResult(success, string.Empty);
         }
 
@@ -411,5 +413,24 @@ namespace GamesAdmin.Site.Features.Promotions
                 Console.WriteLine("Operator not found.");
             }
         }
+
+        public async Task<MessageResult> Handle(UpdateTournamentRequest request, CancellationToken cancellationToken)
+        {
+            if (request.Model.Status.Equals(PromotionCampaignStatus.RunningValue))
+            {
+                return new MessageResult(false, "This promotion is running, are you sure to make the change");
+            }
+            var result = await this.promotionCampaignService.Update(mapper.Map<PromotionConfigModel>(request.Model), PromotionTournamentTypeUpdate.EditTournament);
+            return new MessageResult(result, string.Empty);
+        }
+
+        public async Task<PromotionCampaignViewModel> Handle(GetTournamentByIdRequest request, CancellationToken cancellationToken)
+        {
+            var promotion = await promotionCampaignService.GetCampaignById(request.Id);
+            return mapper.Map<PromotionCampaignViewModel>(promotion);
+        }
+
+        public Task<bool> Handle(DeleteTournamentRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.Delete(request.Id);
     }
 }

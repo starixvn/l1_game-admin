@@ -14,5 +14,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public string GroupId { get; set; }
 
         public List<SelectListItem> GroupSelectList { get; set; }
+
+        public string Status { get; set; }
     }
 }

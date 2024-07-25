@@ -94,7 +94,11 @@ namespace GamesAdmin.Api.Promotions
             => mediator.Send(request);
 
         [HttpPost("updateTournament")]
-        public Task<bool> UpdateTournament(PromotionConfigModel model)
-           => mediator.Send(new UpdateTournamentRequest(model));
+        public Task<bool> UpdateTournament(PromotionConfigModel model, string type)
+           => mediator.Send(new UpdateTournamentRequest(model, type));
+
+        [HttpPost("deleteTournament")]
+        public Task<bool> DeleteTournament(string id)
+           => mediator.Send(new DeleteTournamentRequest(id));
     }
 }

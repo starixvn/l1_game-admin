@@ -15,6 +15,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public List<OperatorViewModel> Operators { get; set; }
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
+        public string Status { set; get; }
         public bool HasAnnouncement { get; set; }
         public string StartDateTimeString => StartDateTime.ToString("MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
         public string EndDateTimeString => EndDateTime.ToString("MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
@@ -68,7 +69,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                             if (hasAdminPermission)
                             {
                                 html += $"<td class=\"text-center\" rowspan=\"{operatorRowSpan}\">" +
-                                    $"<i class=\"icon-edit\" onclick='promotion.showOperatorSetting(\"{Id}\", \"{operatorModel.OperatorId}\", \"{operatorModel.OperatorName}\")'></i>" +
+                                    $"<i class=\"icon-edit\" onclick='promotion.showOperatorSetting(\"{Id}\", \"{operatorModel.OperatorId}\", \"{operatorModel.OperatorName}\", \"{Status}\")'></i>" +
                                     $"</td>";
                             }
                             isFirstOperatorRow = false;
@@ -84,8 +85,8 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                             if (hasAdminPermission)
                             {
                                 html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">" +
-                                        $"<a type=\"button\" class=\"btn btn-success btn-lg\" data-ajax=\"true\" data-ajax-mode=\"replace\" data-ajax-update=\"#promotion-modal .modal-content\" data-ajax-success=\"promotion.openUpdatePromotionForm\" asp-route-id=\"{PromotionId}\" asp-action=\"Update\">  Edit  </a>" +
-                                        $"<button type=\"button\" class=\"btn btn-danger btn-lg\" onclick=\"promotion.openDeleteModal('{PromotionId}')\">Delete</button>" +
+                                        $"<button type=\"button\" class=\"btn btn-success btn-lg\" onclick=\"promotion.openEditModal('{Id}')\" >Edit</button>" +
+                                        $"<button type=\"button\" class=\"btn btn-danger btn-lg\" onclick=\"promotion.openDeleteModal('{Id}')\">Delete</button>" +
                                         "</td>";
                             }
                             isFirstPromotionRow = false;
@@ -112,7 +113,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                     if (hasAdminPermission)
                     {
                         html += $"<td class=\"text-center\" rowspan=\"{rowspanDefault}\">" +
-                                    $"<i class=\"icon-edit\" onclick='promotion.showOperatorSetting(\"{Id}\", \"{operatorModel.OperatorId}\", \"{operatorModel.OperatorName}\")'></i>" +
+                                    $"<i class=\"icon-edit\" onclick='promotion.showOperatorSetting(\"{Id}\", \"{operatorModel.OperatorId}\", \"{operatorModel.OperatorName}\", \"{Status}\")'></i>" +
                                     $"</td>";
                     }
 
@@ -126,8 +127,8 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                         if (hasAdminPermission)
                         {
                             html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">" +
-                                    $"<a type=\"button\" class=\"btn btn-success btn-lg\" data-ajax=\"true\" data-ajax-mode=\"replace\" data-ajax-update=\"#promotion-modal .modal-content\" data-ajax-success=\"promotion.openUpdatePromotionForm\" asp-route-id=\"{PromotionId}\" asp-action=\"Update\">  Edit  </a>" +
-                                    $"<button type=\"button\" class=\"btn btn-danger btn-lg\" onclick=\"promotion.openDeleteModal('{PromotionId}')\">Delete</button>" +
+                                    $"<button type=\"button\" class=\"btn btn-success btn-lg\" onclick=\"promotion.openEditModal('{Id}')\" >Edit</button>" +
+                                    $"<button type=\"button\" class=\"btn btn-danger btn-lg\" onclick=\"promotion.openDeleteModal('{Id}')\">Delete</button>" +
                                     "</td>";
                         }
                         isFirstPromotionRow = false;

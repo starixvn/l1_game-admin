@@ -21,7 +21,9 @@ namespace GamesAdmin.Site.Features.Promotions
 
         Task<bool> AwardTournament(AwardTournamentRequest request);
 
-        Task<bool> Update(PromotionConfigModel model);
+        Task<bool> Update(PromotionConfigModel model, string type);
+
+        Task<bool> Delete(string id);
     }
 
     public class PromotionCampaignService : IPromotionCampaignService
@@ -51,7 +53,10 @@ namespace GamesAdmin.Site.Features.Promotions
         public Task<bool> AwardTournament(AwardTournamentRequest request)
              => promotionApi.AwardTournament(request);
 
-        public Task<bool> Update(PromotionConfigModel model)
-            => promotionApi.updateTournament(model);
+        public Task<bool> Update(PromotionConfigModel model, string type)
+            => promotionApi.UpdateTournament(model, type);
+
+        public Task<bool> Delete(string id)
+            => promotionApi.DeleteTournament(id);
     }
 }

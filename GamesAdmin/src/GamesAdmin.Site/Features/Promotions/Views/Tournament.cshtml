@@ -55,6 +55,16 @@
    
 </div>
 
+<div class="modal fade" id="edit-tournament-modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg promotion-model">
+        <div class="modal-content">
+            <div class="modal-body pl-0 pr-0 pt-0 pb-0" id="edit-tournament-form">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade game-modal" id="operatorSettingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -85,7 +95,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Delete Promotion</h5>
+                <h5 class="modal-title">Delete Promotion Tournament</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -95,7 +105,7 @@
                 <input type="text" hidden id="delete-promotion-id" />
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-submit" onclick="promotion.deletePromotion()">Delete</button>
+                <button type="button" class="btn-submit" onclick="promotion.deleteTournament()">Delete</button>
                 <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
             </div>
         </div>

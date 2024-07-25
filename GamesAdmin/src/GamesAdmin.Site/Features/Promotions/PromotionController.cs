@@ -231,20 +231,45 @@ namespace GamesAdmin.Site.Features.Promotions
         }
 
         [HttpGet]
-        public async Task<IActionResult> UpdateOperatorSettings(string id, string operatorId, string operatorName)
-            => PartialView("_UpdateOperatorSetting", await mediator.Send(new GetUpdateOperatorSettingRequest(id, operatorId, operatorName)));
+        public async Task<IActionResult> UpdateOperatorSettings(string id, string operatorId, string operatorName, string status)
+            => PartialView("_UpdateOperatorSetting", await mediator.Send(new GetUpdateOperatorSettingRequest(id, operatorId, operatorName, status)));
 
         [HttpPost, Audit]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateOperatorSettings(EditCurrencyGroupSettingViewModel model)
+        {
+            var result = await mediator.Send(new UpdateOperatorSettingRequest(model));
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCurrencyGroupSetting(string id, string operatorId, string groupId, string groupName)
+           => PartialView("_EditCurrencyGroupSetting", await mediator.Send(new GetCurrencySettingRequest(id, operatorId, groupId)));
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateTournament(string id)
+        {
+            var viewModel = await mediator.Send(new GetTournamentByIdRequest(id));         
+            return PartialView("_UpdateTournament", viewModel);
+        }
+
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateTournament([Bind] PromotionCampaignViewModel model)
         {
             var result = await mediator.Send(new UpdateTournamentRequest(model));
 
             return Json(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetCurrencyGroupSetting(string id, string operatorId, string groupId)
-           => PartialView("_EditCurrencyGroupSetting", await mediator.Send(new GetCurrencySettingRequest(id, operatorId, groupId)));
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> DeleteTournament(string id)
+        {
+            var result = await mediator.Send(new DeleteTournamentRequest(id));
+
+            return Json(result);
+        }
     }
 }

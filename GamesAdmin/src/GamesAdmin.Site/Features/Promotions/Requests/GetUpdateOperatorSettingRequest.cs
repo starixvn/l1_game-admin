@@ -11,11 +11,14 @@ namespace GamesAdmin.Site.Features.Promotions.Requests
 
         public string OperatorName { get; }
 
-        public GetUpdateOperatorSettingRequest(string id, string operatorId, string operatorName)
+        public string Status { get; }
+
+        public GetUpdateOperatorSettingRequest(string id, string operatorId, string operatorName, string status)
         {
             Id = id;
             OperatorId = operatorId;
             OperatorName = operatorName;
+            Status = status;
         }
     }
 }

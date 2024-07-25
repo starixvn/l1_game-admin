@@ -1,4 +1,5 @@
-﻿@model GamesAdmin.Site.Features.Promotions.ViewModels.UpdateOperatorSettingViewModel
+﻿@using GamesAdmin.Core.Enumeration;
+@model GamesAdmin.Site.Features.Promotions.ViewModels.UpdateOperatorSettingViewModel
 
 @{
     ViewData["Title"] = "Operator Settings";
@@ -48,7 +49,13 @@
         <div class="text-message ml-4">
             <label class="font-weight-bold">Input the site name to be offered the promotion:</label>
             <br />
-            <textarea rows="3" cols="50" id="siteInclusions" placeholder="Names are separated by ';'"></textarea>
+            @if (Model.Status.Equals(PromotionCampaignStatus.RunningValue))
+            {
+                <textarea rows="3" cols="50" id="siteInclusions" disabled placeholder="Names are separated by ';'"></textarea>
+            }else
+            {
+                <textarea rows="3" cols="50" id="siteInclusions" placeholder="Names are separated by ';'"></textarea>
+            }           
         </div>
     </div>
 </form>

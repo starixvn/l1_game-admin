@@ -64,6 +64,9 @@ namespace GamesAdmin.Site.Features.Promotions
         Task<bool> AwardTournament(AwardTournamentRequest request);
 
         [Post("/promotion/updateTournament")]
-        Task<bool> updateTournament(PromotionConfigModel model);
+        Task<bool> UpdateTournament(PromotionConfigModel model, string type);
+
+        [Post("/promotion/deleteTournament")]
+        Task<bool> DeleteTournament(string id);
     }
 }
