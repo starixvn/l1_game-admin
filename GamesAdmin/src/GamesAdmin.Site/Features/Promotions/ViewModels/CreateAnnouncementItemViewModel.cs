@@ -16,7 +16,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public Dictionary<string, string> Title { get; set; } = Language.EmptyLanguages;
         public Dictionary<string, string> Messages { get; set; } = Language.EmptyLanguages;
         public DateTime StartTime { get; set; } = DateTime.UtcNow;
-        public DateTime EndTime { get; set; } = DateTime.UtcNow.AddDays(1);
+        public DateTime EndTime { get; set; } = DateTime.UtcNow;
         public string PromotionId { get; set; }
         public bool IsHappyHoursAnnouncement => DisplayKind?.Value == NotificationDisplayKind.Promotion.Value;
 
@@ -55,8 +55,11 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
         public void ConvertToTimeZone(TimeZoneInfo timeZone)
         {
-            StartTime = TimeZoneInfo.ConvertTimeFromUtc(StartTime, timeZone);
-            EndTime = TimeZoneInfo.ConvertTimeFromUtc(EndTime, timeZone);
+            if (Id == null)
+            {
+                StartTime = TimeZoneInfo.ConvertTimeFromUtc(StartTime, timeZone);
+                EndTime = TimeZoneInfo.ConvertTimeFromUtc(EndTime, timeZone);
+            }
         }
     }
 }

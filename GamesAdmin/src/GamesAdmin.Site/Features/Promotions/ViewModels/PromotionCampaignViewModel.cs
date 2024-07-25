@@ -13,8 +13,8 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public bool Enabled { get; set; }
         public DateTime StartDate { get; set; } = DateTime.UtcNow;
         public DateTime EndDate { get; set; } = DateTime.UtcNow.AddDays(1);
-        public DateTime StartTime { get; set; } = DateTime.UtcNow;
-        public DateTime EndTime { get; set; } = DateTime.UtcNow;
+        public DateTime StartTime { get; set; } = DateTime.UtcNow.Date;
+        public DateTime EndTime { get; set; } = DateTime.UtcNow.Date;
         public string Status { get; set; }
         public List<OperatorViewModel> Operators { get; set; }
         public List<WinningPrizeViewModel> WinningPrizes { get; set; } = new List<WinningPrizeViewModel>();
@@ -23,8 +23,6 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         {
             StartDate = TimeZoneInfo.ConvertTimeFromUtc(StartDate, timeZone);
             EndDate = TimeZoneInfo.ConvertTimeFromUtc(EndDate, timeZone);
-            StartTime = TimeZoneInfo.ConvertTimeFromUtc(StartTime, timeZone);
-            EndTime = TimeZoneInfo.ConvertTimeFromUtc(EndTime, timeZone);
         }
     }
 }

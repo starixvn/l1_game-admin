@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using GamesAdmin.Site.Extensions;
 
 namespace GamesAdmin.Site.Features.Promotions.ViewModels
 {
@@ -17,8 +17,8 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public DateTime EndDateTime { get; set; }
         public string Status { set; get; }
         public bool HasAnnouncement { get; set; }
-        public string StartDateTimeString => StartDateTime.ToString("MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
-        public string EndDateTimeString => EndDateTime.ToString("MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+        public string StartDateTimeString => StartDateTime.ToDateTimeFormat();
+        public string EndDateTimeString => EndDateTime.ToDateTimeFormat();
 
         public string GetPrizesHtml()
         {

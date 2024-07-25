@@ -428,8 +428,13 @@ namespace GamesAdmin.Site.Features.Promotions
             {
                 return new MessageResult(false, "This promotion is running, are you sure to make the change");
             }
-            var result = await this.promotionCampaignService.Update(mapper.Map<PromotionConfigModel>(request.Model), PromotionTournamentTypeUpdate.EditTournament);
-            return new MessageResult(result, string.Empty);
+            var messageResult = await ValidateTournament(request.Model);
+            if (messageResult.Success)
+            {
+                var result = await this.promotionCampaignService.Update(mapper.Map<PromotionConfigModel>(request.Model), PromotionTournamentTypeUpdate.EditTournament);
+                return new MessageResult(result, string.Empty);
+            }
+            return messageResult;
         }
 
         public async Task<PromotionCampaignViewModel> Handle(GetTournamentByIdRequest request, CancellationToken cancellationToken)

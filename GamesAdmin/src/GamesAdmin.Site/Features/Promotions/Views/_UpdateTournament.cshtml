@@ -8,7 +8,7 @@
     var disabledValue = Model.Status.Equals(PromotionCampaignStatus.RunningValue);
 }
 <div class="modal-header">
-    <h5 class="modal-title">Edit Tournament</h5>
+    <h5 class="modal-title">Edit Promotion</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -16,10 +16,9 @@
 
 <form class="form" data-ajax="true" data-ajax-method="POST" asp-action="UpdateTournament"
       data-ajax-loading="#spinner"
-      data-ajax-success="promotion.onCreatePromotionSuccess"
-      data-ajax-failure="promotion.onCreatePromotionUnsuccess"
-      id="edit-tournament-form">
-    <input hidden asp-for="@Model.Operators" />
+      data-ajax-success="promotion.onUpdatePromotionSuccess"
+      data-ajax-failure="promotion.onUpdatePromotionUnsuccess"
+      id="add-new-tournament-form">
     <input hidden asp-for="@Model.Status" />
     <input hidden asp-for="@Model.Id" />
     <div class="col-12 mt-3 modal-body">
