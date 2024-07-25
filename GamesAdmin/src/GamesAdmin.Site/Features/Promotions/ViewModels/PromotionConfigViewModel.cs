@@ -31,15 +31,16 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
             var html = "";
             var rowspanDefault = 1;
             bool isFirstPromotionRow = true;
-            var promotionRowSpan = Operators.Sum(o => o.CurrencyGroups.Count > 0 ? o.CurrencyGroups.Count : 1);
+            var promotionRowSpan = Operators.Sum(o => o.CurrencyGroups.Count(cg => cg.Enabled) > 0 ? o.CurrencyGroups.Count(cg => cg.Enabled) : 1);
             foreach (var operatorModel in Operators)
             {
-                var operatorRowSpan = operatorModel.CurrencyGroups.Count > 0 ? operatorModel.CurrencyGroups.Count : 1;
+                var enabledCurrencyGroups = operatorModel.CurrencyGroups.Where(cg => cg.Enabled).ToList();
+                var operatorRowSpan = enabledCurrencyGroups.Count > 0 ? enabledCurrencyGroups.Count : 1;
                 bool isFirstOperatorRow = true;
 
-                if (operatorModel?.CurrencyGroups?.Count() > 0)
+                if (enabledCurrencyGroups.Count() > 0)
                 {
-                    foreach (var currencyGroup in operatorModel.CurrencyGroups)
+                    foreach (var currencyGroup in enabledCurrencyGroups)
                     {
                         html += "<tr>";
                         if (isFirstPromotionRow)
@@ -58,11 +59,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                                 $"<div><strong>{currencyGroup.CurrencyName}</strong></div>" +
                                 $"<div>Slot games: {currencyGroup.DisplaySlotGameMinBet}</div>" +
                                 $"<div>Other games: {currencyGroup.DisplayOtherGameMinBet}</div>" +
-                                "</td>";
-
-                        html += $"<td class=\"text-center\">" +
-                                $"<i class=\"{currencyGroup.StatusIcon}\"></i>" +
-                                "</td>";
+                                "</td>";                      
 
                         if (isFirstOperatorRow)
                         {
@@ -108,7 +105,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
                     html += $"<td rowspan=\"{rowspanDefault}\">{operatorModel.OperatorName}</td>";
 
-                    html += "<td colspan=\"2\" width=\"200px\"></td>";
+                    html += "<td colspan=\"1\" width=\"200px\"></td>";
 
                     if (hasAdminPermission)
                     {
@@ -166,5 +163,4 @@ public class CurrencyGroupsViewModel
     public bool Enabled { get; set; }
     public string DisplaySlotGameMinBet => SlotGameMinBet.ToString();
     public string DisplayOtherGameMinBet => OtherGameMinBet.ToString();
-    public string StatusIcon => Enabled ? "icon-check" : "icon-cancel";
 }

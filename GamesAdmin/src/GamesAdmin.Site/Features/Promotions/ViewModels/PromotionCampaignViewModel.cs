@@ -12,7 +12,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public string Name { get; set; }
         public bool Enabled { get; set; }
         public DateTime StartDate { get; set; } = DateTime.UtcNow;
-        public DateTime EndDate { get; set; } = DateTime.UtcNow;
+        public DateTime EndDate { get; set; } = DateTime.UtcNow.AddDays(1);
         public DateTime StartTime { get; set; } = DateTime.UtcNow;
         public DateTime EndTime { get; set; } = DateTime.UtcNow;
         public string Status { get; set; }
