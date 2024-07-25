@@ -15,6 +15,7 @@ using System.Linq;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Database.Entities.Promotion;
 using GamesAdmin.Core.Enumeration;
+using System.Linq.Expressions;
 
 namespace GamesAdmin.Api.Promotions
 {
@@ -112,13 +113,14 @@ namespace GamesAdmin.Api.Promotions
         {
             try
             {
-                var entity = await promotionLeaderboardRepository.FindOneAsync(e => e.PlayerId == awardWinningPlayer.PlayerId);
+                Expression<Func<PromotionLeaderboardEntity, bool>> expression = e => e.PlayerId == awardWinningPlayer.PlayerId && e.PromotionId == awardWinningPlayer.PromotionId;
+                var entity = await promotionLeaderboardRepository.FindOneAsync(expression);
                 if (entity != null)
                 {
                     var update = Builders<PromotionLeaderboardEntity>.Update
                         .Set(field => field.IsAwarded, true)
                         .Set(field => field.AwardedTime, DateTime.UtcNow);
-                    await promotionLeaderboardRepository.UpdateAsync(e => e.PlayerId == awardWinningPlayer.PlayerId, update);
+                    await promotionLeaderboardRepository.UpdateAsync(expression, update);
 
                     return true;
                 }
@@ -133,11 +135,21 @@ namespace GamesAdmin.Api.Promotions
 
         private async Task NotifyConfirmPayment(int promotionId, List<AwardWinningPlayer> awardedPlayers)
         {
-            var promotion = await promotionConfigRepository.FindOneAsync(e => e.PromotionId == promotionId);
-            var notification = await notificationRepository.FindOneAsync(e => e.PromotionId == promotion.Id.ToString());
-            var winners = awardedPlayers.Where(e => e.IsAwarded);
-            var failers = awardedPlayers.Where(e => !e.IsAwarded);
-            _ = chatBotService.NotifyConfirmPaymentPromotionTournament(notification.Title[Language.EN], promotion.StartDateTime, promotion.EndDateTime, winners, failers);
+            try
+            {
+                if (awardedPlayers?.Count > 0)
+                {
+                    var promotion = await promotionConfigRepository.FindOneAsync(e => e.PromotionId == promotionId);
+                    var notification = await notificationRepository.FindOneAsync(e => e.PromotionId == promotion.Id.ToString());
+                    var winners = awardedPlayers.Where(e => e.IsAwarded);
+                    var failers = awardedPlayers.Where(e => !e.IsAwarded);
+                    _ = chatBotService.NotifyConfirmPaymentPromotionTournament(notification.Title[Language.EN], promotion.StartDateTime, promotion.EndDateTime, winners, failers);
+                }
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
         }
     }
 }
