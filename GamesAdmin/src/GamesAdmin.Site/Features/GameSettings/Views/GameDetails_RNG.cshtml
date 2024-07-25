@@ -1,5 +1,9 @@
 @using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Core;
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
+
+@inject GamesAdmin.Site._Shared.Configurations.ISystemSettings systemSettings;
+
 @model EditViewModel;
 
 <div>
@@ -113,12 +117,14 @@
                 </div>
             }
 
-            
-            <div class="form-group">
-                <label asp-for="MaxWinPerRound" class="control-label max-win-per-round-label"></label>
+            @if (systemSettings.System == SystemType.GN)
+            {
+                <div class="form-group">
+                    <label asp-for="MaxWinPerRound" class="control-label max-win-per-round-label"></label>
                     <input asp-for="MaxWinPerRound" type="number" class="form-control max-win-per-round" />
-                <label> x Max Bet</label>
-            </div>
+                    <label> x Max Bet</label>
+                </div>
+            }
 
             <div class="form-group">
                 <input type="checkbox" asp-for="BotEnabled" />
