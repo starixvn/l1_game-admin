@@ -33,7 +33,9 @@
             <th>Total points</th>
             @if (isCompleted)
             {
-                <th>Reward Amount</th>
+                if(!isTestCurrency){
+                    <th>Reward Amount</th>
+                }
                 <th>Paid Status</th>
                 <th>Paid Date (GMT +7)</th>
             }
@@ -53,7 +55,9 @@
                     <td>@item.Point</td>
                     @if (isCompleted)
                     {
-                        <td>@(item.AwardedAmount > 0 ? item.AwardedAmount.ToString():"")</td>
+                        if(!isTestCurrency){
+                            <td>@(item.AwardedAmount > 0 ? item.AwardedAmount.ToString():"")</td>
+                        }
                         <td >
                             @if (item.IsAwarded)
                             {

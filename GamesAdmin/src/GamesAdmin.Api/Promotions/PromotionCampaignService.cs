@@ -92,7 +92,7 @@ namespace GamesAdmin.Api.Promotions
 
         private async Task<List<PromotionConfigEntity>> GetPromotionEntitiesByStatus(string status)
         {
-            Func<IQueryable<PromotionConfigEntity>, IQueryable<PromotionConfigEntity>> orderBy = query => query.Where(q=> q.Status != "deleted").OrderByDescending(promotion => promotion.StartDateTime);
+            Func<IQueryable<PromotionConfigEntity>, IQueryable<PromotionConfigEntity>> orderBy = query => query.Where(q => q.Status != "deleted").OrderByDescending(promotion => promotion.StartDateTime);
 
             // Define the filters for each status
             var filters = new Dictionary<string, Expression<Func<PromotionConfigEntity, bool>>>
@@ -275,7 +275,8 @@ namespace GamesAdmin.Api.Promotions
             var awardWinningPlayers = await promotionLeaderboardRepository
                 .Collection()
                 .Find(x => x.PromotionId == promotionId && x.AwardedAmount > 0 && x.IsAwarded != true)
-                .SortByDescending(p => p.AwardedAmount)
+                .SortByDescending(p => p.PointInBaseCurrency)
+                .ThenBy(p => p.DataSourceTimeStamp)
                 .ToListAsync();
 
             return awardWinningPlayers.Select((entity, index) =>
@@ -285,7 +286,7 @@ namespace GamesAdmin.Api.Promotions
                 return data;
             });
         }
-        
+
         public async Task<bool> Delete(string id)
         {
             var entity = await promotionCampaignRepository.FindByIdAsync(id);
