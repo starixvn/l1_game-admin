@@ -14,7 +14,7 @@
 
 @if (isCompleted)
 {
-    @if (!isTestCurrency && hasAdminPermission && Model.Any(e=>e.IsAwarded != true && e.AwardedAmount > 0))
+    @if (!isTestCurrency && hasAdminPermission && Model.Any(e => e.IsAwarded != true && e.AwardedAmount > 0))
     {
         <div class="ml-5">
             <button class="btn-add mt-3 mb-5" id="btn-confirm-payment" onclick="promotionLeaderboard.openAwardTournamentModal(@promotionId)">Confirm payment</button>
@@ -71,7 +71,7 @@
                                 }
                                 @if (item.IsTestCurrency && hasAdminPermission)
                                 {
-                                    <button type="button" class="btn btn-info btn-lg">Award</button>
+                                    <button type="button" class="btn btn-info btn-lg" onclick="promotionLeaderboard.openAwardTestPlayer('@item.OperatorId','@item.PlayerId','@item.PlayerName','@item.Currency',@item.Point,@item.AwardedAmount)">Confirm Payment</button>
                                 }
                             }
                         </td>

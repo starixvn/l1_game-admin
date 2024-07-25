@@ -31,6 +31,8 @@ namespace GamesAdmin.Api.Promotions
         Task<AwardWinningPlayer> AwardWinningPlayer(AwardWinningPlayer awardWinningPlayer);
 
         Task<bool> AwardTournament(AwardTournamentRequest request);
+
+        Task<bool> AwardTestCurrency(AwardTestCurrencyRequest request);
     }
 
     public class AwardService : IAwardService
@@ -79,6 +81,34 @@ namespace GamesAdmin.Api.Promotions
             }
 
             return awardWinningPlayer;
+        }
+
+        public async Task<bool> AwardTestCurrency(AwardTestCurrencyRequest request)
+        {
+            try
+            {
+                var winningPlayer = await promotionLeaderboardRepository.Collection()
+                    .Find(e => e.IsAwarded != true && 
+                    e.PromotionId == request.PromotionId 
+                    && e.PlayerId == request.PlayerId
+                    && e.OperatorId == request.OperatorId).SingleAsync();
+                var player = mapper.Map<AwardWinningPlayer>(winningPlayer);
+                player.GameTypeId = 9999;
+                player.Amount = (decimal)request.AwardAmount;
+                await AwardWinningPlayer(player);
+                var awardWinningPlayers = new List<AwardWinningPlayer>
+                {
+                    player
+                };
+
+                await NotifyConfirmPayment(request.PromotionId, awardWinningPlayers);
+                return player.IsAwarded;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return false;
+            }
         }
 
         public async Task<bool> AwardTournament(AwardTournamentRequest request)

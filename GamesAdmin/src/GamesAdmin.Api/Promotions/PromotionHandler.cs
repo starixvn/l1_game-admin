@@ -31,6 +31,7 @@ namespace GamesAdmin.Api.Promotions
         , IRequestHandler<UpdateTournamentRequest, bool>
         , IRequestHandler<AwardTournamentRequest, bool>
         , IRequestHandler<DeleteTournamentRequest, bool>
+        , IRequestHandler<AwardTestCurrencyRequest, bool>
     {
         private readonly IPromotionService promotionService;
         private readonly INotificationService notificationService;
@@ -108,5 +109,8 @@ namespace GamesAdmin.Api.Promotions
 
         public Task<bool> Handle(DeleteTournamentRequest request, CancellationToken cancellationToken)
            => promotionCampaignService.Delete(request.Id);
+
+        public Task<bool> Handle(AwardTestCurrencyRequest request, CancellationToken cancellationToken)
+        => awardService.AwardTestCurrency(request);
     }
 }

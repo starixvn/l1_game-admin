@@ -26,6 +26,8 @@ namespace GamesAdmin.Site.Features.Promotions
         Task<bool> Update(PromotionConfigModel model, string type);
 
         Task<bool> Delete(string id);
+
+        Task<bool> AwardTestCurrency(AwardTestCurrencyRequest request);
     }
 
     public class PromotionCampaignService : IPromotionCampaignService
@@ -63,5 +65,8 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<bool> Delete(string id)
             => promotionApi.DeleteTournament(id);
+
+        public Task<bool> AwardTestCurrency(AwardTestCurrencyRequest request)
+         => promotionApi.AwardTestCurrency(request);
     }
 }

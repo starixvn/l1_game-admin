@@ -8,7 +8,11 @@
         btnConfirmPayment: "#btn-confirm-payment",
         awardTournamentModal: "#award-tournament-modal",
         awardTournamentTable: "#award-tournament-table",
-        modalBody: ".modal-body"
+        modalBody: ".modal-body",
+        rowTestAwardAmount: "#row-test-award-amount",
+        awardAmount: "#input-test-award-amount",
+        playerId: "#hidden-test-player-id",
+        operatorId: "#hidden-test-operator-id",
     };
     const messages = {
         awardedSuccess: "Award Successfully!",
@@ -27,6 +31,19 @@
             method: "GET",
             url: "/Promotion/GetTournamentWinningPlayers",
             data: { promotionId }
+        }).done(function (content) {
+            if (content) {
+                $(leaderboardElements.awardTournamentModal).find(leaderboardElements.modalBody).html(content);
+                openModal(leaderboardElements.awardTournamentModal)();
+            }
+        });
+    }
+
+    function openAwardTestPlayer(operatorId, playerId, playerName, currency, point, awardedAmount) {
+        $.ajax({
+            method: "GET",
+            url: "/Promotion/ViewAwardTestCurrency",
+            data: { operatorId, playerId, playerName, currency, point, awardedAmount }
         }).done(function (content) {
             if (content) {
                 $(leaderboardElements.awardTournamentModal).find(leaderboardElements.modalBody).html(content);
@@ -55,10 +72,30 @@
     }
 
     function awardTournament(promotionId) {
+        if ($(promotionLeaderboard.rowTestAwardAmount)) {
+            awardTournamentTestCurrency(promotionId);
+        } else {
+            $.ajax({
+                method: "POST",
+                url: "/Promotion/AwardTournament",
+                data: { promotionId }
+            }).done(function (res) {
+                const message = res ? messages.awardedSuccess : messages.error;
+                onUpsert(leaderboardElements.awardTournamentModal, { success: res, message });
+            }).fail(function () {
+                showMessage(leaderboardElements.awardTournamentModal, { success: false, message: messages.error });
+            });
+        }
+    }
+
+    function awardTournamentTestCurrency(promotionId) {
+        playerId = $(leaderboardElements.awardTournamentModal).find(leaderboardElements.playerId).val();
+        awardAmount = $(leaderboardElements.awardTournamentModal).find(leaderboardElements.awardAmount).val();
+        operatorId = $(leaderboardElements.awardTournamentModal).find(leaderboardElements.operatorId).val();
         $.ajax({
             method: "POST",
-            url: "/Promotion/AwardTournament",
-            data: { promotionId }
+            url: "/Promotion/AwardTestCurrency",
+            data: { promotionId, playerId, awardAmount, operatorId }
         }).done(function (res) {
             const message = res ? messages.awardedSuccess : messages.error;
             onUpsert(leaderboardElements.awardTournamentModal, { success: res, message });
@@ -77,7 +114,9 @@
             });
         },
         openAwardTournamentModal,
+        openAwardTestPlayer,
         awardTournament,
+        awardTournamentTestCurrency,
         openAwardPlayerModal: openModal(leaderboardElements.viewWinningPlayerForm),
         onAwardSuccess: () => { console.log("onAwardSuccess"); },
         onAwardFailed: () => { console.log("onAwardFailed"); }

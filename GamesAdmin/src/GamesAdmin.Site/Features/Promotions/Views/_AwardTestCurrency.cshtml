@@ -1,0 +1,29 @@
+﻿@using GamesAdmin.Site.Features.Promotions.ViewModels
+@model AwardTestCurrencyViewModel
+
+<table class="table table-light table-bordered stripe">
+    <thead>
+        <tr class="text-center">
+            <th>Ranking</th>
+            <th>Operator</th>
+            <th>Player name</th>
+            <th>Currency</th>
+            <th>Total points</th>
+            <th>Reward Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr id="row-test-award-amount" class="text-center">
+            <td>-</td>
+            <td>@Model.OperatorId</td>
+            <td>@Model.PlayerName</td>
+            <td>@Model.Currency</td>
+            <td>@Model.Point</td>
+            <td>
+                <input class="text-center" type="number" id="input-test-award-amount" placeholder="Awarded Amount" min="0" />
+            </td>
+            <input type="hidden" id="hidden-test-player-id" value="@Model.PlayerId" />
+            <input type="hidden" id="hidden-test-operator-id" value="@Model.OperatorId" />
+        </tr>
+    </tbody>
+</table>

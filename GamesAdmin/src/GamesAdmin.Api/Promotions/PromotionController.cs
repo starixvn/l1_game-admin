@@ -97,6 +97,10 @@ namespace GamesAdmin.Api.Promotions
         public Task<bool> AwardTournament(AwardTournamentRequest request)
             => mediator.Send(request);
 
+        [HttpPost("awardTestCurrency")]
+        public Task<bool> AwardTestCurrency(AwardTestCurrencyRequest request)
+            => mediator.Send(request);
+
         [HttpPost("updateTournament")]
         public Task<bool> UpdateTournament(PromotionConfigModel model, string type)
            => mediator.Send(new UpdateTournamentRequest(model, type));

@@ -36,6 +36,7 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<GetLeaderboardRequest, IEnumerable<AwardWinningPlayer>>
         , IRequestHandler<GetTournamentWinningPlayersRequest, IEnumerable<AwardWinningPlayer>>
         , IRequestHandler<AwardTournamentRequest, bool>
+        , IRequestHandler<AwardTestCurrencyRequest, bool>
         , IRequestHandler<GetUpdateOperatorSettingRequest, UpdateOperatorSettingViewModel>
         , IRequestHandler<GetCurrencySettingRequest, EditCurrencyGroupSettingViewModel>
         , IRequestHandler<UpdateOperatorSettingRequest, MessageResult>
@@ -338,6 +339,9 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<bool> Handle(AwardTournamentRequest request, CancellationToken cancellationToken)
             => promotionCampaignService.AwardTournament(request);
+
+        public Task<bool> Handle(AwardTestCurrencyRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.AwardTestCurrency(request);
 
         public async Task<UpdateOperatorSettingViewModel> Handle(GetUpdateOperatorSettingRequest request, CancellationToken cancellationToken)
         {

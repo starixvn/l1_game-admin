@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Audit.Mvc;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.Promotions.Requests;
 using GamesAdmin.Site.Features.Promotions.ViewModels;
@@ -214,6 +215,16 @@ namespace GamesAdmin.Site.Features.Promotions
 
         [HttpPost, Audit]
         [Authorize(Roles = "admin")]
+        public async Task<IActionResult> AwardTestCurrency(int promotionId, string playerId, string operatorId, double awardAmount)
+        {
+            var request = new AwardTestCurrencyRequest(promotionId, playerId, operatorId, awardAmount);
+            var result = await mediator.Send(request);
+
+            return Json(result);
+        }
+
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AwardPlayer([Bind] AwardWinningPlayerRequest request)
         {
             var result = await mediator.Send(request);
@@ -239,6 +250,21 @@ namespace GamesAdmin.Site.Features.Promotions
         }
 
         [HttpGet]
+        public IActionResult ViewAwardTestCurrency(string operatorId, string playerId, string playerName, string currency, double point, double awardAmount)
+        {
+            var viewModel = new AwardTestCurrencyViewModel
+            {
+                OperatorId = operatorId,
+                PlayerId = playerId,
+                PlayerName = playerName,
+                Currency = currency,
+                Point = point,
+                AwardAmount = awardAmount
+            };
+
+            return PartialView("_AwardTestCurrency", viewModel);
+        }
+
         public async Task<IActionResult> UpdateOperatorSettings(string id, string operatorId, string operatorName, string status)
             => PartialView("_UpdateOperatorSetting", await mediator.Send(new GetUpdateOperatorSettingRequest(id, operatorId, operatorName, status)));
 

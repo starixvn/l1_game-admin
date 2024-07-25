@@ -66,6 +66,9 @@ namespace GamesAdmin.Site.Features.Promotions
         [Post("/promotion/awardTournament")]
         Task<bool> AwardTournament(AwardTournamentRequest request);
 
+        [Post("/promotion/awardTestCurrency")]
+        Task<bool> AwardTestCurrency(AwardTestCurrencyRequest request);
+
         [Post("/promotion/updateTournament")]
         Task<bool> UpdateTournament(PromotionConfigModel model, string type);
 
