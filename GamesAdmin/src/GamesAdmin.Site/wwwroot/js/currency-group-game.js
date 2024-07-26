@@ -203,11 +203,23 @@
                         </div>`).insertBefore($('.add-container'));
             this.reparseFormValidation();
         },
+        addBetLvel: function () {
+            $(`<div class="form-group row">
+                            <input type="radio" class="mr-3 ml-3" asp-for="DefaultBetLevel" value="@Model.BetLevels[i]" />
+                            <input id="bet-level-@i" type="number" asp-for="@Model.BetLevels[i]" class="col-2 form-control txt-bet-level"
+                                   data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308." 
+                                   data-val-range-max="1.7976931348623157E+308" 
+                                   data-val-range-min="5E-324"
+                                   data-val-unique="Value should be unique" 
+                                   />
+                            <i class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="currencyGroupGame.removeBetLevel(event)"></i>
+                        </div>`).insertBefore($('.add-container'));
+            this.reparseFormValidation();
+        },
 
         enableDropDownList: function (event) {
             event.target.checked ? $("#GroupIdCopy").prop("disabled", false) : $("#GroupIdCopy").prop("disabled", true);
         },
-
         removeCoinValue: function (event) {
             $(event.target).parent().remove();
             this.updateCoinValuesIndex();
@@ -222,6 +234,23 @@
             for (let index = 0; index < $coinValues.length; index++) {
                 var $coinValue = $($coinValues[index]);
                 $coinValue.attr("name", $coinValue.attr("name").replace(/\d+/, index));
+            }
+            this.reparseFormValidation();
+        },
+        removeBetLevel: function (event) {
+            $(event.target).parent().remove();
+            this.updateBetLevelIndex();
+        },
+        onBetLevelChange: function (event) {
+            const $parent = $(event.target).parent();
+            $("#DefaultBetLevel", $parent).val(event.target.value);
+        },
+        updateBetLevelIndex: function () {
+            var $betLevels = $(".txt-bet-level", "#bet-levels");
+
+            for (let index = 0; index < $betLevels.length; index++) {
+                var $betLevel = $($betLevels[index]);
+                $betLevel.attr("name", $betLevel.attr("name").replace(/\d+/, index));
             }
             this.reparseFormValidation();
         },

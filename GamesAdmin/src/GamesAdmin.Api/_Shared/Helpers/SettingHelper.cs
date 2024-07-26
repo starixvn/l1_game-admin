@@ -51,15 +51,15 @@ namespace GamesAdmin.Api._Shared.Helpers
                 changedSettings.Add(setting);
             }
 
-            if (newConfig.StakeLevels.Length == 0)
+            if (newConfig.BetLevels.Length == 0)
             {
                 changedSettings.Add(new SettingChangedModel("StakeLevels", string.Join(", ", oldConfig.Chips), string.Join(", ", newConfig.Chips)));
                 return changedSettings;
             }
 
-            if (oldConfig.StakeLevels == null)
+            if (oldConfig.BetLevels == null)
             {
-                changedSettings.Add(new SettingChangedModel("StakeLevels", string.Empty, string.Join(", ", newConfig.StakeLevels.Select(s => s.Stake))));
+                changedSettings.Add(new SettingChangedModel("StakeLevels", string.Empty, string.Join(", ", newConfig.BetLevels)));
             }
 
             return changedSettings;

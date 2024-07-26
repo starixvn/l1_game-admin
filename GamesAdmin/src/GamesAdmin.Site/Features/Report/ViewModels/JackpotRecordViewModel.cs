@@ -25,9 +25,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal Rate { get; set; }
 
-        public StakeLevel[] BaseStakeLevel { get; set; }
+        public double[] BaseBetLevel { get; set; }
 
-        public StakeLevel[] StakeLevelByCurrency { get; set; }
+        public double[] BetLevelByCurrency { get; set; }
 
         public void ConvertToUserCurrency(bool isConvert, int baseCurrencyMultiplier = 1)
         {
@@ -40,9 +40,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         private decimal ConvertPool()
         {
-            var indexToGetValue = Array.FindIndex(BaseStakeLevel, stakeLevel => (decimal)stakeLevel.Stake == Pool);
-            return IsIndexValid(indexToGetValue, StakeLevelByCurrency.Length)
-                   ? (decimal)StakeLevelByCurrency[indexToGetValue].Stake
+            var indexToGetValue = Array.FindIndex(BaseBetLevel, betLevel => (decimal)betLevel == Pool);
+            return IsIndexValid(indexToGetValue, BetLevelByCurrency.Length)
+                   ? (decimal)BetLevelByCurrency[indexToGetValue]
                    : Pool;
         }
 

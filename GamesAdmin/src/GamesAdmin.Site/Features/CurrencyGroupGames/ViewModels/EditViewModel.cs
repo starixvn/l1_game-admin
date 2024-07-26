@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
 
         public string[] SiteExclusions { get; set; }
 
-        public StakeLevel[] StakeLevels { get; set; }
+        public double[] BetLevels { get; set; }
 
         public bool DisplayMinMaxBet => new HashSet<GameType>
         {
@@ -50,15 +50,11 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
         public double[] CoinValues { get; set; }
 
         public double? DefaultCoinValue { get; set; }
+        public double? DefaultBetLevel { get; set; }
 
         public double MaxWinPerRound { get; set; }
 
         public bool CopySettingGame { get; set; }
-
-        public bool DisabledStakeLevel(int indexLevel)
-        {
-            return StakeLevels[indexLevel].Stake != 0 && !CopySettingGame;
-        }
 
         public bool DisabledCoinValue(int index)
         {

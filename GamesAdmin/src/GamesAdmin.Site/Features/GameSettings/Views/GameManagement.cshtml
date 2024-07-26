@@ -88,7 +88,7 @@
                                                 @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * minCoin * minBetLevel, Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * maxCoin * maxBetLevel }))
                                                 break;
                                             case GamesAdmin.Core.Enumeration.GameType.Slots:
-                                                @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
+                                                @(": " + string.Join(" - ",new double[] { setting.BetLevels[0], setting.BetLevels[1], setting.BetLevels[2] }))
                                                 break;
                                             default:
                                                 @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
@@ -163,7 +163,7 @@
                                                     @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * minCoin * minBetLevel, Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * maxCoin * maxBetLevel }))
                                                     break;
                                                 case GamesAdmin.Core.Enumeration.GameType.Slots:
-                                                    @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
+                                                    @(": " + string.Join(" - ",new double[] { setting.BetLevels[0], setting.BetLevels[1], setting.BetLevels[2] }))
                                                     break;
                                                 default:
                                                     @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
