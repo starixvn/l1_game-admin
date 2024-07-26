@@ -318,7 +318,7 @@ namespace GamesAdmin.Site.Features.Promotions
             {
                 return true;
             }
-            if (model.StartDateTime >= existingPromotion.EndDateTime || model.EndDateTime <= existingPromotion.StartDateTime)
+            if (model.StartDateTime > existingPromotion.EndDateTime || model.EndDateTime < existingPromotion.StartDateTime)
             {
                 return true;
             }
