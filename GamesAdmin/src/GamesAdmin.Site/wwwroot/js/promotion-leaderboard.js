@@ -72,7 +72,7 @@
     }
 
     function awardTournament(promotionId) {
-        if ($(promotionLeaderboard.rowTestAwardAmount)) {
+        if (document.getElementById("row-test-award-amount")) {
             awardTournamentTestCurrency(promotionId);
         } else {
             $.ajax({
