@@ -6,7 +6,7 @@ namespace GamesAdmin.Core.Extensions
     {
         private const int GreenwichTime = -4;
         private const int HourInDay = 24;
-        private const int AsianGMT = 7;
+        public const int AsianGMT = 7;
 
         public static DateTime ToStartDate(this DateTime dateTime)
         {

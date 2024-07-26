@@ -79,7 +79,7 @@
                                 }
                             }
                         </td>
-                        <td>@(item.IsAwarded ? @item.AwardedTime.ToGMT7().ToDateFormat() : "")</td>
+                        <td>@(item.IsAwarded ? @item.AwardedTime.AddHours(DateTimeExtension.AsianGMT).ToDateFormat() : "")</td>
                     }
                 </tr>
             }

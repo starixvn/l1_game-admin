@@ -35,7 +35,7 @@ namespace GamesAdmin.Api.Promotions
 
     public class AwardService : IAwardService
     {
-        private const int AwardFailedErrorCode = 1;
+        private const int gameTypeIdTournament = 9999;
         private readonly IAwardGameApi awardGameApi;
         private readonly IGenericRepository<PromotionLeaderboardEntity> promotionLeaderboardRepository;
         private readonly IGenericRepository<PromotionConfigEntity> promotionConfigRepository;
@@ -91,16 +91,9 @@ namespace GamesAdmin.Api.Promotions
                     && e.PlayerId == request.PlayerId
                     && e.OperatorId == request.OperatorId).SingleAsync();
                 var player = mapper.Map<AwardWinningPlayer>(winningPlayer);
-                player.GameTypeId = 9999;
+                player.GameTypeId = gameTypeIdTournament;
                 player.Amount = (decimal)request.AwardAmount;
-                await AwardWinningPlayer(player);
-                var awardWinningPlayers = new List<AwardWinningPlayer>
-                {
-                    player
-                };
-
-                await NotifyConfirmPayment(request.PromotionId, awardWinningPlayers);
-                return player.IsAwarded;
+                return (await AwardWinningPlayer(player)).IsAwarded;
             }
             catch (Exception ex)
             {
@@ -121,7 +114,7 @@ namespace GamesAdmin.Api.Promotions
                 foreach (var winningPlayer in winningPlayers)
                 {
                     var player = mapper.Map<AwardWinningPlayer>(winningPlayer);
-                    player.GameTypeId = 9999;
+                    player.GameTypeId = gameTypeIdTournament;
                     player.Amount = (decimal)player.AwardedAmount;
                     tasks.Add(AwardWinningPlayer(player));
                 }
