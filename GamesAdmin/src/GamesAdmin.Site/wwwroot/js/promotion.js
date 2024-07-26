@@ -11,7 +11,6 @@
         deleteId: '#delete-promotion-id',
         resultLabel: '#result-label',
         formTournamentSettings: "#update-currency-group-setting-form",
-        modalEdit: '#edit-tournament-modal',
     };
     let promotionMessage = {
         createSuccess: 'Add Successfully!',
@@ -54,7 +53,6 @@
                 $('.modal-footer .btn-submit').prop('disabled', false);
                 $(promotionElement.filterForm).submit();
                 $(promotionElement.modal).modal('hide');
-                $(promotionElement.modalEdit).modal('hide');
             }, 1000);
         }
         showMessage({ success, message });
@@ -232,7 +230,6 @@
             var data = $('#update-currency-group-setting-form').serializeArray();
             data = data.filter(item => item.name !== 'IncludedSiteNames');
             data.push({ name: "IncludedSiteNames", value: siteInclusions });
-            console.log("updateSetting", data);
             $.ajax({
                 method: "POST",
                 url: '/Promotion/UpdateOperatorSettings',
@@ -263,19 +260,38 @@
         }, 1000);
     }
 
-    function openEditModal(id) {
+    function onEditSubmit() {
+        const nameValue = $('#Name').val()
+        if (nameValue == null || nameValue == "") {
+            $('#nameError').removeAttr('hidden');
+            return false;
+        } else {
+            $('#nameError').attr('hidden', true);
+        }
+        var isRunning = $('#isRunning').val();
+        if (isRunning == 'running') {
+            if (!confirm('This promotion is running, are you sure to make the change?')) {
+                return false;
+            }
+        }
+        var data = $('#edit-tournament-form').serialize();
+        console.log("edit promotion", data);
         $.ajax({
-            method: "GET",
-            url: "/Promotion/UpdateTournament",
-            data: {
-                id   
+            dataType: 'json',
+            url: '/Promotion/UpdateTournament',
+            type: 'POST',
+            data,
+            success: function (response) {
+                if (response.success) {
+                    promotion.onUpdatePromotionSuccess(response);
+                } else {
+                    promotion.onUpdatePromotionUnsuccess(response);
+                }
+            },
+            error: function (response) {
+                promotion.onUpdatePromotionUnsuccess(response);
             }
-        }).done(function (content) {
-            if (content) {
-                $('#edit-tournament-form').html(content);
-                $('#edit-tournament-modal').modal('show')
-            }
-        });
+        });        
     }
 
     return {
@@ -312,8 +328,8 @@
         onChangeGroup,
         toggleTab,
         onSubmit,
-        openEditModal,
-        deleteTournament
+        deleteTournament,
+        onEditSubmit
     }
 }(jQuery));
 

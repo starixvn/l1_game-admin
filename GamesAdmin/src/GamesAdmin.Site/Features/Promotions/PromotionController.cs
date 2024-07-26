@@ -264,7 +264,7 @@ namespace GamesAdmin.Site.Features.Promotions
 
         [HttpPost, Audit]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> UpdateTournament([Bind] PromotionCampaignViewModel model)
+        public async Task<IActionResult> UpdateTournament(PromotionCampaignViewModel model)
         {
             var result = await mediator.Send(new UpdateTournamentRequest(model));
 

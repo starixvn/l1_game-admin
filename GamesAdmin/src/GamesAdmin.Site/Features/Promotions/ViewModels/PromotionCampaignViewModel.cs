@@ -7,7 +7,6 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
     public class PromotionCampaignViewModel
     {
         public string Id { get; set; }
-
         [Required(ErrorMessage = "The Promotion name is required field.")]
         public string Name { get; set; }
         public bool Enabled { get; set; }

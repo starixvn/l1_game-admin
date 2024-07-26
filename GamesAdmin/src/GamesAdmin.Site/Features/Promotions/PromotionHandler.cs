@@ -418,10 +418,6 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public async Task<MessageResult> Handle(UpdateTournamentRequest request, CancellationToken cancellationToken)
         {
-            if (request.Model.Status.Equals(PromotionCampaignStatus.RunningValue))
-            {
-                return new MessageResult(false, "This promotion is running, are you sure to make the change");
-            }
             var messageResult = await ValidateTournament(request.Model);
             if (messageResult.Success)
             {

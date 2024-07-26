@@ -5,7 +5,7 @@
 @inject IAppSettings appSetting;
 @model PromotionCampaignViewModel;
 @{
-    var disabledValue = Model.Status.Equals(PromotionCampaignStatus.RunningValue);
+    var isRunning = Model.Status.Equals(PromotionCampaignStatus.RunningValue);
 }
 <div class="modal-header">
     <h5 class="modal-title">Edit Promotion</h5>
@@ -14,19 +14,15 @@
     </button>
 </div>
 
-<form class="form" data-ajax="true" data-ajax-method="POST" asp-action="UpdateTournament"
-      data-ajax-loading="#spinner"
-      data-ajax-success="promotion.onUpdatePromotionSuccess"
-      data-ajax-failure="promotion.onUpdatePromotionUnsuccess"
-      id="add-new-tournament-form">
-    <input hidden asp-for="@Model.Status" />
+<form class="form" id="edit-tournament-form">
+    <input hidden id="isRunning" asp-for="@Model.Status" />
     <input hidden asp-for="@Model.Id" />
     <div class="col-12 mt-3 modal-body">
         <div class="form-group">
             <div class="col-12 row">
                 <label class="control-label col-3 pt-3 bold" asp-for="Name">Promotion name:</label>
                 <input type="text" class="form-control col-9 bold" asp-for="Name" value="@Model.Name">
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <span id="nameError" hidden class="text-danger">The Promotion name is required field. </span>
             </div>          
         </div>
         <div class="form-group">
@@ -34,7 +30,7 @@
             <div class="form-group">
                 <div class="col-12 row">
                     <label asp-for="StartDate" class="control-label col-3 pt-3">Date (GMT+7):</label>
-                    @if (disabledValue)
+                    @if (isRunning)
                     {
                         <input type="date" class="form-control col-3 mb-3" disabled asp-for="StartDate">
                     }
@@ -45,7 +41,7 @@
                 </div>
                 <div class="col-12 row">
                     <label asp-for="StartTime" class="control-label col-3 pt-3">Time (GMT+7):</label>
-                    @if (disabledValue)
+                    @if (isRunning)
                     {
                         <input type="text" class="form-control col-3 time-picker" disabled asp-for="StartTime" value="@Model.StartTime.ToTimeFormat()">
                     }
@@ -62,7 +58,7 @@
             <div class="form-group">
                 <div class="col-12 row">
                     <label asp-for="EndDate" class="control-label col-3 pt-3">Date (GMT+7):</label>
-                    @if (disabledValue)
+                    @if (isRunning)
                     {
                         <input type="date" class="form-control col-3 mb-3" disabled asp-for="EndDate">
                     }
@@ -74,7 +70,7 @@
                 </div>
                 <div class="col-12 row">
                     <label asp-for="EndTime" class="control-label col-3 pt-3">Time (GMT+7):</label>
-                    @if (disabledValue)
+                    @if (isRunning)
                     {
                         <input type="text" class="form-control col-3 time-picker" disabled= asp-for="EndTime" value="@Model.EndTime.ToTimeFormat()">
                     }
@@ -112,6 +108,6 @@
     </div>
     <div class=" modal-footer">
         <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn-submit">Save</button>
+        <button type="button" onclick="promotion.onEditSubmit()" class="btn-submit">Save</button>
     </div>
 </form>
