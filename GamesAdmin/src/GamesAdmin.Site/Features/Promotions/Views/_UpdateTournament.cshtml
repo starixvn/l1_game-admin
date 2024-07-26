@@ -32,7 +32,7 @@
                     <label asp-for="StartDate" class="control-label col-3 pt-3">Date (GMT+7):</label>
                     @if (isRunning)
                     {
-                        <input type="date" class="form-control col-3 mb-3" disabled asp-for="StartDate">
+                        <input type="date" class="form-control col-3 mb-3" readonly asp-for="StartDate">
                     }
                     else
                     {
@@ -43,7 +43,7 @@
                     <label asp-for="StartTime" class="control-label col-3 pt-3">Time (GMT+7):</label>
                     @if (isRunning)
                     {
-                        <input type="text" class="form-control col-3 time-picker" disabled asp-for="StartTime" value="@Model.StartTime.ToTimeFormat()">
+                        <input type="text" class="form-control col-3 time-picker" readonly asp-for="StartTime" value="@Model.StartTime.ToTimeFormat()">
                     }
                     else
                     {
@@ -60,7 +60,7 @@
                     <label asp-for="EndDate" class="control-label col-3 pt-3">Date (GMT+7):</label>
                     @if (isRunning)
                     {
-                        <input type="date" class="form-control col-3 mb-3" disabled asp-for="EndDate">
+                        <input type="date" class="form-control col-3 mb-3" readonly asp-for="EndDate">
                     }
                     else
                     {
@@ -72,7 +72,7 @@
                     <label asp-for="EndTime" class="control-label col-3 pt-3">Time (GMT+7):</label>
                     @if (isRunning)
                     {
-                        <input type="text" class="form-control col-3 time-picker" disabled= asp-for="EndTime" value="@Model.EndTime.ToTimeFormat()">
+                        <input type="text" class="form-control col-3 time-picker" readonly asp-for="EndTime" value="@Model.EndTime.ToTimeFormat()">
                     }
                     else
                     {
