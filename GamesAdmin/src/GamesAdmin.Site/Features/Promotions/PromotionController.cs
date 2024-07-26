@@ -223,11 +223,12 @@ namespace GamesAdmin.Site.Features.Promotions
         }
 
         [HttpGet]
-        public IActionResult ViewAwardTestCurrency(string operatorId, string playerId, string playerName, string currency, double point, double awardAmount)
+        public IActionResult ViewAwardTestCurrency(string operatorId, string operatorName, string playerId, string playerName, string currency, double point, double awardAmount)
         {
             var viewModel = new AwardTestCurrencyViewModel
             {
                 OperatorId = operatorId,
+                OperatorName= operatorName,
                 PlayerId = playerId,
                 PlayerName = playerName,
                 Currency = currency,

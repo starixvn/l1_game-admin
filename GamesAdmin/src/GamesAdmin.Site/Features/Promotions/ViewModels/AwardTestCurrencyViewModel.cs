@@ -7,7 +7,9 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
         public string Currency { get; set; }
 
         public string OperatorId { get; set; }
-        
+
+        public string OperatorName { get; set; }
+
         public string PlayerId { get; set; }
 
         public string PlayerName { get; set; }

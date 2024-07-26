@@ -39,11 +39,11 @@
         });
     }
 
-    function openAwardTestPlayer(operatorId, playerId, playerName, currency, point, awardedAmount) {
+    function openAwardTestPlayer(operatorId, operatorName, playerId, playerName, currency, point, awardedAmount) {
         $.ajax({
             method: "GET",
             url: "/Promotion/ViewAwardTestCurrency",
-            data: { operatorId, playerId, playerName, currency, point, awardedAmount }
+            data: { operatorId, operatorName, playerId, playerName, currency, point, awardedAmount }
         }).done(function (content) {
             if (content) {
                 $(leaderboardElements.awardTournamentModal).find(leaderboardElements.modalBody).html(content);
