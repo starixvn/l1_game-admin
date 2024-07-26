@@ -5,7 +5,6 @@ using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Promotions.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Promotion;
-using GamesAdmin.Core.OWResults;
 using MediatR;
 
 namespace GamesAdmin.Api.Promotions
@@ -24,7 +23,6 @@ namespace GamesAdmin.Api.Promotions
         , IRequestHandler<DeleteAnnouncementRequest, bool>
         , IRequestHandler<GetPromotionCampaignByStatusRequest, IEnumerable<PromotionConfigModel>>
         , IRequestHandler<GetPromotionCampaignByIdRequest, PromotionConfigModel>
-        , IRequestHandler<AwardWinningPlayerRequest, AwardWinningPlayer>
         , IRequestHandler<CreateTournamentRequest, bool>
         , IRequestHandler<GetLeaderboardRequest, IEnumerable<AwardWinningPlayer>>
         , IRequestHandler<GetTournamentWinningPlayersRequest, IEnumerable<AwardWinningPlayer>>
@@ -88,9 +86,6 @@ namespace GamesAdmin.Api.Promotions
 
         public Task<PromotionConfigModel> Handle(GetPromotionCampaignByIdRequest request, CancellationToken cancellationToken)
         => promotionCampaignService.GetById(request.Id);
-
-        public Task<AwardWinningPlayer> Handle(AwardWinningPlayerRequest request, CancellationToken cancellationToken)
-        => awardService.AwardWinningPlayer(request);
 
         public Task<bool> Handle(CreateTournamentRequest request, CancellationToken cancellationToken)
             => promotionCampaignService.Create(request.Model);

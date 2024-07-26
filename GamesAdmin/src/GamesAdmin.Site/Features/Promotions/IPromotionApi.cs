@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Promotion;
-using GamesAdmin.Core.OWResults;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Promotions.Requests;
 using Refit;
@@ -50,9 +49,6 @@ namespace GamesAdmin.Site.Features.Promotions
 
         [Get("/promotion/getCampaignById")]
         Task<PromotionConfigModel> GetCampaignById(string id);
-
-        [Post("/promotion/award")]
-        Task<OWResult> Award(AwardWinningPlayerRequest request);
 
         [Post("/promotion/createTournament")]
         Task<bool> CreateTournament(PromotionConfigModel model);

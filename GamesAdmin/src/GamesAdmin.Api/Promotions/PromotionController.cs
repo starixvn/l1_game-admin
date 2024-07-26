@@ -5,7 +5,6 @@ using GamesAdmin.Api.Promotions.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Promotion;
-using GamesAdmin.Core.OWResults;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -76,14 +75,6 @@ namespace GamesAdmin.Api.Promotions
         [HttpGet("getCampaignById")]
         public Task<PromotionConfigModel> GetCampaignById(string id)
            => mediator.Send(new GetPromotionCampaignByIdRequest(id));
-
-        [HttpPost("award")]
-        public async Task<OWResult> Award(AwardWinningPlayerRequest request)
-        {
-            var awardPlayer = await mediator.Send(request);
-            // TODO: correct return type
-            return new OWResult { ErrorCode = awardPlayer.IsAwarded ? 0 : 1 };
-        }
 
         [HttpGet("leaderboard")]
         public Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(int promotionId, string playerName, bool isTestCurrency)

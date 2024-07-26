@@ -28,8 +28,6 @@ namespace GamesAdmin.Api.Promotions
 
     public interface IAwardService
     {
-        Task<AwardWinningPlayer> AwardWinningPlayer(AwardWinningPlayer awardWinningPlayer);
-
         Task<bool> AwardTournament(AwardTournamentRequest request);
 
         Task<bool> AwardTestCurrency(AwardTestCurrencyRequest request);
@@ -63,7 +61,7 @@ namespace GamesAdmin.Api.Promotions
             this.sentryClient = sentryClient;
         }
 
-        public async Task<AwardWinningPlayer> AwardWinningPlayer(AwardWinningPlayer awardWinningPlayer)
+        private async Task<AwardWinningPlayer> AwardWinningPlayer(AwardWinningPlayer awardWinningPlayer)
         {
             try
             {
@@ -88,8 +86,8 @@ namespace GamesAdmin.Api.Promotions
             try
             {
                 var winningPlayer = await promotionLeaderboardRepository.Collection()
-                    .Find(e => e.IsAwarded != true && 
-                    e.PromotionId == request.PromotionId 
+                    .Find(e => e.IsAwarded != true &&
+                    e.PromotionId == request.PromotionId
                     && e.PlayerId == request.PlayerId
                     && e.OperatorId == request.OperatorId).SingleAsync();
                 var player = mapper.Map<AwardWinningPlayer>(winningPlayer);

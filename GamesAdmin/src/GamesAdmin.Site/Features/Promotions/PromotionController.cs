@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Audit.Mvc;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.Promotions.Requests;
 using GamesAdmin.Site.Features.Promotions.ViewModels;
@@ -223,32 +222,6 @@ namespace GamesAdmin.Site.Features.Promotions
             return Json(result);
         }
 
-        [HttpPost, Audit]
-        [Authorize(Roles = "admin")]
-        public async Task<IActionResult> AwardPlayer([Bind] AwardWinningPlayerRequest request)
-        {
-            var result = await mediator.Send(request);
-
-            return Json(result);
-        }
-
-        [HttpGet]
-        public IActionResult ViewAward(int promotionId, string playerId)
-        {
-            var viewModel = new AwardViewModel
-            {
-                PromotionId = 1,
-                PlayerId = "1111",
-                OperatorId = "ONEworks_VG",
-                Amount = 1,
-                Currency = "INH",
-                SiteId = "333333",
-                GameTypeId = 9999
-            };
-
-            return PartialView("_Award", viewModel);
-        }
-
         [HttpGet]
         public IActionResult ViewAwardTestCurrency(string operatorId, string playerId, string playerName, string currency, double point, double awardAmount)
         {
@@ -284,7 +257,7 @@ namespace GamesAdmin.Site.Features.Promotions
         [HttpGet]
         public async Task<IActionResult> UpdateTournament(string id)
         {
-            var viewModel = await mediator.Send(new GetTournamentByIdRequest(id));         
+            var viewModel = await mediator.Send(new GetTournamentByIdRequest(id));
             return PartialView("_UpdateTournament", viewModel);
         }
 

@@ -117,9 +117,6 @@
         openAwardTestPlayer,
         awardTournament,
         awardTournamentTestCurrency,
-        openAwardPlayerModal: openModal(leaderboardElements.viewWinningPlayerForm),
-        onAwardSuccess: () => { console.log("onAwardSuccess"); },
-        onAwardFailed: () => { console.log("onAwardFailed"); }
     }
 }(jQuery));
 

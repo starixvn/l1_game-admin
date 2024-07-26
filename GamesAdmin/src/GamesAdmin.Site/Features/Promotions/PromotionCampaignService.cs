@@ -1,6 +1,4 @@
-﻿using GamesAdmin.Core.Models;
-using GamesAdmin.Core.Models.Promotion;
-using GamesAdmin.Core.OWResults;
+﻿using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Site.Features.Promotions.Requests;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,8 +12,6 @@ namespace GamesAdmin.Site.Features.Promotions
         Task<PromotionConfigModel> GetCampaignById(string id);
 
         Task<bool> Create(PromotionConfigModel model);
-
-        Task<OWResult> Award(AwardWinningPlayerRequest request);
 
         Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request);
 
@@ -44,9 +40,6 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<PromotionConfigModel> GetCampaignById(string id)
             => promotionApi.GetCampaignById(id);
-
-        public Task<OWResult> Award(AwardWinningPlayerRequest request)
-             => promotionApi.Award(request);
 
         public Task<bool> Create(PromotionConfigModel model)
         => promotionApi.CreateTournament(model);

@@ -7,12 +7,10 @@ using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Promotion;
-using GamesAdmin.Core.OWResults;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.GameSettings;
-using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Promotions.Requests;
 using GamesAdmin.Site.Features.Promotions.ViewModels;
 using MediatR;
@@ -31,7 +29,6 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<UpdateAnnouncementRequest, bool>
         , IRequestHandler<DeleteAnnouncementRequest, bool>
         , IRequestHandler<GetTournamentPromotionsByStatusRequest, IEnumerable<PromotionConfigViewModel>>
-        , IRequestHandler<AwardWinningPlayerRequest, OWResult>
         , IRequestHandler<CreateTournamentRequest, MessageResult>
         , IRequestHandler<GetLeaderboardRequest, IEnumerable<AwardWinningPlayer>>
         , IRequestHandler<GetTournamentWinningPlayersRequest, IEnumerable<AwardWinningPlayer>>
@@ -286,9 +283,6 @@ namespace GamesAdmin.Site.Features.Promotions
             return promotionViewModels;
         }
 
-        public Task<OWResult> Handle(AwardWinningPlayerRequest request, CancellationToken cancellationToken)
-            => promotionCampaignService.Award(request);
-
         public async Task<MessageResult> Handle(CreateTournamentRequest request, CancellationToken cancellationToken)
         {
             var messageResult = await ValidateTournament(request.Model);
@@ -385,7 +379,7 @@ namespace GamesAdmin.Site.Features.Promotions
         {
             var promotion = await promotionCampaignService.GetCampaignById(request.Model.Id);
             MapOperatorSettings(request.Model, promotion);
-            var success =  await promotionCampaignService.Update(promotion, PromotionTournamentTypeUpdate.OperatorSetting);
+            var success = await promotionCampaignService.Update(promotion, PromotionTournamentTypeUpdate.OperatorSetting);
             return new MessageResult(success, string.Empty);
         }
 
