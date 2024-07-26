@@ -245,9 +245,29 @@ namespace GamesAdmin.Api.Promotions
             }
 
             await promotionCampaignRepository.UpdateAsync(promotion => promotion.Id == entity.Id, update);
-            await chatBotService.NotifyUpdatePromotionTournament(model, type);
+            var updatedModel = await this.UpdateOperatorAndCurrencyGroupName(model);
+            await chatBotService.NotifyUpdatePromotionTournament(updatedModel, type);
 
             return true;
+        }
+
+        private async Task<PromotionConfigModel> UpdateOperatorAndCurrencyGroupName(PromotionConfigModel model)
+        {
+            for(var i = 0; i < model.Operators.Count; i++)
+            {
+                var operatorModel = model.Operators[i];
+                var operatorResult = await this.partnerService.GetById(operatorModel.OperatorId);
+                operatorModel.OperatorName = operatorResult?.Name;
+                var currencyGroups = (await currencyGroupRepository.FilterByAsync(currency => operatorModel.OperatorId == currency.PartnerId)).ToList();
+
+                for (var j = 0; j <operatorModel.CurrencyGroups.Count; j++)
+                {                   
+                    var currencyGroup = currencyGroups.FirstOrDefault(g => g.Id.Equals(ObjectId.Parse(operatorModel.CurrencyGroups[j].CurrencyGroupId)));
+                    operatorModel.CurrencyGroups[j].CurrencyName = currencyGroup?.Name; 
+                }
+            }
+
+            return model;
         }
 
         public async Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request)
