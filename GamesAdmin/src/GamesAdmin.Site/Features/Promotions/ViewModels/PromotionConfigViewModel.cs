@@ -3,6 +3,8 @@ using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using GamesAdmin.Site.Extensions;
+using System.Text;
+using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Site.Features.Promotions.ViewModels
 {
@@ -28,10 +30,11 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
         public string GetTournamentHtml(bool hasAdminPermission, IUrlHelper urlHelper)
         {
-            var html = "";
+            var html = new StringBuilder();
             var rowspanDefault = 1;
             bool isFirstPromotionRow = true;
             var promotionRowSpan = Operators.Sum(o => o.CurrencyGroups.Count(cg => cg.Enabled) > 0 ? o.CurrencyGroups.Count(cg => cg.Enabled) : 1);
+
             foreach (var operatorModel in Operators)
             {
                 var enabledCurrencyGroups = operatorModel.CurrencyGroups.Where(cg => cg.Enabled).ToList();
@@ -42,101 +45,121 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                 {
                     foreach (var currencyGroup in enabledCurrencyGroups)
                     {
-                        html += "<tr>";
+                        html.Append("<tr>");
                         if (isFirstPromotionRow)
                         {
-                            html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">{Name}</td>";
-                            html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">{PromotionId}</td>";
-                            html += $"<td rowspan=\"{promotionRowSpan}\" width=\"150px\">{GetPrizesHtml()}</td>";
+                            html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">{Name}</td>");
+                            html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">{PromotionId}</td>");
+                            html.Append($"<td rowspan=\"{promotionRowSpan}\" width=\"150px\">{GetPrizesHtml()}</td>");
                         }
 
                         if (isFirstOperatorRow)
                         {
-                            html += $"<td rowspan=\"{operatorRowSpan}\">{operatorModel.OperatorName}</td>";
+                            html.Append($"<td rowspan=\"{operatorRowSpan}\">{operatorModel.OperatorName}</td>");
                         }
 
-                        html += $"<td width=\"200px\">" +
-                                $"<div><strong>{currencyGroup.CurrencyName}</strong></div>" +
-                                $"<div>Slot games: {currencyGroup.DisplaySlotGameMinBet}</div>" +
-                                $"<div>Other games: {currencyGroup.DisplayOtherGameMinBet}</div>" +
-                                "</td>";                      
+                        html.Append($"<td width=\"200px\">" +
+                                    $"<div><strong>{currencyGroup.CurrencyName}</strong></div>" +
+                                    $"<div>Slot games: {currencyGroup.DisplaySlotGameMinBet}</div>" +
+                                    $"<div>Other games: {currencyGroup.DisplayOtherGameMinBet}</div>" +
+                                    "</td>");
 
                         if (isFirstOperatorRow)
                         {
                             if (hasAdminPermission)
                             {
-                                html += $"<td class=\"text-center\" rowspan=\"{operatorRowSpan}\">" +
-                                    $"<i class=\"icon-edit\" onclick='promotion.showOperatorSetting(\"{Id}\", \"{operatorModel.OperatorId}\", \"{operatorModel.OperatorName}\", \"{Status}\")'></i>" +
-                                    $"</td>";
+                                html.Append($"<td class=\"text-center\" rowspan=\"{operatorRowSpan}\">" +
+                                            $"<i class=\"icon-edit\" onclick='promotion.showOperatorSetting(\"{Id}\", \"{operatorModel.OperatorId}\", \"{operatorModel.OperatorName}\", \"{Status}\")'></i>" +
+                                            $"</td>");
                             }
                             isFirstOperatorRow = false;
                         }
-                     
 
                         if (isFirstPromotionRow)
                         {
-                            html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{StartDateTimeString}</td>";
-                            html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{EndDateTimeString}</td>";
-                            html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center text-success\"><a href=\"{urlHelper.Action("leaderboard")}?promotionId={PromotionId}\">View</a></td>";
-                            html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center {(HasAnnouncement ? "text-success" : "text-danger")}\">{(HasAnnouncement ? "Linked" : "Unlinked")}</td>";
+                            html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{StartDateTimeString}</td>");
+                            html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{EndDateTimeString}</td>");
+                            html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center text-success\"><a href=\"{urlHelper.Action("leaderboard")}?promotionId={PromotionId}\">View</a></td>");
+                            html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center {(HasAnnouncement ? "text-success" : "text-danger")}\">{(HasAnnouncement ? "Linked" : "Unlinked")}</td>");
                             if (hasAdminPermission)
                             {
-                                html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">" +
-                                        $"<button type=\"button\" class=\"btn btn-success btn-lg\" onclick=\"promotion.openEditModal('{Id}')\" >Edit</button>" +
-                                        $"<button type=\"button\" class=\"btn btn-danger btn-lg\" onclick=\"promotion.openDeleteModal('{Id}')\">Delete</button>" +
-                                        "</td>";
+                                html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">" +
+                                            $"<button type=\"button\" class=\"btn btn-success btn-lg\" onclick=\"promotion.openEditModal('{Id}')\">Edit</button>");
+
+                                // Disable the delete button if the status is "running"
+                                if (Status != PromotionCampaignStatus.RunningValue)
+                                {
+                                    html.Append($"<button type=\"button\" class=\"btn btn-danger btn-lg\" onclick=\"promotion.openDeleteModal('{Id}')\">Delete</button>");
+                                }
+                                else
+                                {
+                                    html.Append($"<button type=\"button\" class=\"btn btn-danger btn-lg\" disabled>Delete</button>");
+                                }
+
+                                html.Append("</td>");
                             }
                             isFirstPromotionRow = false;
                         }
 
-                        html += "</tr>";
+                        html.Append("</tr>");
                     }
                 }
                 else
                 {
                     // Handle case where operatorModel.CurrencyGroups is null
-                    html += "<tr>";
+                    html.Append("<tr>");
                     if (isFirstPromotionRow)
                     {
-                        html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">{Name}</td>";
-                        html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">{PromotionId}</td>";
-                        html += $"<td rowspan=\"{promotionRowSpan}\" width=\"150px\">{GetPrizesHtml()}</td>";
+                        html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">{Name}</td>");
+                        html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">{PromotionId}</td>");
+                        html.Append($"<td rowspan=\"{promotionRowSpan}\" width=\"150px\">{GetPrizesHtml()}</td>");
                     }
 
-                    html += $"<td rowspan=\"{rowspanDefault}\">{operatorModel.OperatorName}</td>";
+                    html.Append($"<td rowspan=\"{rowspanDefault}\">{operatorModel.OperatorName}</td>");
 
-                    html += "<td colspan=\"1\" width=\"200px\"></td>";
+                    html.Append("<td colspan=\"1\" width=\"200px\"></td>");
 
                     if (hasAdminPermission)
                     {
-                        html += $"<td class=\"text-center\" rowspan=\"{rowspanDefault}\">" +
+                        html.Append($"<td class=\"text-center\" rowspan=\"{rowspanDefault}\">" +
                                     $"<i class=\"icon-edit\" onclick='promotion.showOperatorSetting(\"{Id}\", \"{operatorModel.OperatorId}\", \"{operatorModel.OperatorName}\", \"{Status}\")'></i>" +
-                                    $"</td>";
+                                    $"</td>");
                     }
 
                     if (isFirstPromotionRow)
                     {
-                        html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{StartDateTimeString}</td>";
-                        html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{EndDateTimeString}</td>";
-                        html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center text-success\">" +
-                            $"<a href=\"{urlHelper.Action("leaderboard")}?promotionId={PromotionId}\">View</a></td>";
-                        html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center {(HasAnnouncement ? "text-success" : "text-danger")}\">{(HasAnnouncement ? "Linked" : "Unlinked")}</td>";
+                        html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{StartDateTimeString}</td>");
+                        html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\" width=\"200px\">{EndDateTimeString}</td>");
+                        html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center text-success\">" +
+                                    $"<a href=\"{urlHelper.Action("leaderboard")}?promotionId={PromotionId}\">View</a></td>");
+                        html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center {(HasAnnouncement ? "text-success" : "text-danger")}\">{(HasAnnouncement ? "Linked" : "Unlinked")}</td>");
                         if (hasAdminPermission)
                         {
-                            html += $"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">" +
-                                    $"<button type=\"button\" class=\"btn btn-success btn-lg\" onclick=\"promotion.openEditModal('{Id}')\" >Edit</button>" +
-                                    $"<button type=\"button\" class=\"btn btn-danger btn-lg\" onclick=\"promotion.openDeleteModal('{Id}')\">Delete</button>" +
-                                    "</td>";
+                            html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">" +
+                                        $"<button type=\"button\" class=\"btn btn-success btn-lg\" onclick=\"promotion.openEditModal('{Id}')\">Edit</button>");
+
+                            // Disable the delete button if the status is "running"
+                            if (Status != PromotionCampaignStatus.RunningValue)
+                            {
+                                html.Append($"<button type=\"button\" class=\"btn btn-danger btn-lg\" onclick=\"promotion.openDeleteModal('{Id}')\">Delete</button>");
+                            }
+                            else
+                            {
+                                html.Append($"<button type=\"button\" class=\"btn btn-danger btn-lg\" disabled>Delete</button>");
+                            }
+
+                            html.Append("</td>");
                         }
                         isFirstPromotionRow = false;
                     }
 
-                    html += "</tr>";
+                    html.Append("</tr>");
                 }
             }
 
-            return html;
+            return html.ToString();
         }
+
     }
 }
 

@@ -310,6 +310,7 @@ namespace GamesAdmin.Site.Features.Promotions
             else
             {
                 var existingPromotions = await this.promotionCampaignService.GetCampaignByStatus(PromotionCampaignStatus.AllValue);
+                ConvertPromotionTimesToDefaultTimeZone(existingPromotions.ToList());
                 if (existingPromotions.Any(promotion => !ValidateTournamentDateTime(model, promotion)))
                 {
                     return new MessageResult(false, "Overlap date or time with another promotion");

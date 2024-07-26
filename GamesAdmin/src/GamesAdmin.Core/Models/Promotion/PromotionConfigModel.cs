@@ -15,25 +15,7 @@ namespace GamesAdmin.Core.Models.Promotion
         public List<OperatorModel> Operators { get; set; }
         public List<WinningPrizeModel> WinningPrizes { get; set; }
         public bool HasAnnouncement { get; set; }
-        public string Status => GetStatusPromotion();
-
-        public string GetStatusPromotion()
-        {
-            DateTime now = DateTime.UtcNow;
-
-            if (StartDateTime <= now && now <= EndDateTime)
-            {
-                return PromotionCampaignStatus.RunningValue;
-            }
-            else if (now > EndDateTime)
-            {
-                return PromotionCampaignStatus.CompletedValue;
-            }
-            else
-            {
-                return PromotionCampaignStatus.NotStartedValue;
-            }
-        }
+        public string Status { get; set; }
     } 
 }
 public class OperatorModel
