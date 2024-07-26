@@ -68,7 +68,7 @@ namespace GamesAdmin.Api.Notifications
         public async Task<IList<Notification>> Get()
         {
             var notifications = (await notificationRepository
-                .FilterByAsync(n => n.DisplayKind != byte.Parse(NotificationDisplayKind.DisabledGame.Value) && n.DisplayKind != byte.Parse(NotificationDisplayKind.Promotion.Value)))
+                .FilterByAsync(n => n.DisplayKind == byte.Parse(NotificationDisplayKind.Marquee.Value)))
                 .ToList();
 
             return notifications.Select(entity => Convert(entity)).ToList();
@@ -154,8 +154,8 @@ namespace GamesAdmin.Api.Notifications
             byte promotionDisplayKind = byte.Parse(NotificationDisplayKind.Promotion.Value);
             byte promotionCampaignDisplayKind = byte.Parse(NotificationDisplayKind.PromotionCampaign.Value);
             var entities = status.Equals(PromotionStatus.AllValue)
-                ? await notificationRepository.FilterByAsync(entity => entity.DisplayKind == promotionDisplayKind 
-                ||entity.DisplayKind == promotionCampaignDisplayKind)
+                ? await notificationRepository.FilterByAsync(entity => entity.DisplayKind == promotionDisplayKind
+                || entity.DisplayKind == promotionCampaignDisplayKind)
                 : await notificationRepository.FilterByAsync(entity =>
                 (entity.DisplayKind == promotionDisplayKind ||
                 entity.DisplayKind == promotionCampaignDisplayKind) &&
