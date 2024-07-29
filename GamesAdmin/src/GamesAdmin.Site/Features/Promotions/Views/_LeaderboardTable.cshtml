@@ -11,15 +11,6 @@
     var promotionId = Model.FirstOrDefault()?.PromotionId ?? 0;
 }
 
-@if (isCompleted)
-{
-    @if (!isTestCurrency && hasAdminPermission && Model.Any(e => e.IsAwarded != true && e.AwardedAmount > 0))
-    {
-        <div class="ml-5">
-            <button class="btn-add mt-3 mb-5" id="btn-confirm-payment" onclick="promotionLeaderboard.openAwardTournamentModal(@promotionId)">Confirm payment</button>
-        </div>
-    }
-}
 <table id="leaderboard-table" class="table table-bordered stripe table-light">
     <thead>
         <tr>
@@ -86,3 +77,10 @@
         }
     </tbody>
 </table>
+
+@if (isCompleted && !isTestCurrency && hasAdminPermission && Model.Any(e => e.IsAwarded != true && e.AwardedAmount > 0))
+{
+    <div class="text-center">
+        <button class="btn-add" id="btn-confirm-payment" onclick="promotionLeaderboard.openAwardTournamentModal(@promotionId)">Confirm payment</button>
+    </div>
+}

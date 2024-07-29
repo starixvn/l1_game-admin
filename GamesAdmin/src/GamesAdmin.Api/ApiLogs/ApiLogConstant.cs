@@ -46,6 +46,8 @@ namespace GamesAdmin.Api.ApiLogs
         private const string GetBetLimitCall = "PartnerGetBetLimitCall";
         private const string GetBetLimitResult = "PartnerGetBetLimitResult";
 
+        private const string AwardTournamentCall = "PartnerAwardCall";
+
         private const string TicketDetailCall = nameof(TicketDetailRequest);
         private const string TicketDetailResultName = nameof(TicketDetailResult);
 
@@ -105,6 +107,8 @@ namespace GamesAdmin.Api.ApiLogs
 
             { GetBetLimitCall, typeof(PartnerGetBetLimitCall) },
             { GetBetLimitResult, typeof(PartnerGetBetLimitResult) },
+
+            { AwardTournamentCall, typeof(PartnerAwardCall) },
         };
 
         public static Dictionary<ApiLogType, string> CollectionMappings => collectionMappings;

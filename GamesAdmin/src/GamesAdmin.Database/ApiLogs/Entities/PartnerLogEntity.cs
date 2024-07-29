@@ -78,6 +78,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public string Language { get; set; }
 
         public string SiteName { get; set; }
+
+        public int PromotionId { get; set; }
     }
 
     public class PartnerResultEntity : ApiLogResultEntity
