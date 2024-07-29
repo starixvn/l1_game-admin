@@ -29,7 +29,7 @@ namespace GamesAdmin.Core.Extensions
         public static string ToStringAtGMT7(this DateTime dateTime)
         {
             const string formatDateTime = "MM/dd/yyyy hh:mm tt";
-            return dateTime.AddHours(AsianGMT).ToString(formatDateTime) + " GMT 7";
+            return dateTime.AddHours(AsianGMT).ToString(formatDateTime) + " GMT+7";
         }
     }
 }

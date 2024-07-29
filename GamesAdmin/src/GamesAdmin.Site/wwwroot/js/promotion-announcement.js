@@ -21,6 +21,7 @@
         startTime: "#startTime-",
         endTime: '#endTime-',
         promotionId: '#promotionId-',
+        displayKind: '#displayKind'
     };
     let titleElement = {
         "en-US": '#title-en-US-',
@@ -151,8 +152,10 @@
 
         if (!$(promotionListContainer).attr('hidden')) {
             data.promotionId = $('#promotionId-' + id + '-promotion').val() ?? data.promotionId;
+            data.displayKind = $('#happyhours-' + id).val();
         } else if (!$(promotionCampaignListContainer).attr('hidden')) {
             data.promotionId = $('#promotionId-' + id + '-campaign').val() ?? data.promotionId;
+            data.displayKind = $('#tournament-' + id).val();
         }
 
         for (let t in titleElement) {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Extensions;
@@ -11,6 +13,8 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
     public class CreateAnnouncementItemViewModel
     {
         public string Id { get; set; }
+
+        [JsonConverter(typeof(NotificationDisplayKindConverter))]
         public NotificationDisplayKind DisplayKind { get; set; }
         public bool Enabled { get; set; }
         public Dictionary<string, string> Title { get; set; } = Language.EmptyLanguages;
@@ -60,6 +64,28 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                 StartTime = TimeZoneInfo.ConvertTimeFromUtc(StartTime, timeZone);
                 EndTime = TimeZoneInfo.ConvertTimeFromUtc(EndTime, timeZone);
             }
+        }
+    }
+
+    public class NotificationDisplayKindConverter : JsonConverter<NotificationDisplayKind>
+    {
+        public override NotificationDisplayKind Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var value = reader.GetString();
+
+            return value switch
+            {
+                NotificationDisplayKind.MarqueeValue => NotificationDisplayKind.Marquee,
+                NotificationDisplayKind.DisabledValue => NotificationDisplayKind.DisabledGame,
+                NotificationDisplayKind.PromotionValue => NotificationDisplayKind.Promotion,
+                NotificationDisplayKind.PromotionCampaignValue => NotificationDisplayKind.PromotionCampaign,
+                _ => throw new JsonException($"Invalid NotificationDisplayKind value: {value}")
+            };
+        }
+
+        public override void Write(Utf8JsonWriter writer, NotificationDisplayKind value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.Value);
         }
     }
 }

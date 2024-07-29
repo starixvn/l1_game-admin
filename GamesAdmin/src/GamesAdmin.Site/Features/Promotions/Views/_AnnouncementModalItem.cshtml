@@ -33,6 +33,8 @@
     <td class="text-center" rowspan="6">
         <input type="text" hidden asp-for="Id" id="id-@unique" class="input-announcement-id" value="@unique" />
         <input type="text" hidden class="input-announcement-unique" value="@unique" />
+        <input type="text" hidden id="happyhours-@unique" value="@NotificationDisplayKind.PromotionValue" />
+        <input type="text" hidden id="tournament-@unique" value="@NotificationDisplayKind.PromotionCampaignValue" />
         <div class="form-check">
             <label class="form-check-label">
                 <input type="checkbox" class="form-check-input" id="enabled-@unique" asp-for="Enabled">
