@@ -142,6 +142,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                         .Set(field => field.CoinValues, sortedCoinValues)
                         .Set(field => field.DefaultCoinValue, currencyGroupGame.DefaultCoinValue ?? sortedCoinValues.FirstOrDefault())
                         .Set(field => field.DefaultBetLevel, currencyGroupGame.DefaultBetLevel ?? sortedBetLevels.FirstOrDefault())
+                        .Set(field => field.BetLevels, currencyGroupGame.BetLevels.OrderBy(x => x).ToArray() ?? new double[10])
                         .Set(field => field.MaxWinPerRound, currencyGroupGame.MaxWinPerRound);
 
                     if (gameConfig.BetLevels == null)

@@ -439,6 +439,7 @@ namespace GamesAdmin.Api.Games
                             .Set(field => field.Botenabled, botEnabled)
                             .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
                             .Set(field => field.SlotsConfig.BigWinRatio, slotsConfig.BigWinRatio)
+                            .Set(field => field.SlotsConfig.BetLevels, slotsConfig.BetLevels)
                             .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode);
                 await repository.UpdateAsync(config => config.Name == name, update);
 

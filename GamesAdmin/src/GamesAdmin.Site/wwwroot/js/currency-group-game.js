@@ -203,20 +203,27 @@
                         </div>`).insertBefore($('.add-container'));
             this.reparseFormValidation();
         },
-        addBetLvel: function () {
+        addBetLevel: function () {
+            const length = $(".txt-bet-level", "#bet-levels").length;
+            debugger
+
             $(`<div class="form-group row">
-                            <input type="radio" class="mr-3 ml-3" asp-for="DefaultBetLevel" value="@Model.BetLevels[i]" />
-                            <input id="bet-level-@i" type="number" asp-for="@Model.BetLevels[i]" class="col-2 form-control txt-bet-level"
+                            <input type="radio" class="mr-3 ml-3" name="DefaultBetLevel" value="@Model.BetLevels[i]" />
+                            <input id="bet-level-${length}" type="number" name="BetLevels[${length}]" class="col-2 form-control txt-bet-level"
+                                    min="0"
                                    data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308." 
                                    data-val-range-max="1.7976931348623157E+308" 
                                    data-val-range-min="5E-324"
-                                   data-val-unique="Value should be unique" 
-                                   />
-                            <i class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="currencyGroupGame.removeBetLevel(event)"></i>
+                                   data-val-unique="Value should be unique"
+                                   oninput="currencyGroupGame.updateTotalBet(this.value,${length})" />
+                            <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="currencyGroupGame.removeBetLevel(event)"></i>
+                            <label class=" mt-3 ml-5 pl-5" id="total-bet-${length}"></label>
                         </div>`).insertBefore($('.add-container'));
             this.reparseFormValidation();
         },
-
+        updateTotalBet: function (value, index) {
+            $(`#total-bet-${index}`)[0].innerHTML = `${+value * 25}`;
+        },
         enableDropDownList: function (event) {
             event.target.checked ? $("#GroupIdCopy").prop("disabled", false) : $("#GroupIdCopy").prop("disabled", true);
         },
