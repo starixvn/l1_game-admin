@@ -57,8 +57,8 @@ namespace GamesAdmin.Api.ChatBot
         private const string MessageAddPromotion = "Added new promotion for game **{0}**:\r\n{1}";
         private const string MessageUpdatePromotion = "Edited promotion for game **{0}**:\r\n{1}";
         private const string MessagePromotion = "**Status: **{0}\r\n**Boosted Odds**: {1}\r\n**Type**: {2}\r\n**From**: {3}\r\n**To**: {4}";
-        private const string MessageAddPromotionTournament = "Added new Tournament: **{0}**:\r\n{1}";
-        private const string MessageEdiPromotionTournament = "Edit Tournament: **{0}**:\r\n{1}";
+        private const string MessageAddPromotionTournament = "Added new Promotion: **{0}**:\r\n{1}";
+        private const string MessageEdiPromotionTournament = "Edit Promotion: **{0}**:\r\n{1}";
         
         private const int CacheExpireInMinutes = 60 * 24;
 

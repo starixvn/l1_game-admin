@@ -5,7 +5,9 @@
         public const string AllValue = "all";
         public const string RunningValue = "running";
         public const string CompletedValue = "completed";
-        public const string NotStartedValue = "notstarted";
+        public const string NotStartedValue = "new";
+        public const string PaidValue = "paid";
+        public const string DeletedValue = "deleted";
 
         public static readonly PromotionCampaignStatus All = new PromotionCampaignStatus(AllValue, "All");
         public static readonly PromotionCampaignStatus Running = new PromotionCampaignStatus(RunningValue, "Running");

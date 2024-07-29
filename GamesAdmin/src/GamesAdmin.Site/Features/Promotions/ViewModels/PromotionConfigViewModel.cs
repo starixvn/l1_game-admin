@@ -83,17 +83,18 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                             html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center {(HasAnnouncement ? "text-success" : "text-danger")}\">{(HasAnnouncement ? "Linked" : "Unlinked")}</td>");
                             if (hasAdminPermission)
                             {
-                                html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">" +
-                                            $"<a type=\"button\" class=\"btn btn-success btn-lg\"\r\ndata-ajax=\"true\"\r\n data-ajax-mode=\"replace\"\r\ndata-ajax-update=\"#promotion-modal .modal-content\"\r\ndata-ajax-success=\"promotion.openUpdatePromotionForm\"\r\nhref=\"{urlHelper.Action("UpdateTournament")}?id={Id}\">Edit</a>");
+                                html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">");
 
-                                // Disable the delete button if the status is "running"
-                                if (Status != PromotionCampaignStatus.RunningValue)
+                                // Only show the Edit button if the status is not "completed"
+                                if (Status != PromotionCampaignStatus.CompletedValue)
+                                {
+                                    html.Append($"<a type=\"button\" class=\"btn btn-success btn-lg\"\r\ndata-ajax=\"true\"\r\n data-ajax-mode=\"replace\"\r\ndata-ajax-update=\"#promotion-modal .modal-content\"\r\ndata-ajax-success=\"promotion.openUpdatePromotionForm\"\r\nhref=\"{urlHelper.Action("UpdateTournament")}?id={Id}\">Edit</a>");
+                                }
+
+                                // Only show the Delete button if the status is not "running" or "completed"
+                                if (Status != PromotionCampaignStatus.RunningValue && Status != PromotionCampaignStatus.CompletedValue)
                                 {
                                     html.Append($"<button type=\"button\" class=\"btn btn-danger btn-lg\" onclick=\"promotion.openDeleteModal('{Id}')\">Delete</button>");
-                                }
-                                else
-                                {
-                                    html.Append($"<button type=\"button\" class=\"btn btn-danger btn-lg\" disabled>Delete</button>");
                                 }
 
                                 html.Append("</td>");
@@ -135,17 +136,18 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                         html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center {(HasAnnouncement ? "text-success" : "text-danger")}\">{(HasAnnouncement ? "Linked" : "Unlinked")}</td>");
                         if (hasAdminPermission)
                         {
-                            html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">" +
-                                        $"<a type=\"button\" class=\"btn btn-success btn-lg\"\r\ndata-ajax=\"true\"\r\n data-ajax-mode=\"replace\"\r\ndata-ajax-update=\"#promotion-modal .modal-content\"\r\ndata-ajax-success=\"promotion.openUpdatePromotionForm\"\r\nhref=\"{urlHelper.Action("UpdateTournament")}?id={Id}\">Edit</a>");
+                            html.Append($"<td rowspan=\"{promotionRowSpan}\" class=\"text-center\">");
 
-                            // Disable the delete button if the status is "running"
-                            if (Status != PromotionCampaignStatus.RunningValue)
+                            // Only show the Edit button if the status is not "completed"
+                            if (Status != PromotionCampaignStatus.CompletedValue)
+                            {
+                                html.Append($"<a type=\"button\" class=\"btn btn-success btn-lg\"\r\ndata-ajax=\"true\"\r\n data-ajax-mode=\"replace\"\r\ndata-ajax-update=\"#promotion-modal .modal-content\"\r\ndata-ajax-success=\"promotion.openUpdatePromotionForm\"\r\nhref=\"{urlHelper.Action("UpdateTournament")}?id={Id}\">Edit</a>");
+                            }
+
+                            // Only show the Delete button if the status is not "running" or "completed"
+                            if (Status != PromotionCampaignStatus.RunningValue && Status != PromotionCampaignStatus.CompletedValue)
                             {
                                 html.Append($"<button type=\"button\" class=\"btn btn-danger btn-lg\" onclick=\"promotion.openDeleteModal('{Id}')\">Delete</button>");
-                            }
-                            else
-                            {
-                                html.Append($"<button type=\"button\" class=\"btn btn-danger btn-lg\" disabled>Delete</button>");
                             }
 
                             html.Append("</td>");

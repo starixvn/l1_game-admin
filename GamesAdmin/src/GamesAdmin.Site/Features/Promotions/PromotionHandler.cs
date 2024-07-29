@@ -192,24 +192,42 @@ namespace GamesAdmin.Site.Features.Promotions
             var announcements = (await promotionService.GetAnnouncementByStatus(request.Status))
                 .Select(announcement => mapper.Map<AnnouncementViewModel>(announcement))
                 .ToList();
-            foreach (var a in announcements)
+
+            var validAnnouncements = new List<AnnouncementViewModel>();
+
+            foreach (var announcement in announcements)
             {
-                if (!string.IsNullOrEmpty(a.PromotionId))
+                bool addAnnouncement = true;
+
+                if (!string.IsNullOrEmpty(announcement.PromotionId))
                 {
-                    if (a.DisplayKind.Value == NotificationDisplayKind.Promotion.Value)
+                    switch (announcement.DisplayKind)
                     {
-                        var promotion = await promotionService.GetById(a.PromotionId);
-                        a.Promotion = mapper.Map<PromotionViewModel>(promotion);
-                    }
-                    else if (a.DisplayKind.Value == NotificationDisplayKind.PromotionCampaign.Value)
-                    {
-                        var campaign = await promotionCampaignService.GetCampaignById(a.PromotionId);
-                        a.PromotionCampaign = mapper.Map<PromotionCampaignViewModel>(campaign);
+                        case var kind when kind.Equals(NotificationDisplayKind.Promotion):
+                            var promotion = await promotionService.GetById(announcement.PromotionId);
+                            announcement.Promotion = mapper.Map<PromotionViewModel>(promotion);          
+                            break;
+
+                        case var kind when kind.Equals(NotificationDisplayKind.PromotionCampaign):
+                            var campaign = await promotionCampaignService.GetCampaignById(announcement.PromotionId);
+                            announcement.PromotionCampaign = mapper.Map<PromotionCampaignViewModel>(campaign);
+                            if (announcement.PromotionCampaign != null && !(announcement.PromotionCampaign.Status.Equals(PromotionStatus.DisabledValue)))
+                            {
+                                addAnnouncement = false;
+                            }
+                            break;
                     }
                 }
+
+                if (addAnnouncement)
+                {
+                    validAnnouncements.Add(announcement);
+                }
             }
-            return announcements;
+
+            return validAnnouncements;
         }
+
 
         public async Task<bool> Handle(CreateAnnouncementsRequest request, CancellationToken cancellationToken)
         {

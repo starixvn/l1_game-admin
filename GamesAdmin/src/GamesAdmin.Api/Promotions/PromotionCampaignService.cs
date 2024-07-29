@@ -91,14 +91,14 @@ namespace GamesAdmin.Api.Promotions
 
         private async Task<List<PromotionConfigEntity>> GetPromotionEntitiesByStatus(string status)
         {
-            Func<IQueryable<PromotionConfigEntity>, IQueryable<PromotionConfigEntity>> orderBy = query => query.Where(q => q.Status != "deleted").OrderByDescending(promotion => promotion.StartDateTime);
+            Func<IQueryable<PromotionConfigEntity>, IQueryable<PromotionConfigEntity>> orderBy = query => query.Where(q => q.Status != PromotionCampaignStatus.DeletedValue).OrderByDescending(promotion => promotion.StartDateTime);
 
             // Define the filters for each status
             var filters = new Dictionary<string, Expression<Func<PromotionConfigEntity, bool>>>
             {
-                { PromotionCampaignStatus.RunningValue, entity => entity.StartDateTime <= DateTime.UtcNow && DateTime.UtcNow <= entity.EndDateTime },
-                { PromotionCampaignStatus.NotStartedValue, entity => DateTime.UtcNow <= entity.StartDateTime },
-                { PromotionCampaignStatus.CompletedValue, entity => DateTime.UtcNow > entity.EndDateTime }
+                { PromotionCampaignStatus.RunningValue, entity => entity.Status.Equals(PromotionCampaignStatus.RunningValue) },
+                { PromotionCampaignStatus.NotStartedValue, entity => entity.Status.Equals(PromotionCampaignStatus.NotStartedValue) },
+                { PromotionCampaignStatus.CompletedValue, entity => entity.Status.Equals(PromotionCampaignStatus.PaidValue) || entity.Status.Equals(PromotionCampaignStatus.CompletedValue)  }
             };
 
             if (status.Equals(PromotionCampaignStatus.AllValue))

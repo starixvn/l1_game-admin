@@ -355,7 +355,7 @@ namespace GamesAdmin.Api._Shared.Helpers
             return string.Join("\r\n", operators.Select(o =>
             {
                 var currencyGroupsFormatted = string.Join("\r\n\t", o.CurrencyGroups.Select(cg =>
-                    $"+ Currency ID: {cg.CurrencyName}, Slot Game Min Bet: {cg.SlotGameMinBet}, Other Game Min Bet: {cg.OtherGameMinBet}, Enabled: {cg.Enabled}"));
+                    $"+ Currency Group: {cg.CurrencyName}, Slot Game Min Bet: {cg.SlotGameMinBet}, Other Game Min Bet: {cg.OtherGameMinBet}, Enabled: {cg.Enabled}"));
 
                 return $"- {o.OperatorName}\r\n\t+ Included Sites: {o.IncludedSiteNames}\r\n\t{currencyGroupsFormatted}";
             }));
