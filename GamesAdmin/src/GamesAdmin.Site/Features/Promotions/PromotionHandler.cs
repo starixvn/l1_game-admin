@@ -211,7 +211,7 @@ namespace GamesAdmin.Site.Features.Promotions
                         case var kind when kind.Equals(NotificationDisplayKind.PromotionCampaign):
                             var campaign = await promotionCampaignService.GetCampaignById(announcement.PromotionId);
                             announcement.PromotionCampaign = mapper.Map<PromotionCampaignViewModel>(campaign);
-                            if (announcement.PromotionCampaign != null && !(announcement.PromotionCampaign.Status.Equals(PromotionStatus.DeletedValue)))
+                            if (announcement.PromotionCampaign != null && (announcement.PromotionCampaign.Status.Equals(PromotionStatus.DeletedValue)))
                             {
                                 addAnnouncement = false;
                             }
