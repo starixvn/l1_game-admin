@@ -36,9 +36,9 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
         public IEnumerable<SelectListItem> PromotionTypeList = new List<SelectListItem>
         {
-            new SelectListItem { Value = NotificationDisplayKind.PromotionValue, Text = NotificationDisplayKind.Promotion.DisplayName },
+            new SelectListItem(NotificationDisplayKind.Promotion.DisplayName, NotificationDisplayKind.Promotion.Value),
 
-            new SelectListItem { Value = NotificationDisplayKind.PromotionCampaignValue, Text = NotificationDisplayKind.PromotionCampaign.DisplayName }
+            new SelectListItem(NotificationDisplayKind.PromotionCampaign.DisplayName, NotificationDisplayKind.PromotionCampaign.Value)
         };
 
         public string GetDisplayPromotion(PromotionModel promotion)

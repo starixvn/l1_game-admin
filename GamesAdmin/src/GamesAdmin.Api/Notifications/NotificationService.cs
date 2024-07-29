@@ -33,7 +33,7 @@ namespace GamesAdmin.Api.Notifications
 
         Task<bool> AddDisableMessage(string gameName, Dictionary<string, string> messages);
 
-        Task<IEnumerable<Notification>> GetPromotionAnnouncementByStatus(string status);
+        Task<IEnumerable<Notification>> GetPromotionAnnouncementByStatus(string status, string type);
 
         Task<Notification> GetPromotionAnnouncementByPromotionId(string promotionId);
 
@@ -147,20 +147,40 @@ namespace GamesAdmin.Api.Notifications
             return true;
         }
 
-        public async Task<IEnumerable<Notification>> GetPromotionAnnouncementByStatus(string status)
+        public async Task<IEnumerable<Notification>> GetPromotionAnnouncementByStatus(string status, string type)
+        {
+
+            var entities = await Task.Run(() => notificationRepository.AsQueryable().ToList());
+
+            var filteredEntities = entities
+                .Where(entity => IsValidNotification(entity, status, type))
+                .ToList();
+
+            return filteredEntities.Select(ConvertToPromotionAnnouncement);
+
+        }
+
+        private bool IsValidNotification(NotificationEntity entity, string status, string type)
         {
             bool isAllStatus = status.Equals(PromotionStatus.AllValue);
             bool isEnabledStatus = status.Equals(PromotionStatus.EnabledValue);
-            byte promotionDisplayKind = byte.Parse(NotificationDisplayKind.Promotion.Value);
-            byte promotionCampaignDisplayKind = byte.Parse(NotificationDisplayKind.PromotionCampaign.Value);
-            var entities = status.Equals(PromotionStatus.AllValue)
-                ? await notificationRepository.FilterByAsync(entity => entity.DisplayKind == promotionDisplayKind
-                || entity.DisplayKind == promotionCampaignDisplayKind)
-                : await notificationRepository.FilterByAsync(entity =>
-                (entity.DisplayKind == promotionDisplayKind ||
-                entity.DisplayKind == promotionCampaignDisplayKind) &&
-                entity.Enabled == isEnabledStatus);
-            return entities.Select(a => ConvertToPromotionAnnouncement(a));
+
+            bool isValidDisplayKind = false;
+            if (type == NotificationDisplayKind.Promotion.Value)
+            {
+                isValidDisplayKind = entity.DisplayKind == byte.Parse(NotificationDisplayKind.Promotion.Value);
+            }
+            else if (type == NotificationDisplayKind.PromotionCampaign.Value)
+            {
+                isValidDisplayKind = entity.DisplayKind == byte.Parse(NotificationDisplayKind.PromotionCampaign.Value);
+            }
+            else
+            {
+                isValidDisplayKind = entity.DisplayKind == byte.Parse(NotificationDisplayKind.Promotion.Value) ||
+                                     entity.DisplayKind == byte.Parse(NotificationDisplayKind.PromotionCampaign.Value);
+            }
+
+            return (isAllStatus || entity.Enabled == isEnabledStatus) && isValidDisplayKind;
         }
 
         public async Task<Notification> GetPromotionAnnouncementByPromotionId(string promotionId)

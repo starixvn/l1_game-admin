@@ -67,7 +67,7 @@ namespace GamesAdmin.Api.Promotions
         => promotionService.Delete(request.Id);
 
         public Task<IEnumerable<Notification>> Handle(GetAnnouncementByStatusRequest request, CancellationToken cancellationToken)
-        => notificationService.GetPromotionAnnouncementByStatus(request.Status);
+        => notificationService.GetPromotionAnnouncementByStatus(request.Status, request.Type);
 
         public Task<bool> Handle(CreateAnnouncementsRequest request, CancellationToken cancellationToken)
         => notificationService.CreatePromotionAnnouncements(request.Models);

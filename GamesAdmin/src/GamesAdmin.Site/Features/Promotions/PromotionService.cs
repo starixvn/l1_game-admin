@@ -14,7 +14,7 @@ namespace GamesAdmin.Site.Features.Promotions
         Task<bool> Create(PromotionModel model);
         Task<bool> Update(PromotionModel model);
         Task<bool> Delete(string id);
-        Task<IEnumerable<Notification>> GetAnnouncementByStatus(string status);
+        Task<IEnumerable<Notification>> GetAnnouncementByStatus(string status, string type);
         Task<bool> CreateAnnouncements(IEnumerable<Notification> models);
         Task<Notification> GetAnnouncementById(string id);
         Task<bool> UpdateAnnouncement(Notification model);
@@ -50,8 +50,8 @@ namespace GamesAdmin.Site.Features.Promotions
         public Task<bool> Delete(string id)
         => promotionApi.Delete(id);
 
-        public Task<IEnumerable<Notification>> GetAnnouncementByStatus(string status)
-        => promotionApi.GetAnnouncementByStatus(status);
+        public Task<IEnumerable<Notification>> GetAnnouncementByStatus(string status, string type)
+        => promotionApi.GetAnnouncementByStatus(status, type);
 
         public Task<bool> CreateAnnouncements(IEnumerable<Notification> models)
         => promotionApi.CreateAnnouncements(models);

@@ -189,7 +189,7 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public async Task<IEnumerable<AnnouncementViewModel>> Handle(GetAnnouncementByStatusRequest request, CancellationToken cancellationToken)
         {
-            var announcements = (await promotionService.GetAnnouncementByStatus(request.Status))
+            var announcements = (await promotionService.GetAnnouncementByStatus(request.Status, request.Type))
                 .Select(announcement => mapper.Map<AnnouncementViewModel>(announcement))
                 .ToList();
 
@@ -211,7 +211,7 @@ namespace GamesAdmin.Site.Features.Promotions
                         case var kind when kind.Equals(NotificationDisplayKind.PromotionCampaign):
                             var campaign = await promotionCampaignService.GetCampaignById(announcement.PromotionId);
                             announcement.PromotionCampaign = mapper.Map<PromotionCampaignViewModel>(campaign);
-                            if (announcement.PromotionCampaign != null && !(announcement.PromotionCampaign.Status.Equals(PromotionStatus.DisabledValue)))
+                            if (announcement.PromotionCampaign != null && !(announcement.PromotionCampaign.Status.Equals(PromotionStatus.DeletedValue)))
                             {
                                 addAnnouncement = false;
                             }

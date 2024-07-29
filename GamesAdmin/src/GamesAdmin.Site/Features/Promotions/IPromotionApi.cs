@@ -30,7 +30,7 @@ namespace GamesAdmin.Site.Features.Promotions
         Task<bool> Delete(string id);
 
         [Get("/promotion/getAnnouncementByStatus")]
-        Task<IEnumerable<Notification>> GetAnnouncementByStatus(string status);
+        Task<IEnumerable<Notification>> GetAnnouncementByStatus(string status, string type);
 
         [Post("/promotion/createAnnouncement")]
         Task<bool> CreateAnnouncements(IEnumerable<Notification> models);

@@ -126,8 +126,8 @@ namespace GamesAdmin.Site.Features.Promotions
         public IActionResult Announcement()
         => View("Announcement", new IndexViewModel());
 
-        public async Task<IActionResult> GetAnnouncementByStatus(string status)
-        => PartialView("_AnnouncementTable", await mediator.Send(new GetAnnouncementByStatusRequest(status)));
+        public async Task<IActionResult> GetAnnouncementByStatus(string status, string type)
+        => PartialView("_AnnouncementTable", await mediator.Send(new GetAnnouncementByStatusRequest(status, type)));
 
         [HttpGet]
         public async Task<IActionResult> CreateAnnouncement()

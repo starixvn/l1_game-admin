@@ -49,8 +49,8 @@ namespace GamesAdmin.Api.Promotions
            => mediator.Send(new DeletePromotionRequest(id));
 
         [HttpGet("getAnnouncementByStatus")]
-        public Task<IEnumerable<Notification>> GetAnnouncementByStatus(string status)
-           => mediator.Send(new GetAnnouncementByStatusRequest(status));
+        public Task<IEnumerable<Notification>> GetAnnouncementByStatus(string status, string type)
+           => mediator.Send(new GetAnnouncementByStatusRequest(status, type));
 
         [HttpPost("createAnnouncement")]
         public Task<bool> CreateAnnouncement(IEnumerable<Notification> models)
