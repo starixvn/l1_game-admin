@@ -108,8 +108,10 @@ namespace GamesAdmin.Api.Promotions
             {
                 var winningPlayers = await promotionLeaderboardRepository.Collection()
                     .Find(e => e.IsAwarded != true && e.PromotionId == request.PromotionId && e.AwardedAmount > 0)
-                    .SortByDescending(e => e.AwardedAmount)
+                    .SortByDescending(p => p.PointInBaseCurrency)
+                    .ThenBy(p => p.DataSourceTimeStamp)
                     .ToListAsync();
+
                 var tasks = new List<Task<AwardWinningPlayer>>();
                 foreach (var winningPlayer in winningPlayers)
                 {
