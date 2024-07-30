@@ -225,7 +225,9 @@ namespace GamesAdmin.Api.Promotions
 
             var oldConfig = mapper.Map<PromotionConfigModel>(entity);
             var modelMapper = mapper.Map<PromotionConfigEntity>(model);
-            var changedSettings = SettingHelper.GetPromotionTournamentChangeModel(oldConfig, model);
+            var oldModel = await UpdateOperatorAndCurrencyGroupName(oldConfig);
+            var updatedModel = await UpdateOperatorAndCurrencyGroupName(model);
+            var changedSettings = SettingHelper.GetPromotionTournamentChangeModel(oldModel, updatedModel, type);
             sentryClient.CaptureChangedSettings("Promotion Tournament", "Configs", string.Empty, changedSettings);
 
             UpdateDefinition<PromotionConfigEntity> update;
@@ -245,7 +247,6 @@ namespace GamesAdmin.Api.Promotions
             }
 
             await promotionCampaignRepository.UpdateAsync(promotion => promotion.Id == entity.Id, update);
-            var updatedModel = await this.UpdateOperatorAndCurrencyGroupName(model);
             await chatBotService.NotifyUpdatePromotionTournament(updatedModel, type);
 
             return true;

@@ -1,12 +1,12 @@
-﻿using GamesAdmin.Api.SentryClient;
+﻿using System.Collections.Generic;
+using System.Linq;
+using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace GamesAdmin.Api._Shared.Helpers
 {
@@ -330,24 +330,31 @@ namespace GamesAdmin.Api._Shared.Helpers
 
         private static string GetValue(StakeLevel stakeLevel) => $"Initial Amount: {stakeLevel.Jackpot} - Bot Ratio: {stakeLevel.BotRatio}";
 
-        public static List<SettingChangedModel> GetPromotionTournamentChangeModel(PromotionConfigModel oldConfig, PromotionConfigModel newConfig)
+        public static List<SettingChangedModel> GetPromotionTournamentChangeModel(PromotionConfigModel oldConfig, PromotionConfigModel newConfig, string type)
         {
-            var oldListOperators = FormatOperators(oldConfig.Operators);
-            var oldListWinningPrizes = FormatWinningPrizes(oldConfig.WinningPrizes);
-
-            var newListOperators = FormatOperators(newConfig.Operators);
-            var newListWinningPrizes = FormatWinningPrizes(newConfig.WinningPrizes);
-
-            var changedSettings = new List<SettingChangedModel>
+            if (type.Equals(PromotionTournamentTypeUpdate.OperatorSetting))
             {
-                new SettingChangedModel("Promotion Name", oldConfig.Name, newConfig.Name),
-                new SettingChangedModel("Start Date Time", oldConfig.StartDateTime.ToString(), newConfig.StartDateTime.ToString()),
-                new SettingChangedModel("End Date Time", oldConfig.EndDateTime.ToString(), newConfig.EndDateTime.ToString()),
-                new SettingChangedModel("Operators", oldListOperators, newListOperators),
-                new SettingChangedModel("Winning Prizes", oldListWinningPrizes, newListWinningPrizes),
-            };
+                var oldListOperators = FormatOperators(oldConfig.Operators);
+                var newListOperators = FormatOperators(newConfig.Operators);
+                return new List<SettingChangedModel>
+                {
+                    new SettingChangedModel("Operators", oldListOperators, newListOperators),
+                };
+            }
+            else if (type.Equals(PromotionTournamentTypeUpdate.EditTournament))
+            {
+                var oldListWinningPrizes = FormatWinningPrizes(oldConfig.WinningPrizes);
+                var newListWinningPrizes = FormatWinningPrizes(newConfig.WinningPrizes);
+                return new List<SettingChangedModel>
+                {
+                    new SettingChangedModel("Promotion Name", oldConfig.Name, newConfig.Name),
+                    new SettingChangedModel("Start Date Time", oldConfig.StartDateTime.ToString(), newConfig.StartDateTime.ToString()),
+                    new SettingChangedModel("End Date Time", oldConfig.EndDateTime.ToString(), newConfig.EndDateTime.ToString()),
+                    new SettingChangedModel("Winning Prizes", oldListWinningPrizes, newListWinningPrizes),
+                };
+            }
 
-            return changedSettings;
+            return new List<SettingChangedModel>();
         }
 
         public static string FormatOperators(List<OperatorModel> operators)
