@@ -211,7 +211,7 @@ namespace GamesAdmin.Api.Promotions
 
         public PromotionConfigEntity GetPromotionWithMaxIdAsync()
         {
-            return promotionCampaignRepository.AsQueryable().OrderByDescending(p => p.PromotionId).First();
+            return promotionCampaignRepository.AsQueryable().OrderByDescending(p => p.PromotionId).FirstOrDefault();
         }
 
         public async Task<bool> Update(PromotionConfigModel model, string type)
