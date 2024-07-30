@@ -18,12 +18,12 @@
     <div class="form-row align-items-center">
         <input hidden asp-for=PromotionId />
         <div class="col-auto">
-            <label class="control-label">Username/PlayerId</label>
+            <label class="control-label" asp-for="PlayerName">Username/PlayerId</label>
             <input type="text" class="form-control" asp-for=PlayerName />
         </div>
         <div class="col-auto mt-5">
             <input class="from-check-input" type="checkbox" asp-for=IsTestCurrency />
-            <label class="form-check-label">Testing Currency Only</label>
+            <label class="form-check-label" asp-for="IsTestCurrency">Testing Currency Only</label>
         </div>
         <div class="col-auto list-buttons ml-4">
             <button type="submit" class="btn-submit">Submit</button>

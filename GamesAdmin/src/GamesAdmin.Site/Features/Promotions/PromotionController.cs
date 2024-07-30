@@ -228,7 +228,7 @@ namespace GamesAdmin.Site.Features.Promotions
             var viewModel = new AwardTestCurrencyViewModel
             {
                 OperatorId = operatorId,
-                OperatorName= operatorName,
+                OperatorName = operatorName,
                 PlayerId = playerId,
                 PlayerName = playerName,
                 Currency = currency,

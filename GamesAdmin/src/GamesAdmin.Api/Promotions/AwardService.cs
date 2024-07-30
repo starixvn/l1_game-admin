@@ -93,7 +93,9 @@ namespace GamesAdmin.Api.Promotions
                 var player = mapper.Map<AwardWinningPlayer>(winningPlayer);
                 player.GameTypeId = gameTypeIdTournament;
                 player.Amount = (decimal)request.AwardAmount;
-                return (await AwardWinningPlayer(player)).IsAwarded;
+                var winner = await AwardWinningPlayer(player);
+                await NotifyConfirmPayment(request.PromotionId, new List<AwardWinningPlayer> { winner });
+                return winner.IsAwarded;
             }
             catch (Exception ex)
             {
