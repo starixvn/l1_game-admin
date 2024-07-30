@@ -13,7 +13,7 @@
 }
 <form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetTournamentPromotions"
       data-ajax-mode="replace"
-      data-ajax-update="#promotion-management .card-body"
+      data-ajax-update="#promotion-management .table"
       data-ajax-loading="#spinner"
       method="get"
       asp-route-status="@Model.Status"
@@ -44,7 +44,7 @@
     </div>
 </form>
 <div id="promotion-management" class="card">
-    <div class="card-body"></div>
+    <div class="table"></div>
 </div>
 
 <div class="modal fade" id="promotion-modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
