@@ -39,7 +39,6 @@ namespace GamesAdmin.Api.Promotions
         private readonly IAwardGameApi awardGameApi;
         private readonly IGenericRepository<PromotionLeaderboardEntity> promotionLeaderboardRepository;
         private readonly IGenericRepository<PromotionConfigEntity> promotionConfigRepository;
-        private readonly IGenericRepository<NotificationEntity> notificationRepository;
         private readonly IMapper mapper;
         private readonly IChatBotService chatBotService;
         private readonly ISentryClient sentryClient;
@@ -47,7 +46,6 @@ namespace GamesAdmin.Api.Promotions
         public AwardService(IAwardGameApi awardGameApi,
             IGenericRepository<PromotionLeaderboardEntity> promotionLeaderboardRepository,
             IGenericRepository<PromotionConfigEntity> promotionConfigRepository,
-            IGenericRepository<NotificationEntity> notificationRepository,
             IMapper mapper,
             IChatBotService chatBotService,
             ISentryClient sentryClient)
@@ -55,7 +53,6 @@ namespace GamesAdmin.Api.Promotions
             this.awardGameApi = awardGameApi;
             this.promotionLeaderboardRepository = promotionLeaderboardRepository;
             this.promotionConfigRepository = promotionConfigRepository;
-            this.notificationRepository = notificationRepository;
             this.mapper = mapper;
             this.chatBotService = chatBotService;
             this.sentryClient = sentryClient;
@@ -94,7 +91,7 @@ namespace GamesAdmin.Api.Promotions
                 player.GameTypeId = gameTypeIdTournament;
                 player.Amount = (decimal)request.AwardAmount;
                 var winner = await AwardWinningPlayer(player);
-                await NotifyConfirmPayment(request.PromotionId, new List<AwardWinningPlayer> { winner });
+                _ = NotifyConfirmPayment(request.PromotionId, new List<AwardWinningPlayer> { winner });
                 return winner.IsAwarded;
             }
             catch (Exception ex)
@@ -124,7 +121,7 @@ namespace GamesAdmin.Api.Promotions
                 }
                 var t = Task.WhenAll(tasks);
                 await t;
-                await NotifyConfirmPayment(request.PromotionId, t.Result.ToList());
+                _ = NotifyConfirmPayment(request.PromotionId, t.Result.ToList());
                 return !t.Result.Any(e => !e.IsAwarded);
             }
             catch (Exception ex)
@@ -165,10 +162,9 @@ namespace GamesAdmin.Api.Promotions
                 if (awardedPlayers?.Count > 0)
                 {
                     var promotion = await promotionConfigRepository.FindOneAsync(e => e.PromotionId == promotionId);
-                    var notification = await notificationRepository.FindOneAsync(e => e.PromotionId == promotion.Id.ToString());
                     var winners = awardedPlayers.Where(e => e.IsAwarded);
                     var failers = awardedPlayers.Where(e => !e.IsAwarded);
-                    _ = chatBotService.NotifyConfirmPaymentPromotionTournament(notification.Title[Language.EN], promotion.StartDateTime, promotion.EndDateTime, winners, failers);
+                    await chatBotService.NotifyConfirmPaymentPromotionTournament(promotion.Name, promotion.StartDateTime, promotion.EndDateTime, winners, failers);
                 }
             }
             catch (Exception ex)
