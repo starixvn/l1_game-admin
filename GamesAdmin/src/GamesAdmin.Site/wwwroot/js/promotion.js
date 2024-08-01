@@ -128,6 +128,7 @@
         amountInput.value = 0;
         amountInput.classList.add('form-control', 'text-center');
         amountInput.name = 'WinningPrizes[' + prizeIndex + '].Value';
+        rankingInput.id = 'ranking-input-' + prizeIndex;
         newAmountCol.appendChild(amountLabel);
         newAmountCol.appendChild(amountInput);
 
