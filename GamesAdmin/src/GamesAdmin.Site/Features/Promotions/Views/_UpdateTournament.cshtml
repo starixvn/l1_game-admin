@@ -101,8 +101,10 @@
                                    data-val-range-min="1"
                                    data-val-unique="Value should be unique"
                                    value="@Model.WinningPrizes[i].Value" />
-                        </div>                                 
-                        <i id="remove-col-@i" class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="promotion.removeRanking(@i)"></i>                    
+                        </div>
+                        <div class="form-group col-md-1 d-flex align-items-center">
+                            <i id="remove-col-@i" class="icon-cancel text-error mt-4 ml-4" style="cursor: pointer" onclick="promotion.removeRanking(@i)"></i>
+                        </div>                       
                     </div>
                 }
             </div>

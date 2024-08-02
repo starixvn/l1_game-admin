@@ -123,8 +123,9 @@
             'data-val-range-max="2147483647" ' +
             'data-val-range-min="1" ' +
             'data-val-unique="Value should be unique" />' +
-            '</div>' +           
-            '<i id="remove-col-' + prizeIndex + '" class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="promotion.removeRanking(' + prizeIndex + ')"></i>' +
+            '</div>' +
+            '<div class="form-group col-md-1 d-flex align-items-center">' +
+            '<i id="remove-col-' + prizeIndex + '" class="icon-cancel text-error mt-4 ml-4" style="cursor: pointer" onclick="promotion.removeRanking(' + prizeIndex + ')"></i>' +
             '</div>' +
             '</div>'
         );
