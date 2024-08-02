@@ -29,6 +29,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<CloneNewSlotGameRequest, string>
         , IRequestHandler<UpdateSymbolWeightRequest, bool>
         , IRequestHandler<UpdateCrashConfigRequest, bool>
+        , IRequestHandler<UpdateBotSlotSettingsRequest, bool>
     {
         private readonly IGameSettingsService gameService;
         private readonly ICloneSettingService slotSettingService;
@@ -75,6 +76,9 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
         => gameService.UpdateJackpot(request.Name, request.Jackpot);
+
+        public Task<bool> Handle(UpdateBotSlotSettingsRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateSlotBotSettings(request.Name, request.Jackpot, request.BetLevels);
 
         public Task<bool> Handle(UpdateSlotConfigRequest request, CancellationToken cancellationToken)
             => gameService.UpdateSlotConfig(request.Name, request.BotEnabled, request.SlotsConfig);

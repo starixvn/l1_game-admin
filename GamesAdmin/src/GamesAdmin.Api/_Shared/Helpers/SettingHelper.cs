@@ -152,6 +152,20 @@ namespace GamesAdmin.Api._Shared.Helpers
             return changedSettings;
         }
 
+        public static List<SettingChangedModel> GetBotConfigChangedModel(
+            GameConfigEntity oldConfig, Jackpot jackpot, double[] betLevels)
+        {
+            var changedSettings = new List<SettingChangedModel>
+            {
+                new SettingChangedModel("BetLevels", oldConfig.SlotsConfig.BetLevels.ToString(), betLevels.ToString()),
+                new SettingChangedModel("MinorPool", oldConfig.SlotsConfig.Jackpot.Pools.Minor.ToString(), jackpot.Pools.Minor.ToString()),
+                new SettingChangedModel("MajorPool", oldConfig.SlotsConfig.Jackpot.Pools.Major.ToString(), jackpot.Pools.Major.ToString()),
+                new SettingChangedModel("GrandPool", oldConfig.SlotsConfig.Jackpot.Pools.Grand.ToString(), jackpot.Pools.Grand.ToString()),
+            };
+
+            return changedSettings;
+        }
+
         public static List<SettingChangedModel> GetOddsChangedModel(Dictionary<string, double> oldConfig, Dictionary<string, double> newConfig)
         {
             var changedSettings = new List<SettingChangedModel>();

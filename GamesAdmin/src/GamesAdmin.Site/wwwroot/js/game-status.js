@@ -331,6 +331,10 @@
                 requestUrl = "/jackpot/update";
             }
 
+            if ($('#slotBotSetting').css('display')) {
+                requestUrl = "/slotBot/update";
+            }
+
             if ($('#adjustweight').css('display') && $('#adjustweight').css('display') !== 'none') {
                 this.updateSymbolWeight();
                 return;
@@ -644,11 +648,13 @@
             $('#jackpots').hide();
             $('#botsetting').hide();
             $('#adjustweight').hide();
+            $('#slotBotSetting').hide();
 
             $('#general-tab-header').removeClass("active");
             $('#jackpots-tab-header').removeClass("active");
             $('#botsetting-tab-header').removeClass("active");
             $('#adjustweight-tab-header').removeClass("active");
+            $('#slot-bot-settings-tab-header').removeClass("active");
 
             const id = '#' + name;
             const headerId = '#' + name + '-tab-header';

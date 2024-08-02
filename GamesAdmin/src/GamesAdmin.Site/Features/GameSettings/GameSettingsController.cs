@@ -256,6 +256,24 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         [HttpPost, Audit]
+        [Route("/slotBot/update")]
+        public async Task<IActionResult> UpdateSlotBotConfig([Bind] EditViewModel viewModel)
+        {
+            try
+            {
+                await mediator.Send(new UpdateSlotBotConfigRequest(viewModel.Name, mapper.Map<Jackpot>(viewModel.JackpotViewModel), viewModel.SlotsConfig.BetLevels));
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost, Audit]
         [Route("/update")]
         public async Task<IActionResult> Update([Bind] EditViewModel viewModel)
         {

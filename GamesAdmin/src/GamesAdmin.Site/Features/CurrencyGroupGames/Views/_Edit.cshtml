@@ -92,6 +92,7 @@
         {
             <fieldset>
                 <legend>Bet Levels</legend>
+                <p>Set the default value by selecting the radio-button on each Bet Level</p>
                 <div class="form-group" id="bet-levels">
                     <input type="hidden" id="bet-level-length" value="@Model.BetLevels.Length" class="form-control" />
                     <div class="form-group row">
@@ -103,10 +104,12 @@
                         <div class="form-group row">
                             <input type="radio" class="mr-3 ml-3" asp-for="DefaultBetLevel" value="@Model.BetLevels[i]" />
                             <input id="bet-level-@i" type="number" asp-for="@Model.BetLevels[i]" class="col-2 form-control txt-bet-level"
-                                    min="0"
-                                   data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308." 
-                                   data-val-range-max="1.7976931348623157E+308" 
+                                   data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
+                                   data-val-range-max="1.7976931348623157E+308"
                                    data-val-range-min="5E-324"
+                                   data-val="true"
+                                   data-val-number="The field must be a number."
+                                   data-val-required="The Double field is required."
                                    data-val-unique="Value should be unique"
                                    oninput="currencyGroupGame.updateTotalBet(this.value,@i)" />
                             <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="currencyGroupGame.removeBetLevel(event)"></i>

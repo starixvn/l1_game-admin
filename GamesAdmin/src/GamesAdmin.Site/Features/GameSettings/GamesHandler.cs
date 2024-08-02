@@ -49,6 +49,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<CreateNewGameRequest, CreateNewGameViewModel>
         , IRequestHandler<GetSlotRtpRequest, RtpResult>
         , IRequestHandler<CheckServiceStatusRequest, StatusGameResult>
+        , IRequestHandler<UpdateSlotBotConfigRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -491,6 +492,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
         => gameService.UpdateJackpot(request);
+
+        public Task<bool> Handle(UpdateSlotBotConfigRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateSlotBotConfig(request);
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);

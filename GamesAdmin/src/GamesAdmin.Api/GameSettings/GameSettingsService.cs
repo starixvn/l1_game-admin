@@ -43,6 +43,8 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateJackpot(string name, Jackpot jackpot);
 
+        Task<bool> UpdateSlotBotSettings(string name, Jackpot jackpot, double[] betLevels);
+
         Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig);
 
         Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig);
@@ -402,7 +404,14 @@ namespace GamesAdmin.Api.Games
                 sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.SlotsConfig.Jackpot, jackpot);
+                    .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
+                    .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.Init, jackpot.Pools.Minor.Init)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.Init, jackpot.Pools.Major.Init)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.Init, jackpot.Pools.Grand.Init)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Contrib, jackpot.Pools.Minor.PlayerSettings.Contrib)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Contrib, jackpot.Pools.Major.PlayerSettings.Contrib)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Contrib, jackpot.Pools.Grand.PlayerSettings.Contrib);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
@@ -416,17 +425,34 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        private async Task<bool> IsDifferentStakes(string name, double[] betLevels)
+        public async Task<bool> UpdateSlotBotSettings(string name, Jackpot jackpot, double[] betLevels)
         {
-            var gameConfig = await GetByName(name);
+            try
+            {
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetBotConfigChangedModel(gameEntity, jackpot, betLevels);
+                sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
 
-            var updatedStakes = betLevels.OrderBy(level => level);
-            var currentStakes = gameConfig.SlotsConfig.BetLevels.OrderBy(level => level);
-            var diffs = updatedStakes.Except(currentStakes);
+                var update = Builders<GameConfigEntity>.Update
+                    .Set(field => field.SlotsConfig.BetLevels, betLevels)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.BotSettings, jackpot.Pools.Minor.BotSettings)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.BotSettings, jackpot.Pools.Major.BotSettings)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.BotSettings, jackpot.Pools.Grand.BotSettings)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Alloc, jackpot.Pools.Minor.PlayerSettings.Alloc)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Alloc, jackpot.Pools.Major.PlayerSettings.Alloc)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Alloc, jackpot.Pools.Grand.PlayerSettings.Alloc);
 
-            return diffs.Any();
+                await repository.UpdateAsync(config => config.Name == name, update);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
         }
-
         public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig)
         {
             try

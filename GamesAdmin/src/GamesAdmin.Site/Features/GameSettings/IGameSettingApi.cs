@@ -56,6 +56,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/game_settings/update_jackpot")]
         Task<bool> UpdateJackpot([Body] UpdateJackpotRequest request);
 
+        [Post("/game_settings/update_slot_bot_config")]
+        Task<bool> UpdateSlotBotConfig([Body] UpdateSlotBotConfigRequest request);
+
         [Post("/game_settings/update_slot_config")]
         Task<bool> UpdateSlotConfig([Body] UpdateSlotConfigRequest request);
 
