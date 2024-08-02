@@ -132,6 +132,7 @@
 
         prizeList.append(newPrizeRow);
         $('#prizeError').attr('hidden', true)
+        $('#orderError').attr('hidden', true);
         // Re-apply validation for the new inputs
         reparseFormValidationPrizes();
     }
@@ -146,10 +147,35 @@
         $.validator.unobtrusive.parse(formAdNew);
     }
     function removeRanking(index) {
+        $('#orderError').attr('hidden', true);
         $('#prize-row-' + index).remove();
         if ($('#prize-list').children('.form-row').length === 0) {
             $('#prizeError').removeAttr('hidden');
         }
+        // Update the indices of the remaining rows
+        $('#prize-list .form-row').each(function (i) {
+            $(this).attr('id', 'prize-row-' + i);
+            $(this).find('.form-group').each(function () {
+                var rankingInput = $(this).find('input[id^="ranking-input-"]');
+                if (rankingInput.length > 0) {
+                    rankingInput.attr('id', 'ranking-input-' + i);
+                    rankingInput.attr('name', 'WinningPrizes[' + i + '].Ranking');
+                }
+                var amountInput = $(this).find('input[id^="win-amount-"]');
+                if (amountInput.length > 0) {
+                    amountInput.attr('id', 'win-amount-' + i);
+                    amountInput.attr('name', 'WinningPrizes[' + i + '].Value');
+                }
+                var removeIcon = $(this).find('i[id^="remove-col-"]');
+                if (removeIcon.length > 0) {
+                    removeIcon.attr('id', 'remove-col-' + i);
+                    removeIcon.attr('onclick', 'promotion.removeRanking(' + i + ')');
+                }
+            });
+        });
+
+        // Re-apply validation for the updated inputs
+        reparseFormValidationPrizes();
     }
 
     function showOperatorSetting(id, operatorId, operatorName, status) {
@@ -273,6 +299,15 @@
         }, 1000);
     }
 
+    function parseRanking(ranking) {
+        if (ranking.includes('-')) {
+            const [start, end] = ranking.split('-').map(Number);
+            return [start, end];
+        }
+        const rank = Number(ranking);
+        return [rank, rank];
+    }
+
     function onEditSubmit() {
         const nameValue = $('#Name').val()
         if (nameValue == null || nameValue == "") {
@@ -289,6 +324,31 @@
             return false;
         } else {
             $('#prizeError').attr('hidden', true);
+        }
+        var previousRankingEnd = null;
+        var previousValue = null;
+        var isOrderValid = true;
+        $('#orderError').attr('hidden', true);
+        prizeRows.each(function (index, row) {
+            var rankingText = $(row).find('input[id^="ranking-input-"]').val();
+            var value = parseInt($(row).find('input[id^="win-amount-"]').val());
+
+            const [currentRankingStart, currentRankingEnd] = parseRanking(rankingText);
+
+            if (previousRankingEnd !== null && previousValue !== null) {
+                if (currentRankingStart <= previousRankingEnd || value > previousValue) {
+                    isOrderValid = false;
+                    return false; // Exit each loop
+                }
+            }
+
+            previousRankingEnd = currentRankingEnd;
+            previousValue = value;
+        });
+
+        if (!isOrderValid) {
+            $('#orderError').removeAttr('hidden');
+            return false;
         }
         var isRunning = $('#isRunning').val();
         if (isRunning == 'running') {
