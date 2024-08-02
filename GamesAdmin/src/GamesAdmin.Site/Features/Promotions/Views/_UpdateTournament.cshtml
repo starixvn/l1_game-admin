@@ -84,22 +84,29 @@
         </div>    
         <fieldset class="form-group mt-3 pb-3">
             <legend>Prize</legend>
-            <div id="prize-list" class="form-row">
+            <div id="prize-list" class="form-goup">
                 @for (var i = 0; i < Model?.WinningPrizes?.Count(); i++)
                 {
-                    <div class="form-group col-md-2">
-                        <label>Ranking</label>
-                        <input id="ranking-@i" type="text" asp-for="@Model.WinningPrizes[i].Ranking" value="@Model.WinningPrizes[i].Ranking" class="form-control text-center" />
-                    </div>
-                    <div class="form-group col-md-3">                       
-                        <label>Win Amount</label>
-                        <input type="number" asp-for="@Model.WinningPrizes[i].Value" value="@Model.WinningPrizes[i].Value" class="form-control text-center" />
-                    </div>
-                    <div class="form-group col-md-1">                      
+                    <div class="form-row" id="prize-row-@i">
+                        <div class="form-group col-md-2" id="ranking-col-@i">
+                            <label>Ranking</label>
+                            <input id="ranking-input-@i" type="text" asp-for="@Model.WinningPrizes[i].Ranking" value="@Model.WinningPrizes[i].Ranking" class="form-control text-center" />
+                        </div>
+                        <div class="form-group col-md-3" id="amount-col-@i">
+                            <label>Win Amount</label>
+                            <input id="win-amount-@i" type="number" asp-for="@Model.WinningPrizes[i].Value"
+                                   class="form-control text-center"
+                                   data-val-range="The field Value must be between 1 and 2147483647."
+                                   data-val-range-max="2147483647"
+                                   data-val-range-min="1"
+                                   data-val-unique="Value should be unique"
+                                   value="@Model.WinningPrizes[i].Value" />
+                        </div>                                 
+                        <i id="remove-col-@i" class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="promotion.removeRanking(@i)"></i>                    
                     </div>
                 }
             </div>
-           
+            <span id="prizeError" hidden class="text-danger">You must have at least one prize.</span>
             <div class="add-container">
                 <button type="button" class="btn btn-add" id="addRankingBtn" onclick="promotion.addRanking()">Add more</button>
             </div>

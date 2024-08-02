@@ -11,6 +11,7 @@
         deleteId: '#delete-promotion-id',
         resultLabel: '#result-label',
         formTournamentSettings: "#update-currency-group-setting-form",
+        formEditTourment: '#edit-tournament-form'
     };
     let promotionMessage = {
         createSuccess: 'Add Successfully!',
@@ -104,40 +105,50 @@
         });
     }
 
-    function addRanking () {
-        var prizeList = document.getElementById('prize-list');
-        var prizeIndex = prizeList.querySelectorAll('[id^="ranking-"]').length;
+    function addRanking() {
+        var prizeList = $('#prize-list');
+        var prizeIndex = prizeList.children('.form-row').length;
 
-        var newRankingCol = document.createElement('div');
-        newRankingCol.classList.add('form-group', 'col-md-2');
-        var rankingLabel = document.createElement('label');
-        rankingLabel.textContent = 'Ranking';
-        var rankingInput = document.createElement('input');
-        rankingInput.type = 'text';
-        rankingInput.classList.add('form-control', 'text-center');
-        rankingInput.name = 'WinningPrizes[' + prizeIndex + '].Ranking';
-        newRankingCol.appendChild(rankingLabel);
-        newRankingCol.appendChild(rankingInput);
+        var newPrizeRow = $(
+            '<div class="form-row" id="prize-row-' + prizeIndex + '">' +
+            '<div class="form-group col-md-2" id="ranking-col-' + prizeIndex + '">' +
+            '<label>Ranking</label>' +
+            '<input id="ranking-input-' + prizeIndex + '" type="text" name="WinningPrizes[' + prizeIndex + '].Ranking" class="form-control text-center" data-val="true" />' +
+            '</div>' +
+            '<div class="form-group col-md-3" id="amount-col-' + prizeIndex + '">' +
+            '<label>Win Amount</label>' +
+            '<input id="win-amount-' + prizeIndex + '" type="number" name="WinningPrizes[' + prizeIndex + '].Value" class="form-control text-center" value="0" ' +
+            'data-val="true" ' +
+            'data-val-range="The field Value must be between 1 and 2147483647." ' +
+            'data-val-range-max="2147483647" ' +
+            'data-val-range-min="1" ' +
+            'data-val-unique="Value should be unique" />' +
+            '</div>' +           
+            '<i id="remove-col-' + prizeIndex + '" class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="promotion.removeRanking(' + prizeIndex + ')"></i>' +
+            '</div>' +
+            '</div>'
+        );
 
-        var newAmountCol = document.createElement('div');
-        newAmountCol.classList.add('form-group', 'col-md-3');
-        var amountLabel = document.createElement('label');
-        amountLabel.textContent = 'Win Amount';
-        var amountInput = document.createElement('input');
-        amountInput.type = 'number';
-        amountInput.value = 0;
-        amountInput.classList.add('form-control', 'text-center');
-        amountInput.name = 'WinningPrizes[' + prizeIndex + '].Value';
-        rankingInput.id = 'ranking-input-' + prizeIndex;
-        newAmountCol.appendChild(amountLabel);
-        newAmountCol.appendChild(amountInput);
-
-        var newSpaceCol = document.createElement('div');
-        newSpaceCol.classList.add('form-group', 'col-md-1');     
-
-        prizeList.appendChild(newRankingCol);
-        prizeList.appendChild(newAmountCol);
-        prizeList.appendChild(newSpaceCol);
+        prizeList.append(newPrizeRow);
+        $('#prizeError').attr('hidden', true)
+        // Re-apply validation for the new inputs
+        reparseFormValidationPrizes();
+    }
+    function reparseFormValidationPrizes () {
+        var formEdit = $('#edit-tournament-form')
+            .removeData('validator')
+            .removeData('unobtrusiveValidation');
+        var formAdNew = $('#add-new-tournament-form')
+            .removeData('validator')
+            .removeData('unobtrusiveValidation');
+        $.validator.unobtrusive.parse(formEdit);
+        $.validator.unobtrusive.parse(formAdNew);
+    }
+    function removeRanking(index) {
+        $('#prize-row-' + index).remove();
+        if ($('#prize-list').children('.form-row').length === 0) {
+            $('#prizeError').removeAttr('hidden');
+        }
     }
 
     function showOperatorSetting(id, operatorId, operatorName, status) {
@@ -269,6 +280,15 @@
         } else {
             $('#nameError').attr('hidden', true);
         }
+        var prizeList = $('#prize-list');
+        var prizeRows = prizeList.children('.form-row');
+
+        if (prizeRows.length === 0) {
+            $('#prizeError').removeAttr('hidden');
+            return false;
+        } else {
+            $('#prizeError').attr('hidden', true);
+        }
         var isRunning = $('#isRunning').val();
         if (isRunning == 'running') {
             if (!confirm('This promotion is running, are you sure to make the change?')) {
@@ -325,12 +345,18 @@
         openOperatorSettingsForm: function () {
             openModal(promotionElement.formTournamentSettings)();
         },
+        openUpdateTournamentForm: function () {
+            reparseFormValidationPrizes();
+            openModal(promotionElement.formEditTourment)();
+        },
         showOperatorSetting,
         onChangeGroup,
         toggleTab,
         onSubmit,
         deleteTournament,
-        onEditSubmit
+        onEditSubmit,
+        removeRanking,
+        reparseFormValidationPrizes
     }
 }(jQuery));
 

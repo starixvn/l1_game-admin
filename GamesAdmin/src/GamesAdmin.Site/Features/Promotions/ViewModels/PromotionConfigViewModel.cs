@@ -88,7 +88,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                                 // Only show the Edit button if the status is not "completed"
                                 if (Status != PromotionCampaignStatus.CompletedValue)
                                 {
-                                    html.Append($"<a type=\"button\" class=\"btn btn-success btn-lg\"\r\ndata-ajax=\"true\"\r\n data-ajax-mode=\"replace\"\r\ndata-ajax-update=\"#promotion-modal .modal-content\"\r\ndata-ajax-success=\"promotion.openUpdatePromotionForm\"\r\nhref=\"{urlHelper.Action("UpdateTournament")}?id={Id}\">&nbsp;&nbsp;Edit&nbsp;&nbsp;</a>");
+                                    html.Append($"<a type=\"button\" class=\"btn btn-success btn-lg\"\r\ndata-ajax=\"true\"\r\n data-ajax-mode=\"replace\"\r\ndata-ajax-update=\"#promotion-modal .modal-content\"\r\ndata-ajax-success=\"promotion.openUpdateTournamentForm()\"\r\nhref=\"{urlHelper.Action("UpdateTournament")}?id={Id}\">&nbsp;&nbsp;Edit&nbsp;&nbsp;</a>");
                                 }
                                 html.Append("<br><br>");
                                 // Only show the Delete button if the status is not "running" or "completed"
@@ -141,7 +141,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
                             // Only show the Edit button if the status is not "completed"
                             if (Status != PromotionCampaignStatus.CompletedValue)
                             {
-                                html.Append($"<a type=\"button\" class=\"btn btn-success btn-lg\"\r\ndata-ajax=\"true\"\r\n data-ajax-mode=\"replace\"\r\ndata-ajax-update=\"#promotion-modal .modal-content\"\r\ndata-ajax-success=\"promotion.openUpdatePromotionForm\"\r\nhref=\"{urlHelper.Action("UpdateTournament")}?id={Id}\">&nbsp;&nbsp;Edit&nbsp;&nbsp;</a>");
+                                html.Append($"<a type=\"button\" class=\"btn btn-success btn-lg\"\r\ndata-ajax=\"true\"\r\n data-ajax-mode=\"replace\"\r\ndata-ajax-update=\"#promotion-modal .modal-content\"\r\ndata-ajax-success=\"promotion.openUpdateTournamentForm()\"\r\nhref=\"{urlHelper.Action("UpdateTournament")}?id={Id}\">&nbsp;&nbsp;Edit&nbsp;&nbsp;</a>");
                             }
                             html.Append("<br><br>");
                             // Only show the Delete button if the status is not "running" or "completed"
