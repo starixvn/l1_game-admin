@@ -309,6 +309,9 @@
     }
 
     function onEditSubmit() {
+        if (!$('#edit-tournament-form').valid()) {
+            return
+        }
         const nameValue = $('#Name').val()
         if (nameValue == null || nameValue == "") {
             $('#nameError').removeAttr('hidden');
