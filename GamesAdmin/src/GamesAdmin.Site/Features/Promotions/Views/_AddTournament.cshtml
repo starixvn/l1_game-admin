@@ -59,7 +59,11 @@
                     <div class="form-row" id="prize-row-@i">
                         <div class="form-group col-md-2" id="ranking-col-@i">
                             <label>Ranking</label>
-                            <input id="ranking-input-@i" type="text" asp-for="@Model.WinningPrizes[i].Ranking" value="@Model.WinningPrizes[i].Ranking" class="form-control text-center" />
+                            <input id="ranking-input-@i" type="text" asp-for="@Model.WinningPrizes[i].Ranking" value="@Model.WinningPrizes[i].Ranking" class="form-control text-center"
+                                   data-val="true"
+                                   data-val-required="The Ranking field is required."
+                                   data-val-range="The field Ranking must be a valid value."
+                                   data-val-unique="Value should be unique" />
                         </div>
                         <div class="form-group col-md-3" id="amount-col-@i">
                             <label>Win Amount</label>

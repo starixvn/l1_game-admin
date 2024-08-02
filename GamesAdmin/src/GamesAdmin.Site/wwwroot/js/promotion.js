@@ -113,16 +113,20 @@
             '<div class="form-row" id="prize-row-' + prizeIndex + '">' +
             '<div class="form-group col-md-2" id="ranking-col-' + prizeIndex + '">' +
             '<label>Ranking</label>' +
-            '<input id="ranking-input-' + prizeIndex + '" type="text" name="WinningPrizes[' + prizeIndex + '].Ranking" class="form-control text-center" data-val="true" />' +
+            '<input id="ranking-input-' + prizeIndex + '" type="text" name="WinningPrizes[' + prizeIndex + '].Ranking" class="form-control text-center ranking-input" ' +
+            'data-val="true" ' +
+            'data-val-required="The Ranking field is required." ' +
+            'data-val-range="The field Ranking must be a valid value." ' +
+            'data-val-unique="Value should be unique" />' +
             '</div>' +
             '<div class="form-group col-md-3" id="amount-col-' + prizeIndex + '">' +
             '<label>Win Amount</label>' +
-            '<input id="win-amount-' + prizeIndex + '" type="number" name="WinningPrizes[' + prizeIndex + '].Value" class="form-control text-center" value="0" ' +
+            '<input id="win-amount-' + prizeIndex + '" type="number" name="WinningPrizes[' + prizeIndex + '].Value" class="form-control text-center win-amount-input" value="0" ' +
             'data-val="true" ' +
             'data-val-range="The field Value must be between 1 and 2147483647." ' +
             'data-val-range-max="2147483647" ' +
             'data-val-range-min="1" ' +
-            'data-val-unique="Value should be unique" />' +
+            'data-val-required="Win Amount is required." />' +
             '</div>' +
             '<div class="form-group col-md-1 d-flex align-items-center">' +
             '<i id="remove-col-' + prizeIndex + '" class="icon-cancel text-error mt-4 ml-4" style="cursor: pointer" onclick="promotion.removeRanking(' + prizeIndex + ')"></i>' +
