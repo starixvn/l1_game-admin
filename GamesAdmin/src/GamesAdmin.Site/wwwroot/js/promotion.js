@@ -312,59 +312,73 @@
         return [rank, rank];
     }
 
-    function onEditSubmit() {
-        if (!$('#edit-tournament-form').valid()) {
-            return
+ 
+    function validateForm(formId) {
+        if (!$(formId).valid()) {
+           return false;
         }
-        const nameValue = $('#Name').val()
-        if (nameValue == null || nameValue == "") {
-            $('#nameError').removeAttr('hidden');
-            return false;
+
+        const nameValue = $('#Name').val();
+        if (!nameValue) {
+           $('#nameError').removeAttr('hidden');
+           return false;
         } else {
-            $('#nameError').attr('hidden', true);
+           $('#nameError').attr('hidden', true);
         }
-        var prizeList = $('#prize-list');
-        var prizeRows = prizeList.children('.form-row');
+
+        const prizeList = $('#prize-list');
+        const prizeRows = prizeList.children('.form-row');
 
         if (prizeRows.length === 0) {
-            $('#prizeError').removeAttr('hidden');
-            return false;
+           $('#prizeError').removeAttr('hidden');
+           return false;
         } else {
-            $('#prizeError').attr('hidden', true);
+           $('#prizeError').attr('hidden', true);
         }
-        var previousRankingEnd = null;
-        var previousValue = null;
-        var isOrderValid = true;
+
+        let previousRankingEnd = null;
+        let previousValue = null;
+        let isOrderValid = true;
         $('#orderError').attr('hidden', true);
+
         prizeRows.each(function (index, row) {
-            var rankingText = $(row).find('input[id^="ranking-input-"]').val();
-            var value = parseInt($(row).find('input[id^="win-amount-"]').val());
+           const rankingText = $(row).find('input[id^="ranking-input-"]').val();
+           const value = parseInt($(row).find('input[id^="win-amount-"]').val());
 
-            const [currentRankingStart, currentRankingEnd] = parseRanking(rankingText);
+           const [currentRankingStart, currentRankingEnd] = parseRanking(rankingText);
 
-            if (previousRankingEnd !== null && previousValue !== null) {
-                if (currentRankingStart <= previousRankingEnd || value > previousValue) {
-                    isOrderValid = false;
-                    return false; // Exit each loop
-                }
-            }
+           if (previousRankingEnd !== null && previousValue !== null) {
+               if (currentRankingStart <= previousRankingEnd || value > previousValue) {
+                   isOrderValid = false;
+                        return false; // Exit each loop
+               }
+           }
 
-            previousRankingEnd = currentRankingEnd;
-            previousValue = value;
+           previousRankingEnd = currentRankingEnd;
+           previousValue = value;
         });
 
         if (!isOrderValid) {
-            $('#orderError').removeAttr('hidden');
+           $('#orderError').removeAttr('hidden');
+           return false;
+        }
+
+        return true;
+    }
+    function onEditSubmit() {
+        const formId = '#edit-tournament-form';
+        if (!validateForm(formId)) {
             return false;
         }
-        var isRunning = $('#isRunning').val();
-        if (isRunning == 'running') {
+
+        const isRunning = $('#isRunning').val();
+        if (isRunning === 'running') {
             if (!confirm('This promotion is running, are you sure to make the change?')) {
                 return false;
             }
         }
-        var data = $('#edit-tournament-form').serialize();
-        console.log("edit promotion", data);
+
+        const data = $(formId).serialize();
         $.ajax({
             dataType: 'json',
             url: '/Promotion/UpdateTournament',
@@ -380,9 +394,33 @@
             error: function (response) {
                 promotion.onUpdatePromotionUnsuccess(response);
             }
-        });        
+        });
     }
 
+    function onCreateTournament() {
+        const formId = '#add-new-tournament-form';
+        if (!validateForm(formId)) {
+            return false;
+        }
+
+        const data = $(formId).serialize();
+        $.ajax({
+            dataType: 'json',
+            url: '/Promotion/CreateTournament',
+            type: 'POST',
+            data,
+            success: function (response) {
+                if (response.success) {
+                    promotion.onUpdatePromotionSuccess(response);
+                } else {
+                    promotion.onUpdatePromotionUnsuccess(response);
+                }
+            },
+            error: function (response) {
+                promotion.onUpdatePromotionUnsuccess(response);
+            }
+        });
+    }
     return {
         openAddNewPromotionForm: function () {
             openModal(promotionElement.formAdd)();
@@ -424,7 +462,8 @@
         deleteTournament,
         onEditSubmit,
         removeRanking,
-        reparseFormValidationPrizes
+        reparseFormValidationPrizes,
+        onCreateTournament
     }
 }(jQuery));
 

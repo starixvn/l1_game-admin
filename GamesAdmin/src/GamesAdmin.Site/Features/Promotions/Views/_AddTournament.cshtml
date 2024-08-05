@@ -12,11 +12,7 @@
 @{
     Model.ConvertToTimeZone(appSetting.DefaultTimeZone);
 }
-<form class="form" data-ajax="true" data-ajax-method="POST" asp-action="CreateTournament"
-      data-ajax-loading="#spinner"
-      data-ajax-success="promotion.onCreatePromotionSuccess"
-      data-ajax-failure="promotion.onCreatePromotionUnsuccess"
-      id="add-new-tournament-form">
+<form class="form" id="add-new-tournament-form">
     <div class="col-12 mt-3 modal-body">
         <div class="form-group">
             <div class="col-12 row">
@@ -91,6 +87,6 @@
     </div>
     <div class=" modal-footer">
         <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn-submit">Save</button>
+        <button type="button" onclick="promotion.onCreateTournament()" class="btn-submit">Save</button>
     </div>
 </form>
