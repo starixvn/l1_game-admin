@@ -88,7 +88,7 @@
                                                 @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * minCoin * minBetLevel, Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * maxCoin * maxBetLevel }))
                                                 break;
                                             case GamesAdmin.Core.Enumeration.GameType.Slots:
-                                                @(": " + string.Join(" - ",new double[] { setting.BetLevels[0], setting.BetLevels[1], setting.BetLevels[2] }))
+                                                @(": " + string.Join(" - ", setting.BetLevels))
                                                 break;
                                             default:
                                                 @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
