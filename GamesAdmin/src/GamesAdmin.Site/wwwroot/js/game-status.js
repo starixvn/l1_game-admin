@@ -331,7 +331,7 @@
                 requestUrl = "/jackpot/update";
             }
 
-            if ($('#slotBotSetting').css('display')) {
+            if ($('#slotBotSetting').css('display') && $('#slotBotSetting').css('display') !== 'none') {
                 requestUrl = "/slotBot/update";
             }
 

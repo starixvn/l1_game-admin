@@ -35,15 +35,18 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.Icons, opt => opt.MapFrom(src => src.SlotsConfig.Icons));
 
 
-            CreateMap<Jackpot, JackpotViewModel>();
-            CreateMap<JackpotViewModel, Jackpot>();
+            CreateMap<Jackpot, JackpotViewModel>()
+                .ForMember(dest => dest.WinningRatio, opt => opt.MapFrom(src => src.WinningRatio.ToPercentage()));
+            CreateMap<JackpotViewModel, Jackpot>()
+                .ForMember(dest => dest.WinningRatio, opt => opt.MapFrom(src => src.WinningRatio.ConvertPercentValue()));
 
             CreateMap<SlotsConfig, SlotViewModel>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.Mode))
                 .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.Bonus.Min))
                 .ForMember(dest => dest.MaxBonus, opt => opt.MapFrom(src => src.Bonus.Max))
                 .ForMember(dest => dest.Jackpot, opt => opt.MapFrom(src => src.Jackpot))
-                .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ToPercentage()));
+                .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ToPercentage())
+                );
 
 
             CreateMap<CascadingSlotsConfig, SlotViewModel>()
