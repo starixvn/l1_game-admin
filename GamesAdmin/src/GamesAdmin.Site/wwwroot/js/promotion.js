@@ -348,7 +348,7 @@
            const [currentRankingStart, currentRankingEnd] = parseRanking(rankingText);
 
            if (previousRankingEnd !== null && previousValue !== null) {
-               if (currentRankingStart <= previousRankingEnd || value > previousValue) {
+               if (currentRankingStart <= previousRankingEnd || value >= previousValue) {
                    isOrderValid = false;
                         return false; // Exit each loop
                }
@@ -411,13 +411,13 @@
             data,
             success: function (response) {
                 if (response.success) {
-                    promotion.onUpdatePromotionSuccess(response);
+                    promotion.onCreatePromotionSuccess(response);
                 } else {
-                    promotion.onUpdatePromotionUnsuccess(response);
+                    promotion.onCreatePromotionUnsuccess(response);
                 }
             },
             error: function (response) {
-                promotion.onUpdatePromotionUnsuccess(response);
+                promotion.onCreatePromotionUnsuccess(response);
             }
         });
     }
