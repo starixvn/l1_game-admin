@@ -243,7 +243,7 @@
             this.reparseFormValidation();
         },
         updateTotalBet: function (value, index) {
-            $(`#total-bet-${index}`)[0].innerHTML = `${+value * 25}`;
+            $(`#total-bet-${index}`)[0].innerHTML = `${+(value * 25).toFixed(5)}`;
         },
         enableDropDownList: function (event) {
             event.target.checked ? $("#GroupIdCopy").prop("disabled", false) : $("#GroupIdCopy").prop("disabled", true);

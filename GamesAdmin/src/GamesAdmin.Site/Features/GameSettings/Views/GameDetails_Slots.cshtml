@@ -261,7 +261,7 @@
                                    data-val-unique="Value should be unique"
                                    oninput="currencyGroupGame.updateTotalBet(this.value,@i)" />
                             <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="currencyGroupGame.removeBotBetLevel(event)"></i>
-                            <label class=" mt-3 ml-5 pl-5" id="total-bet-@i">@(Model.SlotsConfig.BetLevels[i] * 25)</label>
+                            <label class=" mt-3 ml-5 pl-5" id="total-bet-@i">@((decimal)Model.SlotsConfig.BetLevels[i] * 25m)</label>
                         </div>
                     }
                     <div class="add-container">
