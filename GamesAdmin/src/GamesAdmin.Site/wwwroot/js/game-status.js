@@ -131,6 +131,18 @@
                     oddsMultiplierIndex = $("#odds-multipliers .multiplier-item").length;
 
                     $('#gameModal').modal('show');
+
+                    $.validator.addMethod("unique", function (value, element, params) {
+                        for (const coinElement of $(".txt-bot-bet-level", "#bot-bet-levels")) {
+                            if (coinElement.value === value && coinElement !== element) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    });
+
+                    $.validator.unobtrusive.adapters.addBool("unique");
+                    $.validator.unobtrusive.parse('#gameForm');
                 }
             });
         },
@@ -195,7 +207,50 @@
                 $('#botRatioModal').modal('show');
             });
         },
+        addBotBetLevel: function () {
+            const length = $(".txt-bot-bet-level", "#bot-bet-levels").length;
 
+            $(`<div class="form-group row ml-5">
+                            <input id="bot-bet-level-${length}" type="number" name="SlotsConfig.BetLevels[${length}]" class="col-2 form-control txt-bot-bet-level"
+                                     data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
+                                      data-val-range-max="1.7976931348623157E+308"
+                                      data-val-range-min="5E-324"
+                                      data-val="true"
+                                      data-val-number="The field must be a number."
+                                      data-val-required="The Double field is required."
+                                      data-val-unique="Value should be unique"
+                                   oninput="currencyGroupGame.updateTotalBet(this.value,${length})" />
+                            <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="currencyGroupGame.removeBotBetLevel(event)"></i>
+                            <label class=" mt-3 ml-5 pl-5" id="total-bet-${length}">${0}</label>
+                        </div>`).insertBefore($('.add-container'));
+
+            $("#botBetLevel_legend")[0].innerHTML = `Bot Bet Levels (${length + 1} levels)`
+            this.reparseFormValidation();
+        },
+        removeBotBetLevel: function (event) {
+            $(event.target).parent().remove();
+            const length = $(".txt-bot-bet-level", "#bot-bet-levels").length;
+
+            $("#botBetLevel_legend")[0].innerHTML = `Bot Bet Levels (${length} levels)`
+
+            this.updateBetLevelIndex();
+        },
+        updateBetLevelIndex: function () {
+            var $betLevels = $(".txt-bot-bet-level", "#bot-bet-levels");
+
+            for (let index = 0; index < $betLevels.length; index++) {
+                var $betLevel = $($betLevels[index]);
+                $betLevel.attr("name", $betLevel.attr("name").replace(/\d+/, index));
+            }
+            this.reparseFormValidation();
+        },
+        reparseFormValidation: function () {
+            var form = $("#gameForm")
+                .removeData("validator")
+                .removeData("unobtrusiveValidation");
+
+            $.validator.unobtrusive.parse(form);
+        },
         updateBotRationItems: function () {
             const modal = $('#botRatioModal');
             const btnSubmit = modal.find('#updateBotRatioBtn');
@@ -338,6 +393,11 @@
             if ($('#adjustweight').css('display') && $('#adjustweight').css('display') !== 'none') {
                 this.updateSymbolWeight();
                 return;
+            }
+
+            if (!$('#gameForm').valid()) {
+                $('#updateBtn').prop('disabled', false);
+                return
             }
 
             this.updateOddsMultipliersIndex();
@@ -929,18 +989,6 @@ $(document).ready(function () {
         });
     }
 
-    $.validator.addMethod("unique", function (value, element, params) {
-        debugger
-        for (const coinElement of $(".txt-bot-bet-level", "#bot-bet-levels")) {
-            if (coinElement.value === value && coinElement !== element) {
-                return false;
-            }
-        }
-        return true;
-    });
-
-    $.validator.unobtrusive.adapters.addBool("unique");
-    $.validator.unobtrusive.parse('#gameForm');
 
     $(".bet-monitor").on("click", function (event) {
         var $this = $(this);

@@ -260,12 +260,12 @@
                                    data-val-range-min="5E-324"
                                    data-val-unique="Value should be unique"
                                    oninput="currencyGroupGame.updateTotalBet(this.value,@i)" />
-                            <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="currencyGroupGame.removeBotBetLevel(event)"></i>
+                            <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="gameStatus.removeBotBetLevel(event)"></i>
                             <label class=" mt-3 ml-5 pl-5" id="total-bet-@i">@((decimal)Model.SlotsConfig.BetLevels[i] * 25m)</label>
                         </div>
                     }
                     <div class="add-container">
-                        <button type="button" class="btn btn-add" id="addBotBetLevelBtn" onclick="currencyGroupGame.addBotBetLevel()">Add new Bet Level</button>
+                        <button type="button" class="btn btn-add" id="addBotBetLevelBtn" onclick="gameStatus.addBotBetLevel()">Add new Bet Level</button>
                     </div>
                 </div>
             </fieldset>

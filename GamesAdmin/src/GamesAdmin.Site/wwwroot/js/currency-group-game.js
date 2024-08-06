@@ -231,26 +231,6 @@
                         </div>`).insertBefore($('.add-container'));
             this.reparseFormValidation();
         },
-        addBotBetLevel: function () {
-            const length = $(".txt-bot-bet-level", "#bot-bet-levels").length;
-
-            $(`<div class="form-group row ml-5">
-                            <input id="bot-bet-level-${length}" type="number" name="SlotsConfig.BetLevels[${length}]" class="col-2 form-control txt-bot-bet-level"
-                                     data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
-                                      data-val-range-max="1.7976931348623157E+308"
-                                      data-val-range-min="5E-324"
-                                      data-val="true"
-                                      data-val-number="The field must be a number."
-                                      data-val-required="The Double field is required."
-                                      data-val-unique="Value should be unique"
-                                   oninput="currencyGroupGame.updateTotalBet(this.value,${length})" />
-                            <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="currencyGroupGame.removeBotBetLevel(event)"></i>
-                            <label class=" mt-3 ml-5 pl-5" id="total-bet-${length}">${0}</label>
-                        </div>`).insertBefore($('.add-container'));
-
-            $("#botBetLevel_legend")[0].innerHTML = `Bot Bet Levels (${length+1} levels)`
-            this.reparseFormValidation();
-        },
         updateTotalBet: function (value, index) {
             $(`#total-bet-${index}`)[0].innerHTML = `${+(value * 25).toFixed(5)}`;
         },
@@ -275,16 +255,17 @@
             this.reparseFormValidation();
         },
         removeBetLevel: function (event) {
-            $(event.target).parent().remove();
-            this.updateBetLevelIndex();
-        },
-        removeBotBetLevel: function (event) {
-            $(event.target).parent().remove();
-            const length = $(".txt-bot-bet-level", "#bot-bet-levels").length;
+            const val = $(event.target).prev().val();
+            const defaultVal = $('input[name="DefaultBetLevel"]:checked').val();
 
-            $("#botBetLevel_legend")[0].innerHTML = `Bot Bet Levels (${length} levels)`
-
-            this.updateBetLevelIndex();
+            if (val != defaultVal) {
+                $(event.target).parent().remove();
+                this.updateBetLevelIndex();
+            }
+            else {
+                alert("Can't remove default bet level")
+            }
+    
         },
         onBetLevelChange: function (event) {
             const $parent = $(event.target).parent();
