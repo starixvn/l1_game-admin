@@ -10,8 +10,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public bool ExcludeTestCurrency { get; set; }
 
+        [DisplayName("Winning Ratio (%)")]
         public double WinningRatio { get; set; }
 
+        [DisplayName("Jackpot Service Fee (%)")]
         public double JackpotServiceFee => WinningRatio.ReversePercent();
 
         public JackpotPools Pools { get; set; }
