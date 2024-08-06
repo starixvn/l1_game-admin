@@ -24,6 +24,15 @@
                         }
                         return true;
                     });
+                    $.validator.addMethod("unique", function (value, element, params) {
+                        for (const coinElement of $(".txt-bet-level", "#bet-levels")) {
+                            if (coinElement.value === value && coinElement !== element) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    });
+                 
                     $.validator.unobtrusive.adapters.addBool("unique");
                     $.validator.unobtrusive.parse('#currency-group-game-edit-form');
 

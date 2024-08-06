@@ -929,6 +929,19 @@ $(document).ready(function () {
         });
     }
 
+    $.validator.addMethod("unique", function (value, element, params) {
+        debugger
+        for (const coinElement of $(".txt-bot-bet-level", "#bot-bet-levels")) {
+            if (coinElement.value === value && coinElement !== element) {
+                return false;
+            }
+        }
+        return true;
+    });
+
+    $.validator.unobtrusive.adapters.addBool("unique");
+    $.validator.unobtrusive.parse('#gameForm');
+
     $(".bet-monitor").on("click", function (event) {
         var $this = $(this);
         const gameName = $this.data("game-name");
