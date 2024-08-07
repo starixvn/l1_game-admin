@@ -432,9 +432,10 @@ namespace GamesAdmin.Api.Games
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
                 var changedSettings = SettingHelper.GetBotConfigChangedModel(gameEntity, jackpot, betLevels);
                 sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
+                var sortBetLevel = betLevels.OrderBy(level => level).ToArray();
 
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.SlotsConfig.BetLevels, betLevels)
+                    .Set(field => field.SlotsConfig.BetLevels, sortBetLevel)
                     .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.BotSettings, jackpot.Pools.Minor.BotSettings)
                     .Set(field => field.SlotsConfig.Jackpot.Pools.Major.BotSettings, jackpot.Pools.Major.BotSettings)
                     .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.BotSettings, jackpot.Pools.Grand.BotSettings)

@@ -220,7 +220,7 @@
                                       data-val-required="The Double field is required."
                                       data-val-unique="Value should be unique"
                                    oninput="currencyGroupGame.updateTotalBet(this.value,${length})" />
-                            <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="currencyGroupGame.removeBotBetLevel(event)"></i>
+                            <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="gameStatus.removeBotBetLevel(event)"></i>
                             <label class=" mt-3 ml-5 pl-5" id="total-bet-${length}">${0}</label>
                         </div>`).insertBefore($('.add-container'));
 
@@ -714,7 +714,7 @@
             $('#jackpots-tab-header').removeClass("active");
             $('#botsetting-tab-header').removeClass("active");
             $('#adjustweight-tab-header').removeClass("active");
-            $('#slot-bot-settings-tab-header').removeClass("active");
+            $('#slotBotSetting-tab-header').removeClass("active");
 
             const id = '#' + name;
             const headerId = '#' + name + '-tab-header';

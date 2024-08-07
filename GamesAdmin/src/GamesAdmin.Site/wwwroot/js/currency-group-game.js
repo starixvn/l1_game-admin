@@ -263,7 +263,7 @@
                 this.updateBetLevelIndex();
             }
             else {
-                alert("Can't remove default bet level")
+                alert("Cannot delete the default value. Set a new default first")
             }
     
         },
