@@ -1,6 +1,8 @@
 ﻿@using GamesAdmin.Site.Features.Promotions.ViewModels
 @model AwardTestCurrencyViewModel
 
+<input type="hidden" id="hidden-test-player-id" value="@Model.PlayerId" />
+<input type="hidden" id="hidden-test-operator-id" value="@Model.OperatorId" />
 <table class="table table-light table-bordered stripe">
     <thead>
         <tr class="text-center">
@@ -22,8 +24,7 @@
             <td>
                 <input class="text-center" type="number" id="input-test-award-amount" placeholder="Awarded Amount" min="0" />
             </td>
-            <input type="hidden" id="hidden-test-player-id" value="@Model.PlayerId" />
-            <input type="hidden" id="hidden-test-operator-id" value="@Model.OperatorId" />
-        </tr>
+        </tr>      
     </tbody>
 </table>
+<span id="awardAmountError" hidden class="text-danger">Please enter an reward amount greater than 0.</span>

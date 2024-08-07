@@ -92,6 +92,12 @@
         playerId = $(leaderboardElements.awardTournamentModal).find(leaderboardElements.playerId).val();
         awardAmount = $(leaderboardElements.awardTournamentModal).find(leaderboardElements.awardAmount).val();
         operatorId = $(leaderboardElements.awardTournamentModal).find(leaderboardElements.operatorId).val();
+        if (awardAmount === '' || parseFloat(awardAmount) <= 0) {
+            $('#awardAmountError').removeAttr('hidden');
+            return false;
+        } else {
+            $('#awardAmountError').attr('hidden', true);
+        }
         $.ajax({
             method: "POST",
             url: "/Promotion/AwardTestCurrency",
