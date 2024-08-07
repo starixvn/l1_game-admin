@@ -236,6 +236,9 @@
 
             this.updateBetLevelIndex();
         },
+        updateTotalBet: function (value, index) {
+            $(`#total-bet-${index}`)[0].innerHTML = `${+(value * 25).toFixed(5)}`;
+        },
         updateBetLevelIndex: function () {
             var $betLevels = $(".txt-bot-bet-level", "#bot-bet-levels");
 
