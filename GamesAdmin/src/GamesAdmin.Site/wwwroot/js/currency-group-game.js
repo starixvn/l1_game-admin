@@ -218,6 +218,7 @@
             $(`<div class="form-group row">
                             <input type="radio" class="mr-3 ml-3" name="DefaultBetLevel" id="DefaultBetLevel" value="0" />
                             <input id="bet-level-${length}" type="number" name="BetLevels[${length}]" class="col-2 form-control txt-bet-level"
+                                      step=".01"
                                       data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
                                       data-val-range-max="1.7976931348623157E+308"
                                       data-val-range-min="5E-324"

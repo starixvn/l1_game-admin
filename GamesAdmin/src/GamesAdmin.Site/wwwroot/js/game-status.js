@@ -212,7 +212,8 @@
 
             $(`<div class="form-group row ml-5">
                             <input id="bot-bet-level-${length}" type="number" name="SlotsConfig.BetLevels[${length}]" class="col-2 form-control txt-bot-bet-level"
-                                     data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
+                                      step=".01"
+                                      data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
                                       data-val-range-max="1.7976931348623157E+308"
                                       data-val-range-min="5E-324"
                                       data-val="true"
