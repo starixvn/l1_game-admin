@@ -1,0 +1,52 @@
+@using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Site.Features.Promotions.ViewModels;
+@model EditCurrencyGroupSettingViewModel;
+@{
+    var disableValue = Model.Status.Equals(PromotionCampaignStatus.RunningValue);
+}
+<form class="card-body form" id="currencyGroupGameForm">
+    <input readonly hidden asp-for="@Model.IncludedSiteNames" />
+    <div>
+        <input asp-for="OperatorId" type="hidden" class="form-control" />
+
+        <div class="form-group">
+            @if (disableValue)
+            {
+                <input type="checkbox" asp-for="Enabled" disabled />
+            }
+            else
+            {
+                <input type="checkbox" asp-for="Enabled" />
+            }
+            <label asp-for="Enabled" class="control-label"></label>
+        </div>
+      
+            <fieldset>
+                <legend>Valid min bet value</legend>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label class="control-label">Slot games</label>
+                    @if (disableValue)
+                    {
+                        <input type="number" asp-for="SlotGamesMinBet" class="form-control" readonly />
+                    }
+                    else
+                    {
+                        <input type="number" asp-for="SlotGamesMinBet" class="form-control" />
+                    }
+                </div>
+                <div class="col-4">
+                    <label class="control-label">Other games</label>
+                    @if (disableValue)
+                    {
+                        <input type="number" asp-for="OtherGamesMinBet" class="form-control" readonly />
+                    }
+                    else
+                    {
+                        <input type="number" asp-for="OtherGamesMinBet" class="form-control" />
+                    }
+                </div>
+            </div>
+            </fieldset>      
+    </div>
+</form>

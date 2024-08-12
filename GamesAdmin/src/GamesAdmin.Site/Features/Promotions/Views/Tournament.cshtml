@@ -1,0 +1,115 @@
+﻿@using GamesAdmin.Site.Features._Shared;
+
+@model GamesAdmin.Site.Features.Promotions.ViewModels.TournamentViewModel
+
+@section Styles {
+    <link href="~/lib/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/game-management.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Tournament Promotion";
+}
+<form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetTournamentPromotions"
+      data-ajax-mode="replace"
+      data-ajax-update="#promotion-management .table"
+      data-ajax-loading="#spinner"
+      method="get"
+      asp-route-status="@Model.Status"
+      id="promotion-form">
+    <div class="form-row align-items-center">
+        <div class="col-auto partner-id">
+            <label asp-for="Status" class="control-label">Status</label>
+            <select asp-items="@Model.StatusItem" asp-for="Status" class="form-control"></select>
+        </div>
+        <div class="col-auto list-buttons">
+            <button type="submit" class="btn-submit">Submit</button>
+            @if (Context.HasAdminPermission())
+            {
+                <a class="btn-add"
+                   data-ajax="true"
+                   data-ajax-mode="replace"
+                   data-ajax-update="#promotion-modal .modal-content"
+                   data-ajax-success="promotion.openAddNewTournamentForm"
+                   style="text-decoration: none"
+                   asp-action="CreateTournament">
+                    Add New Promotion
+                </a>
+            }
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</form>
+<div id="promotion-management" class="card">
+    <div class="table"></div>
+</div>
+
+<div class="modal fade" id="promotion-modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg promotion-model">
+        <div class="modal-content">
+        </div>
+    </div>
+   
+</div>
+<div class="modal fade game-modal" id="operatorSettingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header"> 
+                <h5 class="modal-title">Operator Settings</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body game-details-content" id="operatorSettingContent">
+                ...
+            </div>
+            
+            <div class="modal-footer">
+                <label class="result-label col-6" id="result-label"></label>
+                <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                @if (Context.HasAdminPermission())
+                {
+                    <button type="button" class="btn btn-submit" id="updateInclusionsBtn" onclick="promotion.onSubmit(true)">Save & Continue</button>
+                    <button type="button" class="btn btn-submit" id="updateInclusionsBtn" onclick="promotion.onSubmit()">Save</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="promotion-modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Promotion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this promotion?
+                <input type="text" hidden id="delete-promotion-id" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-submit" onclick="promotion.deleteTournament()">Delete</button>
+                <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/jquery-datetimepicker/jquery.datetimepicker.full.js"></script>
+        <script src="~/lib/select2/dist/js/select2.min.js"></script>
+        <script src="~/js/promotion.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/promotion.min.js" asp-append-version="true"></script>
+    </environment>
+}

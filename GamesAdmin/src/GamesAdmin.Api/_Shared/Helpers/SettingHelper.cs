@@ -1,11 +1,12 @@
-﻿using GamesAdmin.Api.SentryClient;
+﻿using System.Collections.Generic;
+using System.Linq;
+using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace GamesAdmin.Api._Shared.Helpers
 {
@@ -328,5 +329,49 @@ namespace GamesAdmin.Api._Shared.Helpers
         private static string GetValue(Bonus bonus) => $"Min: {bonus.Min} - Max: {bonus.Max}";
 
         private static string GetValue(StakeLevel stakeLevel) => $"Initial Amount: {stakeLevel.Jackpot} - Bot Ratio: {stakeLevel.BotRatio}";
+
+        public static List<SettingChangedModel> GetPromotionTournamentChangeModel(PromotionConfigModel oldConfig, PromotionConfigModel newConfig, string type)
+        {
+            if (type.Equals(PromotionTournamentTypeUpdate.OperatorSetting))
+            {
+                var oldListOperators = FormatOperators(oldConfig.Operators);
+                var newListOperators = FormatOperators(newConfig.Operators);
+                return new List<SettingChangedModel>
+                {
+                    new SettingChangedModel("Operators", oldListOperators, newListOperators),
+                };
+            }
+            else if (type.Equals(PromotionTournamentTypeUpdate.EditTournament))
+            {
+                var oldListWinningPrizes = FormatWinningPrizes(oldConfig.WinningPrizes);
+                var newListWinningPrizes = FormatWinningPrizes(newConfig.WinningPrizes);
+                return new List<SettingChangedModel>
+                {
+                    new SettingChangedModel("Promotion Name", oldConfig.Name, newConfig.Name),
+                    new SettingChangedModel("Start Date Time", oldConfig.StartDateTime.ToString(), newConfig.StartDateTime.ToString()),
+                    new SettingChangedModel("End Date Time", oldConfig.EndDateTime.ToString(), newConfig.EndDateTime.ToString()),
+                    new SettingChangedModel("Winning Prizes", oldListWinningPrizes, newListWinningPrizes),
+                };
+            }
+
+            return new List<SettingChangedModel>();
+        }
+
+        public static string FormatOperators(List<OperatorModel> operators)
+        {
+            return string.Join("\r\n", operators.Select(o =>
+            {
+                var currencyGroupsFormatted = string.Join("\r\n\t", o.CurrencyGroups.Select(cg =>
+                    $"+ Currency Group: {cg.CurrencyName}, Slot Game Min Bet: {cg.SlotGameMinBet}, Other Game Min Bet: {cg.OtherGameMinBet}, Enabled: {cg.Enabled}"));
+
+                return $"- {o.OperatorName}\r\n\t+ Included Sites: {o.IncludedSiteNames}\r\n\t{currencyGroupsFormatted}";
+            }));
+        }
+
+        public static string FormatWinningPrizes(List<WinningPrizeModel> winningPrizes)
+        {
+            return string.Join("\r\n\t", winningPrizes.Select(wp =>
+                $"- Ranking {wp.Ranking}, Value: {wp.Value}"));
+        }
     }
 }

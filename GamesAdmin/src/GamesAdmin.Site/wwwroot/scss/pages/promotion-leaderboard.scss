@@ -1,0 +1,10 @@
+﻿@import "../base/variables";
+@import "../components/customize-datatable";
+
+.modal-body {
+    .table {
+        .form-control {
+            font-size: 1.4rem;
+        }
+    }
+}

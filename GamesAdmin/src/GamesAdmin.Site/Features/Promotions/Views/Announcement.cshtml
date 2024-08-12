@@ -17,11 +17,16 @@
       data-ajax-success="promotionAnnouncement.init"
       method="get"
       asp-route-status="@Model.Status"
+      asp-route-type="@Model.Type"
       id="announcement-form">
     <div class="form-row align-items-center">
         <div class="col-auto partner-id">
             <label asp-for="Status" class="control-label">Status</label>
             <select asp-items="@Model.StatusItem" asp-for="Status" class="form-control"></select>
+        </div>
+        <div class="col-auto partner-id">
+            <label asp-for="Type" class="control-label">Type</label>
+            <select asp-items="@Model.AnnouncementTypeList" asp-for="Type" class="form-control"></select>
         </div>
         <div class="col-auto list-buttons">
             <button type="submit" class="btn-submit">Submit</button>
@@ -66,7 +71,7 @@
                             <th style="width: 19%">Title</th>
                             <th style="width: 24%">Content</th>
                             <th style="width: 17%">Valid day (GMT+7)</th>
-                            <th style="width: 23%">Promotion Mapping</th>
+                            <th style="width: 40%">Promotion Mapping</th>
                             <th style="width: 3%">Delete</th>
                         </tr>
                     </thead>

@@ -6,7 +6,7 @@ namespace GamesAdmin.Core.Extensions
     {
         private const int GreenwichTime = -4;
         private const int HourInDay = 24;
-        private const int AsianGMT = 7;
+        public const int AsianGMT = 7;
 
         public static DateTime ToStartDate(this DateTime dateTime)
         {
@@ -29,7 +29,7 @@ namespace GamesAdmin.Core.Extensions
         public static string ToStringAtGMT7(this DateTime dateTime)
         {
             const string formatDateTime = "MM/dd/yyyy hh:mm tt";
-            return dateTime.AddHours(AsianGMT).ToString(formatDateTime) + " GMT 7";
+            return dateTime.AddHours(AsianGMT).ToString(formatDateTime) + " GMT+7";
         }
     }
 }

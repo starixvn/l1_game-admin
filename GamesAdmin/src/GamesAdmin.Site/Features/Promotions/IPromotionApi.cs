@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Site.Features._Shared;
+using GamesAdmin.Site.Features.Promotions.Requests;
 using Refit;
 
 namespace GamesAdmin.Site.Features.Promotions
@@ -28,7 +30,7 @@ namespace GamesAdmin.Site.Features.Promotions
         Task<bool> Delete(string id);
 
         [Get("/promotion/getAnnouncementByStatus")]
-        Task<IEnumerable<Notification>> GetAnnouncementByStatus(string status);
+        Task<IEnumerable<Notification>> GetAnnouncementByStatus(string status, string type);
 
         [Post("/promotion/createAnnouncement")]
         Task<bool> CreateAnnouncements(IEnumerable<Notification> models);
@@ -41,5 +43,32 @@ namespace GamesAdmin.Site.Features.Promotions
 
         [Post("/promotion/deleteAnnouncement")]
         Task<bool> DeleteAnnouncement(string id);
+
+        [Get("/promotion/getCampaignByStatus")]
+        Task<IEnumerable<PromotionConfigModel>> GetCampaignByStatus(string status);
+
+        [Get("/promotion/getCampaignById")]
+        Task<PromotionConfigModel> GetCampaignById(string id);
+
+        [Post("/promotion/createTournament")]
+        Task<bool> CreateTournament(PromotionConfigModel model);
+
+        [Get("/promotion/leaderboard")]
+        Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(int promotionId, string playerName, bool isTestCurrency);
+
+        [Get("/promotion/tournamentWinningPlayers")]
+        Task<IEnumerable<AwardWinningPlayer>> GetTournamentWinningPlayers(int promotionId);
+
+        [Post("/promotion/awardTournament")]
+        Task<bool> AwardTournament(AwardTournamentRequest request);
+
+        [Post("/promotion/awardTestCurrency")]
+        Task<bool> AwardTestCurrency(AwardTestCurrencyRequest request);
+
+        [Post("/promotion/updateTournament")]
+        Task<bool> UpdateTournament(PromotionConfigModel model, string type);
+
+        [Post("/promotion/deleteTournament")]
+        Task<bool> DeleteTournament(string id);
     }
 }

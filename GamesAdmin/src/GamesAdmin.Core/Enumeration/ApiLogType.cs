@@ -11,7 +11,8 @@
         VoidGames,
         MemberSiteSignInRequest,
         OperatorSignInRequest,
-        HitJackpot
+        HitJackpot,
+        Awards
     }
 
     public class ApiLogEnumeration : Enumeration
@@ -26,6 +27,7 @@
         public static readonly ApiLogEnumeration MemberSiteSignInRequest = new ApiLogEnumeration("Member Site Sign In Request", ApiLogType.MemberSiteSignInRequest);
         public static readonly ApiLogEnumeration OperatorSignInRequest = new ApiLogEnumeration("Operator Sign In Request", ApiLogType.OperatorSignInRequest);
         public static readonly ApiLogEnumeration HitJackpotRequest = new ApiLogEnumeration("Hit Jackpot", ApiLogType.HitJackpot);
+        public static readonly ApiLogEnumeration AwardRequest = new ApiLogEnumeration("Awards", ApiLogType.Awards);
 
         public ApiLogEnumeration()
         { }
@@ -44,6 +46,7 @@
             || apiLogType == ApiLogType.FailedRequests
             || apiLogType == ApiLogType.HitJackpot
             || apiLogType == ApiLogType.TicketDetailRequests
-            || apiLogType == ApiLogType.VoidGames;
+            || apiLogType == ApiLogType.VoidGames
+            || apiLogType == ApiLogType.Awards;
     }
 }

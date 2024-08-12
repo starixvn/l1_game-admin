@@ -2,10 +2,13 @@
 @using GamesAdmin.Site.Features.Promotions.ViewModels;
 @using GamesAdmin.Core.Enumeration;
 @using GamesAdmin.Site.Extensions;
+@using GamesAdmin.Site._Shared.Configurations;
+@inject IAppSettings appSetting;
 @model CreateAnnouncementItemViewModel
 
 @{
     var unique = string.IsNullOrEmpty(Model.Id) ? DateTime.Now.Ticks.ToString() : Model.Id;
+    Model.ConvertToTimeZone(appSetting.DefaultTimeZone);
 }
 @functions{
     private void RenderMessageRow(string language, string unique, string title, string message)
@@ -30,6 +33,8 @@
     <td class="text-center" rowspan="6">
         <input type="text" hidden asp-for="Id" id="id-@unique" class="input-announcement-id" value="@unique" />
         <input type="text" hidden class="input-announcement-unique" value="@unique" />
+        <input type="text" hidden id="happyhours-@unique" value="@NotificationDisplayKind.PromotionValue" />
+        <input type="text" hidden id="tournament-@unique" value="@NotificationDisplayKind.PromotionCampaignValue" />
         <div class="form-check">
             <label class="form-check-label">
                 <input type="checkbox" class="form-check-input" id="enabled-@unique" asp-for="Enabled">
@@ -59,9 +64,45 @@
             <input type="text" class="form-control time-picker" asp-for="EndTime" value="@Model.EndTime.ToString(DateTimeExtensions.DateTimeFormat)" id="endTime-@unique">
         </div>
     </td>
-    <td class="text-center" rowspan="6">
-        <select asp-items="@Model.PromotionListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
-    </td>
+    @if (Model.DisplayKind == null)
+    {    
+        <td class="text-center" rowspan="6">
+            <div class="form-group">
+                <label>Type</label>
+                <div>
+                    <select asp-items="Model.PromotionTypeList" class="form-control select-promotion-mapping" id="promotionType-@unique" onchange="promotionAnnouncement.togglePromotionType(this, '@unique')"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Mapping</label>
+                <span id="promotionListContainer-@unique">
+                    <select asp-items="@Model.PromotionListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique-promotion"></select>
+                </span>
+                <span id="promotionCampaignListContainer-@unique" hidden>
+                    <select asp-items="@Model.PromotionCampaignListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique-campaign"></select>
+                </span>
+            </div>
+        </td>
+    }
+    else
+    {
+        @if (Model.IsHappyHoursAnnouncement)
+        {          
+            <td class="text-center" rowspan="6">
+                <label>Type: @Model.DisplayKind</label>
+                <select asp-items="@Model.PromotionListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
+            </td>
+        }
+        else
+        {
+            <td class="text-center" rowspan="6">
+                <label>Type: @Model.DisplayKind</label>
+                <select asp-items="@Model.PromotionCampaignListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
+            </td>
+        }
+    }
+
+   
     @if (string.IsNullOrEmpty(Model.Id))
     {
         <td class="text-center" rowspan="6">

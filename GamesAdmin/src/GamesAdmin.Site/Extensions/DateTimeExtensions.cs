@@ -29,6 +29,16 @@ namespace GamesAdmin.Site.Extensions
             return date.ToString("MM/dd/yyyy");
         }
 
+        public static string ToDateTimeFormat(this DateTime date)
+        {
+            if (date == default)
+            {
+                return string.Empty;
+            }
+
+            return date.ToString("MM/dd/yyyy HH:mm");
+        }
+
         public static string ToTimeFormat(this DateTime date)
         {
             if (date == default)

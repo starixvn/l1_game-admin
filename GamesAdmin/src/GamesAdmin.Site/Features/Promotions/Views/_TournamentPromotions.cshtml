@@ -1,0 +1,48 @@
+﻿@using GamesAdmin.Core.Models.Promotion;
+@using GamesAdmin.Site.Features.Promotions.ViewModels;
+@using GamesAdmin.Site.Features._Shared;
+@using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Site.Extensions;
+@model IEnumerable<PromotionConfigViewModel>
+@{
+    var promotions = Model;
+}
+<table class="table table-bordered sticky-table">
+    <thead>
+        <tr>
+            <th>Promotion name</th>
+            <th>Promotion Id</th>
+            <th>Prize</th>
+            <th>Operators</th>
+            <th>Valid min bet</th>
+            @if (Context.HasAdminPermission())
+            {
+                <th>Settings</th>
+            }
+            <th>Start date (GMT+7)</th>
+            <th>End date (GMT+7)</th>
+            <th>Leaderboard</th>
+            <th>Announcement</th>
+            @if (Context.HasAdminPermission())
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (promotions.Any())
+        {
+            @foreach (var promotion in promotions)
+            {
+                @Html.Raw(promotion.GetTournamentHtml(Context.HasAdminPermission(), this.Url))
+            }
+        }
+        else
+        {
+            var col = Context.HasAdminPermission() ? 12 : 11;
+            <tr>
+                <td class="text-center" colspan="@col">There is no data</td>
+            </tr>
+        }
+    </tbody>
+</table>

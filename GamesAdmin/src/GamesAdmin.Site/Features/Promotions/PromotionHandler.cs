@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
+using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Promotions.Requests;
 using GamesAdmin.Site.Features.Promotions.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Promotions
 {
@@ -25,16 +28,34 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<GetAnnouncementByIdRequest, CreateAnnouncementItemViewModel>
         , IRequestHandler<UpdateAnnouncementRequest, bool>
         , IRequestHandler<DeleteAnnouncementRequest, bool>
+        , IRequestHandler<GetTournamentPromotionsByStatusRequest, IEnumerable<PromotionConfigViewModel>>
+        , IRequestHandler<CreateTournamentRequest, MessageResult>
+        , IRequestHandler<GetLeaderboardRequest, IEnumerable<AwardWinningPlayer>>
+        , IRequestHandler<GetTournamentWinningPlayersRequest, IEnumerable<AwardWinningPlayer>>
+        , IRequestHandler<AwardTournamentRequest, bool>
+        , IRequestHandler<AwardTestCurrencyRequest, bool>
+        , IRequestHandler<GetUpdateOperatorSettingRequest, UpdateOperatorSettingViewModel>
+        , IRequestHandler<GetCurrencySettingRequest, EditCurrencyGroupSettingViewModel>
+        , IRequestHandler<UpdateOperatorSettingRequest, MessageResult>
+        , IRequestHandler<UpdateTournamentRequest, MessageResult>
+        , IRequestHandler<GetTournamentByIdRequest, PromotionCampaignViewModel>
+        , IRequestHandler<DeleteTournamentRequest, bool>
     {
         private readonly IPromotionService promotionService;
+        private readonly IPromotionCampaignService promotionCampaignService;
         private readonly IMapper mapper;
         private readonly IAppSettings appSettings;
+        private readonly ICurrencyGroupService currencyGroupService;
 
-        public PromotionHandler(IPromotionService promotionService, IGameSettingService gameService, IMapper mapper, IAppSettings appSettings)
+        public PromotionHandler(IPromotionService promotionService, IGameSettingService gameService, IMapper mapper, IAppSettings appSettings,
+            IPromotionCampaignService promotionCampaignService,
+            ICurrencyGroupService currencyGroupService)
         {
             this.promotionService = promotionService;
             this.mapper = mapper;
             this.appSettings = appSettings;
+            this.promotionCampaignService = promotionCampaignService;
+            this.currencyGroupService = currencyGroupService;
         }
 
         public async Task<IEnumerable<PromotionModel>> Handle(GetPromotionByStatusRequest request, CancellationToken cancellationToken)
@@ -168,18 +189,45 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public async Task<IEnumerable<AnnouncementViewModel>> Handle(GetAnnouncementByStatusRequest request, CancellationToken cancellationToken)
         {
-            var announcements = (await promotionService.GetAnnouncementByStatus(request.Status))
+            var announcements = (await promotionService.GetAnnouncementByStatus(request.Status, request.Type))
                 .Select(announcement => mapper.Map<AnnouncementViewModel>(announcement))
                 .ToList();
-            foreach (var a in announcements)
+
+            var validAnnouncements = new List<AnnouncementViewModel>();
+
+            foreach (var announcement in announcements)
             {
-                if (!string.IsNullOrEmpty(a.PromotionId))
+                bool addAnnouncement = true;
+
+                if (!string.IsNullOrEmpty(announcement.PromotionId))
                 {
-                    a.Promotion = mapper.Map<PromotionViewModel>(await promotionService.GetById(a.PromotionId));
+                    switch (announcement.DisplayKind)
+                    {
+                        case var kind when kind.Equals(NotificationDisplayKind.Promotion):
+                            var promotion = await promotionService.GetById(announcement.PromotionId);
+                            announcement.Promotion = mapper.Map<PromotionViewModel>(promotion);          
+                            break;
+
+                        case var kind when kind.Equals(NotificationDisplayKind.PromotionCampaign):
+                            var campaign = await promotionCampaignService.GetCampaignById(announcement.PromotionId);
+                            announcement.PromotionCampaign = mapper.Map<PromotionCampaignViewModel>(campaign);
+                            if (announcement.PromotionCampaign != null && (announcement.PromotionCampaign.Status.Equals(PromotionStatus.DeletedValue)))
+                            {
+                                addAnnouncement = false;
+                            }
+                            break;
+                    }
+                }
+
+                if (addAnnouncement)
+                {
+                    validAnnouncements.Add(announcement);
                 }
             }
-            return announcements;
+
+            return validAnnouncements;
         }
+
 
         public async Task<bool> Handle(CreateAnnouncementsRequest request, CancellationToken cancellationToken)
         {
@@ -189,8 +237,13 @@ namespace GamesAdmin.Site.Features.Promotions
                 if (!string.IsNullOrEmpty(models[index].PromotionId))
                 {
                     var promotion = await promotionService.GetById(models[index].PromotionId);
-                    models[index].GameName = Game.FromGameId(promotion.GameId).Value;
-                    models[index].GameId = (int)promotion.GameId;
+                    if (promotion != null)
+                    {
+                        models[index].GameName = Game.FromGameId(promotion.GameId).Value;
+                        models[index].GameId = (int)promotion.GameId;
+                        models[index].DisplayKind = NotificationDisplayKind.Promotion;
+                    }
+                    else models[index].DisplayKind = NotificationDisplayKind.PromotionCampaign;
                 }
             }
             return await this.promotionService.CreateAnnouncements(models);
@@ -208,13 +261,197 @@ namespace GamesAdmin.Site.Features.Promotions
             if (!string.IsNullOrEmpty(model.PromotionId))
             {
                 var promotion = await promotionService.GetById(model.PromotionId);
-                model.GameName = Game.FromGameId(promotion.GameId).Value;
-                model.GameId = (int)promotion.GameId;
+                if (promotion != null)
+                {
+                    model.GameName = Game.FromGameId(promotion.GameId).Value;
+                    model.GameId = (int)promotion.GameId;
+                }
             }
             return await promotionService.UpdateAnnouncement(model);
         }
 
         public Task<bool> Handle(DeleteAnnouncementRequest request, CancellationToken cancellationToken)
         => promotionService.DeleteAnnouncement(request.Id);
+
+        public async Task<IEnumerable<PromotionConfigViewModel>> Handle(GetTournamentPromotionsByStatusRequest request, CancellationToken cancellationToken)
+        {
+            var promotions = (await promotionCampaignService.GetCampaignByStatus(request.Status)).ToList();
+            ConvertPromotionTimesToDefaultTimeZone(promotions);
+            var promotionViewModels = MapPromotionsToViewModels(promotions);
+            return promotionViewModels;
+        }
+
+        private void ConvertPromotionTimesToDefaultTimeZone(List<PromotionConfigModel> promotions)
+        {
+            foreach (var promotion in promotions)
+            {
+                promotion.StartDateTime = TimeZoneInfo.ConvertTimeFromUtc(promotion.StartDateTime, appSettings.DefaultTimeZone);
+                promotion.EndDateTime = TimeZoneInfo.ConvertTimeFromUtc(promotion.EndDateTime, appSettings.DefaultTimeZone);
+            }
+        }
+
+        private List<PromotionConfigViewModel> MapPromotionsToViewModels(List<PromotionConfigModel> promotions)
+        {
+            var promotionViewModels = promotions.Select(promotion =>
+            {
+                var promotionViewModel = mapper.Map<PromotionConfigViewModel>(promotion);
+                return promotionViewModel;
+            }).ToList();
+
+            return promotionViewModels;
+        }
+
+        public async Task<MessageResult> Handle(CreateTournamentRequest request, CancellationToken cancellationToken)
+        {
+            var messageResult = await ValidateTournament(request.Model);
+            if (messageResult.Success)
+            {
+                var success = await this.promotionCampaignService.Create(mapper.Map<PromotionConfigModel>(request.Model));
+                return new MessageResult(success, string.Empty);
+            }
+            return messageResult;
+        }
+
+        private async Task<MessageResult> ValidateTournament(PromotionCampaignViewModel viewModel)
+        {
+            var model = mapper.Map<PromotionConfigModel>(viewModel);
+            if (model.StartDateTime >= model.EndDateTime)
+            {
+                return new MessageResult(false, "Invalid date or time");
+            }
+            else
+            {
+                var existingPromotions = await this.promotionCampaignService.GetCampaignByStatus(PromotionCampaignStatus.AllValue);
+                if (existingPromotions.Any(promotion => !ValidateTournamentDateTime(model, promotion)))
+                {
+                    return new MessageResult(false, "Overlap date or time with another promotion");
+                }
+            }
+            return new MessageResult(true, string.Empty);
+        }
+
+        private bool ValidateTournamentDateTime(PromotionConfigModel model, PromotionConfigModel existingPromotion)
+        {
+            if (!string.IsNullOrEmpty(model.Id) && model.Id.Equals(existingPromotion.Id))
+            {
+                return true;
+            }
+            if (model.StartDateTime > existingPromotion.EndDateTime || model.EndDateTime < existingPromotion.StartDateTime)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public Task<IEnumerable<AwardWinningPlayer>> Handle(GetLeaderboardRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.GetLeaderboard(request);
+
+        public Task<IEnumerable<AwardWinningPlayer>> Handle(GetTournamentWinningPlayersRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.GetTournamentWinningPlayers(request);
+
+        public Task<bool> Handle(AwardTournamentRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.AwardTournament(request);
+
+        public Task<bool> Handle(AwardTestCurrencyRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.AwardTestCurrency(request);
+
+        public async Task<UpdateOperatorSettingViewModel> Handle(GetUpdateOperatorSettingRequest request, CancellationToken cancellationToken)
+        {
+            var result = new UpdateOperatorSettingViewModel();
+            var currencyGroups = (await currencyGroupService.GetByPartner(request.OperatorId, group => group.Enabled)).ToList();
+            result.OperatorId = request.OperatorId;
+            result.OperatorName = request.OperatorName;
+            result.Id = request.Id;
+            result.Status = request.Status;
+            result.GroupSelectList = currencyGroups.Select(group => new SelectListItem(group.Name, group.Id)).ToList();
+
+            return result;
+        }
+
+        public async Task<EditCurrencyGroupSettingViewModel> Handle(GetCurrencySettingRequest request, CancellationToken cancellationToken)
+        {
+            var result = new EditCurrencyGroupSettingViewModel();
+            var promotion = await promotionCampaignService.GetCampaignById(request.Id);
+            var currentOperator = promotion.Operators.Where(o => o.OperatorId == request.OperatorId).FirstOrDefault();
+            if (currentOperator != null)
+            {
+                result.IncludedSiteNames = currentOperator.IncludedSiteNames;
+                var currencyGroup = currentOperator.CurrencyGroups.FirstOrDefault(cg => cg.CurrencyGroupId == request.GroupId);
+                if (currencyGroup != null)
+                {
+                    result.SlotGamesMinBet = currencyGroup.SlotGameMinBet;
+                    result.OtherGamesMinBet = currencyGroup.OtherGameMinBet;
+                    result.Enabled = currencyGroup.Enabled;
+                }
+            }
+            result.Status = promotion.Status;
+            result.OperatorId = request.OperatorId;
+            result.GroupId = request.GroupId;
+            result.Id = request.Id;
+
+            return result;
+        }
+
+        public async Task<MessageResult> Handle(UpdateOperatorSettingRequest request, CancellationToken cancellationToken)
+        {
+            var promotion = await promotionCampaignService.GetCampaignById(request.Model.Id);
+            MapOperatorSettings(request.Model, promotion);
+            var success = await promotionCampaignService.Update(promotion, PromotionTournamentTypeUpdate.OperatorSetting);
+            return new MessageResult(success, string.Empty);
+        }
+
+        public void MapOperatorSettings(EditCurrencyGroupSettingViewModel source, PromotionConfigModel destination)
+        {
+            var operatorModel = destination.Operators.FirstOrDefault(o => o.OperatorId == source.OperatorId);
+
+            if (operatorModel != null)
+            {
+                operatorModel.IncludedSiteNames = source.IncludedSiteNames;
+                var currencyGroup = operatorModel.CurrencyGroups.FirstOrDefault(cg => cg.CurrencyGroupId == source.GroupId);
+
+                if (currencyGroup != null)
+                {
+                    currencyGroup.SlotGameMinBet = source.SlotGamesMinBet;
+                    currencyGroup.OtherGameMinBet = source.OtherGamesMinBet;
+                    currencyGroup.Enabled = source.Enabled;
+                }
+                else
+                {
+                    var newCurrencyGroup = new CurrencyGroupsModel
+                    {
+                        CurrencyGroupId = source.GroupId,
+                        SlotGameMinBet = source.SlotGamesMinBet,
+                        OtherGameMinBet = source.OtherGamesMinBet,
+                        Enabled = source.Enabled,
+                    };
+
+                    operatorModel.CurrencyGroups.Add(newCurrencyGroup);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Operator not found.");
+            }
+        }
+
+        public async Task<MessageResult> Handle(UpdateTournamentRequest request, CancellationToken cancellationToken)
+        {
+            var messageResult = await ValidateTournament(request.Model);
+            if (messageResult.Success)
+            {
+                var result = await this.promotionCampaignService.Update(mapper.Map<PromotionConfigModel>(request.Model), PromotionTournamentTypeUpdate.EditTournament);
+                return new MessageResult(result, string.Empty);
+            }
+            return messageResult;
+        }
+
+        public async Task<PromotionCampaignViewModel> Handle(GetTournamentByIdRequest request, CancellationToken cancellationToken)
+        {
+            var promotion = await promotionCampaignService.GetCampaignById(request.Id);
+            return mapper.Map<PromotionCampaignViewModel>(promotion);
+        }
+
+        public Task<bool> Handle(DeleteTournamentRequest request, CancellationToken cancellationToken)
+            => promotionCampaignService.Delete(request.Id);
     }
 }

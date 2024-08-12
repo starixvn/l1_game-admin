@@ -1,0 +1,83 @@
+﻿@using GamesAdmin.Site.Features._Shared;
+@model GamesAdmin.Site.Features.Promotions.ViewModels.LeaderboardViewModel
+
+@section Styles {
+    <link href="~/css/promotion-leaderboard.min.css" rel="stylesheet" asp-append-version="true" />
+}
+@{
+    ViewData["Title"] = "Leaderboard";
+}
+
+<form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetLeaderboard"
+      data-ajax-mode="replace"
+      data-ajax-update=".card .card-body"
+      data-ajax-loading="#spinner"
+      data-ajax-success="promotionLeaderboard.init"
+      method="get"
+      id="leaderboard-form">
+    <div class="form-row align-items-center">
+        <input hidden asp-for=PromotionId />
+        <div class="col-auto">
+            <label class="control-label" asp-for="PlayerName">Username/PlayerId</label>
+            <input type="text" class="form-control" asp-for=PlayerName />
+        </div>
+        <div class="col-auto mt-5">
+            <input class="from-check-input" type="checkbox" asp-for=IsTestCurrency />
+            <label class="form-check-label" asp-for="IsTestCurrency">Testing Currency Only</label>
+        </div>
+        <div class="col-auto list-buttons ml-4">
+            <button type="submit" class="btn-submit">Submit</button>
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="card">
+    <div class="card-body"></div>
+</div>
+
+<div class="modal fade" id="award-tournament-modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="m-auto pb-5 modal-buttons">
+                <div>
+                    <label class="result-label mr-5"></label>
+                </div>
+                <button type="button" class="btn-add" onclick="promotionLeaderboard.awardTournament(@Model.PromotionId)">OK</button>
+                <button type="button" class="btn-gray" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="award-modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog modal-md promotion-model">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/jquery-datetimepicker/jquery.datetimepicker.full.js"></script>
+        <script src="~/lib/data-tables/datatables.js"></script>
+        <script src="~/js/promotion-leaderboard.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/promotion-leaderboard.min.js" asp-append-version="true"></script>
+    </environment>
+}
