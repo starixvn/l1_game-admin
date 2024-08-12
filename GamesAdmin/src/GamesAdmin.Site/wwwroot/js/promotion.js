@@ -388,7 +388,7 @@
                 if (response.success) {
                     promotion.onUpdatePromotionSuccess(response);
                 } else {
-                    promotion.onUpdatePromotionUnsuccess(response);
+                    promotion.onUpdateTournamentUnsuccess(response);
                 }
             },
             error: function (response) {
@@ -413,7 +413,7 @@
                 if (response.success) {
                     promotion.onCreatePromotionSuccess(response);
                 } else {
-                    promotion.onCreatePromotionUnsuccess(response);
+                    promotion.onCreateTournamentUnsuccess(response);
                 }
             },
             error: function (response) {
@@ -454,6 +454,14 @@
         openUpdateTournamentForm: function () {
             reparseFormValidationPrizes();
             openModal(promotionElement.formEditTourment)();
+        },
+        onCreateTournamentUnsuccess: function (data) {
+            const message = data.message == '' ? promotionMessage.createUnsuccess : data.message;
+            onUpsertPromotion(data.success, message);
+        },
+        onUpdateTournamentUnsuccess: function (data) {
+            const message = data.message == '' ? promotionMessage.updateUnsuccess : data.message;
+            onUpsertPromotion(data.success, message);
         },
         showOperatorSetting,
         onChangeGroup,
