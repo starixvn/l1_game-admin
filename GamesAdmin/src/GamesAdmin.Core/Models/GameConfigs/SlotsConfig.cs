@@ -24,6 +24,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public double BigWinRatio { get; set; }
         public Bonus Bonus { get; set; }
         public double[] BetLevels { get; set; }
+        public List<StakeLevel> StakeLevels { get; set; }
         public Dictionary<string, Dictionary<string, double>> Icons { get; set; }
         public Jackpot Jackpot { get; set; }
         public Dictionary<string, int[][]> SymbolWeight { get; set; }
@@ -53,6 +54,8 @@ namespace GamesAdmin.Core.Models.GameConfigs
             bool enabled,
             double winingAmount,
             JackpotPools pools,
+            double playerContribution,
+            double botContribution,
             bool excludeTestCurrency = false,
             string allowedCurrency = "INH"
             )
@@ -61,6 +64,8 @@ namespace GamesAdmin.Core.Models.GameConfigs
             WinningRatio = winingAmount;
             ExcludeTestCurrency = excludeTestCurrency;
             AllowedCurrency = (allowedCurrency ?? string.Empty).Trim();
+            PlayerContributionRatio = playerContribution;
+            BotContributionRatio = botContribution;
             Pools = pools;
         }
 
@@ -69,6 +74,10 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public bool ExcludeTestCurrency { get; set; }
 
         public double WinningRatio { get; set; }
+
+        public double PlayerContributionRatio { get; set; }
+
+        public double BotContributionRatio { get; set; }
 
         public JackpotPools Pools { get; set; }
 

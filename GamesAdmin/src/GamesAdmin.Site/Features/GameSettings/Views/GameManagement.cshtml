@@ -88,7 +88,7 @@
                                                 @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * minCoin * minBetLevel, Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * maxCoin * maxBetLevel }))
                                                 break;
                                             case GamesAdmin.Core.Enumeration.GameType.Slots:
-                                                @(": " + string.Join(" - ", setting.BetLevels))
+                                                @(": " + (setting.StakeLevels.Length > 0 ? string.Join(" - ", setting.StakeLevels.Select(stake => stake.Stake).ToArray()) : string.Join(" - ", setting.BetLevels)))
                                                 break;
                                             default:
                                                 @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
@@ -163,7 +163,7 @@
                                                     @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * minCoin * minBetLevel, Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * maxCoin * maxBetLevel }))
                                                     break;
                                                 case GamesAdmin.Core.Enumeration.GameType.Slots:
-                                                    @(": " + string.Join(" - ",setting.BetLevels))
+                                                    @(": " + (setting.StakeLevels.Length > 0 ? string.Join(" - ", setting.StakeLevels.Select(stake => stake.Stake).ToArray()) : string.Join(" - ", setting.BetLevels)))
                                                     break;
                                                 default:
                                                     @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))

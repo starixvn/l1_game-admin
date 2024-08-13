@@ -23,9 +23,13 @@
             </li>
         }
 
-        <li class="nav-item">
-            <a class="nav-link" id="slotBotSetting-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('slotBotSetting')">Bot Setting</a>
-        </li>
+        @if (Model.SlotsConfig.Jackpot.Pools != null)
+        {
+            <li class="nav-item">
+                <a class="nav-link" id="slotBotSetting-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('slotBotSetting')">Bot Setting</a>
+            </li>
+        }
+     
     </ul>
 
     <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
@@ -134,142 +138,218 @@
         <div id="jackpots" style="display:none;">
             @if (Model.JackpotViewModel != null)
             {
-                <input type="checkbox" asp-for="@Model.JackpotViewModel.Enabled" hidden/>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <input type="checkbox" asp-for="@Model.JackpotViewModel.ExcludeTestCurrency" />
-                    <label asp-for="@Model.JackpotViewModel.ExcludeTestCurrency" class="control-label"></label>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-8">
-                        Note:<br />
-                        <b>"ON"</b> mode(default setting):<br />
-                        + Jackpot prizes are not available for test currency accounts.<br />
-                        + Stakes from test currency tickets will not be contributed to Jackpot pool<br />
+                @if (Model.JackpotViewModel.StakeLevels?.Count > 0)
+                {
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="checkbox" asp-for="@Model.JackpotViewModel.ExcludeTestCurrency" />
+                        <label asp-for="@Model.JackpotViewModel.ExcludeTestCurrency" class="control-label"></label>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <div class="col-lg-8">
+                            Note:<br />
+                            <b>"ON"</b> mode(default setting):<br />
+                            + Jackpot prizes are not available for test currency accounts.<br />
+                            + Stakes from test currency tickets will not be contributed to Jackpot pool<br />
+                        </div>
+                    </div>
 
-                <fieldset class="slots-jackpot">
-                    <legend>Initial value</legend>
+                    <fieldset class="slots-jackpot">
+                        <legend>Jackpot(initial value)</legend>
+                        @for (var i = 0; i < Model.JackpotViewModel.StakeLevels.Count; i++)
+                        {
+                            <fieldset class="slots-stake-level">
+                                <legend>Stake level <b>@Model.JackpotViewModel.StakeLevels[i].Stake</b></legend>
+                                <div class="form-group row">
+
+                                    <div class="col-lg-6">
+                                        <label class="control-label">Initial Amount</label>
+                                        <input type="number" asp-for="@Model.JackpotViewModel.StakeLevels[i].Jackpot" class="form-control" />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="control-label">Bot Ratio (%)</label>
+                                        <input type="number" asp-for="@Model.JackpotViewModel.StakeLevels[i].BotRatio" class="form-control" />
+                                    </div>
+                                    <input type="hidden" asp-for="@Model.JackpotViewModel.StakeLevels[i].Stake" class="form-control" />
+                                </div>
+                            </fieldset>
+                            <br />
+                        }
+                    </fieldset>
+                    <br />
+
                     <div class="form-group row">
-                        <div class="col-lg-4">
-                            <label>Minor</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Minor.Init" />
+                        <div class="col-lg-6">
+                            <label class="control-label" asp-for="@Model.JackpotViewModel.WinningRatio"></label>
+                            <input type="number" asp-for="@Model.JackpotViewModel.WinningRatio" class="form-control" />
                         </div>
-                        <div class="col-lg-4">
-                            <label>Major</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Major.Init" />
-                        </div>
-                        <div class="col-lg-4">
-                            <label>Grand</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Grand.Init" />
+
+                        <div class="col-lg-6">
+                            <label class="control-label" asp-for="@Model.JackpotViewModel.JackpotServiceFee"></label>
+                            <input type="number" asp-for="@Model.JackpotViewModel.JackpotServiceFee" readonly class="form-control" />
                         </div>
                     </div>
-                </fieldset>
-                <br />
 
-                <fieldset class="player-contribution">
-                    <legend>Contribution (%)</legend>
                     <div class="form-group row">
-                        <div class="col-lg-4">
-                            <label>Minor</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Minor.PlayerSettings.Contrib" />
+                        <div class="col-lg-6">
+                            <label class="control-label" asp-for="@Model.JackpotViewModel.BotContribution"></label>
+                            <input type="number" asp-for="@Model.JackpotViewModel.BotContribution" class="form-control" />
                         </div>
-                        <div class="col-lg-4">
-                            <label>Major</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Major.PlayerSettings.Contrib" />
-                        </div>
-                        <div class="col-lg-4">
-                            <label>Grand</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Grand.PlayerSettings.Contrib" />
-                        </div>
-                    </div>
-                   
-                </fieldset>
 
-                <div class="form-group row">
-                    <div class="col-lg-6">
-                        <label class="control-label" asp-for="@Model.JackpotViewModel.WinningRatio"></label>
-                        <input type="number" asp-for="@Model.JackpotViewModel.WinningRatio" class="form-control" />
+                        <div class="col-lg-6">
+                            <label class="control-label" asp-for="@Model.JackpotViewModel.PlayerContribution"></label>
+                            <input type="number" asp-for="@Model.JackpotViewModel.PlayerContribution" class="form-control" />
+                        </div>
                     </div>
 
-                    <div class="col-lg-6">
-                        <label class="control-label" asp-for="@Model.JackpotViewModel.JackpotServiceFee"></label>
-                        <input type="number" asp-for="@Model.JackpotViewModel.JackpotServiceFee" readonly class="form-control" />
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+                            <label class="control-label" asp-for="@Model.JackpotViewModel.AllowedCurrency"></label>
+                            <input type="text" asp-for="@Model.JackpotViewModel.AllowedCurrency" class="form-control" />
+                        </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <input type="checkbox" asp-for="@Model.JackpotViewModel.Enabled" hidden />
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="checkbox" asp-for="@Model.JackpotViewModel.ExcludeTestCurrency" />
+                        <label asp-for="@Model.JackpotViewModel.ExcludeTestCurrency" class="control-label"></label>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-8">
+                            Note:<br />
+                            <b>"ON"</b> mode(default setting):<br />
+                            + Jackpot prizes are not available for test currency accounts.<br />
+                            + Stakes from test currency tickets will not be contributed to Jackpot pool<br />
+                        </div>
+                    </div>
+
+                    <fieldset class="slots-jackpot">
+                        <legend>Initial value</legend>
+                        <div class="form-group row">
+                            <div class="col-lg-4">
+                                <label>Minor</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Minor.Init" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Major</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Major.Init" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Grand</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Grand.Init" />
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br />
+
+                    <fieldset class="player-contribution">
+                        <legend>Contribution (%)</legend>
+                        <div class="form-group row">
+                            <div class="col-lg-4">
+                                <label>Minor</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Minor.PlayerSettings.Contrib" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Major</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Major.PlayerSettings.Contrib" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Grand</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Grand.PlayerSettings.Contrib" />
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label class="control-label" asp-for="@Model.JackpotViewModel.WinningRatio"></label>
+                            <input type="number" asp-for="@Model.JackpotViewModel.WinningRatio" class="form-control" />
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label class="control-label" asp-for="@Model.JackpotViewModel.JackpotServiceFee"></label>
+                            <input type="number" asp-for="@Model.JackpotViewModel.JackpotServiceFee" readonly class="form-control" />
+                        </div>
+                    </div>
+                }
             }
         </div>
 
         <div id="slotBotSetting" style="display:none;">
-            @if (Model.JackpotViewModel != null)
+            @if (Model.SlotsConfig.BetLevels?.Length > 0)
             {
-                <fieldset class="slots-jackpot">
-                    <legend>Jackpot Prize Allocation (%)</legend>
-                    <div class="form-group row">
-                        <div class="col-lg-4">
-                            <label>Minor</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Minor.BotSettings.Alloc" />
+                @if (Model.JackpotViewModel.Enabled == true)
+                {
+                    <fieldset class="slots-jackpot">
+                        <legend>Jackpot Prize Allocation (%)</legend>
+                        <div class="form-group row">
+                            <div class="col-lg-4">
+                                <label>Minor</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Minor.BotSettings.Alloc" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Major</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Major.BotSettings.Alloc" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Grand</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Grand.BotSettings.Alloc" />
+                            </div>
                         </div>
-                        <div class="col-lg-4">
-                            <label>Major</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Major.BotSettings.Alloc" />
-                        </div>
-                        <div class="col-lg-4">
-                            <label>Grand</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Grand.BotSettings.Alloc" />
-                        </div>
-                    </div>
-               
-                </fieldset>
-                <br />
 
-                <fieldset class="player-contribution">
-                    <legend>Bot Contribution (%)</legend>
-                    <div class="form-group row">
-                        <div class="col-lg-4">
-                            <label>Minor</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Minor.BotSettings.Contrib" />
+                    </fieldset>
+                    <br />
+
+                    <fieldset class="player-contribution">
+                        <legend>Bot Contribution (%)</legend>
+                        <div class="form-group row">
+                            <div class="col-lg-4">
+                                <label>Minor</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Minor.BotSettings.Contrib" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Major</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Major.BotSettings.Contrib" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Grand</label>
+                                <input type="number" asp-for="@Model.JackpotViewModel.Pools.Grand.BotSettings.Contrib" />
+                            </div>
                         </div>
-                        <div class="col-lg-4">
-                            <label>Major</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Major.BotSettings.Contrib" />
+                    </fieldset>
+                }
+
+                <fieldset>
+                    <legend id="botBetLevel_legend">Bot Bet Levels (@Model.SlotsConfig.BetLevels?.Length levels)</legend>
+                    <div class="form-group" id="bot-bet-levels">
+                        <input type="hidden" id="bot-bet-level-length" value="@Model.SlotsConfig.BetLevels.Length" class="form-control" />
+                        <div class="form-group row">
+                            <label class="pl-5 mr-5 pr-5"><b>Bet per line</b></label>
+                            <label class="pl-5 ml-5 text-center"><b>Total Bet</b> <br /> (on 25 fixed paylines)</label>
                         </div>
-                        <div class="col-lg-4">
-                            <label>Grand</label>
-                            <input type="number" asp-for="@Model.JackpotViewModel.Pools.Grand.BotSettings.Contrib" />
+                        @for (var i = 0; i < Model.SlotsConfig.BetLevels.Length; i++)
+                        {
+                            <div class="form-group row ml-5">
+                                <input id="bot-bet-level-@i" type="number" asp-for="@Model.SlotsConfig.BetLevels[i]" class="col-2 form-control txt-bot-bet-level"
+                                       min="0"
+                                       step=".01"
+                                       data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
+                                       data-val-range-max="1.7976931348623157E+308"
+                                       data-val-range-min="5E-324"
+                                       data-val-unique="Value should be unique"
+                                       oninput="gameStatus.updateTotalBet(this.value,@i)" />
+                                <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="gameStatus.removeBotBetLevel(event)"></i>
+                                <label class=" mt-3 ml-5 pl-5" id="total-bet-@i">@((decimal)Model.SlotsConfig.BetLevels[i] * 25m)</label>
+                            </div>
+                        }
+                        <div class="add-container">
+                            <button type="button" class="btn btn-add" id="addBotBetLevelBtn" onclick="gameStatus.addBotBetLevel()">Add new Bet Level</button>
                         </div>
                     </div>
                 </fieldset>
             }
-
-            <fieldset>
-                <legend id="botBetLevel_legend">Bot Bet Levels (@Model.SlotsConfig.BetLevels.Length levels)</legend>
-                <div class="form-group" id="bot-bet-levels">
-                    <input type="hidden" id="bot-bet-level-length" value="@Model.SlotsConfig.BetLevels.Length" class="form-control" />
-                    <div class="form-group row">
-                        <label class="pl-5 mr-5 pr-5"><b>Bet per line</b></label>
-                        <label class="pl-5 ml-5 text-center"><b>Total Bet</b> <br /> (on 25 fixed paylines)</label>
-                    </div>
-                    @for (var i = 0; i < Model.SlotsConfig.BetLevels.Length; i++)
-                    {
-                        <div class="form-group row ml-5">
-                            <input id="bot-bet-level-@i" type="number" asp-for="@Model.SlotsConfig.BetLevels[i]" class="col-2 form-control txt-bot-bet-level"
-                                   min="0"
-                                   step=".01"
-                                   data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
-                                   data-val-range-max="1.7976931348623157E+308"
-                                   data-val-range-min="5E-324"
-                                   data-val-unique="Value should be unique"
-                                   oninput="gameStatus.updateTotalBet(this.value,@i)" />
-                            <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="gameStatus.removeBotBetLevel(event)"></i>
-                            <label class=" mt-3 ml-5 pl-5" id="total-bet-@i">@((decimal)Model.SlotsConfig.BetLevels[i] * 25m)</label>
-                        </div>
-                    }
-                    <div class="add-container">
-                        <button type="button" class="btn btn-add" id="addBotBetLevelBtn" onclick="gameStatus.addBotBetLevel()">Add new Bet Level</button>
-                    </div>
-                </div>
-            </fieldset>
         </div>
 
         <div id="adjustweight" style="display:none;">

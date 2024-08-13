@@ -90,35 +90,56 @@
         }
         else if (Model.GameType == GamesAdmin.Core.Enumeration.GameType.Slots)
         {
-            <fieldset>
-                <legend>Bet Levels</legend>
-                <p>Set the default value by selecting the radio-button on each Bet Level</p>
-                <div class="form-group" id="bet-levels">
-                    <input type="hidden" id="bet-level-length" value="@Model.BetLevels.Length" class="form-control" />
+            @if (Model.StakeLevels.Length > 0)
+            {
+                <fieldset>
+                    <legend>Stake Levels</legend>
                     <div class="form-group row">
-                        <label class="pl-5 mr-5 pr-5"><b>Bet per line</b></label>
-                        <label class="pl-5 ml-5 text-center"><b>Total Bet</b> <br /> (on 25 fixed paylines)</label>
+                        @for (var i = 0; i < Model.StakeLevels.Length; i++)
+                        {
+                            <div class="col-lg-4">
+                                <label class="control-label">@($"Level {i + 1}")</label>
+                                <input id="stake-level-@i" type="number" asp-for="@Model.StakeLevels[i].Stake" class="form-control" disabled />
+                            </div>
+                        }
                     </div>
-                    @for (var i = 0; i < Model.BetLevels.Length; i++)
-                    {
+                </fieldset>
+            }
+            else
+            {
+                <fieldset>
+                    <legend>Bet Levels</legend>
+                    <p>Set the default value by selecting the radio-button on each Bet Level</p>
+                    <div class="form-group" id="bet-levels">
+                        <input type="hidden" id="bet-level-length" value="@Model.BetLevels.Length" class="form-control" />
                         <div class="form-group row">
-                            <input type="radio" class="mr-3 ml-3" asp-for="DefaultBetLevel" value="@Model.BetLevels[i]" />
-                            <input id="bet-level-@i" type="number" asp-for="@Model.BetLevels[i]" class="col-2 form-control txt-bet-level"
-                                   step=".01"
-                                   data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
-                                   data-val-range-max="1.7976931348623157E+308"
-                                   data-val-range-min="5E-324"
-                                   data-val-unique="Value should be unique"
-                                   oninput="currencyGroupGame.updateTotalBet(this.value,@i)" />
-                            <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="currencyGroupGame.removeBetLevel(event)"></i>
-                            <label class=" mt-3 ml-5 pl-5" id="total-bet-@i">@((decimal)Model.BetLevels[i] * 25m)</label>
+                            <label class="pl-5 mr-5 pr-5"><b>Bet per line</b></label>
+                            <label class="pl-5 ml-5 text-center"><b>Total Bet</b> <br /> (on 25 fixed paylines)</label>
                         </div>
-                    }
-                    <div class="add-container">
-                        <button type="button" class="btn btn-add" id="addBetLevelBtn" onclick="currencyGroupGame.addBetLevel()">Add new Bet Level</button>
+
+                        @for (var i = 0; i < Model.BetLevels.Length; i++)
+                        {
+                            <div class="form-group row">
+                                <input type="radio" class="mr-3 ml-3" asp-for="DefaultBetLevel" value="@Model.BetLevels[i]" />
+                                <input id="bet-level-@i" type="number" asp-for="@Model.BetLevels[i]" class="col-2 form-control txt-bet-level"
+                                       step=".01"
+                                       data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
+                                       data-val-range-max="1.7976931348623157E+308"
+                                       data-val-range-min="5E-324"
+                                       data-val-unique="Value should be unique"
+                                       oninput="currencyGroupGame.updateTotalBet(this.value,@i)" />
+                                <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="currencyGroupGame.removeBetLevel(event)"></i>
+                                <label class=" mt-3 ml-5 pl-5" id="total-bet-@i">@((decimal)Model.BetLevels[i] * 25m)</label>
+                            </div>
+                        }
+
+
+                        <div class="add-container">
+                            <button type="button" class="btn btn-add" id="addBetLevelBtn" onclick="currencyGroupGame.addBetLevel()">Add new Bet Level</button>
+                        </div>
                     </div>
-                </div>
-            </fieldset>
+                </fieldset>
+            }
         }
         else
         {

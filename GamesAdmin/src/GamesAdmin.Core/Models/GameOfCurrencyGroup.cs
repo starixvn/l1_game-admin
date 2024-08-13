@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models.GameConfigs;
 
 namespace GamesAdmin.Core.Models
 {
@@ -14,6 +15,7 @@ namespace GamesAdmin.Core.Models
             Dictionary<string, double> maxBetPerChoices = null,
             string[] chips = null,
             double[] betLevels = null,
+            StakeLevel[] stakeLevels = null,
             double[] coinValues = null,
             int multiplier = 0,
             double maxWinPerRound = 0,
@@ -29,6 +31,7 @@ namespace GamesAdmin.Core.Models
             MaxBetPerChoices = maxBetPerChoices;
             Chips = chips;
             BetLevels = betLevels;
+            StakeLevels = stakeLevels;
             CoinValues = coinValues;
             Multiplier = multiplier;
             MaxWinPerRound = maxWinPerRound;
@@ -53,6 +56,8 @@ namespace GamesAdmin.Core.Models
         public string[] Chips { get; }
 
         public double[] BetLevels { get; }
+
+        public StakeLevel[] StakeLevels { get; }
 
         public double[] CoinValues { get; }
         public double? DefaultCoinValue { get; set; }

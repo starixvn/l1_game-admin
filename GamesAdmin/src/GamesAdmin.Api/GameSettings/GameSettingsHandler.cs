@@ -75,7 +75,7 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateGeneralConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers);
 
         public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateJackpot(request.Name, request.Jackpot);
+        => gameService.UpdateJackpot(request.Name, request.Jackpot, request.StakeLevels);
 
         public Task<bool> Handle(UpdateBotSlotSettingsRequest request, CancellationToken cancellationToken)
         => gameService.UpdateSlotBotSettings(request.Name, request.Jackpot, request.BetLevels);

@@ -243,7 +243,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                await mediator.Send(new UpdateJackpotRequest(viewModel.Name, mapper.Map<Jackpot>(viewModel.JackpotViewModel)));
+                await mediator.Send(new UpdateJackpotRequest(viewModel.Name, mapper.Map<Jackpot>(viewModel.JackpotViewModel), viewModel.JackpotViewModel.StakeLevels));
 
                 return Json(true);
             }

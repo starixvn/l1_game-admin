@@ -36,9 +36,13 @@ namespace GamesAdmin.Site.Features.GameSettings
 
 
             CreateMap<Jackpot, JackpotViewModel>()
-                .ForMember(dest => dest.WinningRatio, opt => opt.MapFrom(src => src.WinningRatio.ToPercentage()));
+                .ForMember(dest => dest.WinningRatio, opt => opt.MapFrom(src => src.WinningRatio.ToPercentage()))
+                .ForMember(dest => dest.PlayerContribution, opt => opt.MapFrom(src => src.PlayerContributionRatio.ToPercentage()))
+                .ForMember(dest => dest.BotContribution, opt => opt.MapFrom(src => src.BotContributionRatio.ToPercentage()));
             CreateMap<JackpotViewModel, Jackpot>()
-                .ForMember(dest => dest.WinningRatio, opt => opt.MapFrom(src => src.WinningRatio.ConvertPercentValue()));
+                .ForMember(dest => dest.WinningRatio, opt => opt.MapFrom(src => src.WinningRatio.ConvertPercentValue()))
+                .ForMember(dest => dest.PlayerContributionRatio, opt => opt.MapFrom(src => src.PlayerContribution.ConvertPercentValue()))
+                .ForMember(dest => dest.BotContributionRatio, opt => opt.MapFrom(src => src.BotContribution.ConvertPercentValue()));
 
             CreateMap<SlotsConfig, SlotViewModel>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.Mode))
