@@ -90,7 +90,7 @@
         }
         else if (Model.GameType == GamesAdmin.Core.Enumeration.GameType.Slots)
         {
-            @if (Model.StakeLevels.Length > 0)
+            @if (Model.StakeLevels?.Length > 0)
             {
                 <fieldset>
                     <legend>Stake Levels</legend>
