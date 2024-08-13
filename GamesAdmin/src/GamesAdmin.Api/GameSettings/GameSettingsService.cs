@@ -442,13 +442,18 @@ namespace GamesAdmin.Api.Games
                 var sortBetLevel = betLevels.OrderBy(level => level).ToArray();
 
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.SlotsConfig.BetLevels, sortBetLevel)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.BotSettings, jackpot.Pools.Minor.BotSettings)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.BotSettings, jackpot.Pools.Major.BotSettings)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.BotSettings, jackpot.Pools.Grand.BotSettings)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Alloc, jackpot.Pools.Minor.PlayerSettings.Alloc)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Alloc, jackpot.Pools.Major.PlayerSettings.Alloc)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Alloc, jackpot.Pools.Grand.PlayerSettings.Alloc);
+                    .Set(field => field.SlotsConfig.BetLevels, sortBetLevel);
+
+                if(jackpot?.Pools != null)
+                {
+
+                    update.Set(field => field.SlotsConfig.Jackpot.Pools.Minor.BotSettings, jackpot.Pools.Minor.BotSettings)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Major.BotSettings, jackpot.Pools.Major.BotSettings)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.BotSettings, jackpot.Pools.Grand.BotSettings)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Alloc, jackpot.Pools.Minor.PlayerSettings.Alloc)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Alloc, jackpot.Pools.Major.PlayerSettings.Alloc)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Alloc, jackpot.Pools.Grand.PlayerSettings.Alloc);
+                }
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
