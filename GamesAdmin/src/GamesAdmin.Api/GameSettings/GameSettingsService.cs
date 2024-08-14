@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
@@ -10,10 +14,6 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MongoDB.Driver;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Games
 {
@@ -131,7 +131,7 @@ namespace GamesAdmin.Api.Games
                     ApplyMultiplier = game.Info.ApplyMultiplier
                 };
 
-                if(game.Info.ApplyMultiplier)
+                if (game.Info.ApplyMultiplier)
                 {
                     entity.OddsMultipliers = new OddsMultipliersConfig()
                     {
@@ -403,12 +403,12 @@ namespace GamesAdmin.Api.Games
                 var changedSettings = SettingHelper.GetJackpotChangedModel(gameEntity, jackpot);
                 sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
 
-                var update = Builders<GameConfigEntity>.Update
+                if (jackpot.Pools != null)
+                {
+                    var update = Builders<GameConfigEntity>.Update
                     .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
                     .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
                     .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio)
                     .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.Init, jackpot.Pools?.Minor?.Init)
                     .Set(field => field.SlotsConfig.Jackpot.Pools.Major.Init, jackpot.Pools?.Major?.Init)
                     .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.Init, jackpot.Pools?.Grand?.Init)
@@ -416,7 +416,19 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Contrib, jackpot.Pools?.Major?.PlayerSettings?.Contrib)
                     .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Contrib, jackpot.Pools?.Grand?.PlayerSettings?.Contrib);
 
-                await repository.UpdateAsync(config => config.Name == name, update);
+                    await repository.UpdateAsync(config => config.Name == name, update);
+                }
+                else
+                {
+                    var update = Builders<GameConfigEntity>.Update
+                       .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
+                       .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
+                       .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
+                       .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
+                       .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio);
+
+                    await repository.UpdateAsync(config => config.Name == name, update);
+                }
 
                 return true;
             }
@@ -457,6 +469,7 @@ namespace GamesAdmin.Api.Games
                 return false;
             }
         }
+
         public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig)
         {
             try
@@ -527,7 +540,7 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
                     .Set(field => field.RandomMode, gameInfo.RandomMode)
                     .Set(field => field.MaxWinPerRound, gameInfo.MaxWinPerRound)
-                    .Set(field => field.OddsMultipliers, oddsMultipliers);   
+                    .Set(field => field.OddsMultipliers, oddsMultipliers);
 
                 await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
