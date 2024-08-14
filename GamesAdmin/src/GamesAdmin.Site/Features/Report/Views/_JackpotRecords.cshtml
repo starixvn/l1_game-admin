@@ -24,7 +24,7 @@
                     {
                         <th class="col-exchange-id">Exchange Id</th>
                     }
-                    <th class="col-number">Stake Level</th>
+                    <th class="col-number">Prize</th>
                     <th class="col-number">Jackpot Win</th>
                 </tr>
             </thead>
@@ -52,7 +52,7 @@
                         {
                             <td class="text-center">@item.ExchangeRateId</td>
                         }
-                        <td class="text-right">@HtmlHelpers.formatNumber(item.Pool)</td>
+                        <td class="text-right">@item.DisplayPrize</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(item.WinningAmount)</td>
                     </tr>
                 }

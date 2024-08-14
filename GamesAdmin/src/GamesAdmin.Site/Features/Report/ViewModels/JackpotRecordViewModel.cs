@@ -1,5 +1,5 @@
-﻿using GamesAdmin.Core.Models.GameConfigs;
-using System;
+﻿using System;
+using System.Globalization;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -12,6 +12,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Nickname { get; set; }
 
         public decimal Pool { get; set; }
+        public string Prize { get; set; }
+        public string DisplayPrize => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Prize);
 
         public long RoundId { get; set; }
 

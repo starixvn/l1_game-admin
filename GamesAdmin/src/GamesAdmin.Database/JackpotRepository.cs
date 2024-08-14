@@ -73,6 +73,8 @@ namespace GamesAdmin.Database
 
         public decimal Pool { get; set; }
 
+        public string Prize { get; set; }
+
         public long RoundId { get; set; }
 
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
