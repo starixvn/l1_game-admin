@@ -408,17 +408,13 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
                     .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
                     .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio);
-
-                if(jackpot.Pools != null)
-                {
-                    update.Set(field => field.SlotsConfig.Jackpot.Pools.Minor.Init, jackpot.Pools?.Minor?.Init)
-                        .Set(field => field.SlotsConfig.Jackpot.Pools.Major.Init, jackpot.Pools?.Major?.Init)
-                        .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.Init, jackpot.Pools?.Grand?.Init)
-                        .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Contrib, jackpot.Pools?.Minor?.PlayerSettings?.Contrib)
-                        .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Contrib, jackpot.Pools?.Major?.PlayerSettings?.Contrib)
-                        .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Contrib, jackpot.Pools?.Grand?.PlayerSettings?.Contrib);
-                }
+                    .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.Init, jackpot.Pools?.Minor?.Init)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.Init, jackpot.Pools?.Major?.Init)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.Init, jackpot.Pools?.Grand?.Init)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Contrib, jackpot.Pools?.Minor?.PlayerSettings?.Contrib)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Contrib, jackpot.Pools?.Major?.PlayerSettings?.Contrib)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Contrib, jackpot.Pools?.Grand?.PlayerSettings?.Contrib);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
@@ -442,18 +438,13 @@ namespace GamesAdmin.Api.Games
                 var sortBetLevel = betLevels.OrderBy(level => level).ToArray();
 
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.SlotsConfig.BetLevels, sortBetLevel);
-
-                if(jackpot?.Pools != null)
-                {
-
-                    update.Set(field => field.SlotsConfig.Jackpot.Pools.Minor.BotSettings, jackpot.Pools.Minor.BotSettings)
-                        .Set(field => field.SlotsConfig.Jackpot.Pools.Major.BotSettings, jackpot.Pools.Major.BotSettings)
-                        .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.BotSettings, jackpot.Pools.Grand.BotSettings)
-                        .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Alloc, jackpot.Pools.Minor.PlayerSettings.Alloc)
-                        .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Alloc, jackpot.Pools.Major.PlayerSettings.Alloc)
-                        .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Alloc, jackpot.Pools.Grand.PlayerSettings.Alloc);
-                }
+                    .Set(field => field.SlotsConfig.BetLevels, sortBetLevel)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.BotSettings, jackpot.Pools?.Minor?.BotSettings)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.BotSettings, jackpot.Pools?.Major?.BotSettings)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.BotSettings, jackpot.Pools?.Grand?.BotSettings)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Alloc, jackpot.Pools?.Minor?.PlayerSettings?.Alloc)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Alloc, jackpot.Pools?.Major?.PlayerSettings?.Alloc)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Alloc, jackpot.Pools?.Grand?.PlayerSettings?.Alloc);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
