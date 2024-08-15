@@ -255,8 +255,7 @@ namespace GamesAdmin.Core.Enumeration
                 BandarQiuQiu,
                 FootballDice,
             	FootballSlot,
-                Bac81,
-                SeDie3
+                Bac81
             };
             var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
             return normalGame.Concat(gameSettings);
