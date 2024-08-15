@@ -77,7 +77,7 @@
                     <img class="symbol" src="@resourceSiteConfig.Value.BaseUrl@Model.IconsFolder/symbol-10.jackpot.png" />
                 </td>
                 <td class="text-center">5</td>
-                <td class="text-center">Jackpot @Model.SettlementResult.Jackpot.DisplayWinningPrize</td>
+                <td class="text-center">@Model.SettlementResult.Jackpot.DisplayWinningPrize</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet)</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.JackpotWinningAmount)</td>
             </tr>
