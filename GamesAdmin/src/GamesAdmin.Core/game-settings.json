@@ -46,5 +46,13 @@
     "BetChoices": [ "home", "away" ],
     "Odds": [ "home", "away" ],
     "OfferedSystem": [ "SC1", "VG2" ]
+  },
+  {
+    "GameId": 95,
+    "GameName": "sedie3",
+    "DisplayName": "Se Die 3",
+    "BetChoices": [ "red", "white", "red3", "red2", "red1", "white3" ],
+    "Odds": [ "red", "white", "red3", "red2", "red1", "white3" ],
+    "OfferedSystem": [ "SC1", "VG2" ]
   }
 ]
