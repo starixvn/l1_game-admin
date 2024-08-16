@@ -288,8 +288,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal WinningAmount { get; set; }
         public string WinningPrize { get; set; }
 
-        public string DisplayWinningPrize => $"Jackpot {CultureInfo.CurrentCulture.TextInfo.ToTitleCase(WinningPrize)}";
-
+        public string DisplayWinningPrize => string.IsNullOrWhiteSpace(WinningPrize) ? string.Empty : $"Jackpot {CultureInfo.CurrentCulture.TextInfo.ToTitleCase(WinningPrize)}";
     }
 
     public class SlotGameWinningLineViewModel
@@ -426,7 +425,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     public class BandarQiuQiuRecordViewModel : BetRecordViewModel
     {
         public decimal TotalAmount { get; set; }
-    }   
+    }
 
     public class FootballDiceRecordViewModel : BetRecordViewModel
     {
