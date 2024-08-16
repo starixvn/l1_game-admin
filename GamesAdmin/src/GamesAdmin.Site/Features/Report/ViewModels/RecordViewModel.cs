@@ -288,7 +288,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal WinningAmount { get; set; }
         public string WinningPrize { get; set; }
 
-        public string DisplayWinningPrize => string.IsNullOrWhiteSpace(WinningPrize) ? string.Empty : $"Jackpot {CultureInfo.CurrentCulture.TextInfo.ToTitleCase(WinningPrize)}";
+        public string DisplayWinningPrize => string.IsNullOrWhiteSpace(WinningPrize) ? "Jackpot": $"Jackpot {CultureInfo.CurrentCulture.TextInfo.ToTitleCase(WinningPrize)}";
     }
 
     public class SlotGameWinningLineViewModel
