@@ -5,20 +5,19 @@ using GamesAdmin.Site.Extensions;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
-    public class JackpotViewModel
+    public class JackpotViewModel 
     {
-        public List<StakeLevel> StakeLevels { get; set; }
+        public bool Enabled { get; set; }
 
-        public bool JackpotEnabled { get; set; }
-
-        [DisplayName("Exclude Test Currency Contribution")]
         public bool ExcludeTestCurrency { get; set; }
 
-        [DisplayName("Jackpot Winning (%)")]
+        [DisplayName("Winning Ratio (%)")]
         public double WinningRatio { get; set; }
 
         [DisplayName("Jackpot Service Fee (%)")]
         public double JackpotServiceFee => WinningRatio.ReversePercent();
+
+        public JackpotPools Pools { get; set; }
 
         [DisplayName("Bot Contribution (%)")]
         public double BotContribution { get; set; }
@@ -28,5 +27,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Allowed Currency")]
         public string AllowedCurrency { get; set; } = "INH";
+
+        public List<StakeLevel> StakeLevels { get; set; }
     }
 }

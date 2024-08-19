@@ -101,22 +101,14 @@
         public void ConvertToUserCurrency_WithINHBase_ReturnExpected(decimal amount, decimal rate, string expected)
         {
             // arrange
-            var baseStakeLevel = new StakeLevel[] {
-                    new StakeLevel(0.1, 0, 0.4),
-                    new StakeLevel(0.2, 0, 0.4),
-                    new StakeLevel(1, 0, 0.2)
-            };
-            var stakeLevelsByCurrency = new StakeLevel[] {
-                    new StakeLevel(0.2, 0, 0.5),
-                    new StakeLevel(0.3, 0, 0.6),
-                    new StakeLevel(1, 0, 0.2)
-            };
+            var baseStakeLevel = new double[] { 0.1, 0, 0.4, 0.2, 0, 0.4, 1, 0, 0.2 };
+            var stakeLevelsByCurrency = new double[] {0.2, 0, 0.5,0.3, 0, 0.6,1, 0, 0.2};
             var viewModel = new JackpotRecordViewModel()
             {
                 WinningAmount = amount,
                 Rate = rate,
-                BaseStakeLevel = baseStakeLevel,
-                StakeLevelByCurrency = stakeLevelsByCurrency
+                BaseBetLevel = baseStakeLevel,
+                BetLevelByCurrency = stakeLevelsByCurrency
             };
 
             // act

@@ -49,6 +49,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<CreateNewGameRequest, CreateNewGameViewModel>
         , IRequestHandler<GetSlotRtpRequest, RtpResult>
         , IRequestHandler<CheckServiceStatusRequest, StatusGameResult>
+        , IRequestHandler<UpdateSlotBotConfigRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -143,7 +144,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     case GameType.Slots:
                         viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.SlotsConfig);
                         viewModel.PayoutViewModel.IconOdds = GenerateIconOdds(game.SlotsConfig.Icons);
-                        viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig);
+                        viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig.Jackpot);
+                        viewModel.JackpotViewModel.StakeLevels = game.SlotsConfig.StakeLevels;
                         viewModel.SystemType = systemSettings.System;
                         break;
 
@@ -491,6 +493,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
         => gameService.UpdateJackpot(request);
+
+        public Task<bool> Handle(UpdateSlotBotConfigRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateSlotBotConfig(request);
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);

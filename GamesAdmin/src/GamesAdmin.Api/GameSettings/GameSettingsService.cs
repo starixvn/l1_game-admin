@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
@@ -10,10 +14,6 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MongoDB.Driver;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Games
 {
@@ -42,6 +42,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig);
 
         Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
+
+        Task<bool> UpdateSlotBotSettings(string name, Jackpot jackpot, double[] betLevels);
 
         Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig);
 
@@ -129,7 +131,7 @@ namespace GamesAdmin.Api.Games
                     ApplyMultiplier = game.Info.ApplyMultiplier
                 };
 
-                if(game.Info.ApplyMultiplier)
+                if (game.Info.ApplyMultiplier)
                 {
                     entity.OddsMultipliers = new OddsMultipliersConfig()
                     {
@@ -397,24 +399,36 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
-                if (await IsDifferentStakes(name, stakeLevels))
-                {
-                    throw new InvalidOperationException($"Stakes of game {name} are different.");
-                }
-
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetJackpotChangedModel(gameEntity, jackpot, stakeLevels);
+                var changedSettings = SettingHelper.GetJackpotChangedModel(gameEntity, jackpot);
                 sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
 
-                var update = Builders<GameConfigEntity>.Update
+                if (jackpot.Pools != null)
+                {
+                    var update = Builders<GameConfigEntity>.Update
                     .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
                     .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
-                    .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio)
                     .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.AllowedCurrency, jackpot.AllowedCurrency);
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.Init, jackpot.Pools?.Minor?.Init)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.Init, jackpot.Pools?.Major?.Init)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.Init, jackpot.Pools?.Grand?.Init)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Contrib, jackpot.Pools?.Minor?.PlayerSettings?.Contrib)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Contrib, jackpot.Pools?.Major?.PlayerSettings?.Contrib)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Contrib, jackpot.Pools?.Grand?.PlayerSettings?.Contrib);
 
-                await repository.UpdateAsync(config => config.Name == name, update);
+                    await repository.UpdateAsync(config => config.Name == name, update);
+                }
+                else
+                {
+                    var update = Builders<GameConfigEntity>.Update
+                       .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
+                       .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
+                       .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
+                       .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
+                       .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio);
+
+                    await repository.UpdateAsync(config => config.Name == name, update);
+                }
 
                 return true;
             }
@@ -426,15 +440,34 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        private async Task<bool> IsDifferentStakes(string name, List<StakeLevel> stakeLevels)
+        public async Task<bool> UpdateSlotBotSettings(string name, Jackpot jackpot, double[] betLevels)
         {
-            var gameConfig = await GetByName(name);
+            try
+            {
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetBotConfigChangedModel(gameEntity, jackpot, betLevels);
+                sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
+                var sortBetLevel = betLevels.OrderBy(level => level).ToArray();
 
-            var updatedStakes = stakeLevels.OrderBy(x => x.Stake).Select(x => x.Stake).ToArray();
-            var currentStakes = gameConfig.SlotsConfig.StakeLevels.OrderBy(x => x.Stake).Select(x => x.Stake).ToArray();
-            var diffs = updatedStakes.Except(currentStakes);
+                var update = Builders<GameConfigEntity>.Update
+                    .Set(field => field.SlotsConfig.BetLevels, sortBetLevel)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.BotSettings, jackpot.Pools?.Minor?.BotSettings)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.BotSettings, jackpot.Pools?.Major?.BotSettings)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.BotSettings, jackpot.Pools?.Grand?.BotSettings)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Alloc, jackpot.Pools?.Minor?.PlayerSettings?.Alloc)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Alloc, jackpot.Pools?.Major?.PlayerSettings?.Alloc)
+                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Alloc, jackpot.Pools?.Grand?.PlayerSettings?.Alloc);
 
-            return diffs.Any();
+                await repository.UpdateAsync(config => config.Name == name, update);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
         }
 
         public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig)
@@ -507,7 +540,7 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
                     .Set(field => field.RandomMode, gameInfo.RandomMode)
                     .Set(field => field.MaxWinPerRound, gameInfo.MaxWinPerRound)
-                    .Set(field => field.OddsMultipliers, oddsMultipliers);   
+                    .Set(field => field.OddsMultipliers, oddsMultipliers);
 
                 await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 

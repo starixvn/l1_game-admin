@@ -77,7 +77,7 @@
                     <img class="symbol" src="@resourceSiteConfig.Value.BaseUrl@Model.IconsFolder/symbol-10.jackpot.png" />
                 </td>
                 <td class="text-center">5</td>
-                <td class="text-center">Jackpot</td>
+                <td class="text-center">@Model.SettlementResult.Jackpot.DisplayWinningPrize</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet)</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.JackpotWinningAmount)</td>
             </tr>
@@ -125,19 +125,6 @@
                 <td class="text-center">@Model.SettlementResult.FreeSpins.Odds Free spins</td>
                 <td class="text-center">-</td>
                 <td class="text-center">-</td>
-            </tr>
-        }
-
-        @foreach (var payline in Model.Paylines.Where(x => !Model.SettlementResult.WinningPaylines.Any(y => y.Payline == x) && x != Model.SettlementResult.Jackpot?.WinningLine))
-        {
-
-            <tr>
-                <td class="text-center"><img class="payline" src="@resourceSiteConfig.Value.BaseUrl/_shared/classicslot/payline-@(payline + 1).png" /></td>
-                <td class="text-center">-</td>
-                <td class="text-center">-</td>
-                <td class="text-center">-</td>
-                <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet)</td>
-                <td class="text-right">0</td>
             </tr>
         }
 

@@ -12,6 +12,8 @@ namespace GamesAdmin.Core.Models.SlotGame
 
         public decimal Pool { get; set; }
 
+        public string Prize { get; set; }
+
         public long RoundId { get; set; }
 
         public decimal WinningAmount { get; set; }

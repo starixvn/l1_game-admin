@@ -210,18 +210,37 @@
                 </div>
 
                 <fieldset class="slots-jackpot">
-                    <legend>Jackpot(initial value)</legend>
-                    @for (var i = 0; i < Model.JackpotViewModel.StakeLevels.Count; i++)
-                    {
-                        <div class="form-group">
-                            <label class="control-label">Stake level @Model.JackpotViewModel.StakeLevels[i].Stake</label>
-                            <input type="hidden" asp-for="@Model.JackpotViewModel.StakeLevels[i].Stake" class="form-control" />
-                            <input type="hidden" asp-for="@Model.JackpotViewModel.StakeLevels[i].BotRatio" class="form-control" />
-                            <input type="number" asp-for="@Model.JackpotViewModel.StakeLevels[i].Jackpot" class="form-control" />
-                        </div>
-                    }
+                    <legend>Initial value</legend>
+                    <div class="col-lg-4">
+                        <label>Minor</label>
+                        <input type="number" asp-for="@Model.JackpotViewModel.Pools.Minor.Init"/>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Major</label>
+                        <input type="number" asp-for="@Model.JackpotViewModel.Pools.Major.Init" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Grand</label>
+                        <input type="number" asp-for="@Model.JackpotViewModel.Pools.Grand.Init" />
+                    </div>
                 </fieldset>
                 <br />
+
+                <fieldset class="player-contribution">
+                    <legend>Initial value</legend>
+                    <div class="col-lg-4">
+                        <label>Minor</label>
+                        <input type="number" asp-for="@Model.JackpotViewModel.Pools.Minor.PlayerSettings.Contrib" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Major</label>
+                        <input type="number" asp-for="@Model.JackpotViewModel.Pools.Major.PlayerSettings.Contrib" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Grand</label>
+                        <input type="number" asp-for="@Model.JackpotViewModel.Pools.Grand.PlayerSettings.Contrib" />
+                    </div>
+                </fieldset>
 
                 <div class="form-group row">
                     <div class="col-lg-6">
@@ -232,24 +251,6 @@
                     <div class="col-lg-6">
                         <label class="control-label" asp-for="@Model.JackpotViewModel.JackpotServiceFee"></label>
                         <input type="number" asp-for="@Model.JackpotViewModel.JackpotServiceFee" readonly class="form-control" />
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-lg-6">
-                        <label class="control-label" asp-for="@Model.JackpotViewModel.BotContribution"></label>
-                        <input type="number" asp-for="@Model.JackpotViewModel.BotContribution" class="form-control" />
-                    </div>
-
-                    <div class="col-lg-6">
-                        <label class="control-label" asp-for="@Model.JackpotViewModel.PlayerContribution"></label>
-                        <input type="number" asp-for="@Model.JackpotViewModel.PlayerContribution" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-lg-12">
-                        <label class="control-label" asp-for="@Model.JackpotViewModel.AllowedCurrency"></label>
-                        <input type="text" asp-for="@Model.JackpotViewModel.AllowedCurrency" class="form-control" />
                     </div>
                 </div>
             }

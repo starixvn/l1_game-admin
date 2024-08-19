@@ -17,7 +17,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
                 .Cast<GameMode>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
-        public List<StakeLevel> StakeLevels { get; set; }
+        public double[] BetLevels { get; set; }
 
         public Dictionary<string, Dictionary<string, float>> Icons { get; set; }
 
@@ -35,17 +35,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public int[][] WeightsByMediumMode => GetSymbolWeight("2");
         public int[][] WeightsByHardMode  => GetSymbolWeight("3");
 
-        [DisplayName("Jackpot Winning Amount (%)")]
-        public double JackpotWinningAmount { get; set; }
-
-        [DisplayName("Jackpot Service Fee (%)")]
-        public double JackpotServiceFee => 100 - JackpotWinningAmount;
-
-        [DisplayName("Bot Contribution (%)")]
-        public double BotJackpotContribution { get; set; }
-
-        [DisplayName("Player Contribution (%)")]
-        public double PlayerJackpotContribution { get; set; }
+        public Jackpot Jackpot { get; set; }
 
         [DisplayName("Big Win Ratio (%)")]
         public double BigWinRatio { get; set; }

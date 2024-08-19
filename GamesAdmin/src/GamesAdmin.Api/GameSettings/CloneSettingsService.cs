@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GamesAdmin.Api.CurrencyGroupGames;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Api.Notifications;
@@ -26,28 +27,32 @@ namespace GamesAdmin.Api.GameSettings
         private readonly ISentryClient sentryClient;
         private readonly INotificationService notificationService;
         private readonly IGameSettingsService gameService;
+        private readonly ICurrencyGroupGameService currencyGroupGameService;
         private readonly int BOT_MAX_BET_DEFAULT = 10;
 
         public CloneSettingsService(IGenericRepository<GameConfigEntity> repository,
             IGeneralGameSettingService generalGameSettingService,
             ISentryClient sentryClient,
             INotificationService notificationService,
-            IGameSettingsService gameService)
+            IGameSettingsService gameService,
+            ICurrencyGroupGameService currencyGroupGameService)
         {
             this.repository = repository;
             this.generalGameSettingService = generalGameSettingService;
             this.sentryClient = sentryClient;
             this.notificationService = notificationService;
             this.gameService = gameService;
+            this.currencyGroupGameService = currencyGroupGameService;
         }
 
         public async Task<string> CloneNewGame(int gameId, int fromGameId, string displayName)
         {
             try
-            {        
+            {
                 var gameName = await generalGameSettingService.GetGameName(fromGameId);
-                var existingGame = await repository.FindOneAsync(entity => entity.Name ==  NamingConverter.GameConfigName(displayName) || entity.GameId == gameId);
-               
+                var existingGame = await repository.FindOneAsync(entity => entity.Name == NamingConverter.GameConfigName(displayName) || entity.GameId == gameId);
+                var currencyGroupGameSettings = await currencyGroupGameService.GetByGameId(fromGameId);
+
                 if (existingGame != null)
                 {
                     return "GameId or GameName is existed !";
@@ -57,7 +62,6 @@ namespace GamesAdmin.Api.GameSettings
                 {
                     var createResult = await CreateNewCrashGame(displayName, gameId);
                     return createResult ? string.Empty : "Clone game failed!";
-
                 }
 
                 var notification = await notificationService.GetByGameName(gameName, NotificationDisplayKind.DisabledGame);
@@ -67,17 +71,25 @@ namespace GamesAdmin.Api.GameSettings
                     await notificationService.AddDisableMessage(NamingConverter.GameConfigName(displayName), notification.Messages);
                 }
 
+                foreach (var setting in currencyGroupGameSettings)
+                {
+                    setting.GameId = gameId;
+                    setting.GameName = NamingConverter.GameConfigName(displayName);
+
+                    await currencyGroupGameService.Update(setting);
+                }
+
                 if (gameName != null)
                 {
                     var gameEntity = await repository.FindOneAsync(entity => entity.Name == gameName);
-                   
+
                     gameEntity.DisplayName = displayName;
                     gameEntity.GameId = gameId;
                     gameEntity.Enabled = false;
                     gameEntity.Name = NamingConverter.GameConfigName(displayName);
-                  
+
                     await repository.InsertOneAsync(gameEntity);
-                    
+
                     return String.Empty;
                 }
                 else
@@ -93,7 +105,7 @@ namespace GamesAdmin.Api.GameSettings
             }
         }
 
-        public async Task<bool> CreateNewCrashGame( string displayName, int gameId)
+        public async Task<bool> CreateNewCrashGame(string displayName, int gameId)
         {
             var gameInfo = new GameInfo(NamingConverter.GameConfigName(displayName), false, GameType.Crash, 1, displayName, gameId, null);
             var enableSetting = new EnableSetting(false);
@@ -110,7 +122,6 @@ namespace GamesAdmin.Api.GameSettings
                  null,
                  null,
                  new CrashConfig());
-
 
             await gameService.Create(gameConfig);
 

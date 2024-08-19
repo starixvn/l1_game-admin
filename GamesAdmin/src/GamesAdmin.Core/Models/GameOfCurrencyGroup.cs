@@ -14,11 +14,13 @@ namespace GamesAdmin.Core.Models
             double maxbet,
             Dictionary<string, double> maxBetPerChoices = null,
             string[] chips = null,
+            double[] betLevels = null,
             StakeLevel[] stakeLevels = null,
             double[] coinValues = null,
             int multiplier = 0,
             double maxWinPerRound = 0,
-            double? defaultCoinValue = null)
+            double? defaultCoinValue = null,
+            double? defaultBetLevel = null)
         {
             GroupId = groupId;
             GameId = gameId;
@@ -28,18 +30,20 @@ namespace GamesAdmin.Core.Models
             MaxBet = maxbet;
             MaxBetPerChoices = maxBetPerChoices;
             Chips = chips;
+            BetLevels = betLevels;
             StakeLevels = stakeLevels;
             CoinValues = coinValues;
             Multiplier = multiplier;
             MaxWinPerRound = maxWinPerRound;
             DefaultCoinValue = defaultCoinValue;
+            DefaultBetLevel = defaultBetLevel;
         }
 
         public string GroupId { get; }
 
-        public int GameId { get; }
+        public int GameId { get; set; }
 
-        public string GameName { get; }
+        public string GameName { get; set; }
 
         public bool Enabled { get; }
 
@@ -51,10 +55,13 @@ namespace GamesAdmin.Core.Models
 
         public string[] Chips { get; }
 
+        public double[] BetLevels { get; }
+
         public StakeLevel[] StakeLevels { get; }
 
         public double[] CoinValues { get; }
         public double? DefaultCoinValue { get; set; }
+        public double? DefaultBetLevel { get; set; }
         public int Multiplier { get; }
         public double MaxWinPerRound { get; }
     }

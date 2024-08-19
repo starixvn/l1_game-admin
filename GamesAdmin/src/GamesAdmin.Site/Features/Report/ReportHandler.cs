@@ -503,8 +503,8 @@ namespace GamesAdmin.Site.Features.Report
                     var betViewModel = mapper.Map<JackpotRecordViewModel>(x);
                     if (!isFourGuardians)
                     {
-                        betViewModel.BaseStakeLevel = GetStakeLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
-                        betViewModel.StakeLevelByCurrency = GetStakeLevel(currencies, currencyGroupGame, request.GameId, x.Currency);
+                        betViewModel.BaseBetLevel = GetBetLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
+                        betViewModel.BetLevelByCurrency = GetBetLevel(currencies, currencyGroupGame, request.GameId, x.Currency);
                         betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
                     }                
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);                  
@@ -513,11 +513,11 @@ namespace GamesAdmin.Site.Features.Report
             };
         }
 
-        private static StakeLevel[] GetStakeLevel(IEnumerable<CurrencyModel> currencies, IEnumerable<CurrencyGroupGame> currencyGroupGame, int gameId, string name)
+        private static double[] GetBetLevel(IEnumerable<CurrencyModel> currencies, IEnumerable<CurrencyGroupGame> currencyGroupGame, int gameId, string name)
         {
             var currency = currencies.FirstOrDefault(x => x.Name == name);
             var currencyGame = currencyGroupGame.FirstOrDefault(currencyGroup => currencyGroup.GameId == gameId && currencyGroup.GroupId == currency.GroupId);
-            return currencyGame?.StakeLevels;
+            return currencyGame?.BetLevels;
         }
 
         public async Task<BitcoinMasterReportResultViewModel> Handle(GetBitcoinMasterReportRequest request, CancellationToken cancellationToken)

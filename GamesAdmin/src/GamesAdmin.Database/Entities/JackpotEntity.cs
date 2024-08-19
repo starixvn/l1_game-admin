@@ -12,6 +12,7 @@ namespace GamesAdmin.Database.Entities
 
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Pool { get; set; }
+        public string Prize { get; set; }
 
         public decimal InitAmount { get; set; }
 

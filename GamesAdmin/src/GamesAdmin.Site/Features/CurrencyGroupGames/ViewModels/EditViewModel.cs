@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Chips;
 using GamesAdmin.Core.Models.GameConfigs;
@@ -32,7 +31,10 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
 
         public string[] SiteExclusions { get; set; }
 
+        public double[] BetLevels { get; set; }
+
         public StakeLevel[] StakeLevels { get; set; }
+
 
         public bool DisplayMinMaxBet => new HashSet<GameType>
         {
@@ -50,20 +52,15 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
         public double[] CoinValues { get; set; }
 
         public double? DefaultCoinValue { get; set; }
+        public double? DefaultBetLevel { get; set; }
 
         public double MaxWinPerRound { get; set; }
 
         public bool CopySettingGame { get; set; }
-
-        public bool DisabledStakeLevel(int indexLevel)
-        {
-            return StakeLevels[indexLevel].Stake != 0 && !CopySettingGame;
-        }
 
         public bool DisabledCoinValue(int index)
         {
             return CoinValues[index] != 0 && !CopySettingGame;
         }
     }
-
 }

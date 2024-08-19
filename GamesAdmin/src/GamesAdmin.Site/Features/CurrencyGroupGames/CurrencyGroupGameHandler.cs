@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Games;
-using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Chips;
@@ -55,13 +55,9 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             result.MaxBetChoiceSetting = GenerateMaxBetPerChoices(request.GameName, currencyGroupGame?.MaxBetPerChoices);
             result.CopySettingGame = request.IsCopySetting;
 
-            if (currencyGroupGame?.StakeLevels == null)
+            if (currencyGroupGame?.BetLevels == null)
             {
-                result.StakeLevels = new StakeLevel[] {
-                    new StakeLevel(0, 0, 0),
-                    new StakeLevel(0, 0, 0),
-                    new StakeLevel(0, 0, 0)
-                };
+                result.BetLevels = new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             }
 
             if (currencyGroupGame?.CoinValues == null)

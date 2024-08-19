@@ -27,7 +27,7 @@ namespace GamesAdmin.Database
             var jackpotCollection = database.GetCollection<JackpotEntity>(Document.GetCollectionName(typeof(JackpotEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
-           
+
             var jackpots = await jackpotCollection
                 .Find(jackPot => jackPot.HitTime >= fromDate && jackPot.HitTime <= toDate && jackPot.GameId == gameId && jackPot.HitAt.HasValue)
                 .ToListAsync();
@@ -50,6 +50,7 @@ namespace GamesAdmin.Database
                         Nickname = jackpot.WinnerName,
                         RoundId = jackpot.HitAt.Value,
                         Pool = jackpot.Pool,
+                        Prize = jackpot.Prize,
                         WinningAmount = jackpot.Amount * jackpot.WinningRatio.Value,
                         OperatorId = jackpot.OperatorId,
                         Currency = jackpot.Currency,
@@ -72,6 +73,8 @@ namespace GamesAdmin.Database
         public string Nickname { get; set; }
 
         public decimal Pool { get; set; }
+
+        public string Prize { get; set; }
 
         public long RoundId { get; set; }
 

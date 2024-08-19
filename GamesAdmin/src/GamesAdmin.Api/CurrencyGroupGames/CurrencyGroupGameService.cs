@@ -25,6 +25,9 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         Task<bool> Update(CurrencyGroupGame currencyGroupGame);
 
         Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId);
+
+        Task<IEnumerable<CurrencyGroupGame>> GetByGameId(int gameId);
+
     }
 
     public class CurrencyGroupGameService : ICurrencyGroupGameService
@@ -76,6 +79,23 @@ namespace GamesAdmin.Api.CurrencyGroupGames
             }
         }
 
+
+        public async Task<IEnumerable<CurrencyGroupGame>> GetByGameId(int gameId)
+        {
+            try
+            {
+                var gameConfigs = await currencyGroupGameRepository.FilterByAsync(entity => entity.GameId == gameId);
+
+                return gameConfigs.Select(gameConfig => mapper.Map<CurrencyGroupGame>(gameConfig));
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return null;
+            }
+        }
+
+
         public Task<IEnumerable<CurrencyGroupGame>> GetAll()
         => Task.Run(() =>
         {
@@ -111,6 +131,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                     sentryClient.CaptureChangedSettings(currencyGroupGame.GameName, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
 
                     var sortedCoinValues = currencyGroupGame.CoinValues.OrderBy(x => x).ToArray();
+                    var sortedBetLevels = currencyGroupGame.BetLevels.OrderBy(x => x).ToArray();
 
                     var update = Builders<CurrencyGroupGameEntity>.Update
                         .Set(field => field.Enabled, currencyGroupGame.Enabled)
@@ -120,11 +141,13 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                         .Set(field => field.Chips, currencyGroupGame.Chips)
                         .Set(field => field.CoinValues, sortedCoinValues)
                         .Set(field => field.DefaultCoinValue, currencyGroupGame.DefaultCoinValue ?? sortedCoinValues.FirstOrDefault())
+                        .Set(field => field.DefaultBetLevel, currencyGroupGame.DefaultBetLevel ?? sortedBetLevels.FirstOrDefault())
+                        .Set(field => field.BetLevels, currencyGroupGame.BetLevels.OrderBy(x => x).ToArray() ?? new double[10])
                         .Set(field => field.MaxWinPerRound, currencyGroupGame.MaxWinPerRound);
 
-                    if (gameConfig.StakeLevels == null)
+                    if (gameConfig.BetLevels == null)
                     {
-                        update.Set(field => field.StakeLevels, currencyGroupGame.StakeLevels);
+                        update.Set(field => field.BetLevels, currencyGroupGame.BetLevels);
                     }
 
                     await currencyGroupGameRepository.UpdateAsync(entity => entity.GroupId == ObjectId.Parse(currencyGroupGame.GroupId)

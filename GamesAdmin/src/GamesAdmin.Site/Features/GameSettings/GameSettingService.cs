@@ -46,6 +46,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateJackpot(UpdateJackpotRequest request);
 
+        Task<bool> UpdateSlotBotConfig(UpdateSlotBotConfigRequest request);
+
         Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request);
 
         Task<bool> UpdateCascadingSlotsConfig(UpdateCascadingSlotsConfigRequest request);
@@ -186,6 +188,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> UpdateJackpot(UpdateJackpotRequest request)
         => gameApi.UpdateJackpot(request);
+
+        public Task<bool> UpdateSlotBotConfig(UpdateSlotBotConfigRequest request)
+        => gameApi.UpdateSlotBotConfig(request);
 
         public Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request)
         => gameApi.UpdateSlotConfig(request);

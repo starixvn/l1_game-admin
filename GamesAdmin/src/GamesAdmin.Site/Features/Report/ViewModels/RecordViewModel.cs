@@ -3,6 +3,7 @@ using GamesAdmin.Core;
 using System.Collections.Generic;
 using System.Linq;
 using GamesAdmin.Core.Enumeration;
+using System.Globalization;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -285,6 +286,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public byte WinningLine { get; set; }
 
         public decimal WinningAmount { get; set; }
+        public string WinningPrize { get; set; }
+
+        public string DisplayWinningPrize => string.IsNullOrWhiteSpace(WinningPrize) ? "Jackpot": $"Jackpot {CultureInfo.CurrentCulture.TextInfo.ToTitleCase(WinningPrize)}";
     }
 
     public class SlotGameWinningLineViewModel

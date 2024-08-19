@@ -1,25 +1,25 @@
-﻿using System.Collections.Generic;
-using GamesAdmin.Core.Models.GameConfigs;
+﻿using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
-    public class UpdateJackpotRequest : IRequest<bool>
+    public class UpdateSlotBotConfigRequest : IRequest<bool>
     {
-        public UpdateJackpotRequest(
+        public UpdateSlotBotConfigRequest(
             string name,
             Jackpot jackpot,
-            List<StakeLevel> stakeLevels)
+            double[] betLevels
+           )
         {
             Name = name;
             Jackpot = jackpot;
-            StakeLevels = stakeLevels;
+            BetLevels = betLevels;
         }
 
         public string Name { get; set; }
 
         public Jackpot Jackpot { get; set; }
 
-        public List<StakeLevel> StakeLevels { get; set; }
+        public double[] BetLevels { get; set;}
     }
 }
