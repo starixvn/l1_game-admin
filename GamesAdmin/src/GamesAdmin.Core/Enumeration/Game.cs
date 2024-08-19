@@ -141,7 +141,6 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game FootballDice = new Game(FootballDiceValue, "Football Dice", GameId.FootballDice);
         public static readonly Game FootballSlot = new Game(FootballSlotValue, "Football Slot", GameId.FootballSlot);
         public static readonly Game Bac81 = new Game(Bac81Value, "Bac 81", GameId.Bac81);
-        public static readonly Game SeDie3 = new Game(SeDie3Value, "Se Die 3", GameId.SeDie3);
 
         public Game()
         {
