@@ -462,7 +462,6 @@ namespace GamesAdmin.Site.Features.Report
         {
             var result = await reportService.GetSlotGameReport(request);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-            
 
             return new SlotGameReportResultViewModel
             {
