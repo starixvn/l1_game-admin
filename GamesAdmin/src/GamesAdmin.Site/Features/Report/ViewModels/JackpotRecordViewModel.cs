@@ -13,7 +13,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal Pool { get; set; }
         public string Prize { get; set; }
-        public string DisplayPrize => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Prize);
+        public string DisplayPrize =>  string.IsNullOrWhiteSpace(Prize) ? Pool.ToString() : CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Prize);
 
         public long RoundId { get; set; }
 
