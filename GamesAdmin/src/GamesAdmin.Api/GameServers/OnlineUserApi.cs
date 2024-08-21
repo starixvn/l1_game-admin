@@ -369,4 +369,10 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/{name}/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "", [Header("Authorization")] string header = "");
     }
+
+    public interface ISeDie3OnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
 }

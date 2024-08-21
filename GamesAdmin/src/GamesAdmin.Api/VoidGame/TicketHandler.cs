@@ -13,6 +13,7 @@ using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Baccarat;
 using GamesAdmin.Database.Entities.Keno;
 using GamesAdmin.Database.Entities.KenoProMax;
+using GamesAdmin.Database.Entities.SeDie3;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Sentry;
@@ -154,6 +155,7 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.LuckyThree => await MoveByFieldName<LuckyThreeBetEntity, LuckyThreeBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
                            GameId.Bac81 => await Move<Bac81BetEntity, Bac81BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.SicBall => await Move<SicBallBetEntity, SicBallBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.SeDie3 => await Move<SeDie3BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            _ => false,
                        };
             }
@@ -255,6 +257,7 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.LuckyThree => await FindByFieldName<LuckyThreeBetEntity, LuckyThreeBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
                         GameId.Bac81 => await Find<Bac81BetEntity, Bac81BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.SicBall => await Find<SicBallBetEntity, SicBallBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.SeDie3 => await Find<SeDie3BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         _ => default,
                     };
                 }

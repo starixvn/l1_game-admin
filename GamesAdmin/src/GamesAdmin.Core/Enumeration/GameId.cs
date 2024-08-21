@@ -73,6 +73,7 @@
         SeBall1 = 1005,
         LuckyThree = 1006,
         SicBall = 1007,
-        Bac81 = 81
+        Bac81 = 81,
+        SeDie3 = 95
     }
 }

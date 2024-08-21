@@ -83,6 +83,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.LuckyThreeValue, typeof(ILuckyThreeOnlineUserApi) },
             { Game.SicBallValue, typeof(ISicBallOnlineUserApi) },
             { Game.Bac81Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.SeDie3Value, typeof(ISeDie3OnlineUserApi) }
         };
 
         private readonly IServiceProvider serviceProvider;

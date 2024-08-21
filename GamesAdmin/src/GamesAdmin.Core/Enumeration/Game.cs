@@ -77,6 +77,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string SeBall1Value = "seball1";
         public const string Bac81Value = "bac81";
         public const string LuckyThreeValue = "luckythree";
+        public const string SeDie3Value = "sedie3";
         public const string SicBallValue = "sicball";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);

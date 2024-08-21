@@ -813,5 +813,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public IActionResult Bac81() => RedirectToAction("Index", new { game = GameId.Bac81 });
+
+        [HttpGet]
+        public IActionResult SeDie3() => RedirectToAction("Index", new { game = GameId.SeDie3 });
     }
 }

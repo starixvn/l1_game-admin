@@ -64,6 +64,14 @@
     "OfferedSystem": [ "GN" ]
   },
   {
+    "GameId": 95,
+    "GameName": "sedie3",
+    "DisplayName": "Se Die 3",
+    "BetChoices": [ "red", "white", "red3", "red2", "red1", "white3" ],
+    "Odds": [ "red", "white", "red3", "red2", "red1", "white3" ],
+    "OfferedSystem": [ "SC1", "VG2" ]
+  },
+  {
     "GameId": 1007,
     "GameName": "sicball",
     "DisplayName": "Sic Ball",

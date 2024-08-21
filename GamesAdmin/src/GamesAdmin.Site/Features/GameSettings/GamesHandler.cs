@@ -253,7 +253,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return betChoices.Select(choice => new MaxBetChoiceViewModel(
                 choice.Value,
                 betLimit.MaxBetChoices?.ContainsKey(choice.Value) == true ? betLimit.MaxBetChoices[choice.Value] : betLimit.MaxBet,
-                choice.DisplayName)).ToList();
+                choice.DisplayName.ToTitleCase())).ToList();
         }
 
         private List<OddsViewModel> GenerateOdds(string name, Dictionary<string, double> oddsSettings)
