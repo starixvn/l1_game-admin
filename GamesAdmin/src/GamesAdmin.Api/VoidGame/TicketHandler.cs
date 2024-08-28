@@ -153,6 +153,7 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.FootballCoinToss => await Move<FootballCoinTossBetEntity, FootballCoinTossBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.Bac81 => await Move<Bac81BetEntity, Bac81BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.SeDie3 => await Move<SeDie3BetEntity, SeDie3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KaraKrus => await Move<KaraKrusBetEntity, KaraKrusBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            _ => false,
                        };
             }
@@ -252,6 +253,7 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.FootballCoinToss => await Find<FootballCoinTossBetEntity, FootballCoinTossBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.Bac81 => await Find<Bac81BetEntity, Bac81BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.SeDie3 => await Find<SeDie3BetEntity, SeDie3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.KaraKrus => await Find<KaraKrusBetEntity, KaraKrusBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         _ => default,
                     };
                 }

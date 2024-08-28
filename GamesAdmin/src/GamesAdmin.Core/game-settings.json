@@ -54,5 +54,13 @@
     "BetChoices": [ "red", "white", "red3", "red2", "red1", "white3" ],
     "Odds": [ "red", "white", "red3", "red2", "red1", "white3" ],
     "OfferedSystem": [ "SC1", "VG2" ]
+  },
+  {
+    "GameId": 96,
+    "GameName": "karakrus",
+    "DisplayName": "Kara Krus",
+    "BetChoices": [ "kara", "krus", "head3", "head2", "head1", "tail3" ],
+    "Odds": [ "kara", "krus", "head3", "head2", "head1", "tail3" ],
+    "OfferedSystem": [ "SC1", "VG2" ]
   }
 ]

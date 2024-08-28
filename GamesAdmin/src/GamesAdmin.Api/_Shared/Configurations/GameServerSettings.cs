@@ -116,8 +116,8 @@
         public GameServerConfigs FootballSlot { get; set; }
         public GameServerConfigs CoinToss { get; set; }
         public GameServerConfigs BaccaratX { get; set; }
-
         public GameServerConfigs SeDie3 { get; set; }
+        public GameServerConfigs KaraKrus { get; set; }
     }
 
     public class GameServerConfigs
