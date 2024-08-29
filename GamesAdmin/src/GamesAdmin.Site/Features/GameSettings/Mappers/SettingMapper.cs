@@ -68,7 +68,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             CreateMap<AddViewModel, SlotsConfig>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ConvertPercentValue()))
-                .ForMember(dest => dest.BetLevels, opt => opt.MapFrom(src => ConvertStakeLevels(src.Stakes, src.Jackpots, src.BotRatios)))
+                .ForMember(dest => dest.BetLevels, opt => opt.MapFrom(src => src.Stakes))
                 .ForMember(dest => dest.Bonus, opt => opt.MapFrom(src => new Bonus(src.MinBonus, src.MaxBonus)));
 
             CreateMap<AddViewModel, CascadingSlotsConfig>()
