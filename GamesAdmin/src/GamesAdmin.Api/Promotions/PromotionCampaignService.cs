@@ -59,7 +59,8 @@ namespace GamesAdmin.Api.Promotions
             IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
             INotificationService notificationService,
             IPartnerService partnerService,
-            IChatBotService chatBotService)
+            IChatBotService chatBotService,
+            IGenericRepository<ExchangeRateEntity> exchangeRateRepository)
         {
             this.promotionCampaignRepository = promotionCampaignRepository;
             this.promotionLeaderboardRepository = promotionLeaderboardRepository;
@@ -69,6 +70,7 @@ namespace GamesAdmin.Api.Promotions
             this.notificationService = notificationService;
             this.partnerService = partnerService;
             this.chatBotService = chatBotService;
+            this.exchangeRateRepository = exchangeRateRepository;
         }
 
         public async Task<IEnumerable<PromotionConfigModel>> GetByStatus(string status)
