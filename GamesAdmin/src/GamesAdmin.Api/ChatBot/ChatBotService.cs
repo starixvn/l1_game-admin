@@ -10,6 +10,7 @@ using GamesAdmin.Api.ChatBot.Requests;
 using GamesAdmin.Api.ChatBot.Results;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.GeneralGameSettings;
+using GamesAdmin.Api.Public;
 using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
@@ -49,6 +50,8 @@ namespace GamesAdmin.Api.ChatBot
         Task<ChatBotResult> NotifyCreatePromotionTournament(PromotionConfigModel promotion, string type);
 
         Task<ChatBotResult> NotifyUpdatePromotionTournament(PromotionConfigModel promotion, string type);
+
+        ExchangeRateEntity GetExchangeRate();
     }
 
     public class ChatBotService : IChatBotService
@@ -174,7 +177,7 @@ namespace GamesAdmin.Api.ChatBot
             }
         }
 
-        private ExchangeRateEntity GetExchangeRate()
+        public ExchangeRateEntity GetExchangeRate()
         {
             var exchangeRate = cache.GetCache<ExchangeRateEntity>(CachedKeys.ExchangeRate.ToString());
             if (exchangeRate == default)

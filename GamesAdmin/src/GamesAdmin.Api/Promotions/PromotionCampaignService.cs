@@ -208,7 +208,7 @@ namespace GamesAdmin.Api.Promotions
             entity.Status = "new";
             entity.PromotionId = promotion != null ? promotion.PromotionId + 1 : 1;
             entity.UpdatedTime = DateTime.UtcNow;
-            entity.ExId = exchangeRateRepository.AsQueryable().OrderByDescending(ex => ex.ExDate).First().ExId;
+            entity.ExId = chatBotService.GetExchangeRate().ExId;
 
             await promotionCampaignRepository.InsertOneAsync(entity);
             await chatBotService.NotifyCreatePromotionTournament(model, PromotionTournamentTypeUpdate.CreateTournament);
