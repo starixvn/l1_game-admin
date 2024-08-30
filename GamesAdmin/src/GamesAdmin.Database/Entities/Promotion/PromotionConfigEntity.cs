@@ -15,6 +15,7 @@ namespace GamesAdmin.Database.Entities.Promotion
         public DateTime UpdatedTime { get; set; }
         public List<Operator> Operators { get; set; }
         public List<WinningPrize> WinningPrizes { get; set; }
+        public double ExId { get; set; }
     }
 }
 

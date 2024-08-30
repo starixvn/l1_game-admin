@@ -10,6 +10,7 @@ using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Currencies;
+using GamesAdmin.Database.Entities.ExchangeRates;
 using GamesAdmin.Database.Entities.Promotion;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -49,6 +50,7 @@ namespace GamesAdmin.Api.Promotions
         private readonly IPartnerService partnerService;
         private readonly INotificationService notificationService;
         private readonly IChatBotService chatBotService;
+        private readonly IGenericRepository<ExchangeRateEntity> exchangeRateRepository;
 
         public PromotionCampaignService(IGenericRepository<PromotionConfigEntity> promotionCampaignRepository,
             IGenericRepository<PromotionLeaderboardEntity> promotionLeaderboardRepository,
@@ -204,6 +206,8 @@ namespace GamesAdmin.Api.Promotions
             entity.Status = "new";
             entity.PromotionId = promotion != null ? promotion.PromotionId + 1 : 1;
             entity.UpdatedTime = DateTime.UtcNow;
+            entity.ExId = exchangeRateRepository.AsQueryable().OrderByDescending(ex => ex.ExDate).First().ExId;
+
             await promotionCampaignRepository.InsertOneAsync(entity);
             await chatBotService.NotifyCreatePromotionTournament(model, PromotionTournamentTypeUpdate.CreateTournament);
             return true;
