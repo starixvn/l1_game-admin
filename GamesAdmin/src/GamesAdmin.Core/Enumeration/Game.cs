@@ -256,7 +256,7 @@ namespace GamesAdmin.Core.Enumeration
                 ColorGame,
                 BandarQiuQiu,
                 FootballDice,
-            	FootballSlot,
+                FootballSlot,
                 Bac81,
                 Baccarat2,
             };
@@ -265,6 +265,7 @@ namespace GamesAdmin.Core.Enumeration
             return normalGame.Concat(gameSettings);
         }
 
-        public static IEnumerable<Game> BaccaratXGames => new Game[] { Bac81, Baccarat2 };
+        public static IEnumerable<Game> LuckyBaccaratGames => new Game[] { Bac81 };
+        public static IEnumerable<Game> BaccaratGames => new Game[] { Baccarat2 };
     }
 }

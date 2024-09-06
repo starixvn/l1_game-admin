@@ -357,8 +357,8 @@
             event.preventDefault();
             this.setResultControl("ChineseBlackjackResult");
         },
-        setResultControlBaccaratX: function (action, gameName, displayName) {
-            this.setSlotResultControl("BaccaratXResult", gameName, displayName)
+        setResultControlBaccaratX: function (gameName, displayName, enableMultiplier) {
+            window.open(adminMonitoringUrl + "/ResultMonitor/BaccaratXResult" + "?gameConfigName=" + gameName + "&displayName=" + displayName + "&enableMultiplier=" + enableMultiplier + "&token=" + jwtAdminUserToken, "_blank", "width=1020,height=765");
         },
         setSlotResultControl: function (action, gameName, displayName) {
             window.open(adminMonitoringUrl + "/ResultMonitor/" + action + "?gameConfigName=" + gameName + "&displayName=" + displayName + "&token=" + jwtAdminUserToken, "_blank", "width=1020,height=765");
