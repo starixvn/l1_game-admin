@@ -264,5 +264,7 @@ namespace GamesAdmin.Core.Enumeration
             var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
             return normalGame.Concat(gameSettings);
         }
+
+        public static IEnumerable<Game> BaccaratXGames => new Game[] { Bac81, Baccarat2 };
     }
 }

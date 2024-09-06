@@ -76,9 +76,9 @@
                                 {
                                     <a href="#" class="icon-action" onclick="gameStatus.setControlResultHiLo(event)"><i class="icon-chart"></i></a>
                                 }
-                                else if (role == Role.Admin.Value && Model.GameList[index].Name == Game.Bac81Value)
+                                else if (role == Role.Admin.Value && Game.BaccaratXGames.Any(x => x.Value == Model.GameList[index].Name))
                                 {
-                                    <a href="#" class="icon-action" onclick="gameStatus.setResultControlBaccaratX(event,'@(Game.Bac81Value)', '@(Game.Bac81Value)')"><i class="icon-chart"></i></a>
+                                    <a href="#" class="icon-action" onclick="gameStatus.setResultControlBaccaratX(event,'@(Model.GameList[index].Name)', '@(Model.GameList[index].DisplayName)')"><i class="icon-chart"></i></a>
                                 }
                                 else
                                 {
