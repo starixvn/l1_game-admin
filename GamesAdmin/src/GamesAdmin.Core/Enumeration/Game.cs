@@ -77,6 +77,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string Bac81Value = "bac81";
         public const string SeDie3Value = "sedie3";
         public const string KaraKrusValue = "karakrus";
+        public const string Baccarat2Value = "baccarat2";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -142,6 +143,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game FootballDice = new Game(FootballDiceValue, "Football Dice", GameId.FootballDice);
         public static readonly Game FootballSlot = new Game(FootballSlotValue, "Football Slot", GameId.FootballSlot);
         public static readonly Game Bac81 = new Game(Bac81Value, "Bac 81", GameId.Bac81);
+        public static readonly Game Baccarat2 = new Game(Baccarat2Value, "Baccarat 2", GameId.Baccarat2);
 
         public Game()
         {
@@ -255,8 +257,10 @@ namespace GamesAdmin.Core.Enumeration
                 BandarQiuQiu,
                 FootballDice,
             	FootballSlot,
-                Bac81
+                Bac81,
+                Baccarat2,
             };
+
             var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
             return normalGame.Concat(gameSettings);
         }

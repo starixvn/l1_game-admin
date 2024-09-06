@@ -70,6 +70,7 @@
         FootballSlot = 79,
         CoinToss = 80,
         Bac81 = 81,
+        Baccarat2 = 84,
         FootballCoinToss = 93,
         SeDie3 = 95,
         KaraKrus = 96
