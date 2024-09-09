@@ -816,5 +816,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public IActionResult SeDie3() => RedirectToAction("Index", new { game = GameId.SeDie3 });
+
+        [HttpGet]
+        public IActionResult KaraKrus() => RedirectToAction("Index", new { game = GameId.KaraKrus });
     }
 }

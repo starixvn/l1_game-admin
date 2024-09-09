@@ -119,8 +119,8 @@
         public GameServerConfigs LuckyThree { get; set; }
         public GameServerConfigs SicBall { get; set; }
         public GameServerConfigs BaccaratX { get; set; }
-
         public GameServerConfigs SeDie3 { get; set; }
+        public GameServerConfigs KaraKrus { get; set; }
     }
 
     public class GameServerConfigs

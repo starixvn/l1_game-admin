@@ -78,5 +78,13 @@
     "BetChoices": [ "big", "small", "specific1", "specific2", "specific3", "specific4", "specific5", "specific6" ],
     "Odds": [ "big", "small", "single", "double", "triple" ],
     "OfferedSystem": [ "GN" ]
+  },
+  {
+    "GameId": 96,
+    "GameName": "karakrus",
+    "DisplayName": "Kara Krus",
+    "BetChoices": [ "kara", "krus", "head3", "head2", "head1", "tail3" ],
+    "Odds": [ "kara", "krus", "head3", "head2", "head1", "tail3" ],
+    "OfferedSystem": [ "SC1", "VG2" ]
   }
 ]

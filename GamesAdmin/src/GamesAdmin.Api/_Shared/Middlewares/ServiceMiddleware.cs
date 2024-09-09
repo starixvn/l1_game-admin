@@ -221,6 +221,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IFootballSlotOnlineUserApi>(appSettings.GameServers.FootballSlot.Api, refitSettings));
             services.AddSingleton(RestService.For<ICoinTossOnlineUserApi>(appSettings.GameServers.CoinToss.Api, refitSettings));
             services.AddSingleton(RestService.For<ISeDie3OnlineUserApi>(appSettings.GameServers.SeDie3.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKaraKrusOnlineUserApi>(appSettings.GameServers.KaraKrus.Api, refitSettings));
         }
 
         private static void AddOnlineUserApiGN(IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)

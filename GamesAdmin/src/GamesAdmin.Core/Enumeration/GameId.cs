@@ -74,6 +74,7 @@
         LuckyThree = 1006,
         SicBall = 1007,
         Bac81 = 81,
-        SeDie3 = 95
+        SeDie3 = 95,
+        KaraKrus = 96
     }
 }
