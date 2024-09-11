@@ -48,7 +48,8 @@ namespace GamesAdmin.Core.Enumeration
             {Game.FootballDiceValue, Enumeration.GetAll<FootballDiceBetChoice>() },
             {Game.FootballSlotValue, Enumeration.GetAll<FootballSlotBetChoice>() },
             {Game.Bac81Value, Enumeration.GetAll<BaccaratXBetChoice>() },
-            {Game.Baccarat2Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac84Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac98Value, Enumeration.GetAll<BaccaratXBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>

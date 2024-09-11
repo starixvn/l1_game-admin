@@ -141,7 +141,8 @@ namespace GamesAdmin.Core.Enumeration
                     return Enumeration.GetAll<FootballSlotOdds>();
 
                 case Game.Bac81Value:
-                case Game.Baccarat2Value:
+                case Game.Bac84Value:
+                case Game.Bac98Value:
                     return Enumeration.GetAll<BaccaratXOdds>();
 
                 default: return default;

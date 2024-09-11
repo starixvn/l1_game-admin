@@ -77,7 +77,8 @@ namespace GamesAdmin.Core.Enumeration
         public const string Bac81Value = "bac81";
         public const string SeDie3Value = "sedie3";
         public const string KaraKrusValue = "karakrus";
-        public const string Baccarat2Value = "baccarat2";
+        public const string Bac84Value = "bac84";
+        public const string Bac98Value = "bac98";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -143,7 +144,8 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game FootballDice = new Game(FootballDiceValue, "Football Dice", GameId.FootballDice);
         public static readonly Game FootballSlot = new Game(FootballSlotValue, "Football Slot", GameId.FootballSlot);
         public static readonly Game Bac81 = new Game(Bac81Value, "Bac 81", GameId.Bac81);
-        public static readonly Game Baccarat2 = new Game(Baccarat2Value, "Baccarat 2", GameId.Baccarat2);
+        public static readonly Game Bac84 = new Game(Bac84Value, "Baccarat 2", GameId.Bac84);
+        public static readonly Game Bac98 = new Game(Bac98Value, "Speed Baccarat", GameId.Bac98);
 
         public Game()
         {
@@ -258,7 +260,8 @@ namespace GamesAdmin.Core.Enumeration
                 FootballDice,
                 FootballSlot,
                 Bac81,
-                Baccarat2,
+                Bac84,
+                Bac98
             };
 
             var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
@@ -266,6 +269,6 @@ namespace GamesAdmin.Core.Enumeration
         }
 
         public static IEnumerable<Game> LuckyBaccaratGames => new Game[] { Bac81 };
-        public static IEnumerable<Game> BaccaratGames => new Game[] { Baccarat2 };
+        public static IEnumerable<Game> BaccaratGames => new Game[] { Bac84, Bac98 };
     }
 }
