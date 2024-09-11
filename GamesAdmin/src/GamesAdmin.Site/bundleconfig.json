@@ -334,5 +334,11 @@
       "wwwroot/lib/data-tables/datatables.min.css",
       "wwwroot/scss/pages/promotion-leaderboard.min.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/game-group-management.min.js",
+    "inputFiles": [
+      "wwwroot/js/game-group-management.js"
+    ]
   }
 ]

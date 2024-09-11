@@ -1,0 +1,37 @@
+﻿@model GamesAdmin.Site.Features.GameGroupManagement.ViewModels.CreateGameGroupViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title">Add currency</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form data-ajax="true" class="form" asp-action="Create" method="post" id="create-form"
+      data-ajax-success="gameGroupManagement.onCreateSuccess">
+    <div class="modal-body">
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="required-field-label" asp-for="Name"></label>
+                <input class="form-control" type="text" asp-for="Name">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="required-field-label" asp-for="GameIds"></label>
+                <select hidden asp-items="@Model.Games" asp-for="GameIds" class="form-control" multiple></select>
+                <span class="text-danger" asp-validation-for="GameIds"></span>
+                <select class="form-control" id="fanexSelectGameId"></select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="control-label" id="result-label"></label>
+            </div>
+        </div>
+    </div>
+    <div class=" modal-footer">
+        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn-submit">Save</button>
+    </div>
+</form>

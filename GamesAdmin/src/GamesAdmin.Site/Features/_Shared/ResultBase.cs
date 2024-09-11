@@ -2,6 +2,10 @@
 {
     public class MessageResult
     {
+        public MessageResult(bool success) : this(success, string.Empty)
+        {
+        }
+
         public MessageResult(string message)
         {
             Success = string.IsNullOrWhiteSpace(message);
