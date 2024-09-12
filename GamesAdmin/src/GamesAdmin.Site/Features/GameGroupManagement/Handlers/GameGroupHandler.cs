@@ -14,7 +14,8 @@ namespace GamesAdmin.Site.Features.GameGroupManagement.Handlers
 {
     public class GameGroupHandler :
         IRequestHandler<CreatePageRequest, CreateGameGroupViewModel>,
-        IRequestHandler<CreateRequest, MessageResult>
+        IRequestHandler<CreateRequest, MessageResult>,
+        IRequestHandler<IndexPageRequet, GameGroupManagementViewModel>
     {
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly IGameGroupManagementApi gameGroupManagementApi;
@@ -44,6 +45,21 @@ namespace GamesAdmin.Site.Features.GameGroupManagement.Handlers
             });
 
             return new MessageResult(isSuccessfull);
+        }
+
+        public async Task<GameGroupManagementViewModel> Handle(IndexPageRequet request, CancellationToken cancellationToken)
+        {
+            var gameGroups = await gameGroupManagementApi.GetAll();
+
+            return new GameGroupManagementViewModel
+            {
+                GameGroups = gameGroups.Select(x => new GameGroupViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    GameIds = x.GameIds
+                })
+            };
         }
     }
 }

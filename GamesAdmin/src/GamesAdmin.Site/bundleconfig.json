@@ -338,7 +338,17 @@
   {
     "outputFileName": "wwwroot/js/game-group-management.min.js",
     "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/lib/fanex.multiselect/fanex.multiSelect.js",
       "wwwroot/js/game-group-management.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/game-group-management.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/game-group-management.min.css"
     ]
   }
 ]

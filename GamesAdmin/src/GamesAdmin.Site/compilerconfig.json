@@ -90,5 +90,9 @@
   {
     "outputFile": "wwwroot/scss/pages/lobby-management.css",
     "inputFile": "wwwroot/scss/pages/lobby-management.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/game-group-management.css",
+    "inputFile": "wwwroot/scss/pages/game-group-management.scss"
   }
 ]

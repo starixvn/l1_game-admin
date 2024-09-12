@@ -18,7 +18,7 @@ namespace GamesAdmin.Site.Features.GameGroupManagement
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index() => View();
+        public async Task<IActionResult> Index() => View(await mediator.Send(new IndexPageRequet()));
         [HttpGet]
         public async Task<IActionResult> Create() => PartialView("_Create", await mediator.Send(new CreatePageRequest()));
     }

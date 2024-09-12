@@ -19,7 +19,7 @@
         <div class="form-group row">
             <div class="col-sm-12">
                 <label class="required-field-label" asp-for="GameIds"></label>
-                <select hidden asp-items="@Model.Games" asp-for="GameIds" class="form-control" multiple></select>
+                <select hidden asp-items="Model.Games" asp-for="GameIds" class="form-control" multiple></select>
                 <span class="text-danger" asp-validation-for="GameIds"></span>
                 <select class="form-control" id="fanexSelectGameId"></select>
             </div>

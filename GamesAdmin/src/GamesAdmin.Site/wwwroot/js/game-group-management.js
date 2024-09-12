@@ -1,4 +1,4 @@
-var groupGameManagement = (function ($) {
+var gameGroupManagement = (function ($) {
     var $modal = $('#modal');
 
     function onUpsertSucess(data) {
@@ -18,10 +18,8 @@ var groupGameManagement = (function ($) {
     }
 
     function openModal(formId) {
-        return function () {
-            $modal.modal('show');
-            $.validator.unobtrusive.parse(formId);
-        }
+        $modal.modal('show');
+        $.validator.unobtrusive.parse(formId);
     }
 
     function convertPartnerSelectToFanexItem(item) {
@@ -38,30 +36,40 @@ var groupGameManagement = (function ($) {
     return {
         init: function () {
             var $table = $('#game-group-table');
-
             $table.DataTable({
                 "order": [[0, "asc"]],
                 "lengthMenu": [100, 200, 500]
             });
         },
-        openCreateForm: openModal("#create-form"),
+        openCreateForm: function () {
+            var $gameIds = $("#GameIds");
+            var selections = gameGroupManagement.getFanexSelectData($gameIds[0]);
+
+            $("#fanexSelectGameId").fanexMultiSelect({
+                listData: selections,
+                showFilter: true,
+                onLeave: function () {
+                    var value = $("#fanexSelectGameId").fanexMultiSelect('getItems', true);
+
+                    $gameIdsval(value);
+                },
+            });
+            openModal("#create-form");
+        },
         onCreateSuccess: onUpsertSucess,
         onUpdateSuccess: onUpsertSucess,
-        getFanexSelectData: (selectElement) => selectElement.map(convertPartnerSelectToFanexItem)
+        getFanexSelectData: (selectElement) => {
+            var data = [];
+            for (let options of selectElement.options) {
+                data.push(convertPartnerSelectToFanexItem(options));
+            }
+            return data;
+        }
     }
 }(jQuery));
 
 $(document).ready(function () {
-    var $gameIds = $("#GameIds");
-    var selections = groupGameManagement.getFanexSelectData($gameIds[0]);
+    gameGroupManagement.init();
 
-    $("#fanexSelectGameId").fanexMultiSelect({
-        listData: selections,
-        showFilter: true,
-        onLeave: function () {
-            var value = $("#fanexSelectGameId").fanexMultiSelect('getItems', true);
 
-            $gameIdsval(value);
-        },
-    });
 })
