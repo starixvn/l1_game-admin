@@ -203,6 +203,8 @@ namespace GamesAdmin.Api.GameServers
                 Game.MiniSeDie3Value => Game.MiniSeDie3Value,
                 Game.MiniSeDie4Value => Game.MiniSeDie4Value,
                 Game.Bac81Value => Game.Bac81Value,
+                Game.Bac84Value => Game.Bac84Value,
+                Game.Bac98Value => Game.Bac98Value,
                 _ => string.Empty,
             };
         }

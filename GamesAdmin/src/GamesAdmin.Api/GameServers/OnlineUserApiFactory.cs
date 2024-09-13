@@ -81,7 +81,9 @@ namespace GamesAdmin.Api.GameServers
             { Game.CoinTossValue, typeof(ICoinTossOnlineUserApi) },
             { Game.Bac81Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.SeDie3Value, typeof(ISeDie3OnlineUserApi) },
-            { Game.KaraKrusValue, typeof(IKaraKrusOnlineUserApi) }
+            { Game.KaraKrusValue, typeof(IKaraKrusOnlineUserApi) },
+            { Game.Bac84Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac98Value, typeof(IBaccaratXOnlineUserApi) },
         };
 
         private readonly IServiceProvider serviceProvider;

@@ -154,7 +154,7 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.Bac81 => await Move<Bac81BetEntity, Bac81BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.SeDie3 => await Move<SeDie3BetEntity, SeDie3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.KaraKrus => await Move<KaraKrusBetEntity, KaraKrusBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                           _ => false,
+                           _ => await Move<BaseBetEntity, BaseBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                        };
             }
             catch (Exception ex)
@@ -169,7 +169,8 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                return await Find<HoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
+                var ticket = await Find<HoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
+                return new GameTicketRecord<HoldemPokerBetEntity>(ticket.BetRecords as IList<HoldemPokerBetEntity>, ticket.IsFromArchive);
             }
             catch (Exception ex)
             {
@@ -254,7 +255,7 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.Bac81 => await Find<Bac81BetEntity, Bac81BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.SeDie3 => await Find<SeDie3BetEntity, SeDie3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.KaraKrus => await Find<KaraKrusBetEntity, KaraKrusBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                        _ => default,
+                        _ => await Find<BaseBetEntity, BaseBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     };
                 }
 
@@ -278,19 +279,19 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var displayName = await generalGameSettingService.GetDisplayName(gameTypeId);
-                var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, displayName, true);
+                var gameName = await generalGameSettingService.GetGameName(gameTypeId);
+                var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, gameName, true);
                 var gameTickets = await Find<One, Bet>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, gameType);
 
                 if (gameTickets.OneRecord != null)
                 {
-                    var oneCollection = removedDatabase.GetCollection<One>($"{gameCollection.One}{RemovePostfix}");
+                    var oneCollection = removedDatabase.GetCollection<dynamic>($"{gameCollection.One}{RemovePostfix}");
                     await oneCollection.InsertOneAsync(gameTickets.OneRecord);
                 }
 
                 if (gameTickets?.BetRecords?.Any() == true)
                 {
-                    var betCollection = removedDatabase.GetCollection<Bet>($"{gameCollection.Bet}{RemovePostfix}");
+                    var betCollection = removedDatabase.GetCollection<dynamic>($"{gameCollection.Bet}{RemovePostfix}");
                     await betCollection.InsertManyAsync(gameTickets.BetRecords);
                 }
 
@@ -316,7 +317,7 @@ namespace GamesAdmin.Api.VoidGame
 
                 if (gameTicket.BetRecords.Count > 0)
                 {
-                    var betCollection = removedDatabase.GetCollection<Bet>($"{gameCollection.Bet}{RemovePostfix}");
+                    var betCollection = removedDatabase.GetCollection<dynamic>($"{gameCollection.Bet}{RemovePostfix}");
                     await betCollection.InsertManyAsync(gameTicket.BetRecords);
                 }
 
@@ -385,7 +386,7 @@ namespace GamesAdmin.Api.VoidGame
             return false;
         }
 
-        private async Task<GameTicketRecord<One, Bet>> Find<One, Bet>(
+        private async Task<GameTicketRecord<dynamic, dynamic>> Find<One, Bet>(
                 string obCustId,
                 string partnerId,
                 string siteId,
@@ -396,8 +397,8 @@ namespace GamesAdmin.Api.VoidGame
             where One : BaseBetEntity
             where Bet : BaseBetEntity
         {
-            var displayName = await this.generalGameSettingService.GetDisplayName(gameTypeId);
-            var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, displayName, true);
+            var gameName = await this.generalGameSettingService.GetGameName(gameTypeId);
+            var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, gameName, true);
 
             var gameTickets = await FindInActiveOrArchive<One, Bet>(gameCollection, obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
 
@@ -409,7 +410,7 @@ namespace GamesAdmin.Api.VoidGame
             return gameTickets;
         }
 
-        private async Task<GameTicketRecord<Bet>> Find<Bet>(
+        private async Task<GameTicketRecord<dynamic>> Find<Bet>(
                 string obCustId,
                 string partnerId,
                 string siteId,
@@ -419,8 +420,8 @@ namespace GamesAdmin.Api.VoidGame
                 GameType gameType = GameType.AutoRNG)
             where Bet : BaseBetEntity
         {
-            var displayName = await this.generalGameSettingService.GetDisplayName(gameTypeId);
-            var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, displayName);
+            var gameName = await this.generalGameSettingService.GetGameName(gameTypeId);
+            var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, gameName);
 
             var gameTickets = await FindInActiveOrArchive<Bet>(gameCollection, obCustId, partnerId, siteId, gameRoundId, freeBet);
 
@@ -432,7 +433,7 @@ namespace GamesAdmin.Api.VoidGame
             return gameTickets;
         }
 
-        private async Task<GameTicketRecord<One, Bet>> FindInActiveOrArchive<One, Bet>(
+        private async Task<GameTicketRecord<dynamic, dynamic>> FindInActiveOrArchive<One, Bet>(
                 GameTicketCollection collections,
                 string obCustId,
                 string partnerId,
@@ -447,16 +448,16 @@ namespace GamesAdmin.Api.VoidGame
             var database = isArchive ? archiveDatabase : activeDatabase;
             var postfix = isArchive ? ArchivePostfix : string.Empty;
             var isCrashGame = await generalGameSettingService.IsCrashGame(gameTypeId);
-            var oneCollection = database.GetCollection<One>($"{collections.One}{postfix}");
+            var oneCollection = database.GetCollection<BaseBetEntity>($"{collections.One}{postfix}");
             var oneRecord = (await FindTicket(oneCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, gameTypeId)).FirstOrDefault();
 
             var betCollection = database.GetCollection<Bet>($"{collections.Bet}{postfix}");
             var betRecords = await FindTicket(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, gameTypeId);
             var hasTicket = isCrashGame ? oneRecord == null : oneRecord == null && betRecords == null;
-            return hasTicket ? default : new GameTicketRecord<One, Bet>(oneRecord, betRecords, isArchive);
+            return hasTicket ? default : new GameTicketRecord<dynamic, dynamic>(oneRecord, betRecords, isArchive);
         }
 
-        private async Task<GameTicketRecord<Bet>> FindInActiveOrArchive<Bet>(
+        private async Task<GameTicketRecord<dynamic>> FindInActiveOrArchive<Bet>(
                 GameTicketCollection collections,
                 string obCustId,
                 string partnerId,
@@ -471,10 +472,10 @@ namespace GamesAdmin.Api.VoidGame
             var betCollection = database.GetCollection<Bet>($"{collections.Bet}{postfix}");
             var bets = await FindTicket(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet);
 
-            return new GameTicketRecord<Bet>(bets, isArchive);
+            return new GameTicketRecord<dynamic>(bets, isArchive);
         }
 
-        private async Task<IList<T>> FindTicket<T>(
+        private async Task<IList<dynamic>> FindTicket<T>(
                 IMongoCollection<T> collection,
                 string obCustId,
                 string partnerId,
@@ -495,16 +496,19 @@ namespace GamesAdmin.Api.VoidGame
             }
             else
             {
-                record = (await collection
-                .FindAsync(record => record.PlayerId == obCustId
-                                    && record.OperatorId == partnerId
-                                    && record.SiteId == siteId
-                                    && (record.Round == gameRoundId)
-                                    && (!freeBet || record.FreeBet == freeBet)))
-                .ToList();
+                var builder = Builders<T>.Filter;
+                var filter = builder.Eq(x => x.PlayerId, obCustId)
+                    & builder.Eq(x => x.OperatorId, partnerId)
+                    & builder.Eq(x => x.SiteId, siteId)
+                    & builder.Eq(x => x.Round, gameRoundId);
+                if (freeBet)
+                {
+                    filter &= builder.Eq(x => x.FreeBet, freeBet);
+                }
+                return (await collection.FindAsync<dynamic>(filter)).ToList();
             }
 
-            return record;
+            return record as IList<dynamic>;
         }
 
         private async Task<bool> RemoveTicket<T>(
@@ -582,7 +586,6 @@ namespace GamesAdmin.Api.VoidGame
                 await removeCollection.InsertOneAsync(round);
 
                 await MoveResult(gameRoundId, collectionName.Split("_").FirstOrDefault());
-
 
                 return true;
             }
@@ -777,8 +780,8 @@ namespace GamesAdmin.Api.VoidGame
             where One : BaseBetEntity
             where Bet : BaseBetEntity
         {
-            var displayName = await this.generalGameSettingService.GetDisplayName(gameTypeId);
-            var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, displayName, true);
+            var gameName = await this.generalGameSettingService.GetGameName(gameTypeId);
+            var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, gameName, true);
 
             var gameTickets = await FindInActiveOrArchiveByFieldName<One, Bet>(gameCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, findFieldName);
 
@@ -859,7 +862,7 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var displayName = await generalGameSettingService.GetDisplayName(gameTypeId);
+                var displayName = await generalGameSettingService.GetGameName(gameTypeId);
                 var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, displayName, true);
                 var gameTickets = await FindByFieldName<One, Bet>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, findFieldName, gameType);
 
