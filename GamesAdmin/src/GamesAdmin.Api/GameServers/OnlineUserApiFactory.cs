@@ -82,8 +82,21 @@ namespace GamesAdmin.Api.GameServers
             { Game.Bac81Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.SeDie3Value, typeof(ISeDie3OnlineUserApi) },
             { Game.KaraKrusValue, typeof(IKaraKrusOnlineUserApi) },
+            { Game.Bac82Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac83Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.Bac84Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac85Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac86Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac87Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac88Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac89Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac90Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac91Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac92Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac97Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.Bac98Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac100Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.Bac101Value, typeof(IBaccaratXOnlineUserApi) },
         };
 
         private readonly IServiceProvider serviceProvider;

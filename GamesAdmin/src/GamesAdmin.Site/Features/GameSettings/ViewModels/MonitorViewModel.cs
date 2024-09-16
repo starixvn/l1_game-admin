@@ -39,6 +39,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string Name { get; set; }
 
         public string Id { get; set; }
+        public int GameId { get; set; }
 
         public string DBDisplayName { get; set; }
 
@@ -57,5 +58,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string GameHistoryUrl => string.IsNullOrWhiteSpace(DisplayName)
             ? Name.Replace(" ", string.Empty).Trim().ToLowerInvariant()
             : DisplayName.Replace(" ", string.Empty).Trim().Replace("'", string.Empty).ToLowerInvariant();
+
+        public bool ApplyMultiplier { get; set; }
     }
 }
