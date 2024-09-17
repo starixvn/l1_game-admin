@@ -4,7 +4,7 @@ var gameGroupManagement = (function ($) {
     function onUpsertSucess(data) {
         if (data.success) {
             setTimeout(function () {
-                window.location.reload();
+             //   window.location.reload();
             }, 1000);
         }
 
@@ -18,7 +18,7 @@ var gameGroupManagement = (function ($) {
     }
 
     function openModal(formId) {
-        $modal.modal('show');
+        $modal.modal({ backdrop: 'static', show: true});
         $.validator.unobtrusive.parse(formId);
     }
 
@@ -51,7 +51,8 @@ var gameGroupManagement = (function ($) {
                 onLeave: function () {
                     var value = $("#fanexSelectGameId").fanexMultiSelect('getItems', true);
 
-                    $gameIdsval(value);
+                    $gameIds.val(value);
+                    $("#create-form").valid();
                 },
             });
             openModal("#create-form");
@@ -70,6 +71,4 @@ var gameGroupManagement = (function ($) {
 
 $(document).ready(function () {
     gameGroupManagement.init();
-
-
 })

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using GamesAdmin.Core.Enumeration;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.GameGroupManagement.ViewModels
@@ -15,7 +13,7 @@ namespace GamesAdmin.Site.Features.GameGroupManagement.ViewModels
 
         [DisplayName("Games")]
         [Required]
-        public IEnumerable<int> GameIds { get; set; } = Enumerable.Empty<int>();
+        public IEnumerable<int> GameIds { get; set; }
 
         public IEnumerable<SelectListItem> Games { get; set; }
     }

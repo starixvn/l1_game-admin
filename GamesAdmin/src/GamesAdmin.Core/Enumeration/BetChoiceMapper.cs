@@ -48,8 +48,21 @@ namespace GamesAdmin.Core.Enumeration
             {Game.FootballDiceValue, Enumeration.GetAll<FootballDiceBetChoice>() },
             {Game.FootballSlotValue, Enumeration.GetAll<FootballSlotBetChoice>() },
             {Game.Bac81Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac82Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac83Value, Enumeration.GetAll<BaccaratXBetChoice>() },
             {Game.Bac84Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac85Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac86Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac87Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac88Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac89Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac90Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac91Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac92Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac97Value, Enumeration.GetAll<BaccaratXBetChoice>() },
             {Game.Bac98Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac100Value, Enumeration.GetAll<BaccaratXBetChoice>() },
+            {Game.Bac101Value, Enumeration.GetAll<BaccaratXBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>

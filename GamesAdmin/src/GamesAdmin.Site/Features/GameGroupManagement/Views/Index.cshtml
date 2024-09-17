@@ -39,7 +39,7 @@
                             @if (Context.HasAdminPermission())
                             {
                                 <a class="btn-edit" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#modal .modal-content" data-ajax-success="chip.openUpdateChipForm"
-                           asp-route-groupId="@group."
+                           asp-route-groupId="@group.Id"
                            asp-action="Update">
                                     <i class="icon-edit"></i>
                                 </a>
