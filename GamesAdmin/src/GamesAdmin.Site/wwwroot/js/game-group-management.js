@@ -4,7 +4,7 @@ var gameGroupManagement = (function ($) {
     function onUpsertSucess(data) {
         if (data.success) {
             setTimeout(function () {
-             //   window.location.reload();
+                window.location.reload();
             }, 1000);
         }
 
@@ -32,6 +32,22 @@ var gameGroupManagement = (function ($) {
         })
     }
 
+    function openForm(formSelector) {
+        var $gameIds = $("#GameIds");
+        var selections = gameGroupManagement.getFanexSelectData($gameIds[0]);
+
+        $("#fanexSelectGameId").fanexMultiSelect({
+            listData: selections,
+            showFilter: true,
+            onLeave: function () {
+                var value = $("#fanexSelectGameId").fanexMultiSelect('getItems', true);
+
+                $gameIds.val(value);
+                $(formSelector).valid();
+            },
+        });
+        openModal(formSelector);
+    }
 
     return {
         init: function () {
@@ -42,20 +58,10 @@ var gameGroupManagement = (function ($) {
             });
         },
         openCreateForm: function () {
-            var $gameIds = $("#GameIds");
-            var selections = gameGroupManagement.getFanexSelectData($gameIds[0]);
-
-            $("#fanexSelectGameId").fanexMultiSelect({
-                listData: selections,
-                showFilter: true,
-                onLeave: function () {
-                    var value = $("#fanexSelectGameId").fanexMultiSelect('getItems', true);
-
-                    $gameIds.val(value);
-                    $("#create-form").valid();
-                },
-            });
-            openModal("#create-form");
+            openForm("#create-form");
+        },
+        openUpdateForm: function () {
+            openForm("#update-form");
         },
         onCreateSuccess: onUpsertSucess,
         onUpdateSuccess: onUpsertSucess,

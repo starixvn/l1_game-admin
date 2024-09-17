@@ -31,6 +31,6 @@ namespace GamesAdmin.Site.Features.GameGroupManagement
         public async Task<IActionResult> Update([FromQuery] string groupId) => PartialView("_Update", await mediator.Send(new UpdatePageRequest(groupId)));
 
         [HttpPost]
-        public async Task<IActionResult> Update([Bind] UpdateGameGroupViewModel model) => Ok(await mediator.Send(new CreateRequest(model)));
+        public async Task<IActionResult> Update([Bind] UpdateGameGroupViewModel model) => Ok(await mediator.Send(new UpdateRequest(model)));
     }
 }

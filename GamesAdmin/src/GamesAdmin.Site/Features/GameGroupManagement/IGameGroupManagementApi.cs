@@ -15,7 +15,7 @@ namespace GamesAdmin.Site.Features.GameGroupManagement
         Task<GameGroup> GetByGroupId(string groupId);
 
         [Get("/gamegroup/getbygameid")]
-        Task<IEnumerable<GameGroup>> GetByGameId(int gameId);
+        Task<GameGroup> GetByGameId(int gameId);
 
         [Post("/gamegroup")]
         Task<bool> Create(GameGroup model);

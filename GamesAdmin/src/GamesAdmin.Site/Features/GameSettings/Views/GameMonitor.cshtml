@@ -102,9 +102,13 @@
                             {
                                 <a class="icon-action" href="~/Report/CrashGameReport?game=@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
                             }
-                            else
+                            else if (Game.BaccaratGames.Any(x => x.Value == Model.GameList[index].Name))
                             {
                                 <a class="icon-action" href="~/Report?game=@Model.GameList[index].Name"><i class="icon-history"></i></a>
+                            }
+                            else
+                            {
+                                <a class="icon-action" href="~/Report/@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
                             }
                         }
                     </td>

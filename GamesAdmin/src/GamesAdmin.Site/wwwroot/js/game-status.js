@@ -147,6 +147,20 @@
             });
         },
 
+        getFanexSelectData: (selectElement) => {
+            var data = [];
+            for (let option of selectElement.options) {
+                data.push({
+                    id: option.value,
+                    value: option.value,
+                    text: option.text,
+                    enable: true,
+                    checked: option.selected
+                });
+            }
+            return data;
+        },
+
         showPartnerSetting: function (partnerId, partnerName, gameName, displayName, gameType) {
             $.ajax({
                 method: "GET",
@@ -161,6 +175,22 @@
                 if (content) {
                     $('#partnerSettingContent').html(content);
                     $('#gameName').html(displayName);
+
+                    var $otherGameIds = $("#OtherGameIdsInGroup");
+                    if ($otherGameIds[0]) {
+                        var selections = gameStatus.getFanexSelectData($otherGameIds[0]);
+
+                        $("#fanexGameIds").fanexMultiSelect({
+                            listData: selections,
+                            showFilter: true,
+                            onLeave: function () {
+                                var value = $("#fanexGameIds").fanexMultiSelect('getItems', true);
+
+                                $otherGameIds.val(value);
+                            },
+                        });
+                    }
+                    
                     $('#partnerSettingModal').modal('show');
                     currencyGroupGame.loadDefaultSetting();
                 }

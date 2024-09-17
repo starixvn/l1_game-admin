@@ -38,7 +38,7 @@
                         <td class="text-center">
                             @if (Context.HasAdminPermission())
                             {
-                                <a class="btn-edit" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#modal .modal-content" data-ajax-success="chip.openUpdateChipForm"
+                                <a class="btn-edit" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#modal .modal-content" data-ajax-success="gameGroupManagement.openUpdateForm"
                            asp-route-groupId="@group.Id"
                            asp-action="Update">
                                     <i class="icon-edit"></i>
