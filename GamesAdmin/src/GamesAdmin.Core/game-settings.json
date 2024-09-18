@@ -56,6 +56,14 @@
     "OfferedSystem": [ "SC1", "VG2" ]
   },
   {
+    "GameId": 94,
+    "GameName": "pusoy",
+    "DisplayName": "Pusoy",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["SC1", "VG2"]
+  },
+  {
     "GameId": 1006,
     "GameName": "luckythree",
     "DisplayName": "Lucky Three",
