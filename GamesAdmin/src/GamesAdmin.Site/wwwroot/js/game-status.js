@@ -129,6 +129,7 @@
 
                     $oddsMultiplierTemplate = $("#odds-multipliers .multiplier-item").first();
                     oddsMultiplierIndex = $("#odds-multipliers .multiplier-item").length;
+                    gameStatus.initFanexSelect("#OtherGameIdsInGroup", "#fanexGameIds");
 
                     $('#gameModal').modal('show');
 
@@ -161,6 +162,23 @@
             return data;
         },
 
+        initFanexSelect: function(selector, displaySelector) {
+            var $element = $(selector);
+            if ($element[0]) {
+                var selections = gameStatus.getFanexSelectData($element[0]);
+
+                $(displaySelector).fanexMultiSelect({
+                    listData: selections,
+                    showFilter: true,
+                    onLeave: function () {
+                        var value = $(displaySelector).fanexMultiSelect('getItems', true);
+
+                        $element.val(value);
+                    },
+                });
+            }
+        },
+
         showPartnerSetting: function (partnerId, partnerName, gameName, displayName, gameType) {
             $.ajax({
                 method: "GET",
@@ -175,21 +193,7 @@
                 if (content) {
                     $('#partnerSettingContent').html(content);
                     $('#gameName').html(displayName);
-
-                    var $otherGameIds = $("#OtherGameIdsInGroup");
-                    if ($otherGameIds[0]) {
-                        var selections = gameStatus.getFanexSelectData($otherGameIds[0]);
-
-                        $("#fanexGameIds").fanexMultiSelect({
-                            listData: selections,
-                            showFilter: true,
-                            onLeave: function () {
-                                var value = $("#fanexGameIds").fanexMultiSelect('getItems', true);
-
-                                $otherGameIds.val(value);
-                            },
-                        });
-                    }
+                    gameStatus.initFanexSelect("#OtherGameIdsInGroup", "#fanexGameIds");
                     
                     $('#partnerSettingModal').modal('show');
                     currencyGroupGame.loadDefaultSetting();

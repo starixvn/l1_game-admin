@@ -79,7 +79,6 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         {
             var result = new IndexViewModel();
             var gameId = (int)Game.FromGameName(request.GameName).GameId;
-            var gameGroup = await gameGroupManagementApi.GetByGameId(gameId);
 
             var currencyGroups = (await currencyGroupService.GetByPartner(request.PartnerId, group => group.Enabled)).ToList();
             var partners = await partnerService.GetAll();
@@ -98,6 +97,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             result.PartnerName = request.PartnerName;
             result.GroupSelectList = currencyGroups.Select(group => new SelectListItem(group.Name, group.Id)).ToList();
 
+            var gameGroup = await gameGroupManagementApi.GetByGameId(gameId);
             if (gameGroup != null)
             {
                 result.OtherGameIdsInGroup = gameGroup.GameIds.Where(x => x != gameId);

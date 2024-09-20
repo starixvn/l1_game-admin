@@ -89,6 +89,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public int MaxWinPerRound { get; set; }
 
         public bool ApplyMultiplier { get; set; }
+        public IEnumerable<int> OtherGameIdsInGroup { get; set; }
+        public IEnumerable<SelectListItem> OtherGamesInGroup { get; set; }
     }
 
     public class BotRatioItemViewModel
