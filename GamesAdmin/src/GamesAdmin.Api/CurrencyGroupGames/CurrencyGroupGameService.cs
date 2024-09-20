@@ -155,11 +155,6 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                         filterBuilder.Eq(x => x.GameId, gameId),
                         filterBuilder.Eq(x => x.GameName, gameConfig?.GameName ?? Game.FromGameId((GameId)gameId).Value));
 
-                    if (gameConfig.BetLevels == null)
-                    {
-                        update.Set(field => field.BetLevels, currencyGroupGame.BetLevels);
-                    }
-
                     writes.Add(new UpdateOneModel<CurrencyGroupGameEntity>(filterDefinition, update) { IsUpsert = true });
                 }
 
