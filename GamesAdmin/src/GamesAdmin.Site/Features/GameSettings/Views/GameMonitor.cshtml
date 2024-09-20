@@ -78,7 +78,7 @@
                                 }
                                 else if(role == Role.Admin.Value && Game.BaccaratGames.Any(x => x.Value == Model.GameList[index].Name))
                                 {
-                                    <a href="#" class="icon-action" onclick="gameStatus.setResultControlBaccaratX('@(Model.GameList[index].Name)', '@(Model.GameList[index].DisplayName)', @Model.GameList[index].ApplyMultiplier)"><i class="icon-chart"></i></a>
+                                    <a href="#" class="icon-action" onclick="gameStatus.setResultControlBaccaratX('@(Model.GameList[index].Name)', '@(Model.GameList[index].DisplayName)', '@Model.GameList[index].ApplyMultiplier')"><i class="icon-chart"></i></a>
                                 }
                                 else
                                 {
