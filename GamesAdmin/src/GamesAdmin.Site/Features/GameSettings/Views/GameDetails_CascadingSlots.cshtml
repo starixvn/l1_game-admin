@@ -12,6 +12,7 @@
     <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
 
     <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
+        <input hidden asp-for="GameId" />
 
         <div id="general">
             <div class="form-group row">

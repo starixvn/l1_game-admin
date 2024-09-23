@@ -312,7 +312,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 }
 
                 var request = new UpdateRequest(
-                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode, string.Empty, 0, null, viewModel.MaxWinPerRound),
+                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode, string.Empty, viewModel.GameId, null, viewModel.MaxWinPerRound),
                     new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet, null, viewModel.SmartBotEnabled, viewModel.SmartBotGroupRatio.ConvertPercentValue()),
                     new EnableSetting(viewModel.Enabled, viewModel.DelayStartTime),
                     slotsConfig,
