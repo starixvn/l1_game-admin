@@ -105,8 +105,8 @@ namespace GamesAdmin.Site.Features.Partners
         [HttpPost, Audit]
         [Route("partner/site_exclusion")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
-            => Json(await mediator.Send(new UpdateSiteExclusionRequest(partnerId, gameId, exclusionSites)));
+        public async Task<IActionResult> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites, int[] otherGameIdsInGroup)
+            => Json(await mediator.Send(new UpdateSiteExclusionRequest(partnerId, gameId, exclusionSites, otherGameIdsInGroup)));
 
         [HttpPost, Audit]
         [Route("partner/edit_super_players")]

@@ -31,7 +31,7 @@ namespace GamesAdmin.Api.Partners
 
         Task<PartnerConfig> GetConfig(string partnerId, string type);
 
-        Task<bool> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites);
+        Task<bool> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites, IEnumerable<int> otherGameIdsInGroup);
 
         Task<bool> UpdateSuperPlayers(string partnerId, string[] superPlayers);
 
@@ -209,30 +209,38 @@ namespace GamesAdmin.Api.Partners
             }
         }
 
-        public async Task<bool> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
+        public async Task<bool> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites, IEnumerable<int> otherGameIdsInGroup)
         {
             try
             {
                 var configType = PartnerConfigType.SiteExclusion.Value;
                 var oldConfig = await GetConfig(partnerId, configType);
                 var gameSettings = await generalGameSettingService.GetGameName(gameId);
-                var configKey = gameId.ToString();
+                var gameIds = new List<int>(otherGameIdsInGroup) { gameId };
 
                 if (oldConfig == null)
                 {
-                    var newValues = new Dictionary<string, IList<string>>() { { configKey, exclusionSites.ToList() } };
+                    var newValues = new Dictionary<string, IList<string>>(
+                        gameIds.Select(x => new KeyValuePair<string, IList<string>>(x.ToString(), exclusionSites.ToList())));
                     oldConfig = new PartnerConfig(partnerId, configType, newValues);
                     await partnerConfigRepository.InsertOneAsync(mapper.Map<PartnerConfigEntity>(oldConfig));
                 }
                 else
                 {
-                    sentryClient.CaptureChangedSetting(
-                        gameSettings,
-                        "Site Exclusion",
-                        string.Empty,
-                        new SettingChangedModel(string.Join(", ", oldConfig.Value.ContainsKey(configKey) ? oldConfig.Value[configKey] : new List<string>()), string.Join(", ", exclusionSites)));
+                    foreach(var id in gameIds)
+                    {
+                        var key = id.ToString();
 
-                    oldConfig.Value[configKey] = exclusionSites.ToList();
+                        sentryClient.CaptureChangedSetting(
+                            gameSettings,
+                            "Site Exclusion",
+                            string.Empty,
+                            new SettingChangedModel(
+                                string.Join(", ", oldConfig.Value.ContainsKey(key) ? oldConfig.Value[key] : Enumerable.Empty<string>()),
+                                string.Join(", ", exclusionSites)));
+                        oldConfig.Value[key] = exclusionSites.ToList();
+                    }
+                 
                     var update = Builders<PartnerConfigEntity>.Update.Set(entity => entity.Value, oldConfig.Value);
                     await partnerConfigRepository.UpdateAsync(entity => entity.PartnerId == oldConfig.PartnerId && entity.Type == oldConfig.Type, update);
                 }

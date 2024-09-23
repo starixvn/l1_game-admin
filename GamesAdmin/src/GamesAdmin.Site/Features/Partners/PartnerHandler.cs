@@ -47,7 +47,7 @@ namespace GamesAdmin.Site.Features.Partners
             => partnerService.GetPartnerSiteExclusion(request.PartnerId, request.GameId);
 
         public Task<bool> Handle(UpdateSiteExclusionRequest request, CancellationToken cancellationToken)
-            => partnerService.UpdatePartnerSiteExclusion(request.PartnerId, request.GameId, request.ExclusionSites);
+            => partnerService.UpdatePartnerSiteExclusion(request);
 
         public Task<bool> Handle(UpdatePartnerUMRequest request, CancellationToken cancellationToken)
             => partnerService.UpdatePartnerUM(request);

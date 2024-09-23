@@ -40,7 +40,7 @@ namespace GamesAdmin.Site.Features.Partners
         Task<IEnumerable<UmInfo>> GetAllUMInfo();
 
         [Post("/partner/site_exclusion")]
-        Task<bool> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites);
+        Task<bool> UpdateSiteExclusion([Body] UpdateSiteExclusionRequest request);
 
         [Post("/partner/super_players")]
         Task<bool> UpdateSuperPlayers(string partnerId, string[] superPlayers);
@@ -62,7 +62,7 @@ namespace GamesAdmin.Site.Features.Partners
 
         Task<string[]> GetPartnerSiteExclusion(string partnerId, int gameId);
 
-        Task<bool> UpdatePartnerSiteExclusion(string partnerId, int gameId, string[] exclusionSites);
+        Task<bool> UpdatePartnerSiteExclusion(UpdateSiteExclusionRequest request);
 
         Task<bool> UpdatePartnerUM(UpdatePartnerUMRequest request);
 
@@ -147,8 +147,8 @@ namespace GamesAdmin.Site.Features.Partners
         public Task<string[]> GetPartnerSuperPlayer(string partnerId)
            => GetPartnerConfigValue(partnerId, PartnerConfigType.SuperPlayers.Value, PartnerConfigKey.Name.Value);
 
-        public Task<bool> UpdatePartnerSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
-            => partnerApi.UpdateSiteExclusion(partnerId, gameId, exclusionSites);
+        public Task<bool> UpdatePartnerSiteExclusion(UpdateSiteExclusionRequest request)
+            => partnerApi.UpdateSiteExclusion(request);
 
         public Task<bool> UpdatePartnerSuperPlayer(string partnerId, string[] superPlayers)
             => partnerApi.UpdateSuperPlayers(partnerId, superPlayers);

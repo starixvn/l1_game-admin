@@ -12,6 +12,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Lobby;
 using MongoDB.Driver;
 using Sentry;
 
@@ -31,7 +32,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateBetLimit(string name, BetLimit betLimit);
 
-        Task<bool> UpdateOdds(string name, Dictionary<string, double> odds);
+        Task<bool> UpdateOdds(string name, Dictionary<string, double> odds, IEnumerable<int> otherGameIdsInGroup);
 
         Task<bool> UpdateMarginSettings(string name, IEnumerable<Dictionary<string, double>> marginSettings);
 
@@ -49,7 +50,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig);
 
-        Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null);
+        Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null, IEnumerable<int> otherGameIdsInGroup = null);
 
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
@@ -259,7 +260,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateOdds(string name, Dictionary<string, double> odds)
+        public async Task<bool> UpdateOdds(string name, Dictionary<string, double> odds, IEnumerable<int> otherGameIdsInGroup)
         {
             try
             {
@@ -269,11 +270,19 @@ namespace GamesAdmin.Api.Games
                 }
 
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var updatedGameIds = new List<int>(otherGameIdsInGroup) { gameEntity.GameId };
                 var changedSettings = SettingHelper.GetOddsChangedModel(gameEntity.Odds, odds);
                 sentryClient.CaptureChangedSettings(name, "Odds", string.Empty, changedSettings);
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
 
-                var update = Builders<GameConfigEntity>.Update.Set(field => field.Odds, odds);
-                await repository.UpdateAsync(config => config.Name == name, update);
+                foreach (var gameId in updatedGameIds)
+                {
+                    var update = Builders<GameConfigEntity>.Update.Set(field => field.Odds, odds);
+                    var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameId); ;
+                    writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
+                }
+
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
 
                 return true;
             }
@@ -523,26 +532,35 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null)
+        public async Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null, IEnumerable<int> otherGameIdsInGroup = null)
         {
             try
             {
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == gameInfo.Name);
-                var changedSettings = SettingHelper.GetGeneralConfigChangedModel(gameEntity, gameInfo, botSetting, enableSetting);
-                sentryClient.CaptureChangedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
+                var gameIds = new List<int>(otherGameIdsInGroup ?? new List<int>()) { gameInfo.GameId };
+                var gameEntities = await repository.FilterByAsync(entity => gameIds.Contains(entity.GameId));
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
+                foreach (var gameEntity in gameEntities)
+                {
+                    var changedSettings = SettingHelper.GetGeneralConfigChangedModel(gameEntity, gameInfo, botSetting, enableSetting);
+                    sentryClient.CaptureChangedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
 
-                var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
-                    .Set(field => field.DelayStartTime, enableSetting.DelayStartTime)
-                    .Set(field => field.Botenabled, botSetting.BotEnabled)
-                    .Set(field => field.BotMaxBet, botSetting.BotMaxBet)
-                    .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
-                    .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
-                    .Set(field => field.RandomMode, gameInfo.RandomMode)
-                    .Set(field => field.MaxWinPerRound, gameInfo.MaxWinPerRound)
-                    .Set(field => field.OddsMultipliers, oddsMultipliers);
+                    var update = Builders<GameConfigEntity>.Update
+                        .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
+                        .Set(field => field.DelayStartTime, enableSetting.DelayStartTime)
+                        .Set(field => field.Botenabled, botSetting.BotEnabled)
+                        .Set(field => field.BotMaxBet, botSetting.BotMaxBet)
+                        .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
+                        .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
+                        .Set(field => field.RandomMode, gameInfo.RandomMode)
+                        .Set(field => field.MaxWinPerRound, gameInfo.MaxWinPerRound)
+                        .Set(field => field.OddsMultipliers, oddsMultipliers);
 
-                await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
+                    var filter = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
+
+                    writes.Add(new UpdateOneModel<GameConfigEntity>(filter, update));
+                }
+
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
 
                 return true;
             }

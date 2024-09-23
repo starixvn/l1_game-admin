@@ -377,7 +377,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     return gameService.UpdateCrashConfig(new UpdateCrashConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.CrashConfig));
 
                 default:
-                    return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers));
+                    return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers, request.OtherGameIdsInGroup));
             }
         }
 

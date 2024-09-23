@@ -1,4 +1,6 @@
-﻿using GamesAdmin.Core.Models.GameConfigs;
+﻿using System.Collections.Generic;
+using System.Linq;
+using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
@@ -13,7 +15,8 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             CascadingSlotsConfig cascadingSlotsConfig,
             SlotRNGConfig slotRNGConfig,
             CrashConfig crashConfig,
-            OddsMultipliersConfig oddsMultipliers)
+            OddsMultipliersConfig oddsMultipliers,
+            IEnumerable<int> otherGameIdsInGroup)
         {
             GameInfo = gameInfo;
             BotSetting = botSetting;
@@ -23,6 +26,7 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             SlotRNGConfig = slotRNGConfig;
             CrashConfig = crashConfig;
             OddsMultipliers = oddsMultipliers;
+            OtherGameIdsInGroup = otherGameIdsInGroup ?? Enumerable.Empty<int>();
         }
 
         public GameInfo GameInfo { get; }
@@ -40,5 +44,6 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public CrashConfig CrashConfig { get; }
 
         public OddsMultipliersConfig OddsMultipliers { get; set; }
+        public IEnumerable<int> OtherGameIdsInGroup { get; }
     }
 }

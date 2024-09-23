@@ -44,7 +44,7 @@ namespace GamesAdmin.Api.Partners
         => partnerService.GetConfig(request.PartnerId, request.Type);
 
         public Task<bool> Handle(UpdateSiteExclusionRequest request, CancellationToken cancellationToken)
-            => partnerService.UpdateSiteExclusion(request.PartnerId, request.GameId, request.ExclusionSites);
+            => partnerService.UpdateSiteExclusion(request.PartnerId, request.GameId, request.ExclusionSites, request.OtherGameIdsInGroup);
 
         public Task<bool> Handle(UpdateSuperPlayersRequest request, CancellationToken cancellationToken)
              => partnerService.UpdateSuperPlayers(request.PartnerId, request.SuperPlayers);

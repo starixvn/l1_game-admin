@@ -225,7 +225,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                       viewModel.Type,
                       viewModel.PayoutViewModel?.Odds,
                       viewModel.PayoutViewModel?.Icons,
-                      viewModel.CascadingSlotsConfig));
+                      viewModel.CascadingSlotsConfig,
+                      viewModel.OtherGameIdsInGroup));
 
                 return Json(updateResult);
             }
@@ -318,7 +319,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     cascadingSlotsConfig,
                     slotRNGConfig,
                     crashConfig,
-                    viewModel.OddsMultipliers);
+                    viewModel.OddsMultipliers,
+                    viewModel.OtherGameIdsInGroup);
 
                 await mediator.Send(request);
 

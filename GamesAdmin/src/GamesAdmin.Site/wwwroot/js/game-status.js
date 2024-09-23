@@ -1027,6 +1027,14 @@ $(document).ready(function () {
         });
     }
 
+    $("#gameModal").on("hidden.bs.modal", function () {
+        $("#gamedetails").empty();
+    });
+
+    $("#partnerSettingModal").on("hidden.bs.modal", function () {
+        $("#partnerSettingContent").empty();
+    });
+
 
     $(".bet-monitor").on("click", function (event) {
         var $this = $(this);
