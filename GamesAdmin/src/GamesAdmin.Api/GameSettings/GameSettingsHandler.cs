@@ -60,7 +60,7 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateDisabledMessage(request.Name, request.Messages, request.IsApplyAll);
 
         public Task<bool> Handle(UpdateBetLimitRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateBetLimit(request.Name, request.BetLimit);
+        => gameService.UpdateBetLimit(request.GameId, request.BetLimit, request.OtherGameIdsInGroup);
 
         public Task<bool> Handle(UpdateOddsRequest request, CancellationToken cancellationToken)
         => gameService.UpdateOdds(request.Name, request.Odds, request.OtherGameIdsInGroup);
@@ -69,7 +69,7 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateMarginSettings(request.GameName, request.MarginSettings);
 
         public Task<bool> Handle(UpdateBotRatiosRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateBotRatios(request.Name, request.Ratios);
+        => gameService.UpdateBotRatios(request.Name, request.BotRatios, request.OtherGameIdsInGroup);
 
         public Task<bool> Handle(UpdateGeneralConfigRequest request, CancellationToken cancellationToken)
         => gameService.UpdateGeneralConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers, request.OtherGameIdsInGroup);

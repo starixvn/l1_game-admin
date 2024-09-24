@@ -162,7 +162,7 @@
             return data;
         },
 
-        initFanexSelect: function(selector, displaySelector) {
+        initFanexSelect: function (selector, displaySelector) {
             var $element = $(selector);
             if ($element[0]) {
                 var selections = gameStatus.getFanexSelectData($element[0]);
@@ -194,7 +194,7 @@
                     $('#partnerSettingContent').html(content);
                     $('#gameName').html(displayName);
                     gameStatus.initFanexSelect("#OtherGameIdsInGroup", "#fanexGameIds");
-                    
+
                     $('#partnerSettingModal').modal('show');
                     currencyGroupGame.loadDefaultSetting();
                 }
@@ -221,10 +221,25 @@
                 method: "GET",
                 url: "/botratio/" + gameName
             }).done(function (result) {
+                var $gameIdSelect = $("#bot-otherGameIdsInGroup", wrapper);
+                if (result.otherGameIdsInGroup) {
+                    $gameIdSelect.empty();
+                    for (var game of result.otherGamesInGroup) {
+                        $gameIdSelect[0].add(new Option(game.text, game.value, true, true),);
+                    }
+                    $gameIdSelect.val(result.otherGameIdsInGroup);
+                    gameStatus.initFanexSelect($gameIdSelect, $("#bot-fanexGameIds", wrapper));
+                    $("#gameids-wrapper", wrapper).show();
+                } else {
+                    $gameIdSelect.val([]);
+                    $("#gameids-wrapper", wrapper).hide();
+                }
+
                 const botRatioItems = result.botRatioItems;
 
                 for (let i = 0; i < 24; i++) {
                     const setting = wrapper.find(`#bot_setting_${i}`);
+
 
                     wrapper.find('#total_bots').html(result.botCount);
                     wrapper.find('#total_bots_field').val(result.botCount);
@@ -320,7 +335,7 @@
             isValid && $.ajax({
                 method: "POST",
                 url: currentGameName,
-                data: { BotRatioItems: data }
+                data: { BotRatioItems: data, otherGameIdsInGroup: $("#bot-otherGameIdsInGroup", modal).val() }
             }).done(function (result) {
                 if (result) {
                     modal.find('#successMsg').show();
@@ -985,7 +1000,7 @@
         removeMultiplierItem: function (event) {
             $(event.target).parent().remove();
         },
-        updateOddsMultipliersIndex: function(){
+        updateOddsMultipliersIndex: function () {
             var $multiplierItems = $(".multiplier-item", "#odds-multipliers");
 
             for (let index = 0; index < $multiplierItems.length; index++) {

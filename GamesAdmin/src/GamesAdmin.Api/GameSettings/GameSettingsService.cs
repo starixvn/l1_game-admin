@@ -30,13 +30,13 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateDisabledMessage(string name, Dictionary<string, string> messages, bool isApplyAll = false);
 
-        Task<bool> UpdateBetLimit(string name, BetLimit betLimit);
+        Task<bool> UpdateBetLimit(int gameId, BetLimit betLimit, IEnumerable<int> otherGameIdsInGroup);
 
         Task<bool> UpdateOdds(string name, Dictionary<string, double> odds, IEnumerable<int> otherGameIdsInGroup);
 
         Task<bool> UpdateMarginSettings(string name, IEnumerable<Dictionary<string, double>> marginSettings);
 
-        Task<bool> UpdateBotRatios(string name, double[] ratios);
+        Task<bool> UpdateBotRatios(string name, double[] ratios, IEnumerable<int> otherGameIdsInGroup);
 
         Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
 
@@ -235,20 +235,29 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateBetLimit(string name, BetLimit betLimit)
+        public async Task<bool> UpdateBetLimit(int gameId, BetLimit betLimit, IEnumerable<int> otherGameIdsInGroup)
         {
             try
             {
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetBetLimitChangedModel(gameEntity, betLimit);
-                sentryClient.CaptureChangedSettings(name, "Bot Setting", string.Empty, changedSettings);
+                var gameIds = new List<int>(otherGameIdsInGroup) { gameId };
+                var gameEntities = await repository.FilterByAsync(x => gameIds.Contains(x.GameId));
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
 
-                var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.Minbet, betLimit.MinBet)
-                    .Set(field => field.Maxbet, betLimit.MaxBet)
-                    .Set(field => field.MaxBetChoices, betLimit.MaxBetChoices);
+                foreach (var gameEntity in gameEntities)
+                {
+                    var changedSettings = SettingHelper.GetBetLimitChangedModel(gameEntity, betLimit);
+                    sentryClient.CaptureChangedSettings(gameEntity.Name, "Bot Setting", string.Empty, changedSettings);
 
-                await repository.UpdateAsync(config => config.Name == name, update);
+                    var update = Builders<GameConfigEntity>.Update
+                        .Set(field => field.Minbet, betLimit.MinBet)
+                        .Set(field => field.Maxbet, betLimit.MaxBet)
+                        .Set(field => field.MaxBetChoices, betLimit.MaxBetChoices);
+
+                    var filter = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
+                    writes.Add(new UpdateOneModel<GameConfigEntity>(filter, update));
+                }
+
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
 
                 return true;
             }
@@ -269,21 +278,19 @@ namespace GamesAdmin.Api.Games
                     throw new InvalidOperationException($"Odds of game {name} are empty.");
                 }
 
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var updatedGameIds = new List<int>(otherGameIdsInGroup) { gameEntity.GameId };
-                var changedSettings = SettingHelper.GetOddsChangedModel(gameEntity.Odds, odds);
-                sentryClient.CaptureChangedSettings(name, "Odds", string.Empty, changedSettings);
+                var gameEntities = await repository.FilterByAsync(x => otherGameIdsInGroup.Contains(x.GameId) || x.Name == name);
                 var writes = new List<UpdateOneModel<GameConfigEntity>>();
 
-                foreach (var gameId in updatedGameIds)
+                foreach (var gameEntity in gameEntities)
                 {
+                    var changedSettings = SettingHelper.GetOddsChangedModel(gameEntity.Odds, odds);
+                    sentryClient.CaptureChangedSettings(gameEntity.Name, "Odds", string.Empty, changedSettings);
                     var update = Builders<GameConfigEntity>.Update.Set(field => field.Odds, odds);
-                    var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameId); ;
+                    var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId); ;
                     writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
                 }
 
                 await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
-
                 return true;
             }
             catch (Exception ex)
@@ -321,7 +328,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateBotRatios(string name, double[] ratios)
+        public async Task<bool> UpdateBotRatios(string name, double[] ratios, IEnumerable<int> otherGameIdsInGroup)
         {
             try
             {
@@ -330,13 +337,20 @@ namespace GamesAdmin.Api.Games
                     throw new InvalidOperationException($"{nameof(ratios)} not fullfill {HoursOfDay} hours.");
                 }
 
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetBotRatiosChangedModel(gameEntity.HoursMaxBot.Any() ? gameEntity.HoursMaxBot : new double[24], ratios);
-                sentryClient.CaptureChangedSettings(name, "Bot Ratios", " (GMT-4)", changedSettings);
+                var gameEntities = await repository.FilterByAsync(x => otherGameIdsInGroup.Contains(x.GameId) || x.Name == name);
+                var gameIds = gameEntities.Select(x => x.GameId);
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
 
-                var update = Builders<GameConfigEntity>.Update.Set(field => field.HoursMaxBot, ratios);
+                foreach (var gameEntity in gameEntities)
+                {
+                    var changedSettings = SettingHelper.GetBotRatiosChangedModel(gameEntity.HoursMaxBot.Any() ? gameEntity.HoursMaxBot : new double[24], ratios);
+                    sentryClient.CaptureChangedSettings(name, "Bot Ratios", " (GMT-4)", changedSettings);
+                    var update = Builders<GameConfigEntity>.Update.Set(field => field.HoursMaxBot, ratios);
+                    var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId); ;
+                    writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
+                }
 
-                await repository.UpdateAsync(config => config.Name == name, update);
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
 
                 return true;
             }

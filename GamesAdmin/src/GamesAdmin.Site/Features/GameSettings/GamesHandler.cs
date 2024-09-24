@@ -401,7 +401,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         => gameService.IsExistName(request.Name);
 
         public Task<bool> Handle(UpdateBotRatioRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateBotRatios(request.Name, request.BotRatios);
+        => gameService.UpdateBotRatios(request);
 
         public async Task<StatusViewModel> Handle(GetStatusRequest request, CancellationToken cancellationToken)
         {

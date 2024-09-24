@@ -75,14 +75,14 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost, Audit]
         [Route("{name}")]
-        public async Task<IActionResult> UpdateBotRatio(string name, [Bind] List<BotRatioItemViewModel> botRatioItems)
+        public async Task<IActionResult> UpdateBotRatio(string name, List<BotRatioItemViewModel> botRatioItems, IEnumerable<int> otherGameIdsInGroup)
         {
             var botRatios = botRatioItems
                 .OrderBy(item => item.UtcHour)
                 .Select(item => item.BotRatio / 100)
                 .ToArray();
 
-            await mediator.Send(new UpdateBotRatioRequest(name, botRatios));
+            await mediator.Send(new UpdateBotRatioRequest(name, botRatios, otherGameIdsInGroup));
 
             TempData["isSuccess"] = true;
 
@@ -199,10 +199,12 @@ namespace GamesAdmin.Site.Features.GameSettings
             try
             {
                 await mediator.Send(new UpdateBetLimitRequest(
+                    viewModel.GameId,
                     viewModel.Name,
                     viewModel.Type,
-                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices)
-            ));
+                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices),
+                    viewModel.OtherGameIdsInGroup
+                ));
 
                 return Json(true);
             }
