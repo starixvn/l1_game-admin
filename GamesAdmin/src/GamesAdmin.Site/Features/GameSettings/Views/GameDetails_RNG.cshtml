@@ -82,13 +82,18 @@
                     <label class="icon-add" style="margin-bottom: -10px;" onclick="gameStatus.addMultiplierItem()"></label>
                     @Html.EditorFor(x => x.OddsMultipliers.Values)
                 </div>
+
+
             }
 
-            <div class="form-group">
-                <label asp-for="MaxWinPerRound" class="control-label max-win-per-round-label"></label>
-                <input asp-for="MaxWinPerRound" type="number" class="form-control max-win-per-round" />
-                <label> x Max Bet</label>
-            </div>
+            @if (Game.BaccaratXGames.Any(x => x.Value == Model.Name))
+            {
+                <div class="form-group">
+                    <label asp-for="MaxWinPerRound" class="control-label max-win-per-round-label">Max Win Per Round</label>
+                    <input asp-for="MaxWinPerRound" type="number" class="form-control max-win-per-round" />
+                    <label> x Max Bet</label>
+                </div>
+            }
 
             @if (Model.Type == GameType.SlotRNG)
             {

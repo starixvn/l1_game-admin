@@ -309,7 +309,7 @@ namespace GamesAdmin.Core.Enumeration
             return normalGame.Concat(gameSettings);
         }
 
-        public static IEnumerable<Game> BaccaratGames => new Game[] 
+        public static IEnumerable<Game> BaccaratXGames => new Game[] 
         { 
             Bac81, Bac82, Bac83, Bac84, Bac85, Bac86, Bac87, Bac88, Bac89, Bac90, Bac91, Bac92, Bac97, Bac98, Bac100, Bac101
         };
