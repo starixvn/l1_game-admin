@@ -14,6 +14,7 @@ using GamesAdmin.Site.Features.CurrencyGroupGames.Requests;
 using GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels;
 using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.GameGroupManagement;
+using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Partners;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -32,9 +33,12 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         private readonly IPartnerService partnerService;
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly IGameGroupManagementApi gameGroupManagementApi;
+        private readonly IGameSettingService gameSettingService;
+
 
         public CurrencyGroupGameHandler(ICurrencyGroupGameService currencyGroupGameService, ICurrencyGroupService currencyGroupService, IChipService chipService,
-            IMapper mapper, IPartnerService partnerService, IGeneralGameSettingService generalGameSettingService, IGameGroupManagementApi gameGroupManagementApi)
+            IMapper mapper, IPartnerService partnerService, IGeneralGameSettingService generalGameSettingService, IGameGroupManagementApi gameGroupManagementApi,
+            IGameSettingService gameSettingService)
         {
             this.currencyGroupGameService = currencyGroupGameService;
             this.currencyGroupService = currencyGroupService;
@@ -43,6 +47,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             this.partnerService = partnerService;
             this.generalGameSettingService = generalGameSettingService;
             this.gameGroupManagementApi = gameGroupManagementApi;
+            this.gameSettingService = gameSettingService;
         }
 
         public async Task<EditViewModel> Handle(GetOneRequest request, CancellationToken cancellationToken)
@@ -78,7 +83,6 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         public async Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
         {
             var result = new IndexViewModel();
-            var gameId = (int)Game.FromGameName(request.GameName).GameId;
 
             var currencyGroups = (await currencyGroupService.GetByPartner(request.PartnerId, group => group.Enabled)).ToList();
             var partners = await partnerService.GetAll();
@@ -97,10 +101,11 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             result.PartnerName = request.PartnerName;
             result.GroupSelectList = currencyGroups.Select(group => new SelectListItem(group.Name, group.Id)).ToList();
 
-            var gameGroup = await gameGroupManagementApi.GetByGameId(gameId);
+            var gameConfigs = await gameSettingService.GetByName(request.GameName);
+            var gameGroup = await gameGroupManagementApi.GetByGameId(gameConfigs.Info.GameId);
             if (gameGroup != null)
             {
-                result.OtherGameIdsInGroup = gameGroup.GameIds.Where(x => x != gameId);
+                result.OtherGameIdsInGroup = gameGroup.GameIds.Where(x => x != gameConfigs.Info.GameId);
                 result.OtherGamesInGroup = result.OtherGameIdsInGroup.
                     Select(x => new SelectListItem(Game.FromGameId((GameId)x).DisplayName, x.ToString()));
             }
