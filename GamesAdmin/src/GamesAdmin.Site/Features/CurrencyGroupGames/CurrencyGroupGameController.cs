@@ -27,7 +27,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         [HttpGet]
         public async Task<IActionResult> Index(string partnerId, string partnerName, string gameName, GameType gameType)
         {
-            var viewModel = await mediator.Send(new IndexRequest(partnerId, partnerName));
+            var viewModel = await mediator.Send(new IndexRequest(partnerId, partnerName, gameName));
             viewModel.GameName = gameName;
             viewModel.GameType = gameType;
 

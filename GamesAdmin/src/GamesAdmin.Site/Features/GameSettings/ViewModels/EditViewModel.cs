@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features._Shared;
@@ -21,6 +22,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         };
 
         public string Id { get; set; }
+        public int GameId { get; set; }
 
         public string Name { get; set; }
 
@@ -89,6 +91,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public int MaxWinPerRound { get; set; }
 
         public bool ApplyMultiplier { get; set; }
+        public IEnumerable<int> OtherGameIdsInGroup { get; set; }
+        public IEnumerable<SelectListItem> OtherGamesInGroup { get; set; }
     }
 
     public class BotRatioItemViewModel

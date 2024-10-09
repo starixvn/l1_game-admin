@@ -9,8 +9,8 @@ namespace GamesAdmin.Api.VoidGame.Models
     }
 
     public class GameTicketRecord<T1, T2> : IGameTicket
-        where T1 : BaseBetEntity
-        where T2 : BaseBetEntity
+        where T1 : class
+        where T2 : class
     {
         public GameTicketRecord(T1 oneRecord, IList<T2> betRecords, bool isFromArchive)
         {
@@ -29,7 +29,7 @@ namespace GamesAdmin.Api.VoidGame.Models
     }
 
     public class GameTicketRecord<T1> : IGameTicket
-        where T1 : BaseBetEntity
+        where T1 : class
     {
         public GameTicketRecord(IList<T1> betRecords, bool isFromArchive)
         {

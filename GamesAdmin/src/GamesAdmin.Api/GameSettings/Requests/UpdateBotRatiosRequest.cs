@@ -1,17 +1,21 @@
-﻿using MediatR;
+﻿using System.Collections.Generic;
+using MediatR;
 
 namespace GamesAdmin.Api.GameSettings.Requests
 {
     public class UpdateBotRatiosRequest : IRequest<bool>
     {
-        public UpdateBotRatiosRequest(string name, double[] ratios)
+        public UpdateBotRatiosRequest(string name, double[] botRatios, IEnumerable<int> otherGameIdsInGroup)
         {
             Name = name;
-            Ratios = ratios;
+            BotRatios = botRatios;
+            OtherGameIdsInGroup = otherGameIdsInGroup;
         }
 
         public string Name { get; }
 
-        public double[] Ratios { get; }
+        public double[] BotRatios { get; }
+
+        public IEnumerable<int> OtherGameIdsInGroup { get; }
     }
 }

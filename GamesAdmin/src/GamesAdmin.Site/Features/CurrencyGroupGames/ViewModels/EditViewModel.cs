@@ -62,5 +62,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
         {
             return CoinValues[index] != 0 && !CopySettingGame;
         }
+
+        public IEnumerable<int> OtherGameIdsInGroup { get; set; }
     }
 }

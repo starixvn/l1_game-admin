@@ -38,8 +38,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Get("/game_server/online_users/{game}")]
         Task<OnlineUsers> GetOnlineUsers(string game = null);
 
-        [Post("/game_settings/{name}/update_bot_ratios")]
-        Task<bool> UpdateBotRatios(string name, double[] ratios);
+        [Post("/game_settings/update_bot_ratios")]
+        Task<bool> UpdateBotRatios([Body] UpdateBotRatioRequest request);
 
         [Post("/game_settings/update_bet_limit")]
         Task<bool> UpdateBetLimit([Body] UpdateBetLimitRequest request);

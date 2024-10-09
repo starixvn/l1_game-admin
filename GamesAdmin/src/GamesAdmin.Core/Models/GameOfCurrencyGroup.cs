@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GamesAdmin.Core.Models.GameConfigs;
 
 namespace GamesAdmin.Core.Models
@@ -20,7 +21,8 @@ namespace GamesAdmin.Core.Models
             int multiplier = 0,
             double maxWinPerRound = 0,
             double? defaultCoinValue = null,
-            double? defaultBetLevel = null)
+            double? defaultBetLevel = null,
+            IEnumerable<int> otherGameIdsInGroup = null)
         {
             GroupId = groupId;
             GameId = gameId;
@@ -37,8 +39,9 @@ namespace GamesAdmin.Core.Models
             MaxWinPerRound = maxWinPerRound;
             DefaultCoinValue = defaultCoinValue;
             DefaultBetLevel = defaultBetLevel;
+            OtherGameIdsInGroup = otherGameIdsInGroup ?? Enumerable.Empty<int>();
         }
-
+            
         public string GroupId { get; }
 
         public int GameId { get; set; }
@@ -64,5 +67,7 @@ namespace GamesAdmin.Core.Models
         public double? DefaultBetLevel { get; set; }
         public int Multiplier { get; }
         public double MaxWinPerRound { get; }
+
+        public IEnumerable<int> OtherGameIdsInGroup { get; }
     }
 }

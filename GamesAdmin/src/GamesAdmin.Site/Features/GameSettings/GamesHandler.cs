@@ -14,6 +14,7 @@ using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
 using GamesAdmin.Site.Features.CurrencyGroups;
+using GamesAdmin.Site.Features.GameGroupManagement;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Site.Features.GameUsers;
@@ -63,6 +64,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly ISystemSettings systemSettings;
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly GamesSettings gamesSettings;
+        private readonly IGameGroupManagementApi gameGroupManagementApi;
 
         public GamesHandler(
             IMapper mapper,
@@ -72,7 +74,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             ICurrencyGroupService currencyGroupService,
             ICurrencyGroupGameService currencyGroupGameService,
             ISystemSettings systemSettings,
-            IGeneralGameSettingService generalGameSettingService)
+            IGeneralGameSettingService generalGameSettingService,
+            IGameGroupManagementApi gameGroupManagementApi)
         {
             this.mapper = mapper;
             this.gameService = gameService;
@@ -83,6 +86,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.systemSettings = systemSettings;
             this.generalGameSettingService = generalGameSettingService;
             this.gamesSettings = GamesSettings.GetGamesSettings();
+            this.gameGroupManagementApi = gameGroupManagementApi;
         }
 
         public async Task<IEnumerable<SelectListItem>> Handle(GetGamesByTypeRequest request, CancellationToken cancellationToken)
@@ -138,6 +142,13 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.SlotRNGConfig = game.SlotRNGConfig;
                 viewModel.CrashConfig = game.CrashConfig;
                 viewModel.OddsMultipliers = game.OddsMultipliers;
+
+                var gameGroup = await gameGroupManagementApi.GetByGameId(game.Info.GameId);
+                if (gameGroup != null)
+                {
+                    viewModel.OtherGameIdsInGroup = gameGroup.GameIds.Where(x => x != game.Info.GameId);
+                    viewModel.OtherGamesInGroup = viewModel.OtherGameIdsInGroup.Select(x => new SelectListItem(Game.FromGameId((GameId)x).DisplayName, x.ToString()));
+                }
 
                 switch (game.Info.Type)
                 {
@@ -366,7 +377,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     return gameService.UpdateCrashConfig(new UpdateCrashConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.CrashConfig));
 
                 default:
-                    return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers));
+                    return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers, request.OtherGameIdsInGroup));
             }
         }
 
@@ -390,7 +401,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         => gameService.IsExistName(request.Name);
 
         public Task<bool> Handle(UpdateBotRatioRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateBotRatios(request.Name, request.BotRatios);
+        => gameService.UpdateBotRatios(request);
 
         public async Task<StatusViewModel> Handle(GetStatusRequest request, CancellationToken cancellationToken)
         {

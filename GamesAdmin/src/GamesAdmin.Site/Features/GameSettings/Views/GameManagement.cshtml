@@ -11,6 +11,7 @@
 }
 
 @section Styles {
+    <link href="~/lib/fanex.multiselect/fanex.multiSelect.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/data-tables/datatables.min.css" rel="stylesheet" />
     <link href="~/css/game-management.min.css" rel="stylesheet" asp-append-version="true" />
 }
@@ -265,6 +266,16 @@
                     <div class="modal-body">
                         <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
                         <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
+                        <div class="form-group row" id="gameids-wrapper">
+                            <div class="col-3">
+                                <label class="control-label" for="">Same setting games</label>
+                            </div>
+                            <div class="col-4">
+                                <select hidden multiple class="form-control" id="bot-otherGameIdsInGroup" name="OtherGameIdsInGroup">
+                                </select>
+                                <select class="form-control" id="bot-fanexGameIds"></select>
+                            </div>
+                        </div>
                         <p>Total bots: <strong id="total_bots"></strong></p>
                         <input type="hidden" id="total_bots_field" />
                         <div class="row options">
@@ -452,6 +463,7 @@
 @section Scripts{
     <environment include="Development">
         <script src="~/lib/data-tables/datatables.js"></script>
+        <script type="text/javascript" src="~/lib/fanex.multiselect/fanex.multiSelect.js"></script>
         <script src="~/js/game-constants.js" asp-append-version="true"></script>
         <script src="~/js/game-status.js" asp-append-version="true"></script>
         <script src="~/js/currency-group-game.js" asp-append-version="true"></script>

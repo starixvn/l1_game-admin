@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Chips;
 using GamesAdmin.Site.Features._Shared;
@@ -25,5 +26,9 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
         public List<SelectListItem> AllCurrencyGroupList { get; set; }
 
         public bool IsCopySetting { get; set; } = false;
+
+        public IEnumerable<int> OtherGameIdsInGroup { get; set; } = Enumerable.Empty<int>();
+
+        public IEnumerable<SelectListItem> OtherGamesInGroup { get; set; }
     }
 }

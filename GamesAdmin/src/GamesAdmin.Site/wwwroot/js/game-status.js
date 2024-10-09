@@ -129,6 +129,7 @@
 
                     $oddsMultiplierTemplate = $("#odds-multipliers .multiplier-item").first();
                     oddsMultiplierIndex = $("#odds-multipliers .multiplier-item").length;
+                    gameStatus.initFanexSelect("#OtherGameIdsInGroup", "#fanexGameIds");
 
                     $('#gameModal').modal('show');
 
@@ -147,6 +148,37 @@
             });
         },
 
+        getFanexSelectData: (selectElement) => {
+            var data = [];
+            for (let option of selectElement.options) {
+                data.push({
+                    id: option.value,
+                    value: option.value,
+                    text: option.text,
+                    enable: true,
+                    checked: option.selected
+                });
+            }
+            return data;
+        },
+
+        initFanexSelect: function (selector, displaySelector) {
+            var $element = $(selector);
+            if ($element[0]) {
+                var selections = gameStatus.getFanexSelectData($element[0]);
+
+                $(displaySelector).fanexMultiSelect({
+                    listData: selections,
+                    showFilter: true,
+                    onLeave: function () {
+                        var value = $(displaySelector).fanexMultiSelect('getItems', true);
+
+                        $element.val(value);
+                    },
+                });
+            }
+        },
+
         showPartnerSetting: function (partnerId, partnerName, gameName, displayName, gameType) {
             $.ajax({
                 method: "GET",
@@ -161,6 +193,8 @@
                 if (content) {
                     $('#partnerSettingContent').html(content);
                     $('#gameName').html(displayName);
+                    gameStatus.initFanexSelect("#OtherGameIdsInGroup", "#fanexGameIds");
+
                     $('#partnerSettingModal').modal('show');
                     currencyGroupGame.loadDefaultSetting();
                 }
@@ -187,10 +221,25 @@
                 method: "GET",
                 url: "/botratio/" + gameName
             }).done(function (result) {
+                var $gameIdSelect = $("#bot-otherGameIdsInGroup", wrapper);
+                if (result.otherGameIdsInGroup) {
+                    $gameIdSelect.empty();
+                    for (var game of result.otherGamesInGroup) {
+                        $gameIdSelect[0].add(new Option(game.text, game.value, true, true),);
+                    }
+                    $gameIdSelect.val(result.otherGameIdsInGroup);
+                    gameStatus.initFanexSelect($gameIdSelect, $("#bot-fanexGameIds", wrapper));
+                    $("#gameids-wrapper", wrapper).show();
+                } else {
+                    $gameIdSelect.val([]);
+                    $("#gameids-wrapper", wrapper).hide();
+                }
+
                 const botRatioItems = result.botRatioItems;
 
                 for (let i = 0; i < 24; i++) {
                     const setting = wrapper.find(`#bot_setting_${i}`);
+
 
                     wrapper.find('#total_bots').html(result.botCount);
                     wrapper.find('#total_bots_field').val(result.botCount);
@@ -286,7 +335,7 @@
             isValid && $.ajax({
                 method: "POST",
                 url: currentGameName,
-                data: { BotRatioItems: data }
+                data: { BotRatioItems: data, otherGameIdsInGroup: $("#bot-otherGameIdsInGroup", modal).val() }
             }).done(function (result) {
                 if (result) {
                     modal.find('#successMsg').show();
@@ -357,8 +406,8 @@
             event.preventDefault();
             this.setResultControl("ChineseBlackjackResult");
         },
-        setResultControlBaccaratX: function (action, gameName, displayName) {
-            this.setSlotResultControl("BaccaratXResult", gameName, displayName)
+        setResultControlBaccaratX: function (gameName, displayName, enableMultiplier) {
+            window.open(adminMonitoringUrl + "/ResultMonitor/BaccaratXResult" + "?gameConfigName=" + gameName + "&displayName=" + displayName + "&enableMultiplier=" + enableMultiplier + "&token=" + jwtAdminUserToken, "_blank", "width=1020,height=765");
         },
         setSlotResultControl: function (action, gameName, displayName) {
             window.open(adminMonitoringUrl + "/ResultMonitor/" + action + "?gameConfigName=" + gameName + "&displayName=" + displayName + "&token=" + jwtAdminUserToken, "_blank", "width=1020,height=765");
@@ -951,7 +1000,7 @@
         removeMultiplierItem: function (event) {
             $(event.target).parent().remove();
         },
-        updateOddsMultipliersIndex: function(){
+        updateOddsMultipliersIndex: function () {
             var $multiplierItems = $(".multiplier-item", "#odds-multipliers");
 
             for (let index = 0; index < $multiplierItems.length; index++) {
@@ -992,6 +1041,14 @@ $(document).ready(function () {
             ]
         });
     }
+
+    $("#gameModal").on("hidden.bs.modal", function () {
+        $("#gamedetails").empty();
+    });
+
+    $("#partnerSettingModal").on("hidden.bs.modal", function () {
+        $("#partnerSettingContent").empty();
+    });
 
 
     $(".bet-monitor").on("click", function (event) {

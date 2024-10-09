@@ -12,6 +12,7 @@ using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.Currencies;
 using GamesAdmin.Api.CurrencyGroupGames;
 using GamesAdmin.Api.CurrencyGroups;
+using GamesAdmin.Api.GameGroupManagement;
 using GamesAdmin.Api.GameManagementApi;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers;
@@ -80,6 +81,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IRoundWatcherService, RoundWatcherService>();
             services.AddScoped<IGameServerService, GameServerService>();
             services.AddScoped<IStatusCheckerService, StatusCheckerService>();
+            services.AddScoped<IGameGroupService, GameGroupService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddSingleton(RestService.For<IUserServiceApi>(appSettings.GameServers.UserService.Api, refitSettings));

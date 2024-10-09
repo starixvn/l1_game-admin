@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<OnlineUsers> GetOnlineUsers(int game = 0);
 
-        Task<bool> UpdateBotRatios(string name, double[] ratios);
+        Task<bool> UpdateBotRatios(UpdateBotRatioRequest request);
 
         Task<bool> UpdateBetLimit(UpdateBetLimitRequest request);
 
@@ -160,8 +160,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             return await gameApi.GetOnlineUsers(selectGame);
         }
 
-        public Task<bool> UpdateBotRatios(string name, double[] ratios)
-       => gameApi.UpdateBotRatios(name, ratios);
+        public Task<bool> UpdateBotRatios(UpdateBotRatioRequest request)
+       => gameApi.UpdateBotRatios(request);
 
         public Task<bool> UpdateBetLimit(UpdateBetLimitRequest request)
         => gameApi.UpdateBetLimit(request);

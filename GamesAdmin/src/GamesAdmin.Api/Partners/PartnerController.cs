@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
-using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Api.Partners.Requests;
+using GamesAdmin.Core.Models.Partners;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,8 +43,8 @@ namespace GamesAdmin.Api.Partners
             => mediator.Send(new GetConfigRequest(partnerId, type));
 
         [HttpPost("site_exclusion")]
-        public Task<bool> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
-            => mediator.Send(new UpdateSiteExclusionRequest(partnerId, gameId, exclusionSites));
+        public Task<bool> UpdateSiteExclusion([FromBody] UpdateSiteExclusionRequest request)
+            => mediator.Send(request);
 
         [HttpPost("super_players")]
         public Task<bool> UpdateSuperPlayers(string partnerId, string[] superPlayers)

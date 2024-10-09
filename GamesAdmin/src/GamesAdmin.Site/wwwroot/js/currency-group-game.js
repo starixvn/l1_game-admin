@@ -119,7 +119,8 @@
                 data: {
                     gameId,
                     partnerId,
-                    exclusionSites
+                    exclusionSites,
+                    otherGameIdsInGroup: $("#OtherGameIdsInGroup").val()
                 }
             }).done(function (result) {
                 if (result) {

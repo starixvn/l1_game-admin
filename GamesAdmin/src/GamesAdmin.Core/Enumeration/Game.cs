@@ -80,6 +80,22 @@ namespace GamesAdmin.Core.Enumeration
         public const string SeDie3Value = "sedie3";
         public const string SicBallValue = "sicball";
         public const string KaraKrusValue = "karakrus";
+        public const string Bac82Value = "bac82";
+        public const string Bac83Value = "bac83";
+        public const string Bac84Value = "bac84";
+        public const string Bac85Value = "bac85";
+        public const string Bac86Value = "bac86";
+        public const string Bac87Value = "bac87";
+        public const string Bac88Value = "bac88";
+        public const string Bac89Value = "bac89";
+        public const string Bac90Value = "bac90";
+        public const string Bac91Value = "bac91";
+        public const string Bac92Value = "bac92";
+        public const string Bac97Value = "bac97";
+        public const string Bac98Value = "bac98";
+        public const string Bac100Value = "bac100";
+        public const string Bac101Value = "bac101";
+        public const string Bac102Value = "bac102";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -144,7 +160,23 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game ChineseBlackjack = new Game(ChineseBlackjackValue, "Chinese Blackjack", GameId.ChineseBlackjack);
         public static readonly Game FootballDice = new Game(FootballDiceValue, "Football Dice", GameId.FootballDice);
         public static readonly Game FootballSlot = new Game(FootballSlotValue, "Football Slot", GameId.FootballSlot);
-        public static readonly Game Bac81 = new Game(Bac81Value, "Bac 81", GameId.Bac81);
+        public static readonly Game Bac81 = new Game(Bac81Value, "Lucky Baccarat", GameId.Bac81);
+        public static readonly Game Bac82 = new Game(Bac82Value, "Lucky Baccarat 2", GameId.Bac82);
+        public static readonly Game Bac83 = new Game(Bac83Value, "Lucky Baccarat 3", GameId.Bac83);
+        public static readonly Game Bac84 = new Game(Bac84Value, "Baccarat 2", GameId.Bac84);
+        public static readonly Game Bac85 = new Game(Bac85Value, "Baccarat 3", GameId.Bac85);
+        public static readonly Game Bac86 = new Game(Bac86Value, "Baccarat 4", GameId.Bac86);
+        public static readonly Game Bac87 = new Game(Bac87Value, "Baccarat 5", GameId.Bac87);
+        public static readonly Game Bac88 = new Game(Bac88Value, "Lucky Baccarat 4", GameId.Bac88);
+        public static readonly Game Bac89 = new Game(Bac89Value, "Lucky Baccarat 5", GameId.Bac89);
+        public static readonly Game Bac90 = new Game(Bac90Value, "Baccarat 6", GameId.Bac90);
+        public static readonly Game Bac91 = new Game(Bac91Value, "Baccarat 7", GameId.Bac91);
+        public static readonly Game Bac92 = new Game(Bac92Value, "Baccarat 8", GameId.Bac92);
+        public static readonly Game Bac97 = new Game(Bac97Value, "Baccarat 9", GameId.Bac97);
+        public static readonly Game Bac98 = new Game(Bac98Value, "Speed Baccarat", GameId.Bac98);
+        public static readonly Game Bac100 = new Game(Bac100Value, "Speed Baccarat 2", GameId.Bac100);
+        public static readonly Game Bac101 = new Game(Bac101Value, "Speed Baccarat 3", GameId.Bac101);
+        public static readonly Game Bac102 = new Game(Bac102Value, "Baccarat Lobby", GameId.Bac102);
 
         public Game()
         {
@@ -257,11 +289,32 @@ namespace GamesAdmin.Core.Enumeration
                 ColorGame,
                 BandarQiuQiu,
                 FootballDice,
-            	FootballSlot,
-                Bac81
+                FootballSlot,
+                Bac81,
+                Bac82,
+                Bac83,
+                Bac84,
+                Bac85,
+                Bac86,
+                Bac87,
+                Bac88,
+                Bac89,
+                Bac90,
+                Bac91,
+                Bac92,
+                Bac97,
+                Bac98,
+                Bac100,
+                Bac101,
             };
+
             var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
             return normalGame.Concat(gameSettings);
         }
+
+        public static IEnumerable<Game> BaccaratXGames => new Game[] 
+        { 
+            Bac81, Bac82, Bac83, Bac84, Bac85, Bac86, Bac87, Bac88, Bac89, Bac90, Bac91, Bac92, Bac97, Bac98, Bac100, Bac101
+        };
     }
 }

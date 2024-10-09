@@ -10,6 +10,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Currencies;
+using Microsoft.CodeAnalysis;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Sentry;
@@ -117,18 +118,21 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         {
             try
             {
-                var gameConfig = await currencyGroupGameRepository.FindOneAsync(entity => entity.GameId == currencyGroupGame.GameId && entity.GroupId == ObjectId.Parse(currencyGroupGame.GroupId));
+                var gameIds = new List<int>(currencyGroupGame.OtherGameIdsInGroup) { currencyGroupGame.GameId };
+                var currencyGroupGames = (await currencyGroupGameRepository.FilterByAsync(
+                    entity => gameIds.Contains(entity.GameId) && entity.GroupId == ObjectId.Parse(currencyGroupGame.GroupId))).ToList();
+                var writes = new List<WriteModel<CurrencyGroupGameEntity>>();
 
-                if (gameConfig == null)
+                foreach (var gameId in gameIds)
                 {
-                    var entity = mapper.Map<CurrencyGroupGameEntity>(currencyGroupGame);
-                    await currencyGroupGameRepository.InsertOneAsync(entity);
-                }
-                else
-                {
-                    var group = await currencyGroupRepository.FindByIdAsync(currencyGroupGame.GroupId);
-                    var changedSettings = SettingHelper.GetCurrencyGroupGameChangedModel(gameConfig, currencyGroupGame);
-                    sentryClient.CaptureChangedSettings(currencyGroupGame.GameName, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
+                    var gameConfig = currencyGroupGames.FirstOrDefault(x => x.GameId == gameId);
+
+                    if (gameConfig != null)
+                    {
+                        var group = await currencyGroupRepository.FindByIdAsync(gameConfig.GroupId.ToString());
+                        var changedSettings = SettingHelper.GetCurrencyGroupGameChangedModel(gameConfig, currencyGroupGame);
+                        sentryClient.CaptureChangedSettings(currencyGroupGame.GameName, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
+                    }
 
                     var sortedCoinValues = currencyGroupGame.CoinValues.OrderBy(x => x).ToArray();
                     var sortedBetLevels = currencyGroupGame.BetLevels.OrderBy(x => x).ToArray();
@@ -145,15 +149,16 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                         .Set(field => field.BetLevels, currencyGroupGame.BetLevels.OrderBy(x => x).ToArray() ?? new double[10])
                         .Set(field => field.MaxWinPerRound, currencyGroupGame.MaxWinPerRound);
 
-                    if (gameConfig.BetLevels == null)
-                    {
-                        update.Set(field => field.BetLevels, currencyGroupGame.BetLevels);
-                    }
+                    var filterBuilder = Builders<CurrencyGroupGameEntity>.Filter;
+                    var filterDefinition = filterBuilder.And(
+                        filterBuilder.Eq(x => x.GroupId, ObjectId.Parse(currencyGroupGame.GroupId)),
+                        filterBuilder.Eq(x => x.GameId, gameId),
+                        filterBuilder.Eq(x => x.GameName, gameConfig?.GameName ?? Game.FromGameId((GameId)gameId).Value));
 
-                    await currencyGroupGameRepository.UpdateAsync(entity => entity.GroupId == ObjectId.Parse(currencyGroupGame.GroupId)
-                        && entity.GameId == currencyGroupGame.GameId, update);
+                    writes.Add(new UpdateOneModel<CurrencyGroupGameEntity>(filterDefinition, update) { IsUpsert = true });
                 }
 
+                await currencyGroupGameRepository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
                 return true;
             }
             catch (Exception ex)

@@ -78,21 +78,25 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.KaraKrus, new GameTicketCollection("karakrus_bets", "karakrus_betlogs") },
            };
 
-        public static GameTicketCollection GetCollections(int gameTypeId, GameType type = GameType.AutoRNG, string displayName = "", bool isCheckBetLog = false)
+        public static GameTicketCollection GetCollections(int gameTypeId, GameType type = GameType.AutoRNG, string gameName = "", bool isCheckBetLog = false)
         {
-            if (GameType.Crash == type)
+            var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
+            if (gameCollections.ContainsKey(gameId))
             {
-                var betCollection = NamingConverter.BetCollection(displayName);
-                var betLogCollection = NamingConverter.BetLogCollection(displayName);
+                return gameCollections[gameId];
+            }
+
+            if (!string.IsNullOrWhiteSpace(gameName))
+            {
+                var betCollection = NamingConverter.BetCollection(gameName);
+                var betLogCollection = NamingConverter.BetLogCollection(gameName);
                 var primaryCollection = isCheckBetLog ? betCollection : string.Empty;
                 var secondaryCollection = isCheckBetLog ? betLogCollection : betCollection;
 
                 return new GameTicketCollection(primaryCollection, secondaryCollection);
             }
 
-            var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
-
-            return gameCollections.TryGetValue(gameId, out var collection) ? collection : default;
+            return default;
         }
     }
 }

@@ -37,6 +37,7 @@
     <input value="@JsonConvert.SerializeObject(Model.SlotsConfig.Icons)" id="symbol-odds" hidden />
 
     <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
+        <input hidden asp-for="GameId" />
 
         <div id="general">
             <div class="form-group row">

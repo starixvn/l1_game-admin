@@ -188,22 +188,7 @@ namespace GamesAdmin.Api.GameServers
             return gameType switch
             {
                 Game.KenoProMaxValue => "keno",
-                Game.BaccaratValue => "baccarat",
-                Game.RouletteValue => Game.RouletteValue,
-                Game.KenoMatch1Value => Game.KenoMatch1Value,
-                Game.KenoMatch2Value => Game.KenoMatch2Value,
-                Game.KenoPower1Value => Game.KenoPower1Value,
-                Game.KenoPower2Value => Game.KenoPower2Value,
-                Game.UnbalancedBigSmall1Value => Game.UnbalancedBigSmall1Value,
-                Game.UnbalancedBigSmall2Value => Game.UnbalancedBigSmall2Value,
-                Game.UnbalancedBigSmall3Value => Game.UnbalancedBigSmall3Value,
-                Game.UnbalancedBigSmall4Value => Game.UnbalancedBigSmall4Value,
-                Game.MiniSeDieValue => Game.MiniSeDieValue,
-                Game.MiniSeDie2Value => Game.MiniSeDie2Value,
-                Game.MiniSeDie3Value => Game.MiniSeDie3Value,
-                Game.MiniSeDie4Value => Game.MiniSeDie4Value,
-                Game.Bac81Value => Game.Bac81Value,
-                _ => string.Empty,
+                _ => gameType,
             };
         }
 

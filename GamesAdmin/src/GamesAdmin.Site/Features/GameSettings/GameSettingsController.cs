@@ -75,14 +75,14 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost, Audit]
         [Route("{name}")]
-        public async Task<IActionResult> UpdateBotRatio(string name, [Bind] List<BotRatioItemViewModel> botRatioItems)
+        public async Task<IActionResult> UpdateBotRatio(string name, List<BotRatioItemViewModel> botRatioItems, IEnumerable<int> otherGameIdsInGroup)
         {
             var botRatios = botRatioItems
                 .OrderBy(item => item.UtcHour)
                 .Select(item => item.BotRatio / 100)
                 .ToArray();
 
-            await mediator.Send(new UpdateBotRatioRequest(name, botRatios));
+            await mediator.Send(new UpdateBotRatioRequest(name, botRatios, otherGameIdsInGroup));
 
             TempData["isSuccess"] = true;
 
@@ -199,10 +199,12 @@ namespace GamesAdmin.Site.Features.GameSettings
             try
             {
                 await mediator.Send(new UpdateBetLimitRequest(
+                    viewModel.GameId,
                     viewModel.Name,
                     viewModel.Type,
-                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices)
-            ));
+                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices),
+                    viewModel.OtherGameIdsInGroup
+                ));
 
                 return Json(true);
             }
@@ -225,7 +227,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                       viewModel.Type,
                       viewModel.PayoutViewModel?.Odds,
                       viewModel.PayoutViewModel?.Icons,
-                      viewModel.CascadingSlotsConfig));
+                      viewModel.CascadingSlotsConfig,
+                      viewModel.OtherGameIdsInGroup));
 
                 return Json(updateResult);
             }
@@ -311,14 +314,15 @@ namespace GamesAdmin.Site.Features.GameSettings
                 }
 
                 var request = new UpdateRequest(
-                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode, string.Empty, 0, null, viewModel.MaxWinPerRound),
+                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode, string.Empty, viewModel.GameId, null, viewModel.MaxWinPerRound),
                     new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet, null, viewModel.SmartBotEnabled, viewModel.SmartBotGroupRatio.ConvertPercentValue()),
                     new EnableSetting(viewModel.Enabled, viewModel.DelayStartTime),
                     slotsConfig,
                     cascadingSlotsConfig,
                     slotRNGConfig,
                     crashConfig,
-                    viewModel.OddsMultipliers);
+                    viewModel.OddsMultipliers,
+                    viewModel.OtherGameIdsInGroup);
 
                 await mediator.Send(request);
 

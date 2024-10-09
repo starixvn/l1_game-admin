@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
@@ -14,13 +15,15 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             GameType type,
             Dictionary<string, double> odds,
             Dictionary<string, Dictionary<string, double>> classicIcons,
-            CascadingSlotsConfig cascadingSlotsConfig)
+            CascadingSlotsConfig cascadingSlotsConfig,
+            IEnumerable<int> otherGameIdsInGroup)
         {
             Name = name;
             Type = type;
             Odds = odds;
             ClassicIcons = classicIcons;
             CascadingSlotsConfig = cascadingSlotsConfig;
+            OtherGameIdsInGroup = otherGameIdsInGroup ?? Enumerable.Empty<int>();
         }
 
         public string Name { get; set; }
@@ -32,5 +35,7 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public Dictionary<string, Dictionary<string, double>> ClassicIcons { get; set; }
 
         public CascadingSlotsConfig CascadingSlotsConfig { get; set; }
+
+        public IEnumerable<int> OtherGameIdsInGroup { get; set; }
     }
 }
