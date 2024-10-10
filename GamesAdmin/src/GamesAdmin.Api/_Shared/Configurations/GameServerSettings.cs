@@ -118,6 +118,8 @@
         public GameServerConfigs BaccaratX { get; set; }
         public GameServerConfigs SeDie3 { get; set; }
         public GameServerConfigs KaraKrus { get; set; }
+
+        public GameServerConfigs FootballCoinToss { get; set; }
     }
 
     public class GameServerConfigs
