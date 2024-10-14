@@ -85,6 +85,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.Bac81Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.SeDie3Value, typeof(ISeDie3OnlineUserApi) },
             { Game.KaraKrusValue, typeof(IKaraKrusOnlineUserApi) },
+            { Game.FootballCoinTossValue, typeof(IFootballCoinTossOnlineUserApi) },
             { Game.Bac82Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.Bac83Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.Bac84Value, typeof(IBaccaratXOnlineUserApi) },

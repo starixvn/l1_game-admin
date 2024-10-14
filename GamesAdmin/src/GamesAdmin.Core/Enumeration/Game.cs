@@ -80,6 +80,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string SeDie3Value = "sedie3";
         public const string SicBallValue = "sicball";
         public const string KaraKrusValue = "karakrus";
+        public const string FootballCoinTossValue = "footballcointoss";
         public const string Bac82Value = "bac82";
         public const string Bac83Value = "bac83";
         public const string Bac84Value = "bac84";
