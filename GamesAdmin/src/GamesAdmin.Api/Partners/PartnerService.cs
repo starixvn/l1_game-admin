@@ -151,6 +151,7 @@ namespace GamesAdmin.Api.Partners
                     .Set(field => field.ClubVersionUrl, partner.ClubVersionUrl)
                     .Set(field => field.MiniVersionUrl, partner.MiniVersionUrl)
                     .Set(field => field.MegaKenoUrl, partner.MegaKenoUrl)
+                    .Set(field => field.MobileDirectUrl, partner.MobileDirectUrl)
                     .Set(field => field.TestCurrencyUrl, partner.TestCurrencyUrl)
                     .Set(field => field.IsDisplayPlayerCurrency, partner.IsDisplayPlayerCurrency)
                     .Set(field => field.Alias, partner.Alias);

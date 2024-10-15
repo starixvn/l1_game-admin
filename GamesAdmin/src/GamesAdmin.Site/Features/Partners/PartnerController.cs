@@ -48,6 +48,7 @@ namespace GamesAdmin.Site.Features.Partners
                     addViewModel.MobiVersionUrl,
                     addViewModel.MiniVersionUrl,
                     addViewModel.MegaKenoUrl,
+                    addViewModel.MobileDirectUrl,
                     addViewModel.TestCurrencyUrl,
                     addViewModel.IsDisplayPlayerCurrency,
                     addViewModel.Alias)));
@@ -74,6 +75,7 @@ namespace GamesAdmin.Site.Features.Partners
                    viewModel.MobiVersionUrl,
                    viewModel.MiniVersionUrl,
                    viewModel.MegaKenoUrl,
+                   viewModel.MobileDirectUrl,
                    viewModel.TestCurrencyUrl,
                    viewModel.IsDisplayPlayerCurrency,
                    viewModel.Alias));
