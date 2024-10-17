@@ -89,6 +89,6 @@
         Bac100 = 100,
         Bac101 = 101,
         Bac102 = 102,
-        SevenUpSevenDown = 103,
+        SevenUpDown = 103,
     }
 }

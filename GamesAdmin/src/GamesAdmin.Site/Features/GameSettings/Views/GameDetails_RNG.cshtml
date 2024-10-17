@@ -1,7 +1,7 @@
 @using GamesAdmin.Core.Enumeration;
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
 @model EditViewModel;
-
+@inject Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine ViewEngine
 <div>
     <ul class="nav nav-custom" id="setting-tabs">
         <li class="nav-item">
@@ -56,34 +56,41 @@
                 <label asp-for="BotMaxBet" class="control-label"></label>
                 <input type="number" asp-for="BotMaxBet" class="form-control" />
             </div>
-
-            @if (Model.ApplyMultiplier)
-            {
-                <div class="form-group">
-                    <label asp-for="OddsMultipliers.ExtraFeePercentage" class="control-label"></label>
-                    <input type="number" asp-for="OddsMultipliers.ExtraFeePercentage" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label">Number of lucky cards</label>
-                    <div class="row mt-2">
-                        <label asp-for="OddsMultipliers.NumberOfCardsRange.Min" class="control-label col-1 mt-2">From</label>
-                        <input type="number" asp-for="OddsMultipliers.NumberOfCardsRange.Min" class="form-control col-2" />
-                        <div class="col-2"></div>
-                        <label asp-for="OddsMultipliers.NumberOfCardsRange.Max" class="control-label col-1 mt-2">To</label>
-                        <input type="number" asp-for="OddsMultipliers.NumberOfCardsRange.Max" class="form-control col-2" />
-                    </div>
-                </div>
-
-                <div class="form-group" id="odds-multipliers">
-                    <label class="control-label">Multiplier Values</label>
-                    <label class="icon-add" style="margin-bottom: -10px;" onclick="gameStatus.addMultiplierItem()"></label>
-                    @Html.EditorFor(x => x.OddsMultipliers.Values)
-                </div>
+            @{
+                var specificGameViewResult = ViewEngine.FindView(ViewContext, $"_GameDetails_{Model.GameId}", false);
+                if (specificGameViewResult.Success)
+                {
+                    <partial name="_GameDetails_@(Model.GameId)" for="@Model" />
+                }
             }
 
             @if (Game.BaccaratXGames.Any(x => x.Value == Model.Name))
             {
+                @if (Model.ApplyMultiplier)
+                {
+                    <div class="form-group">
+                        <label asp-for="OddsMultipliers.ExtraFeePercentage" class="control-label"></label>
+                        <input type="number" asp-for="OddsMultipliers.ExtraFeePercentage" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Number of lucky cards</label>
+                        <div class="row mt-2">
+                            <label asp-for="OddsMultipliers.NumberOfCardsRange.Min" class="control-label col-1 mt-2">From</label>
+                            <input type="number" asp-for="OddsMultipliers.NumberOfCardsRange.Min" class="form-control col-2" />
+                            <div class="col-2"></div>
+                            <label asp-for="OddsMultipliers.NumberOfCardsRange.Max" class="control-label col-1 mt-2">To</label>
+                            <input type="number" asp-for="OddsMultipliers.NumberOfCardsRange.Max" class="form-control col-2" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="odds-multipliers">
+                        <label class="control-label">Multiplier Values</label>
+                        <label class="icon-add" style="margin-bottom: -10px;" onclick="gameStatus.addMultiplierItem()"></label>
+                        @Html.EditorFor(x => x.OddsMultipliers.Values)
+                    </div>
+                }
+
                 <div class="form-group">
                     <label asp-for="MaxWinPerRound" class="control-label max-win-per-round-label">Max Win Per Round</label>
                     <input asp-for="MaxWinPerRound" type="number" class="form-control max-win-per-round" />
