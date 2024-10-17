@@ -80,8 +80,6 @@
                     <label class="icon-add" style="margin-bottom: -10px;" onclick="gameStatus.addMultiplierItem()"></label>
                     @Html.EditorFor(x => x.OddsMultipliers.Values)
                 </div>
-
-
             }
 
             @if (Game.BaccaratXGames.Any(x => x.Value == Model.Name))
