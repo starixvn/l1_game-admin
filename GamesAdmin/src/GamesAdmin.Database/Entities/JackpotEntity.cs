@@ -23,7 +23,7 @@ namespace GamesAdmin.Database.Entities
 
         public string WinnerName { get; set; }
 
-        public int? WinnerId { get; set; }
+        public string WinnerId { get; set; }
 
         public decimal ByBots { get; set; }
 
