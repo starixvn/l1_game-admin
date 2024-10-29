@@ -98,6 +98,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.Bac98Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.Bac100Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.Bac101Value, typeof(IBaccaratXOnlineUserApi) },
+            { Game.SevenUpDownValue, typeof(ISevenUpDownOnlineUserApi) },
         };
 
         private readonly IServiceProvider serviceProvider;

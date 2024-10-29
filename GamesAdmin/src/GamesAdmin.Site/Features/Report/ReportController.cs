@@ -822,5 +822,9 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public IActionResult KaraKrus() => RedirectToAction("Index", new { game = GameId.KaraKrus });
+
+        [HttpGet]
+        [ActionName("7up7down")]
+        public IActionResult SevenUpDown() => RedirectToAction("Index", new { game = GameId.SevenUpDown });
     }
 }

@@ -306,6 +306,7 @@ namespace GamesAdmin.Core.Enumeration
                 Bac98,
                 Bac100,
                 Bac101,
+                SevenUpDown,
             };
 
             var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
