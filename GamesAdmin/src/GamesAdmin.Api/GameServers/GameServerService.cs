@@ -99,7 +99,7 @@ namespace GamesAdmin.Api.GameServers
             IChineseBlackjackApiFactory chineseBlackjackApiFactory,
             ICrashGameApiFactory crashGameApiFactory,
             IFootballDiceApiFactory footballDiceApiFactory,
-            IBaccaratXApi baccaratXApi
+            IBaccaratXApi baccaratXApi = null
             )
         {
             this.sentryClient = sentryClient;
@@ -402,7 +402,7 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
-                return await baccaratXApi.SetResult(request, request.gameConfigName);
+                return await baccaratXApi?.SetResult(request, request.gameConfigName);
             }
             catch (Exception ex)
             {
