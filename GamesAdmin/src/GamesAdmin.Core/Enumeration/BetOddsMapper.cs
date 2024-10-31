@@ -158,6 +158,9 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.Bac101Value:
                     return Enumeration.GetAll<BaccaratXOdds>();
 
+                case Game.SevenUpDownValue:
+                    return Enumeration.GetAll<SevenUpDownOdds>();
+
                 default: return default;
             }
         }
