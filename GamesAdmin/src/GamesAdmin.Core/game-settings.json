@@ -94,5 +94,35 @@
     "BetChoices": [ "kara", "krus", "head3", "head2", "head1", "tail3" ],
     "Odds": [ "kara", "krus", "head3", "head2", "head1", "tail3" ],
     "OfferedSystem": [ "SC1", "VG2" ]
+  },
+  {
+    "GameId": 104,
+    "GameName": "marblefootball",
+    "DisplayName": "Marble Football",
+    "BetChoices": [
+      "home",
+      "away",
+      "draw",
+      "over",
+      "under",
+      "firstHalfHome",
+      "firstHalfAway",
+      "firstHalfDraw",
+      "firstHalfOver",
+      "firstHalfUnder"
+    ],
+    "Odds": [
+      "home",
+      "away",
+      "draw",
+      "over",
+      "under",
+      "firstHalfHome",
+      "firstHalfAway",
+      "firstHalfDraw",
+      "firstHalfOver",
+      "firstHalfUnder"
+    ],
+    "OfferedSystem": ["SC1", "VG2"]
   }
 ]
