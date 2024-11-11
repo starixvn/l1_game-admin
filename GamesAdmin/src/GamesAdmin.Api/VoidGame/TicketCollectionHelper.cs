@@ -76,6 +76,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.SeDie3, new GameTicketCollection("sedie3_bets", "sedie3_betlogs") },
             { GameId.SicBall, new GameTicketCollection("sicball_bets", "sicball_betlogs") },
             { GameId.KaraKrus, new GameTicketCollection("karakrus_bets", "karakrus_betlogs") },
+            { GameId.MarbleFootball, new GameTicketCollection("marblefootball_bets", "marblefootball_betlogs") },
            };
 
         public static GameTicketCollection GetCollections(int gameTypeId, GameType type = GameType.AutoRNG, string gameName = "", bool isCheckBetLog = false)
