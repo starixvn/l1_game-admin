@@ -120,6 +120,8 @@
         public GameServerConfigs KaraKrus { get; set; }
         public GameServerConfigs FootballCoinToss { get; set; }
         public GameServerConfigs SevenUpDown { get; set; }
+        public GameServerConfigs MarbleFootball { get; set; }
+
     }
 
     public class GameServerConfigs
