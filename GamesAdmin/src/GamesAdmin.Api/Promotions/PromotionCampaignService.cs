@@ -38,6 +38,8 @@ namespace GamesAdmin.Api.Promotions
         Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(GetLeaderboardRequest request);
 
         Task<IEnumerable<AwardWinningPlayer>> GetTournamentWinningPlayers(int promotionId);
+
+        Task<IEnumerable<PromotionConfigModel>> GetByIds(string[] ids);
     }
 
     public class PromotionCampaignService : IPromotionCampaignService
@@ -184,6 +186,19 @@ namespace GamesAdmin.Api.Promotions
         {
             var promotion = await promotionCampaignRepository.FindByIdAsync(id);
             return mapper.Map<PromotionConfigModel>(promotion);
+        }
+
+        public async Task<IEnumerable<PromotionConfigModel>> GetByIds(string[] ids)
+        {
+            if (ids == null || ids.Any(id=> string.IsNullOrEmpty(id)))
+            {
+                return Enumerable.Empty<PromotionConfigModel>();
+            }
+
+            var objectIds = ids.Select(id => new ObjectId(id));
+            var promotions = await promotionCampaignRepository.FilterByAsync(x => objectIds.Contains(x.Id));
+
+            return mapper.Map<IEnumerable<PromotionConfigModel>>(promotions);
         }
 
         public async Task<bool> Create(PromotionConfigModel model)

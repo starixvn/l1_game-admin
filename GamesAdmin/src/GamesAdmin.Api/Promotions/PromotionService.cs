@@ -6,6 +6,7 @@ using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
@@ -27,6 +28,8 @@ namespace GamesAdmin.Api.Promotions
         Task<bool> Update(PromotionModel model);
 
         Task<bool> Delete(string id);
+
+        Task<IEnumerable<PromotionModel>> GetByIds(string[] ids);
     }
 
     public class PromotionService : IPromotionService
@@ -119,6 +122,18 @@ namespace GamesAdmin.Api.Promotions
                 return true;
             }
             return false;
+        }
+
+        public async Task<IEnumerable<PromotionModel>> GetByIds(string[] ids)
+        {
+            if (ids == null || ids.Any(id => string.IsNullOrEmpty(id)))
+            {
+                return Enumerable.Empty<PromotionModel>();
+            }
+            var objectIds = ids.Select(id => new ObjectId(id));
+            var promotions = await promotionRepository.FilterByAsync(x => objectIds.Contains(x.Id));
+
+            return mapper.Map<IEnumerable<PromotionModel>>(promotions);
         }
     }
 }

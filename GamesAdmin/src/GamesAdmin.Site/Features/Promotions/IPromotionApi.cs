@@ -23,6 +23,9 @@ namespace GamesAdmin.Site.Features.Promotions
         [Get("/promotion/getById")]
         Task<PromotionModel> GetById(string id);
 
+        [Post("/promotion/getByIds")]
+        Task<IEnumerable<PromotionModel>> GetByIds(string[] ids);
+
         [Post("/promotion/update")]
         Task<bool> Update(PromotionModel model);
 
@@ -49,6 +52,9 @@ namespace GamesAdmin.Site.Features.Promotions
 
         [Get("/promotion/getCampaignById")]
         Task<PromotionConfigModel> GetCampaignById(string id);
+
+        [Post("/promotion/getCampaignByIds")]
+        Task<IEnumerable<PromotionConfigModel>> GetCampaignByIds(string[] ids);
 
         [Post("/promotion/createTournament")]
         Task<bool> CreateTournament(PromotionConfigModel model);
