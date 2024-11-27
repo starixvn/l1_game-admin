@@ -193,41 +193,50 @@ namespace GamesAdmin.Site.Features.Promotions
                 .Select(announcement => mapper.Map<AnnouncementViewModel>(announcement))
                 .ToList();
 
-            var validAnnouncements = new List<AnnouncementViewModel>();
+            if (!announcements.Any())
+                return Enumerable.Empty<AnnouncementViewModel>();
 
-            foreach (var announcement in announcements)
-            {
-                bool addAnnouncement = true;
+            var campaignIds = announcements
+                .Where(x => x.DisplayKind == NotificationDisplayKind.PromotionCampaign)
+                .Select(x => x.PromotionId)
+                .Distinct();
 
-                if (!string.IsNullOrEmpty(announcement.PromotionId))
-                {
-                    switch (announcement.DisplayKind)
-                    {
-                        case var kind when kind.Equals(NotificationDisplayKind.Promotion):
-                            var promotion = await promotionService.GetById(announcement.PromotionId);
-                            announcement.Promotion = mapper.Map<PromotionViewModel>(promotion);          
-                            break;
+            var promotionIds = announcements
+                .Where(x => x.DisplayKind == NotificationDisplayKind.Promotion)
+                .Select(x => x.PromotionId)
+                .Distinct();
 
-                        case var kind when kind.Equals(NotificationDisplayKind.PromotionCampaign):
-                            var campaign = await promotionCampaignService.GetCampaignById(announcement.PromotionId);
-                            announcement.PromotionCampaign = mapper.Map<PromotionCampaignViewModel>(campaign);
-                            if (announcement.PromotionCampaign != null && (announcement.PromotionCampaign.Status.Equals(PromotionStatus.DeletedValue)))
-                            {
-                                addAnnouncement = false;
-                            }
-                            break;
-                    }
-                }
+            var campaigns = await promotionCampaignService.GetCampaignByIds(campaignIds);
+            var promotions = await promotionService.GetByIds(promotionIds);
 
-                if (addAnnouncement)
-                {
-                    validAnnouncements.Add(announcement);
-                }
-            }
+            var validAnnouncements = announcements
+                .Where(announcement => GetAnnouncement(announcement, campaigns, promotions))
+                .ToList();
 
             return validAnnouncements;
         }
 
+        private bool GetAnnouncement(
+            AnnouncementViewModel announcement,
+            IEnumerable<PromotionConfigModel> campaigns,
+            IEnumerable<PromotionModel> promotions)
+        {
+            bool isValid = true;
+
+            if (string.IsNullOrEmpty(announcement.PromotionId))
+                return isValid;
+
+            var promotion = promotions.FirstOrDefault(x => x.PromotionId == announcement.PromotionId);
+            announcement.Promotion = promotion != null ? mapper.Map<PromotionViewModel>(promotion) : null;
+
+            var campaign = campaigns.FirstOrDefault(x => x.Id == announcement.PromotionId);
+            announcement.PromotionCampaign = campaign != null ? mapper.Map<PromotionCampaignViewModel>(campaign) : null;
+
+            if (campaign != null && campaign.Status.Equals(PromotionStatus.DeletedValue))
+                isValid = false;
+
+            return isValid;
+        }
 
         public async Task<bool> Handle(CreateAnnouncementsRequest request, CancellationToken cancellationToken)
         {

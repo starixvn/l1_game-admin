@@ -150,7 +150,7 @@ namespace GamesAdmin.Api.Notifications
         public async Task<IEnumerable<Notification>> GetPromotionAnnouncementByStatus(string status, string type)
         {
 
-            var entities = await Task.Run(() => notificationRepository.AsQueryable().ToList());
+            var entities = await notificationRepository.FilterByAsync(x => true);
 
             var filteredEntities = entities
                 .Where(entity => IsValidNotification(entity, status, type))

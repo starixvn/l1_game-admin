@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
@@ -11,6 +12,7 @@ namespace GamesAdmin.Site.Features.Promotions
         Task<IEnumerable<PromotionModel>> GetByStatus(string status);
         Task<IEnumerable<PromotionModel>> GetByGameId(GameId gameId);
         Task<PromotionModel> GetById(string id);
+        Task<IEnumerable<PromotionModel>> GetByIds(IEnumerable<string> ids);
         Task<bool> Create(PromotionModel model);
         Task<bool> Update(PromotionModel model);
         Task<bool> Delete(string id);
@@ -43,6 +45,9 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<PromotionModel> GetById(string id)
         => promotionApi.GetById(id);
+
+        public Task<IEnumerable<PromotionModel>> GetByIds(IEnumerable<string> ids)
+        => promotionApi.GetByIds(ids.ToArray());
 
         public Task<bool> Update(PromotionModel model)
         => promotionApi.Update(model);

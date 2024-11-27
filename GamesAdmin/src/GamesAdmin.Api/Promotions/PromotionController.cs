@@ -40,6 +40,10 @@ namespace GamesAdmin.Api.Promotions
         public Task<PromotionModel> GetById(string id)
            => mediator.Send(new GetPromotionByIdRequest(id));
 
+        [HttpPost("getByIds")]
+        public Task<IEnumerable<PromotionModel>> GetByIds(string[] ids)
+           => mediator.Send(new GetPromotionByIdsRequest(ids));
+
         [HttpPost("update")]
         public Task<bool> Update(PromotionModel model)
            => mediator.Send(new UpdatePromotionRequest(model));
@@ -75,6 +79,10 @@ namespace GamesAdmin.Api.Promotions
         [HttpGet("getCampaignById")]
         public Task<PromotionConfigModel> GetCampaignById(string id)
            => mediator.Send(new GetPromotionCampaignByIdRequest(id));
+
+        [HttpPost("getCampaignByIds")]
+        public Task<IEnumerable<PromotionConfigModel>> GetCampaignByIds(string[] ids)
+          => mediator.Send(new GetPromotionCampaignByIdsRequest(ids));
 
         [HttpGet("leaderboard")]
         public Task<IEnumerable<AwardWinningPlayer>> GetLeaderboard(int promotionId, string playerName, bool isTestCurrency)

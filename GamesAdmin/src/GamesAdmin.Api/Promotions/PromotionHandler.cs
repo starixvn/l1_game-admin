@@ -30,6 +30,8 @@ namespace GamesAdmin.Api.Promotions
         , IRequestHandler<AwardTournamentRequest, bool>
         , IRequestHandler<DeleteTournamentRequest, bool>
         , IRequestHandler<AwardTestCurrencyRequest, bool>
+        , IRequestHandler<GetPromotionCampaignByIdsRequest, IEnumerable<PromotionConfigModel>>
+        , IRequestHandler<GetPromotionByIdsRequest, IEnumerable<PromotionModel>>
     {
         private readonly IPromotionService promotionService;
         private readonly INotificationService notificationService;
@@ -107,5 +109,11 @@ namespace GamesAdmin.Api.Promotions
 
         public Task<bool> Handle(AwardTestCurrencyRequest request, CancellationToken cancellationToken)
         => awardService.AwardTestCurrency(request);
+
+        public Task<IEnumerable<PromotionConfigModel>> Handle(GetPromotionCampaignByIdsRequest request, CancellationToken cancellationToken)
+        => promotionCampaignService.GetByIds(request.Ids);
+
+        public Task<IEnumerable<PromotionModel>> Handle(GetPromotionByIdsRequest request, CancellationToken cancellationToken)
+        => promotionService.GetByIds(request.Ids);
     }
 }

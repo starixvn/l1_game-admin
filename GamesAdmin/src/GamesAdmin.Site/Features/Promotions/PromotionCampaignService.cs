@@ -1,6 +1,7 @@
 ﻿using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Site.Features.Promotions.Requests;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Promotions
@@ -24,6 +25,8 @@ namespace GamesAdmin.Site.Features.Promotions
         Task<bool> Delete(string id);
 
         Task<bool> AwardTestCurrency(AwardTestCurrencyRequest request);
+
+        Task<IEnumerable<PromotionConfigModel>> GetCampaignByIds(IEnumerable<string> ids);
     }
 
     public class PromotionCampaignService : IPromotionCampaignService
@@ -40,6 +43,9 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<PromotionConfigModel> GetCampaignById(string id)
             => promotionApi.GetCampaignById(id);
+
+        public Task<IEnumerable<PromotionConfigModel>> GetCampaignByIds(IEnumerable<string> ids)
+            => promotionApi.GetCampaignByIds(ids.ToArray());
 
         public Task<bool> Create(PromotionConfigModel model)
         => promotionApi.CreateTournament(model);
