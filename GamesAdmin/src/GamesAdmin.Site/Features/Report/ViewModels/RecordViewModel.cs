@@ -238,7 +238,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal TotalBonusChests => SettlementResult.Bonus.Odds > 0 ? BonusChests.Where(x => x.Picked).Sum(x => x.Amount) : 0;
 
-        public bool IsEnabledJackpot => IconsFolder == Game.FourGuardiansValue ? SystemType == "VG2" : JackpotContribution != null;
+        public bool IsEnabledJackpot => JackpotContribution != null;
 
         public decimal GetTotalBetWin()
         {

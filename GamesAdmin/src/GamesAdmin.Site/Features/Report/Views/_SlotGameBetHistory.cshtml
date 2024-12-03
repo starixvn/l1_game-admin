@@ -5,10 +5,6 @@
 @using Microsoft.Extensions.Options
 @inject IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig
 
-@{
-    var oldGames = new[] { Game.FourGuardiansValue };
-}
-
 @model SlotGameRecordViewModel
 <table class="table table-bordered table-four-guardians">
     <thead>
@@ -130,22 +126,6 @@
                 <td class="text-center">-</td>
                 <td class="text-center">-</td>
             </tr>
-        }
-
-        @if (oldGames.Contains(Model.GameName))
-        {
-            @foreach (var payline in Model.Paylines.Where(x => !Model.SettlementResult.WinningPaylines.Any(y => y.Payline == x) && x != Model.SettlementResult.Jackpot?.WinningLine))
-            {
-
-                <tr>
-                    <td class="text-center"><img class="payline" src="@resourceSiteConfig.Value.BaseUrl/_shared/classicslot/payline-@(payline + 1).png" /></td>
-                    <td class="text-center">-</td>
-                    <td class="text-center">-</td>
-                    <td class="text-center">-</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet)</td>
-                    <td class="text-right">0</td>
-                </tr>
-            }
         }
 
         <tr>
