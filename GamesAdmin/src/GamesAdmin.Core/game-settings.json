@@ -99,30 +99,8 @@
     "GameId": 104,
     "GameName": "marblefootball",
     "DisplayName": "Marble Football",
-    "BetChoices": [
-      "home",
-      "away",
-      "draw",
-      "over",
-      "under",
-      "firstHalfHome",
-      "firstHalfAway",
-      "firstHalfDraw",
-      "firstHalfOver",
-      "firstHalfUnder"
-    ],
-    "Odds": [
-      "home",
-      "away",
-      "draw",
-      "over",
-      "under",
-      "firstHalfHome",
-      "firstHalfAway",
-      "firstHalfDraw",
-      "firstHalfOver",
-      "firstHalfUnder"
-    ],
+    "BetChoices": ["home", "away", "draw", "over", "under", "odd", "even"],
+    "Odds": ["home", "away", "draw", "over", "under", "odd", "even"],
     "OfferedSystem": ["SC1", "VG2"]
   }
 ]
