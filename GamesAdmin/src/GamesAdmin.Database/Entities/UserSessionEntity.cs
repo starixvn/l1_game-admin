@@ -18,5 +18,8 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("playerId")]
         public string PlayerId { get; set; }
+
+        [BsonElement("ip")]
+        public string Ip { get; set; }
     }
 }
