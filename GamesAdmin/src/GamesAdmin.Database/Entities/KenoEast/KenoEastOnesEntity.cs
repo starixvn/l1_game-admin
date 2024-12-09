@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Database.Entities.Keno
 {
-    [BsonCollection("kenoeast_ones")]
+    [BsonCollection("kenoeast_bets")]
     public class KenoEastOnesEntity : BaseKenoOnesEntity
     {
     }

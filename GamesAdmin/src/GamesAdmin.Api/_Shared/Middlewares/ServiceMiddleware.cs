@@ -227,6 +227,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<ISeBall1OnlineUserApi>(appSettings.GameServers.SeBall1.Api, refitSettings));
             services.AddSingleton(RestService.For<ILuckyThreeOnlineUserApi>(appSettings.GameServers.LuckyThree.Api, refitSettings));
             services.AddSingleton(RestService.For<ISicBallOnlineUserApi>(appSettings.GameServers.SicBall.Api, refitSettings));
+            services.AddSingleton(RestService.For<ISKMiniKenoOnlineUserApi>(appSettings.GameServers.SKMiniKeno.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoMatchOnlineUserApi>(appSettings.GameServers.KenoMatch1.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoPowerOnlineUserApi>(appSettings.GameServers.KenoPower1.Api, refitSettings));
         }
 
         private static void AddSlotServices(this IServiceCollection services)

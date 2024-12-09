@@ -179,34 +179,6 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        [ActionName("kenosoccer")]
-        public IActionResult KenoMatch1()
-        {
-            return RedirectToAction("Index", new { game = GameId.KenoMatch1 });
-        }
-
-        [HttpGet]
-        [ActionName("kenosoccer2")]
-        public IActionResult KenoMatch2()
-        {
-            return RedirectToAction("Index", new { game = GameId.KenoMatch2 });
-        }
-
-        [HttpGet]
-        [ActionName("kenopower")]
-        public IActionResult KenoPower1()
-        {
-            return RedirectToAction("Index", new { game = GameId.KenoPower1 });
-        }
-
-        [HttpGet]
-        [ActionName("kenopower2")]
-        public IActionResult KenoPower2()
-        {
-            return RedirectToAction("Index", new { game = GameId.KenoPower2 });
-        }
-
-        [HttpGet]
         public async Task<IActionResult> GetKenoPowerBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return PartialView("_KenoPowerBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
@@ -426,31 +398,7 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult KenoMax2() => RedirectToAction("Index", new { game = GameId.KenoMax2 });
 
         [HttpGet]
-        public IActionResult KenoMini() => RedirectToAction("Index", new { game = GameId.KenoMini });
-
-        [HttpGet]
-        public IActionResult KenoMini2() => RedirectToAction("Index", new { game = GameId.KenoMini2 });
-
-        [HttpGet]
-        public IActionResult KenoEast() => RedirectToAction("Index", new { game = GameId.KenoEast });
-
-        [HttpGet]
-        public IActionResult KenoWest() => RedirectToAction("Index", new { game = GameId.KenoWest });
-
-        [HttpGet]
-        public IActionResult KenoSouth() => RedirectToAction("Index", new { game = GameId.KenoSouth });
-
-        [HttpGet]
-        public IActionResult KenoNorth() => RedirectToAction("Index", new { game = GameId.KenoNorth });
-
-        [HttpGet]
         public IActionResult KenoProMax() => RedirectToAction("Index", new { game = GameId.KenoProMax });
-
-        [HttpGet]
-        public IActionResult MegaKeno() => RedirectToAction("Index", new { game = GameId.MegaKeno });
-
-        [HttpGet]
-        public IActionResult MegaKeno2() => RedirectToAction("Index", new { game = GameId.MegaKeno2 });
 
         [HttpGet]
         public IActionResult BlockchainBaccarat() => RedirectToAction("Index", new { game = GameId.BlockchainBaccarat });

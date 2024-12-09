@@ -31,12 +31,12 @@ namespace GamesAdmin.Database.Entities
         public bool RedSmall { get; set; }
     }
 
-    [BsonCollection("kenopower1_phiens")]
+    [BsonCollection("kenopower_rounds")]
     public class KenoPower1RoundEntity : KenoPowerRoundEntity
     {
     }
 
-    [BsonCollection("kenopower2_phiens")]
+    [BsonCollection("kenopower2_rounds")]
     public class KenoPower2RoundEntity : KenoPowerRoundEntity
     {
     }

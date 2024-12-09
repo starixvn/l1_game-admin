@@ -36,7 +36,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
         public string[] SiteExclusions { get; }
 
-        public byte RandomMode { get; }
+        public byte RandomMode { get; } = 1;
 
         public int MaxWinPerRound { get; set; }
     }

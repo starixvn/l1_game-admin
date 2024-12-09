@@ -43,12 +43,12 @@ namespace GamesAdmin.Database.Entities
         public bool Even { get; set; }
     }
 
-    [BsonCollection("kenomatch1_phiens")]
+    [BsonCollection("kenosoccer_rounds")]
     public class KenoMatch1RoundEntity : KenoMatchRoundEntity
     {
     }
 
-    [BsonCollection("kenomatch2_phiens")]
+    [BsonCollection("kenosoccer2_rounds")]
     public class KenoMatch2RoundEntity : KenoMatchRoundEntity
     {
     }

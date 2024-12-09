@@ -125,7 +125,8 @@ namespace GamesAdmin.Api.Games
                     Time = DateTime.Now,
                     GameId = gameId,
                     DisplayName = game.Info.DisplayName,
-                    CrashConfig = game.CrashConfig
+                    CrashConfig = game.CrashConfig,
+                    RandomMode = game.Info.RandomMode
                 };
 
                 await repository.InsertOneAsync(entity);

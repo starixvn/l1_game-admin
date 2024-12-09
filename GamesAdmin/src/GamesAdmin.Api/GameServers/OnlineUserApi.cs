@@ -187,6 +187,12 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "", [Header("Authorization")] string header = "");
     }
 
+    public interface ISKMiniKenoOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/{name}/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "", [Header("Authorization")] string header = "");
+    }
+
     public interface IKenoMatchOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/{name}/onlineusers")]

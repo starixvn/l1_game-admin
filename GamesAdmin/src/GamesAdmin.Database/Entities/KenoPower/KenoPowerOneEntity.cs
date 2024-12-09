@@ -23,12 +23,12 @@ namespace GamesAdmin.Database.Entities
         public Dictionary<string, decimal> Odds { get; set; }
     }
 
-    [BsonCollection("kenopower1_ones")]
+    [BsonCollection("kenopower_bets")]
     public class KenoPower1OneEntity : KenoPowerOneEntity
     {
     }
 
-    [BsonCollection("kenopower2_ones")]
+    [BsonCollection("kenopower2_bets")]
     public class KenoPower2OneEntity : KenoPowerOneEntity
     {
 

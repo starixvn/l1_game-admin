@@ -200,13 +200,7 @@ namespace GamesAdmin.Api.ChatBot
 
         private async Task<string> GetGameName(int gameId)
         {
-            return gameId switch
-            {
-                (int)GameId.KenoMatch1 => "KenoSoccer",
-                (int)GameId.KenoMatch2 => "KenoSoccer2",
-                (int)GameId.KenoPower1 => "KenoPower",
-                _ => await generalGameSettingService.GetDisplayName(gameId),
-            };
+            return await generalGameSettingService.GetDisplayName(gameId);
         }
 
         private string GetVersionName(Versions version, Dictionary<string, string> metadata)

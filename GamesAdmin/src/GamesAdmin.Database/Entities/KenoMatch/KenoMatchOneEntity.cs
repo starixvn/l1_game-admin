@@ -32,12 +32,12 @@ namespace GamesAdmin.Database.Entities
         public Dictionary<string, bool> Odds { get; set; }
     }
 
-    [BsonCollection("kenomatch1_ones")]
+    [BsonCollection("kenosoccer_bets")]
     public class KenoMatch1OneEntity : KenoMatchOneEntity
     {
     }
 
-    [BsonCollection("kenomatch2_ones")]
+    [BsonCollection("kenosoccer2_bets")]
     public class KenoMatch2OneEntity : KenoMatchOneEntity
     {
 

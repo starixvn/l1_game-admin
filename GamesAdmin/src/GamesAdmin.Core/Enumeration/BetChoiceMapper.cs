@@ -25,10 +25,6 @@ namespace GamesAdmin.Core.Enumeration
             {Game.LotteryValue, Enumeration.GetAll<LotteryBetChoice>() },
             {Game.ThreeCardsValue, Enumeration.GetAll<ThreeCardsBetChoice>() },
             {Game.CasinoHoldemPokerValue, Enumeration.GetAll<CasinoHoldemPokerBetChoice>() },
-            {Game.KenoMatch1Value, Enumeration.GetAll<KenoMatchBetChoice>() },
-            {Game.KenoMatch2Value, Enumeration.GetAll<KenoMatchBetChoice>() },
-            {Game.KenoPower1Value, Enumeration.GetAll<KenoPowerBetChoice>() },
-            {Game.KenoPower2Value, Enumeration.GetAll<KenoPowerBetChoice>() },
             {Game.BitcoinMasterValue, Enumeration.GetAll<BitcoinMasterBetChoice>() },
             {Game.TexasHoldemPokerValue, Enumeration.GetAll<TexasHoldemPokerBetChoice>() },
             {Game.BlockchainBaccaratValue, Enumeration.GetAll<BlockchainBaccaratBetChoice>() },
@@ -47,6 +43,10 @@ namespace GamesAdmin.Core.Enumeration
             {Game.BandarQiuQiuValue, Enumeration.GetAll<BandarQiuQiuBetChoice>()},
             {Game.FootballDiceValue, Enumeration.GetAll<FootballDiceBetChoice>() },
             {Game.FootballSlotValue, Enumeration.GetAll<FootballSlotBetChoice>() },
+            {Game.KenoSoccerValue, Enumeration.GetAll<KenoMatchBetChoice>() },
+            {Game.KenoSoccer2Value, Enumeration.GetAll<KenoMatchBetChoice>() },
+            {Game.KenoPowerValue, Enumeration.GetAll<KenoPowerBetChoice>() },
+            {Game.KenoPower2Value, Enumeration.GetAll<KenoPowerBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>

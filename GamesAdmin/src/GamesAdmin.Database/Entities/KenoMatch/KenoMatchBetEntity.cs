@@ -9,12 +9,12 @@ namespace GamesAdmin.Database.Entities
         public decimal Amount { get; set; }
     }
 
-    [BsonCollection("kenomatch1_cuocs")]
+    [BsonCollection("kenosoccer_betlogs")]
     public class KenoMatch1BetEntity : KenoMatchBetEntity
     {
     }
 
-    [BsonCollection("kenomatch2_cuocs")]
+    [BsonCollection("kenosoccer2_betlogs")]
     public class KenoMatch2BetEntity : KenoMatchBetEntity
     {
     }
