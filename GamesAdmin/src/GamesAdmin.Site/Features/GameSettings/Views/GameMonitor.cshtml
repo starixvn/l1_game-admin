@@ -102,13 +102,13 @@
                             {
                                 <a class="icon-action" href="~/Report/CrashGameReport?game=@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
                             }
-                            else if (Game.BaccaratXGames.Any(x => x.Value == Model.GameList[index].Name))
+                            else if (@Model.GameList[index].UseGameHistoryUrl())
                             {
-                                <a class="icon-action" href="~/Report?game=@Model.GameList[index].Name"><i class="icon-history"></i></a>
+                                <a class="icon-action" href="~/Report/@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
                             }
                             else
                             {
-                                <a class="icon-action" href="~/Report/@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
+                                <a class="icon-action" href="~/Report?game=@Model.GameList[index].Name"><i class="icon-history"></i></a>
                             }
                         }
                     </td>
