@@ -55,6 +55,26 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public bool EnabledServiceStatus => !disableServiceStatus.Contains(Name);
 
+        public bool UseGameHistoryUrl()
+        {
+            var useGameHistoryUrlGameIds = new HashSet<GameId>() {
+            Core.Enumeration.GameId.BigSmall,
+            Core.Enumeration.GameId.Blackjack,
+            Core.Enumeration.GameId.BitcoinMaster,
+            Core.Enumeration.GameId.CasinoHoldemPoker,
+            Core.Enumeration.GameId.ChineseBlackjack,
+            Core.Enumeration.GameId.FishPrawnCrab,
+            Core.Enumeration.GameId.HiLo,
+            Core.Enumeration.GameId.Pontoon,
+            Core.Enumeration.GameId.SpecialSeDie,
+            Core.Enumeration.GameId.TexasHoldemPoker,
+            Core.Enumeration.GameId.BigSmallTurbo,
+            Core.Enumeration.GameId.OddEvenTurbo,
+            };
+
+            return useGameHistoryUrlGameIds.Contains((GameId)GameId);
+        }
+
         public string GameHistoryUrl => string.IsNullOrWhiteSpace(DisplayName)
             ? Name.Replace(" ", string.Empty).Trim().ToLowerInvariant()
             : DisplayName.Replace(" ", string.Empty).Trim().Replace("'", string.Empty).ToLowerInvariant();
