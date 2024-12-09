@@ -119,8 +119,8 @@ namespace GamesAdmin.Api.ChatBot
                 var charName = await GetCharName(request);
                 var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
 
-                var devicePlatform = await GetDevicePlatform(request.ObCustId);
-                msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount, request.Currency, game, devicePlatform));
+                var playerDeviceExtraInformation = await GetDeviceInformation(request.ObCustId);
+                msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount, request.Currency, game, playerDeviceExtraInformation));
 
                 _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, appSettings.ChatBotApiSettings.ConversationIds.HighStake, msgBuilder.ToString()));
 
@@ -310,7 +310,7 @@ namespace GamesAdmin.Api.ChatBot
             return string.Format(template, gameName, promotionMessage);
         }
 
-        private async Task<string> GetDevicePlatform(string playerId)
+        private async Task<string> GetDeviceInformation(string playerId)
         {
             try
             {
@@ -324,7 +324,7 @@ namespace GamesAdmin.Api.ChatBot
                     .OrderByDescending(userSession => userSession.RecheckInTime)
                     .FirstOrDefault();
 
-                return $"- {uaParser.Parse(userSession?.BrowserUserAgent).OS}";
+                return $"- {uaParser.Parse(userSession?.BrowserUserAgent).OS} - {userSession?.Ip}";
             }
             catch (Exception ex)
             {
