@@ -124,39 +124,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult SeDie()
-        {
-            return RedirectToAction("Index", new { game = GameId.SeDie });
-        }
-
-        [HttpGet]
-        public IActionResult MiniSeDie()
-        {
-            return RedirectToAction("Index", new { game = GameId.MiniSeDie });
-        }
-
-        [HttpGet]
         public IActionResult FishPrawnCrab()
         {
             return RedirectToAction("Index", new { game = GameId.FishPrawnCrab });
-        }
-
-        [HttpGet]
-        public IActionResult DragonTiger()
-        {
-            return RedirectToAction("Index", new { game = GameId.DragonTiger });
-        }
-
-        [HttpGet]
-        public IActionResult Baccarat()
-        {
-            return RedirectToAction("Index", new { game = GameId.Baccarat });
-        }
-
-        [HttpGet]
-        public IActionResult VipBaccarat()
-        {
-            return RedirectToAction("Index", new { game = GameId.VipBaccarat });
         }
 
         [HttpGet]
@@ -172,11 +142,6 @@ namespace GamesAdmin.Site.Features.Report
             return RedirectToAction("Index", new { game = GameId.VipSeDieWar });
         }
 
-        [HttpGet]
-        public IActionResult ThreeCards()
-        {
-            return RedirectToAction("Index", new { game = GameId.ThreeCards });
-        }
 
         [HttpGet]
         [ActionName("kenosoccer")]
@@ -219,20 +184,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult Roulette()
-        {
-            return RedirectToAction("Index", new { game = GameId.Roulette });
-        }
-
-        [HttpGet]
         public async Task<IActionResult> GetRouletteBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return PartialView("_RouletteBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
-        }
-
-        public IActionResult VipSeDie()
-        {
-            return RedirectToAction("Index", new { game = GameId.VipSeDie });
         }
 
         [HttpGet]
@@ -279,18 +233,6 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public Task<IActionResult> SpecialSeDie() => GetStakeBalancedView();
-
-        [HttpGet]
-        public IActionResult VipFishPrawnCrab()
-        {
-            return RedirectToAction("Index", new { game = GameId.VipFishPrawnCrab });
-        }
-
-        [HttpGet]
-        public IActionResult SicBo()
-        {
-            return RedirectToAction("Index", new { game = GameId.SicBo });
-        }
 
         [HttpGet]
         public async Task<IActionResult> SlotGameReport(string game)
@@ -418,42 +360,6 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_HiLoBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
-
-        [HttpGet]
-        public IActionResult KenoMax() => RedirectToAction("Index", new { game = GameId.KenoMax });
-
-        [HttpGet]
-        public IActionResult KenoMax2() => RedirectToAction("Index", new { game = GameId.KenoMax2 });
-
-        [HttpGet]
-        public IActionResult KenoMini() => RedirectToAction("Index", new { game = GameId.KenoMini });
-
-        [HttpGet]
-        public IActionResult KenoMini2() => RedirectToAction("Index", new { game = GameId.KenoMini2 });
-
-        [HttpGet]
-        public IActionResult KenoEast() => RedirectToAction("Index", new { game = GameId.KenoEast });
-
-        [HttpGet]
-        public IActionResult KenoWest() => RedirectToAction("Index", new { game = GameId.KenoWest });
-
-        [HttpGet]
-        public IActionResult KenoSouth() => RedirectToAction("Index", new { game = GameId.KenoSouth });
-
-        [HttpGet]
-        public IActionResult KenoNorth() => RedirectToAction("Index", new { game = GameId.KenoNorth });
-
-        [HttpGet]
-        public IActionResult KenoProMax() => RedirectToAction("Index", new { game = GameId.KenoProMax });
-
-        [HttpGet]
-        public IActionResult MegaKeno() => RedirectToAction("Index", new { game = GameId.MegaKeno });
-
-        [HttpGet]
-        public IActionResult MegaKeno2() => RedirectToAction("Index", new { game = GameId.MegaKeno2 });
-
-        [HttpGet]
-        public IActionResult BlockchainBaccarat() => RedirectToAction("Index", new { game = GameId.BlockchainBaccarat });
 
         [HttpGet]
         public async Task<IActionResult> KenoBetHistory(BetHistoryFilter filter, bool convertToUSD)
@@ -608,15 +514,6 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult MiniSeDie2() => RedirectToAction("Index", new { game = GameId.MiniSeDie2 });
-
-        [HttpGet]
-        public IActionResult MiniSeDie3() => RedirectToAction("Index", new { game = GameId.MiniSeDie3 });
-
-        [HttpGet]
-        public IActionResult MiniSeDie4() => RedirectToAction("Index", new { game = GameId.MiniSeDie4 });
-
-        [HttpGet]
         public IActionResult LasVegas() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall1 });
 
         [HttpGet]
@@ -627,9 +524,6 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public IActionResult MonteCarlo() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall4 });
-
-        [HttpGet]
-        public IActionResult WinThreeCards() => RedirectToAction("Index", new { game = GameId.WinThreeCards });
 
         [HttpGet]
         public async Task<IActionResult> GetUnbalancedBigSmallBetHistory(BetHistoryFilter filter, bool convertToUSD)
@@ -644,18 +538,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult FruitSlot() => RedirectToAction("Index", new { game = GameId.FruitSlot });
-
-        [HttpGet]
         public async Task<IActionResult> GetSlotRNGBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return PartialView("_SlotRNGBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
-        }
-
-        [HttpGet]
-        public IActionResult FanTan()
-        {
-            return RedirectToAction("Index", new { game = GameId.FanTan });
         }
 
         [HttpGet]
@@ -672,12 +557,6 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult DragonTigerFight()
-        {
-            return RedirectToAction("Index", new { game = GameId.DragonTigerFight });
-        }
-
-        [HttpGet]
         public async Task<IActionResult> GetDragonTigerFightBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return PartialView("_DragonTigerFightBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
@@ -690,33 +569,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult ColorGame()
-        {
-            return RedirectToAction("Index", new { game = GameId.ColorGame });
-        }
-
-        [HttpGet]
         public async Task<IActionResult> GetBandarQiuQiuBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return PartialView("_BandarQiuQiuBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
-        }
-
-        [HttpGet]
-        public IActionResult BandarQiuQiu()
-        {
-            return RedirectToAction("Index", new { game = GameId.BandarQiuQiu });
-        }
-
-        [HttpGet]
-        public IActionResult BacBall1()
-        {
-            return RedirectToAction("Index", new { game = GameId.BacBall1 });
-        }
-
-        [HttpGet]
-        public IActionResult BacBall2()
-        {
-            return RedirectToAction("Index", new { game = GameId.BacBall2 });
         }
 
         [HttpGet]
@@ -775,27 +630,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult LuckyNext1()
-        {
-            return RedirectToAction("Index", new { game = GameId.LuckyNext1 });
-        }
-
-        [HttpGet]
-        public IActionResult LuckyNext2()
-        {
-            return RedirectToAction("Index", new { game = GameId.LuckyNext2 });
-        }
-
-        [HttpGet]
         public async Task<IActionResult> GetNextBallBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return PartialView("_NextBallBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
-        }
-
-        [HttpGet]
-        public IActionResult FootballDice()
-        {
-            return RedirectToAction("Index", new { game = GameId.FootballDice });
         }
 
         [HttpGet]
@@ -803,22 +640,6 @@ namespace GamesAdmin.Site.Features.Report
         {
                 return PartialView("_FootballDiceBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
-
-        [HttpGet]
-        public IActionResult FootballSlot() => RedirectToAction("Index", new { game = GameId.FootballSlot });
-
-
-        [HttpGet]
-        public IActionResult FootballCoinToss() => RedirectToAction("Index", new { game = GameId.FootballCoinToss });
-
-        [HttpGet]
-        public IActionResult Bac81() => RedirectToAction("Index", new { game = GameId.Bac81 });
-
-        [HttpGet]
-        public IActionResult SeDie3() => RedirectToAction("Index", new { game = GameId.SeDie3 });
-
-        [HttpGet]
-        public IActionResult KaraKrus() => RedirectToAction("Index", new { game = GameId.KaraKrus });
 
         [HttpGet]
         [ActionName("7up7down")]
