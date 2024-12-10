@@ -102,7 +102,7 @@
                             {
                                 <a class="icon-action" href="~/Report/CrashGameReport?game=@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
                             }
-                            else if (@Model.GameList[index].UseHistoryUrl())
+                            else if (@Model.GameList[index].IsUseHistoryUrl)
                             {
                                 <a class="icon-action" href="~/Report/@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
                             }

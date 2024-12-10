@@ -27,6 +27,22 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         {
         };
 
+        private static readonly HashSet<GameId> useHistoryUrlGameIds = new HashSet<GameId> {
+            Core.Enumeration.GameId.BigSmall,
+            Core.Enumeration.GameId.OddEven,
+            Core.Enumeration.GameId.Blackjack,
+            Core.Enumeration.GameId.BitcoinMaster,
+            Core.Enumeration.GameId.CasinoHoldemPoker,
+            Core.Enumeration.GameId.ChineseBlackjack,
+            Core.Enumeration.GameId.FishPrawnCrab,
+            Core.Enumeration.GameId.HiLo,
+            Core.Enumeration.GameId.Pontoon,
+            Core.Enumeration.GameId.SpecialSeDie,
+            Core.Enumeration.GameId.TexasHoldemPoker,
+            Core.Enumeration.GameId.BigSmallTurbo,
+            Core.Enumeration.GameId.OddEvenTurbo,
+        };
+
         private static readonly string[] disableMonitoring = new[] {
             Game.LuckyWheelValue,
             Game.BlackJackValue
@@ -55,27 +71,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public bool EnabledServiceStatus => !disableServiceStatus.Contains(Name);
 
-        public bool UseHistoryUrl()
-        {
-            var useHistoryUrlGameIds = new HashSet<GameId>() {
-            Core.Enumeration.GameId.BigSmall,
-            Core.Enumeration.GameId.OddEven,
-            Core.Enumeration.GameId.Blackjack,
-            Core.Enumeration.GameId.BitcoinMaster,
-            Core.Enumeration.GameId.CasinoHoldemPoker,
-            Core.Enumeration.GameId.ChineseBlackjack,
-            Core.Enumeration.GameId.FishPrawnCrab,
-            Core.Enumeration.GameId.HiLo,
-            Core.Enumeration.GameId.Pontoon,
-            Core.Enumeration.GameId.SpecialSeDie,
-            Core.Enumeration.GameId.TexasHoldemPoker,
-            Core.Enumeration.GameId.BigSmallTurbo,
-            Core.Enumeration.GameId.OddEvenTurbo,
-            };
+        public bool IsUseHistoryUrl => useHistoryUrlGameIds.Contains((GameId)GameId) || IsLuckyWheel;
 
-            var isLuckyWheel = Name == Game.LuckyWheelValue;
-            return useHistoryUrlGameIds.Contains((GameId)GameId) || isLuckyWheel;
-        }
+        private bool IsLuckyWheel => Name == Game.LuckyWheelValue;
 
         public string GameHistoryUrl => string.IsNullOrWhiteSpace(DisplayName)
             ? Name.Replace(" ", string.Empty).Trim().ToLowerInvariant()
