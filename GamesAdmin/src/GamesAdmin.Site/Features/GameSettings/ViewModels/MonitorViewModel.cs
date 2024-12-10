@@ -55,10 +55,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public bool EnabledServiceStatus => !disableServiceStatus.Contains(Name);
 
-        public bool UseGameHistoryUrl()
+        public bool IsUseHistoryUrl()
         {
-            var useGameHistoryUrlGameIds = new HashSet<GameId>() {
+            var useHistoryUrlGameIds = new HashSet<GameId>() {
             Core.Enumeration.GameId.BigSmall,
+            Core.Enumeration.GameId.OddEven,
             Core.Enumeration.GameId.Blackjack,
             Core.Enumeration.GameId.BitcoinMaster,
             Core.Enumeration.GameId.CasinoHoldemPoker,
@@ -72,7 +73,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             Core.Enumeration.GameId.OddEvenTurbo,
             };
 
-            return useGameHistoryUrlGameIds.Contains((GameId)GameId);
+            var isLuckyWheel = Name == Game.LuckyWheelValue;
+            return useHistoryUrlGameIds.Contains((GameId)GameId) || isLuckyWheel;
         }
 
         public string GameHistoryUrl => string.IsNullOrWhiteSpace(DisplayName)
