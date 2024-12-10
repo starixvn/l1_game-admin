@@ -153,7 +153,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                     var filterDefinition = filterBuilder.And(
                         filterBuilder.Eq(x => x.GroupId, ObjectId.Parse(currencyGroupGame.GroupId)),
                         filterBuilder.Eq(x => x.GameId, gameId),
-                        filterBuilder.Eq(x => x.GameName, gameConfig?.GameName ?? Game.FromGameId((GameId)gameId).Value));
+                        filterBuilder.Eq(x => x.GameName, currencyGroupGame.GameName));
 
                     writes.Add(new UpdateOneModel<CurrencyGroupGameEntity>(filterDefinition, update) { IsUpsert = true });
                 }
