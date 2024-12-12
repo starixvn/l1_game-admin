@@ -181,8 +181,6 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game Bac101 = new Game(Bac101Value, "Speed Baccarat 3", GameId.Bac101);
         public static readonly Game Bac102 = new Game(Bac102Value, "Baccarat Lobby", GameId.Bac102);
         public static readonly Game SevenUpDown = new Game(SevenUpDownValue, "7 Up 7 Down", GameId.SevenUpDown);
-        public static readonly Game MarbleFootball = new Game(MarbleFootballValue, "Marble Football", GameId.MarbleFootball);
-
         public Game()
         {
         }
@@ -312,7 +310,6 @@ namespace GamesAdmin.Core.Enumeration
                 Bac100,
                 Bac101,
                 SevenUpDown,
-                MarbleFootball,
             };
 
             var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
