@@ -100,7 +100,7 @@
     "GameName": "marblefootball",
     "DisplayName": "Marble Football",
     "BetChoices": ["home", "away", "draw", "over", "under", "odd", "even"],
-    "Odds": ["home", "away", "draw", "over", "under", "odd", "even", "draw4"],
+    "Odds": ["home", "away", "draw", "draw4", "over", "under", "odd", "even"],
     "OfferedSystem": ["SC1", "VG2"]
   }
 ]
