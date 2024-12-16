@@ -47,6 +47,7 @@ namespace GamesAdmin.Api.ChatBot
         private const string MessageUpdatePromotion = "Edited promotion for game **{0}**:\r\n{1}";
         private const string MessagePromotion = "**Status: **{0}\r\n**Boosted Odds**: {1}\r\n**Type**: {2}\r\n**From**: {3}\r\n**To**: {4}";
         private const int CacheExpireInMinutes = 60 * 24;
+        private const int sabaKenoStartGameId = 1500;
 
 
         private readonly IAppSettings appSettings;
@@ -104,7 +105,7 @@ namespace GamesAdmin.Api.ChatBot
                 var msgBuilder = new StringBuilder();
                 var game = await GetGameName(request.GameTypeId);
                 var charName = await GetCharName(request);
-                var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
+                var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata, request.GameTypeId);
 
                 var playerDeviceExtraInformation = await GetDeviceInformation(request.ObCustId);
                 msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount, request.Currency, game, playerDeviceExtraInformation));
@@ -203,9 +204,9 @@ namespace GamesAdmin.Api.ChatBot
             return await generalGameSettingService.GetDisplayName(gameId);
         }
 
-        private string GetVersionName(Versions version, Dictionary<string, string> metadata)
+        private string GetVersionName(Versions version, Dictionary<string, string> metadata, int gameId)
         {
-            var systemPrefix = GetSystemPrefixName();
+            var systemPrefix = GetSystemPrefixName(gameId);
 
             return version switch
             {
@@ -241,7 +242,7 @@ namespace GamesAdmin.Api.ChatBot
             };
         }
 
-        private string GetSystemPrefixName()
+        private string GetSystemPrefixName(int gameId)
         {
             var systemType = systemSettings.System;
 
@@ -249,7 +250,7 @@ namespace GamesAdmin.Api.ChatBot
             {
                 SystemType.SC1 => "S",
                 SystemType.VG2 => "VG",
-                SystemType.GN => "GN",
+                SystemType.GN => gameId > sabaKenoStartGameId ? "SK" : "GN",
                 _ => string.Empty
             };
         }
