@@ -238,7 +238,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal TotalBonusChests => SettlementResult.Bonus.Odds > 0 ? BonusChests.Where(x => x.Picked).Sum(x => x.Amount) : 0;
 
-        public bool IsEnabledJackpot => JackpotContribution != null;
+        public bool IsEnabledJackpot => JackpotContribution != null || string.Equals(GameName, "FourGuardians", System.StringComparison.InvariantCultureIgnoreCase);
 
         public decimal GetTotalBetWin()
         {
