@@ -32,28 +32,12 @@
         "OfferedSystem": [ "GN" ]
     },
     {
-        "GameId": 80,
-        "GameName": "cointoss",
-        "DisplayName": "Coin Toss",
-        "BetChoices": [ "head", "tail" ],
-        "Odds": [ "head", "tail" ],
-        "OfferedSystem": [ "SC1", "VG2" ]
-    },
-    {
         "GameId": 1005,
         "GameName": "seball1",
         "DisplayName": "Se Ball",
         "BetChoices": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
         "Odds": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
         "OfferedSystem": [ "GN" ]
-    },
-    {
-        "GameId": 93,
-        "GameName": "footballcointoss",
-        "DisplayName": "Football Coin Toss",
-        "BetChoices": [ "home", "away" ],
-        "Odds": [ "home", "away" ],
-        "OfferedSystem": [ "SC1", "VG2" ]
     },
     {
         "GameId": 1006,
@@ -67,6 +51,126 @@
         "GameId": 1007,
         "GameName": "sicball",
         "DisplayName": "Sic Ball",
+        "BetChoices": [ "big", "small", "specific1", "specific2", "specific3", "specific4", "specific5", "specific6" ],
+        "Odds": [ "big", "small", "single", "double", "triple" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1008,
+        "GameName": "baccaratnumber",
+        "DisplayName": "Baccarat Number",
+        "BetChoices": [ "player", "banker", "tie" ],
+        "Odds": [ "player", "banker", "tie" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1009,
+        "GameName": "speedbaccaratnumber",
+        "DisplayName": "Speed Baccarat Number",
+        "BetChoices": [ "player", "banker", "tie" ],
+        "Odds": [ "player", "banker", "tie" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1010,
+        "GameName": "vipbaccaratnumber",
+        "DisplayName": "VIP Baccarat Number",
+        "BetChoices": [ "player", "banker", "tie" ],
+        "Odds": [ "player", "banker", "tie" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1011,
+        "GameName": "luckynext",
+        "DisplayName": "Lucky Next",
+        "BetChoices": [ "over", "under", "odd", "even" ],
+        "Odds": [ "over", "under", "odd", "even" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1012,
+        "GameName": "speedluckynext",
+        "DisplayName": "Speed Lucky Next",
+        "BetChoices": [ "over", "under", "odd", "even" ],
+        "Odds": [ "over", "under", "odd", "even" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1013,
+        "GameName": "vipluckynext",
+        "DisplayName": "VIP Lucky Next",
+        "BetChoices": [ "over", "under", "odd", "even" ],
+        "Odds": [ "over", "under", "odd", "even" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1014,
+        "GameName": "sedienumber",
+        "DisplayName": "Se Die Number",
+        "BetChoices": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
+        "Odds": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1015,
+        "GameName": "speedsedienumber",
+        "DisplayName": "Speed Se Die Number",
+        "BetChoices": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
+        "Odds": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1016,
+        "GameName": "vipsedienumber",
+        "DisplayName": "VIP Se Die Number",
+        "BetChoices": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
+        "Odds": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1017,
+        "GameName": "tripleluck",
+        "DisplayName": "Triple Luck",
+        "BetChoices": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
+        "Odds": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1018,
+        "GameName": "speedtripleluck",
+        "DisplayName": "Speed Triple Luck",
+        "BetChoices": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
+        "Odds": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1019,
+        "GameName": "viptripleluck",
+        "DisplayName": "VIP Triple Luck",
+        "BetChoices": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
+        "Odds": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1020,
+        "GameName": "sicbonumber",
+        "DisplayName": "Sic Bo Number",
+        "BetChoices": [ "big", "small", "specific1", "specific2", "specific3", "specific4", "specific5", "specific6" ],
+        "Odds": [ "big", "small", "single", "double", "triple" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1021,
+        "GameName": "speedsicbonumber",
+        "DisplayName": "Speed Sic Bo Number",
+        "BetChoices": [ "big", "small", "specific1", "specific2", "specific3", "specific4", "specific5", "specific6" ],
+        "Odds": [ "big", "small", "single", "double", "triple" ],
+        "OfferedSystem": [ "GN" ]
+    },
+    {
+        "GameId": 1022,
+        "GameName": "vipsicbonumber",
+        "DisplayName": "VIP Sic Bo Number",
         "BetChoices": [ "big", "small", "specific1", "specific2", "specific3", "specific4", "specific5", "specific6" ],
         "Odds": [ "big", "small", "single", "double", "triple" ],
         "OfferedSystem": [ "GN" ]

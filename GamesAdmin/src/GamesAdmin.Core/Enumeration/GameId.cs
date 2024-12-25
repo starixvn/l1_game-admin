@@ -54,6 +54,8 @@
         FootballSlot = 79,
         CoinToss = 80,
         FootballCoinToss = 93,
+
+        //xD
         BacBall1 = 1001,
         BacBall2 = 1002,
         LuckyNext1 = 1003,
@@ -61,6 +63,23 @@
         SeBall1 = 1005,
         LuckyThree = 1006,
         SicBall = 1007,
+        BaccaratNumber = 1008,
+        SpeedBaccaratNumber = 1009,
+        VIPBaccaratNumber = 1010,
+        LuckyNext = 1011,
+        SpeedLuckyNext = 1012,
+        VIPLuckyNext = 1013,
+        SeDieNumber = 1014,
+        SpeedSeDieNumber = 1015,
+        VIPSeDieNumber = 1016,
+        TripleLuck = 1017,
+        SpeedTripleLuck = 1018, 
+        VIPTripleLuck = 1019,
+        SicBoNumber = 1020,
+        SpeedSicBoNumber = 1021,
+        VIPSicBoNumber = 1022,
+
+        //SK
         MegaKeno = 1501,
         MegaKeno2 = 1502,
         KenoMini = 1503,
