@@ -50,12 +50,18 @@ namespace GamesAdmin.Api.Report
             { GameId.DragonTigerFight, typeof(DragonTigerFightReportService) },
             { GameId.ColorGame, typeof(ColorGameReportService) },
             { GameId.BandarQiuQiu, typeof(BandarQiuQiuReportService) },
+            { GameId.FootballDice, typeof(FootballDiceReportService) },
+            { GameId.FootballSlot, typeof(FootballSlotReportService) },
+            //xD
             { GameId.BacBall1, typeof(BacBall1ReportService) },
             { GameId.BacBall2, typeof(BacBall2ReportService) },
             { GameId.LuckyNext1, typeof(NextBallReportService<LuckyNext1RoundEntity, LuckyNext1BetEntity, LuckyNext1BetLogEntity>) },
             { GameId.LuckyNext2, typeof(NextBallReportService<LuckyNext2RoundEntity, LuckyNext2BetEntity, LuckyNext2BetLogEntity>) },
-            { GameId.FootballDice, typeof(FootballDiceReportService) },
-            { GameId.FootballSlot, typeof(FootballSlotReportService) },
+            { GameId.BaccaratNumber, typeof(BaccaratNumberReportService<BaccaratNumberRoundEntity,BaccaratNumberBetEntity, BaccaratNumberBetLogEntity>) },
+            { GameId.SpeedBaccaratNumber, typeof(BaccaratNumberReportService<SpeedBaccaratNumberRoundEntity, SpeedBaccaratNumberBetEntity, SpeedBaccaratNumberBetLogEntity>) },
+            { GameId.VIPBaccaratNumber, typeof(BaccaratNumberReportService<VIPBaccaratNumberRoundEntity, VIPBaccaratNumberBetEntity, VIPBaccaratNumberBetLogEntity>) },
+
+            //SK
             { GameId.MegaKeno, typeof(MiniKenoReportService<MegaKenoRoundEntity, MegaKenoOnesEntity, MegaKenoBetEntity>) },
             { GameId.MegaKeno2, typeof(MiniKenoReportService<MegaKeno2RoundEntity, MegaKeno2OnesEntity, MegaKeno2BetEntity>) },
             { GameId.KenoMini, typeof(MiniKenoReportService<KenoMiniRoundEntity, KenoMiniOnesEntity, KenoMiniBetEntity>) },

@@ -27,8 +27,6 @@ using GamesAdmin.Api.ServiceStatus;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Api.VoidGame;
-using GamesAdmin.Api.VoidGame.BacBall1;
-using GamesAdmin.Api.VoidGame.BacBall2;
 using GamesAdmin.Api.VoidGameRemote;
 using GamesAdmin.Core;
 using GamesAdmin.Core.IdentityServer;
@@ -102,8 +100,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
             services.AddScoped<ITicketHandler, TicketHandler>();
-            services.AddScoped<IBacBall1VoidGameService, BacBall1VoidGameService>();
-            services.AddScoped<IBacBall2VoidGameService, BacBall2VoidGameService>();
 
             AddSlotServices(services);
             AddHoldemPokerServices(services, appSettings, refitSettings);
@@ -157,6 +153,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped(typeof(NextBallReportService<,,>));
             services.AddScoped<FootballDiceReportService>();
             services.AddScoped<FootballSlotReportService>();
+            services.AddScoped(typeof(BaccaratNumberReportService<,,>));
 
             services.AddPublicService();
 

@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.GeneralGameSettings;
-using GamesAdmin.Api.VoidGame.BacBall1;
-using GamesAdmin.Api.VoidGame.BacBall2;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Database;
@@ -51,16 +49,10 @@ namespace GamesAdmin.Api.VoidGame
 
         private readonly IGeneralGameSettingService generalGameSettingService;
 
-        private readonly IBacBall1VoidGameService bacBall1VoidGameService;
-
-        private readonly IBacBall2VoidGameService bacBall2VoidGameService;
-
         public TicketHandler(
             IAppSettings appSettings,
             ISentryClient sentryClient,
-            IGeneralGameSettingService generalGameSettingService,
-            IBacBall1VoidGameService bacBall1VoidGameService,
-            IBacBall2VoidGameService bacBall2VoidGameService)
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.sentryClient = sentryClient;
             this.generalGameSettingService = generalGameSettingService;
@@ -74,8 +66,6 @@ namespace GamesAdmin.Api.VoidGame
             var removedClient = new MongoClient(appSettings.RemovedDatabaseSettings.ConnectionString);
             removedDatabase = removedClient.GetDatabase(appSettings.RemovedDatabaseSettings.DatabaseName);
 
-            this.bacBall1VoidGameService = bacBall1VoidGameService;
-            this.bacBall2VoidGameService = bacBall2VoidGameService;
         }
 
         public async Task<bool> Void(string obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet)
@@ -130,17 +120,36 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.ColorGame => await Move<ColorGameBetEntity, ColorGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.BandarQiuQiu => await Move<BandarQiuQiuBetEntity, BandarQiuQiuBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.ChineseBlackjack => await MoveBlackjackGame<ChineseBlackjackBetEntity>(obCustId, partnerId, siteId, gameRoundId, freeBet),
-                           GameId.BacBall1 => await Move<BacBall1BetEntity, BacBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                           GameId.BacBall2 => await Move<BacBall2BetEntity, BacBall2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                           GameId.LuckyNext1 => await MoveByFieldName<LuckyNext1BetEntity, LuckyNext1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
-                           GameId.LuckyNext2 => await MoveByFieldName<LuckyNext2BetEntity, LuckyNext2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
                            GameId.FootballDice => await Move<FootballDiceBetEntity, FootballDiceBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.FootballSlot => await Move<FootballSlotBetEntity, FootballSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.CoinToss => await Move<CoinTossBetEntity, CoinTossBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                           GameId.SeBall1 => await Move<SeBall1BetEntity, SeBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.FootballCoinToss => await Move<FootballCoinTossBetEntity, FootballCoinTossBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+
+                           //xD
+                           GameId.BacBall1 => await MoveByFieldName<BacBall1BetEntity, BacBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.BacBall2 => await MoveByFieldName<BacBall2BetEntity, BacBall2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.LuckyNext1 => await MoveByFieldName<LuckyNext1BetEntity, LuckyNext1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.LuckyNext2 => await MoveByFieldName<LuckyNext2BetEntity, LuckyNext2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.SeBall1 => await Move<SeBall1BetEntity, SeBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.LuckyThree => await MoveByFieldName<LuckyThreeBetEntity, LuckyThreeBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
                            GameId.SicBall => await Move<SicBallBetEntity, SicBallBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.BaccaratNumber => await MoveByFieldName<BaccaratNumberBetEntity, BaccaratNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.SpeedBaccaratNumber => await MoveByFieldName<SpeedBaccaratNumberBetEntity, SpeedBaccaratNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.VIPBaccaratNumber => await MoveByFieldName<VIPBaccaratNumberBetEntity, VIPBaccaratNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.LuckyNext => await MoveByFieldName<LuckyNextBetEntity, LuckyNextBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.SpeedLuckyNext => await MoveByFieldName<SpeedLuckyNextBetEntity, SpeedLuckyNextBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.VIPLuckyNext => await MoveByFieldName<VIPLuckyNextBetEntity, VIPLuckyNextBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.SeDieNumber => await Move<SeDieNumberBetEntity, SeDieNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.SpeedSeDieNumber => await Move<SpeedSeDieNumberBetEntity, SpeedSeDieNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.VIPSeDieNumber => await Move<VIPSeDieNumberBetEntity, VIPSeDieNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.TripleLuck => await MoveByFieldName<TripleLuckBetEntity, TripleLuckBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.SpeedTripleLuck => await MoveByFieldName<SpeedTripleLuckBetEntity, SpeedTripleLuckBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.VIPTripleLuck => await MoveByFieldName<VIPTripleLuckBetEntity, VIPTripleLuckBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.SicBoNumber => await Move<SicBoNumberBetEntity, SicBoNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.SpeedSicBoNumber => await Move<SpeedSicBoNumberBetEntity, SpeedSicBoNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.VIPSicBoNumber => await Move<VIPSicBoNumberBetEntity, VIPSicBoNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+
+                           //SK
                            GameId.MegaKeno => await Move<MegaKenoOnesEntity, MegaKenoBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.MegaKeno2 => await Move<MegaKeno2OnesEntity, MegaKeno2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.KenoMini => await Move<KenoMiniOnesEntity, KenoMiniBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
@@ -230,17 +239,36 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.DragonTigerFight => await Find<DragonTigerFightBetEntity, DragonTigerFightBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.ColorGame => await Find<ColorGameBetEntity, ColorGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.BandarQiuQiu => await Find<BandarQiuQiuBetEntity, BandarQiuQiuBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                        GameId.BacBall1 => await Find<BacBall1BetEntity, BacBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                        GameId.BacBall2 => await Find<BacBall2BetEntity, BacBall2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                        GameId.LuckyNext1 => await FindByFieldName<LuckyNext1BetEntity, LuckyNext1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
-                        GameId.LuckyNext2 => await FindByFieldName<LuckyNext2BetEntity, LuckyNext2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
                         GameId.FootballDice => await Find<FootballDiceBetEntity, FootballDiceBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.FootballSlot => await Find<FootballSlotBetEntity, FootballSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.CoinToss => await Find<CoinTossBetEntity, CoinTossBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                        GameId.SeBall1 => await Find<SeBall1BetEntity, SeBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.FootballCoinToss => await Find<FootballCoinTossBetEntity, FootballCoinTossBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+
+                        //xD
+                        GameId.BacBall1 => await FindByFieldName<BacBall1BetEntity, BacBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.BacBall2 => await FindByFieldName<BacBall2BetEntity, BacBall2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.LuckyNext1 => await FindByFieldName<LuckyNext1BetEntity, LuckyNext1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.LuckyNext2 => await FindByFieldName<LuckyNext2BetEntity, LuckyNext2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.SeBall1 => await Find<SeBall1BetEntity, SeBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.LuckyThree => await FindByFieldName<LuckyThreeBetEntity, LuckyThreeBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
                         GameId.SicBall => await Find<SicBallBetEntity, SicBallBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.BaccaratNumber => await FindByFieldName<BaccaratNumberBetEntity, BaccaratNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.SpeedBaccaratNumber => await FindByFieldName<SpeedBaccaratNumberBetEntity, SpeedBaccaratNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.VIPBaccaratNumber => await FindByFieldName<VIPBaccaratNumberBetEntity, VIPBaccaratNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.LuckyNext => await FindByFieldName<LuckyNextBetEntity, LuckyNextBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.SpeedLuckyNext => await FindByFieldName<SpeedLuckyNextBetEntity, SpeedLuckyNextBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.VIPLuckyNext => await FindByFieldName<VIPLuckyNextBetEntity, VIPLuckyNextBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.SeDieNumber => await Find<SeDieNumberBetEntity, SeDieNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.SpeedSeDieNumber => await Find<SpeedSeDieNumberBetEntity, SpeedSeDieNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.VIPSeDieNumber => await Find<VIPSeDieNumberBetEntity, VIPSeDieNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.TripleLuck => await FindByFieldName<TripleLuckBetEntity, TripleLuckBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.SpeedTripleLuck => await FindByFieldName<SpeedTripleLuckBetEntity, SpeedTripleLuckBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.VIPTripleLuck => await FindByFieldName<VIPTripleLuckBetEntity, VIPTripleLuckBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.SicBoNumber => await Find<SicBoNumberBetEntity, SicBoNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.SpeedSicBoNumber => await Find<SpeedSicBoNumberBetEntity, SpeedSicBoNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.VIPSicBoNumber => await Find<VIPSicBoNumberBetEntity, VIPSicBoNumberBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+
+                        //SK
                         GameId.MegaKeno => await Find<MegaKenoOnesEntity, MegaKenoBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.MegaKeno2 => await Find<MegaKeno2OnesEntity, MegaKeno2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.KenoMini => await Find<KenoMiniOnesEntity, KenoMiniBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
@@ -483,27 +511,14 @@ namespace GamesAdmin.Api.VoidGame
                 int gameTypeId = 0)
             where T : BaseBetEntity
         {
-            List<T> record;
-            if (gameTypeId == (int)GameId.BacBall1)
-            {
-                record = (await bacBall1VoidGameService.FindTicket<T>(collection, obCustId, partnerId, siteId, gameRoundId, freeBet)).ToList();
-            }
-            else if (gameTypeId == (int)GameId.BacBall2)
-            {
-                record = (await bacBall2VoidGameService.FindTicket<T>(collection, obCustId, partnerId, siteId, gameRoundId, freeBet)).ToList();
-            }
-            else
-            {
-                record = (await collection
+           
+                return (await collection
                 .FindAsync(record => record.PlayerId == obCustId
                                     && record.OperatorId == partnerId
                                     && record.SiteId == siteId
                                     && (record.Round == gameRoundId)
                                     && (!freeBet || record.FreeBet == freeBet)))
                 .ToList();
-            }
-
-            return record;
         }
 
         private async Task<bool> RemoveTicket<T>(
@@ -516,25 +531,12 @@ namespace GamesAdmin.Api.VoidGame
                 int gameTypeId)
             where T : BaseBetEntity
         {
-            DeleteResult result;
-            if (gameTypeId == (int)GameId.BacBall1)
-            {
-                result = await bacBall1VoidGameService.RemoveTicket<T>(collection, obCustId, partnerId, siteId, gameRoundId, freeBet);
-            }
-            else if (gameTypeId == (int)GameId.BacBall2)
-            {
-                result = await bacBall2VoidGameService.RemoveTicket<T>(collection, obCustId, partnerId, siteId, gameRoundId, freeBet);
-            }
-            else
-            {
-                result = (await collection
-                .DeleteManyAsync(record => record.PlayerId == obCustId
-                                    && record.SiteId == siteId
-                                    && record.OperatorId == partnerId
-                                    && (record.Round == gameRoundId)
-                                    && (!freeBet || record.FreeBet == freeBet)));
-            }
-
+            var result = (await collection
+            .DeleteManyAsync(record => record.PlayerId == obCustId
+                                && record.SiteId == siteId
+                                && record.OperatorId == partnerId
+                                && (record.Round == gameRoundId)
+                                && (!freeBet || record.FreeBet == freeBet)));
             return result.DeletedCount > 0;
         }
 

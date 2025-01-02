@@ -47,12 +47,18 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.DragonTigerFight, typeof(DragonTigerFightReportService) },
             { GameId.ColorGame, typeof(ColorGameReportService) },
             { GameId.BandarQiuQiu, typeof(BandarQiuQiuReportService) },
+            { GameId.FootballDice, typeof(FootballDiceReportService) },
+            { GameId.FootballSlot, typeof(SlotRNGReportService) },
+            //xD
             { GameId.BacBall1, typeof(BacBall1ReportService) },
             { GameId.BacBall2, typeof(BacBall2ReportService) },
             { GameId.LuckyNext1, typeof(NextBallReportService) },
             { GameId.LuckyNext2, typeof(NextBallReportService) },
-            { GameId.FootballDice, typeof(FootballDiceReportService) },
-            { GameId.FootballSlot, typeof(SlotRNGReportService) },
+            { GameId.BaccaratNumber, typeof(BacBall1ReportService) },
+            { GameId.SpeedBaccaratNumber, typeof(BacBall1ReportService) },
+            { GameId.VIPBaccaratNumber, typeof(BacBall1ReportService) },
+
+            //SK
             { GameId.MegaKeno, typeof(MiniKenoReportService) },
             { GameId.MegaKeno2, typeof(MiniKenoReportService) },
             { GameId.KenoMini, typeof(MiniKenoReportService) },

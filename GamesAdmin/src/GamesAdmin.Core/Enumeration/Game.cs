@@ -55,16 +55,35 @@ namespace GamesAdmin.Core.Enumeration
         public const string ColorGameValue = "colorgame";
         public const string BandarQiuQiuValue = "bandarqiuqiu";
         public const string ChineseBlackjackValue = "chineseblackjack";
+        public const string FootballDiceValue = "footballdice";
+        public const string FootballSlotValue = "footballslot";
+        public const string CoinTossValue = "cointoss";
+
+        //xD
         public const string BacBall1Value = "bacball1";
         public const string BacBall2Value = "bacball2";
         public const string LuckyNext1Value = "luckynext1";
         public const string LuckyNext2Value = "luckynext2";
-        public const string FootballDiceValue = "footballdice";
-        public const string FootballSlotValue = "footballslot";
-        public const string CoinTossValue = "cointoss";
         public const string SeBall1Value = "seball1";
         public const string LuckyThreeValue = "luckythree";
         public const string SicBallValue = "sicball";
+        public const string BaccaratNumberValue = "baccaratnumber";
+        public const string SpeedBaccaratNumberValue = "speedbaccaratnumber";
+        public const string VIPBaccaratNumberValue = "vipbaccaratnumber";
+        public const string LuckyNextValue = "luckynext";
+        public const string SpeedLuckyNextValue = "speedluckynext";
+        public const string VIPLuckyNextValue = "vipluckynext";
+        public const string SeDieNumberValue = "sedienumber";
+        public const string SpeedSeDieNumberValue = "speedsedienumber";
+        public const string VIPSeDieNumberValue = "vipsedienumber";
+        public const string TripleLuckValue = "tripleluck";
+        public const string SpeedTripleLuckValue = "speedtripleluck";
+        public const string VIPTripleLuckValue = "viptripleluck";
+        public const string SicBoNumberValue = "sicbonumber";
+        public const string SpeedSicBoNumberValue = "speedsicbonumber";
+        public const string VIPSicBoNumberValue = "vipsicbonumber";
+
+        //SK
         public const string MegaKenoValue = "megakeno";
         public const string MegaKeno2Value = "megakeno2";
         public const string KenoMiniValue = "kenomini";

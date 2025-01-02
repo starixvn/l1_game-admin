@@ -39,12 +39,17 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.DragonTigerFight, "_DragonTigerFightRecords" },
             { GameId.ColorGame, "_ColorGameRecords" },
             { GameId.BandarQiuQiu, "_BandarQiuQiuRecords" },
+            { GameId.FootballDice, "_FootballDiceRecords" },
+            { GameId.FootballSlot, "_SlotRNGRecords" },
+            //xD
             { GameId.BacBall1, "_BacBall1Records" },
             { GameId.BacBall2, "_BacBall2Records" },
             { GameId.LuckyNext1, "_NextBallRecords" },
             { GameId.LuckyNext2, "_NextBallRecords" },
-            { GameId.FootballDice, "_FootballDiceRecords" },
-            { GameId.FootballSlot, "_SlotRNGRecords" },
+            { GameId.BaccaratNumber, "_BacBall1Records" },
+            { GameId.SpeedBaccaratNumber, "_BacBall1Records" },
+            { GameId.VIPBaccaratNumber, "_BacBall1Records" },
+            //SK
             { GameId.MegaKeno, "_KenoBetRecords" },
             { GameId.MegaKeno2, "_KenoBetRecords" },
             { GameId.KenoMini, "_KenoBetRecords" },
@@ -57,6 +62,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.KenoSoccer2, "_KenoMatchRecords" },
             { GameId.KenoPower, "_KenoPowerRecords" },
             { GameId.KenoPower2, "_KenoPowerRecords" },
+
 
         };
 
