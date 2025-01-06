@@ -6,6 +6,8 @@
         Mobi,
         Instant,
         MegaKeno,
-        App
+        App,
+        Livepage,
+        MobileDirect
     }
 }

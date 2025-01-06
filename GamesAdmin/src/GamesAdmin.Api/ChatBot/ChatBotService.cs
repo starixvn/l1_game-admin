@@ -236,6 +236,7 @@ namespace GamesAdmin.Api.ChatBot
                 Versions.Cocos => $"{systemPrefix}{GetCocosVersionSuffix()}{GetModeName(metadata)}",
                 Versions.MegaKeno => $"{GetMegaKenoVersionSuffix()}{GetModeName(metadata)}",
                 Versions.App => $"{systemPrefix}A",
+                Versions.Livepage => $"{systemPrefix}L",
                 _ => string.Empty,
             };
         }
