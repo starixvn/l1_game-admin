@@ -100,7 +100,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             {
                 AddOnlineUserApiGN(services, appSettings, refitSettings);
             }
-            else
+            else if (appSettings.SystemType == SystemType.SC1 || appSettings.SystemType == SystemType.VG2)
             {
                 AddOnlineUserApiSCVG(services, appSettings, refitSettings);
             }
@@ -256,7 +256,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddHoldemPokerServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<IHoldemPokerApiFactory, HoldemPokerApiFactory>();
-            if (appSettings.SystemType != SystemType.GN)
+            if (appSettings.SystemType == SystemType.SC1 || appSettings.SystemType == SystemType.VG2)
             {
                 services.AddSingleton(RestService.For<ICasinoHoldemPokerApi>(appSettings.GameServers.CasinoHoldemPoker.Api, refitSettings));
                 services.AddSingleton(RestService.For<ITexasHoldemPokerApi>(appSettings.GameServers.TexasHoldemPoker.Api, refitSettings));
@@ -266,7 +266,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddPontoonServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<IPontoonApiFactory, PontoonApiFactory>();
-            if (appSettings.SystemType != SystemType.GN)
+            if (appSettings.SystemType == SystemType.SC1 || appSettings.SystemType == SystemType.VG2)
             {
                 services.AddSingleton(RestService.For<IPontoonApi>(appSettings.GameServers.Pontoon.Api, refitSettings));
             }
@@ -280,7 +280,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddChineseBlackjackServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<IChineseBlackjackApiFactory, ChineseBlackjackApiFactory>();
-            if (appSettings.SystemType != SystemType.GN)
+            if (appSettings.SystemType == SystemType.SC1 || appSettings.SystemType == SystemType.VG2)
             {
                 services.AddSingleton(RestService.For<IChineseBlackjackApi>(appSettings.GameServers.ChineseBlackjack.Api, refitSettings));
             }
@@ -289,7 +289,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddFootballDiceServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<IFootballDiceApiFactory, FootballDiceApiFactory>();
-            if (appSettings.SystemType != SystemType.GN)
+            if (appSettings.SystemType == SystemType.SC1 || appSettings.SystemType == SystemType.VG2)
             {
                 services.AddSingleton(RestService.For<IFootballDiceApi>(appSettings.GameServers.FootballDice.Api, refitSettings));
             }
@@ -297,11 +297,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
         private static void AddBaccaratXServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
-            if (appSettings.SystemType != SystemType.GN)
-            {
-                services.AddSingleton(RestService.For<IBaccaratXApi>(appSettings.GameServers.BaccaratX.Api, refitSettings));
-                services.AddSingleton(RestService.For<IBaccaratXOnlineUserApi>(appSettings.GameServers.BaccaratX.Api, refitSettings));
-            }
+            services.AddSingleton(RestService.For<IBaccaratXApi>(appSettings.GameServers.BaccaratX.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBaccaratXOnlineUserApi>(appSettings.GameServers.BaccaratX.Api, refitSettings));
         }
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)

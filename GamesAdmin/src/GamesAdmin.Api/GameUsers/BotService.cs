@@ -67,6 +67,14 @@ namespace GamesAdmin.Api.GameUser
                 minAddAmount = 1_000_000,
                 maxAddAmount = 8_000_000,
                 }
+            },{SystemType.HD, new SystemBotSetting {
+                minBalance = 500,
+                maxBalance = 3_000,
+                minAmount = 500,
+                maxAmount = 12_000,
+                minAddAmount = 1_000,
+                maxAddAmount = 8_000,
+                }
             }
         };
 

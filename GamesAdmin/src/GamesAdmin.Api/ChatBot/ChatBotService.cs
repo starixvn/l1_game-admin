@@ -273,6 +273,7 @@ namespace GamesAdmin.Api.ChatBot
                 SystemType.SC1 => "S",
                 SystemType.VG2 => "VG",
                 SystemType.GN => "GN",
+                SystemType.HD => "HD",
                 _ => string.Empty
             };
         }

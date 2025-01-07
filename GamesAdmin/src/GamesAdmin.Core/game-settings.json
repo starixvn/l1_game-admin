@@ -5,7 +5,7 @@
     "DisplayName": "Bac Ball 1",
     "BetChoices": [ "player", "banker", "tie" ],
     "Odds": [ "player", "banker", "tie" ],
-    "OfferedSystem": [ "GN" ]
+    "OfferedSystem": [ "GN", "HD" ]
   },
   {
     "GameId": 1002,
@@ -13,7 +13,7 @@
     "DisplayName": "Bac Ball 2",
     "BetChoices": [ "player", "banker", "tie" ],
     "Odds": [ "player", "banker", "tie" ],
-    "OfferedSystem": [ "GN" ]
+    "OfferedSystem": [ "GN", "HD" ]
   },
   {
     "GameId": 1003,
@@ -21,7 +21,7 @@
     "DisplayName": "Lucky Next 1",
     "BetChoices": [ "over", "under", "odd", "even" ],
     "Odds": [ "over", "under", "odd", "even" ],
-    "OfferedSystem": [ "GN" ]
+    "OfferedSystem": [ "GN", "HD" ]
   },
   {
     "GameId": 1004,
@@ -29,7 +29,7 @@
     "DisplayName": "Lucky Next 2",
     "BetChoices": [ "over", "under", "odd", "even" ],
     "Odds": [ "over", "under", "odd", "even" ],
-    "OfferedSystem": [ "GN" ]
+    "OfferedSystem": [ "GN", "HD" ]
   },
   {
     "GameId": 80,
@@ -45,7 +45,7 @@
     "DisplayName": "Se Ball",
     "BetChoices": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
     "Odds": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
-    "OfferedSystem": [ "GN" ]
+    "OfferedSystem": [ "GN", "HD" ]
   },
   {
     "GameId": 93,
@@ -69,7 +69,7 @@
     "DisplayName": "Lucky Three",
     "BetChoices": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
     "Odds": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
-    "OfferedSystem": [ "GN" ]
+    "OfferedSystem": [ "GN", "HD" ]
   },
   {
     "GameId": 95,
@@ -85,7 +85,7 @@
     "DisplayName": "Sic Ball",
     "BetChoices": [ "big", "small", "specific1", "specific2", "specific3", "specific4", "specific5", "specific6" ],
     "Odds": [ "big", "small", "single", "double", "triple" ],
-    "OfferedSystem": [ "GN" ]
+    "OfferedSystem": [ "GN", "HD" ]
   },
   {
     "GameId": 96,

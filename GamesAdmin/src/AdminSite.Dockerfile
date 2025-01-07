@@ -1,10 +1,6 @@
 FROM hub.lumigame.com/base/dotnet/core/sdk:3.1-5-6 AS builder
 WORKDIR /src
 
-RUN apt-get update
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
-
 COPY ./GamesAdmin/src/GamesAdmin.Core ./GamesAdmin.Core
 COPY ./GamesAdmin/src/GamesAdmin.Database ./GamesAdmin.Database
 COPY ./GamesAdmin/src/GamesAdmin.Site/GamesAdmin.Site.csproj ./GamesAdmin.Site/GamesAdmin.Site.csproj

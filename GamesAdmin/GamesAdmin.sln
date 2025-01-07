@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{44BAC410-7BBB-44BF-B111-7088CC9B06EA}"
 EndProject
@@ -18,9 +18,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesAdmin.Database", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{828C7E8E-8E86-4DAA-BAA6-BA0ADEEC5E63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesAdmin.Api.UnitTests", "Tests\GameAdmin.Api.UnitTests\GamesAdmin.Api.UnitTests.csproj", "{4F9A4FFC-D2CB-4C8B-AF65-0D9C62303DC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesAdmin.Api.UnitTests", "Tests\GameAdmin.Api.UnitTests\GamesAdmin.Api.UnitTests.csproj", "{4F9A4FFC-D2CB-4C8B-AF65-0D9C62303DC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesAdmin.Site.UnitTests", "Tests\GamesAdmin.Site.UnitTests\GamesAdmin.Site.UnitTests.csproj", "{575CDE5C-52F1-44F4-B62F-26892F75B4E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesAdmin.Site.UnitTests", "Tests\GamesAdmin.Site.UnitTests\GamesAdmin.Site.UnitTests.csproj", "{575CDE5C-52F1-44F4-B62F-26892F75B4E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dockerfiles", "Dockerfiles", "{DE9B638F-BB26-4E5E-BE81-5BD7B634AB8A}"
+	ProjectSection(SolutionItems) = preProject
+		src\AdminApi.Dockerfile = src\AdminApi.Dockerfile
+		src\AdminSite.Dockerfile = src\AdminSite.Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
