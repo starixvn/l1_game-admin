@@ -57,7 +57,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
             double playerContribution,
             double botContribution,
             bool excludeTestCurrency = false,
-            string allowedCurrency = "INH"
+            string allowedCurrency = "USD"
             )
         {
             Enabled = enabled;

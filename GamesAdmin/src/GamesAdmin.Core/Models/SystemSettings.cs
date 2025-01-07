@@ -23,14 +23,14 @@ namespace GamesAdmin.Site._Shared.Configurations
         private readonly Dictionary<string, string> BaseCurrencyMapper = new Dictionary<string, string>
         {
             [SystemType.SC1] = "USD",
-            [SystemType.VG2] = "INH",
+            [SystemType.VG2] = "USD",
             [SystemType.GN] = "USD",
         };
 
         private readonly Dictionary<string, int> BaseCurrencyMultiplierMapper = new Dictionary<string, int>
         {
             [SystemType.SC1] = 1,
-            [SystemType.VG2] = 1000,
+            [SystemType.VG2] = 1,
             [SystemType.GN] = 1000,
         };
 

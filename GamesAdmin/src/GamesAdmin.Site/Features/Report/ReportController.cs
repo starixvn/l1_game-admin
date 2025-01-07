@@ -387,7 +387,7 @@ namespace GamesAdmin.Site.Features.Report
                     new GetJackpotReportRequest(model.GameId,
                         model.FromDate.Date.ToUniversalTime(),
                         model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(),
-                        model.ExcludeUUS, model.ExcludeBot, model.ConvertToINH, model.BaseCurrency)));
+                        model.ExcludeUUS, model.ExcludeBot, model.ConvertToUSD, model.BaseCurrency)));
         }
 
         private async Task<IActionResult> GetStakeBalancedView()

@@ -26,7 +26,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double PlayerContribution { get; set; }
 
         [DisplayName("Allowed Currency")]
-        public string AllowedCurrency { get; set; } = "INH";
+        public string AllowedCurrency { get; set; } = "USD";
 
         public List<StakeLevel> StakeLevels { get; set; }
     }
