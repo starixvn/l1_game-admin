@@ -234,6 +234,7 @@ namespace GamesAdmin.Api.ChatBot
                 Versions.MegaKeno => $"{GetMegaKenoVersionSuffix()}{GetModeName(metadata)}",
                 Versions.App => $"{systemPrefix}A",
                 Versions.Livepage => $"{systemPrefix}L",
+                Versions.MobileDirect => $"{systemPrefix}D",
                 _ => string.Empty,
             };
         }
