@@ -313,6 +313,18 @@ namespace GamesAdmin.Site.Features.GameSettings
                     default: break;
                 }
 
+                var videoStreamConfig = viewModel.VideoStreamConfig;
+
+                if (!string.IsNullOrEmpty(viewModel.VideoStreamConfigJson))
+                {
+                    if (viewModel.VideoStreamConfig == null)
+                    {
+                        viewModel.VideoStreamConfig = new VideoStreamConfig();
+                    }
+
+                    viewModel.VideoStreamConfig.PopulateFromJson(viewModel.VideoStreamConfigJson);
+                }
+
                 var request = new UpdateRequest(
                     new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode, string.Empty, viewModel.GameId, null, viewModel.MaxWinPerRound),
                     new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet, null, viewModel.SmartBotEnabled, viewModel.SmartBotGroupRatio.ConvertPercentValue()),
@@ -322,6 +334,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     slotRNGConfig,
                     crashConfig,
                     viewModel.OddsMultipliers,
+                    viewModel.TournamentConfig,
+                    viewModel.VideoStreamConfig,
                     viewModel.OtherGameIdsInGroup);
 
                 await mediator.Send(request);

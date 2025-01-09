@@ -72,7 +72,7 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateBotRatios(request.Name, request.BotRatios, request.OtherGameIdsInGroup);
 
         public Task<bool> Handle(UpdateGeneralConfigRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateGeneralConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers, request.OtherGameIdsInGroup);
+        => gameService.UpdateGeneralConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers, request.OtherGameIdsInGroup,request.TournamentConfig, request.VideoStreamConfig);
 
         public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
         => gameService.UpdateJackpot(request.Name, request.Jackpot, request.StakeLevels);

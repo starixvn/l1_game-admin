@@ -27,7 +27,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.SmartBotEnabled, opt => opt.MapFrom(src => src.BotSetting.SmartBotEnabled))
                 .ForMember(dest => dest.SmartBotGroupRatio, opt => opt.MapFrom(src => src.BotSetting.SmartBotGroupRatio.ToPercentage()))
                 .ForMember(dest => dest.ApplyMultiplier, opt => opt.MapFrom(src => src.Info.ApplyMultiplier))
-                .ForMember(dest => dest.GameId, opt => opt.MapFrom(src => src.Info.GameId));
+				.ForMember(dest => dest.HaveTournament, opt => opt.MapFrom(src => src.Info.HaveTournament))
+				.ForMember(dest => dest.HaveVideoStream, opt => opt.MapFrom(src => src.Info.HaveVideoStream))
+				.ForMember(dest => dest.GameId, opt => opt.MapFrom(src => src.Info.GameId));
 
             CreateMap<GameConfig, PayoutViewModel>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type == 0 ? GameType.AutoRNG : src.Info.Type))

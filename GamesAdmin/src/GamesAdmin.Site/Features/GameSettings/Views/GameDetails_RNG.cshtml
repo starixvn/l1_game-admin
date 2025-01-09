@@ -102,6 +102,84 @@
                 </div>
             }
 
+            @if (Model.HaveTournament)
+            {
+                var numberOfTeams = Model.TournamentConfig?.Teams?.Count ?? 0;
+                <div class="form-group">
+                    <label asp-for="TournamentConfig.Code" class="control-label"></label>
+                    <input type="text" asp-for="TournamentConfig.Code" class="form-control" />
+                </div>
+
+                <div class="form-group" id="tournament-teams">
+                    <label class="control-label">Tournament Teams</label>
+                    <label class="icon-add" style="margin-bottom: -10px;" onclick="gameStatus.addTournamentTeamItem()"></label>
+                    @for (var team = 0; team < numberOfTeams; team++)
+                    {
+                        <div class="row mt-2 tournament-team-item">
+                            <label class="team-index-label control-label col-2 mt-2 mr-2">Team @(team + 1)</label>
+                            <input type="text" name="TournamentConfig.Teams[@team]" class="form-control col-2" value="@Model.TournamentConfig.Teams[team]" />
+                            <i class="icon-cancel text-error mt-3 ml-2" style="cursor: pointer" 
+                               onclick="gameStatus.removeTournamentTeamItem(event)"></i>
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (Model.HaveVideoStream)
+            {
+                <div class="form-group" id="videos-streaming">
+                    <!-- Section for JSON import -->
+                    <label class="control-label mt-3">Import Video Stream Configuration (JSON)</label>
+                    <textarea id="json-video-input" class="form-control" rows="5" placeholder="Paste your JSON here"></textarea>
+                    <button type="button" class="btn btn-primary mt-2" onclick="gameStatus.importVideoStream()">Import JSON</button>
+                    
+                    <!-- Section for current video stream list -->
+                    <label class="control-label">Video Stream List</label>
+
+                    <div id="video-stream-comparison">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Video Name</th>
+                                    <th>Current Number of Videos</th>
+                                    <th id="updated-number-header" style="display: none;">Updated Number of Videos</th>
+                                </tr>
+                            </thead>
+                            <tbody id="video-stream-rows">
+                                @if (Model.VideoStreamConfig?.VideoInfos?.Any() == true)
+                                {
+                                    foreach (var videoInfo in Model.VideoStreamConfig.VideoInfos)
+                                    {
+                                        <tr data-video-name="@videoInfo.VideoName">
+                                            <td>@videoInfo.VideoName</td>
+                                            <td class="current-number" style="font-weight: normal; color: grey;">@videoInfo.NumberOfVideos</td>
+                                            <td class="updated-number" style="font-weight: normal; color: grey; display: none;">-</td>
+                                        </tr>
+                                    }
+
+                                    @for (var i = 0; i < Model.VideoStreamConfig.VideoInfos.Count; i++)
+                                    {
+                                        <input type="hidden" name="VideoStreamConfig.VideoInfos[@i].VideoName" value="@Model.VideoStreamConfig.VideoInfos[i].VideoName" />
+                                        <input type="hidden" name="VideoStreamConfig.VideoInfos[@i].NumberOfVideos" value="@Model.VideoStreamConfig.VideoInfos[i].NumberOfVideos" />
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3">No videos currently configured.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Hidden field to store the imported JSON -->
+                    <input type="hidden" name="VideoStreamConfigJson" id="video-stream-json" />
+                </div>
+            }
+
+
+
             @if (Model.Type == GameType.SlotRNG)
             {
                 <div class="form-group">

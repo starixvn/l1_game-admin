@@ -3,6 +3,8 @@
     var myChart = null;
     var $oddsMultiplierTemplate;
     var oddsMultiplierIndex;
+    var tournamentTeamIndex;
+    
     return {
         checkAll: function () {
             var checked = $("#status-all").prop("checked"),
@@ -129,6 +131,9 @@
 
                     $oddsMultiplierTemplate = $("#odds-multipliers .multiplier-item").first();
                     oddsMultiplierIndex = $("#odds-multipliers .multiplier-item").length;
+
+                    tournamentTeamIndex = $("#tournament-teams .tournament-team-item").length;
+
                     gameStatus.initFanexSelect("#OtherGameIdsInGroup", "#fanexGameIds");
 
                     $('#gameModal').modal('show');
@@ -454,6 +459,7 @@
             }
 
             this.updateOddsMultipliersIndex();
+            this.updateTournamentTeamIndex();
 
             $.ajax({
                 method: "POST",
@@ -994,6 +1000,8 @@
             var $number = $(".number", $newItem);
             $number.attr("name", $number.attr("name").replace(/\d+/, oddsMultiplierIndex)).val(0);
 
+            console.log($newItem.html());
+            
             $("#odds-multipliers").append($newItem);
             oddsMultiplierIndex++;
         },
@@ -1011,8 +1019,140 @@
                 var $number = $(".number", item);
                 $number.attr("name", $number.attr("name").replace(/\d+/, index));
             }
+        },
+        addTournamentTeamItem: function () {
+            var $newItem = $(`
+                <div class="row mt-2 tournament-team-item">
+                    <label class="team-index-label control-label col-2 mt-2 mr-2">Team ${tournamentTeamIndex + 1}</label>
+                    <input type="text" name="TournamentConfig.Teams[${tournamentTeamIndex}]" class="form-control col-2" />
+                    <i class="icon-cancel text-error mt-3 ml-2" style="cursor: pointer" 
+                       onclick="gameStatus.removeTournamentTeamItem(event)"></i>
+                </div>
+            `);
 
+            var $label = $(".team-index-label", $newItem);
+            $label.text(`Team ${tournamentTeamIndex + 1}`);
+
+            var $input = $(".form-control", $newItem);
+            $input.attr("name", `TournamentConfig.Teams[${tournamentTeamIndex}]`);
+        
+            $("#tournament-teams").append($newItem);
+            tournamentTeamIndex++;
+        },
+        removeTournamentTeamItem: function (event) {
+            tournamentTeamIndex--;
+            $(event.target).parent().remove();
+            this.updateTournamentTeamIndex();
+        },
+        updateTournamentTeamIndex: function () {
+            var $tournamentTeamItems = $(".tournament-team-item", "#tournament-teams");
+            for (let index = 0; index < $tournamentTeamItems.length; index++) {
+                var item = $tournamentTeamItems[index];
+                var teamIndexLabel = $(".team-index-label", item);
+                teamIndexLabel.text(`Team ${index + 1}`);
+                var teamInput = $(".form-control", item);
+                teamInput.attr("name", `TournamentConfig.Teams[${index}]`);
+            }
+        },
+        importVideoStream: function () {
+            var jsonInput = $("#json-video-input").val();
+            try {
+                // Parse the input JSON
+                var videoData = JSON.parse(jsonInput);
+
+                // Show the "Updated Number of Videos" column
+                $("#updated-number-header").show(); 
+
+                // Update the table rows with the new JSON data
+                var rowsUpdated = new Set();
+    
+                for (const [videoName, updatedNumber] of Object.entries(videoData)) {
+                    var selector = videoName === "0" 
+                    ? `#video-stream-rows tr[data-video-name='0']` 
+                    : `#video-stream-rows tr[data-video-name='${videoName}']`;
+
+                    var $row = $(selector);
+    
+                    if ($row.length) {
+                        // If the video name exists, update the "Updated Number" column
+                        var $currentCell = $(".current-number", $row);
+                        var $updatedCell = $(".updated-number", $row);
+                        var currentNumber = parseInt($currentCell.text()) || 0;
+
+                        // Show the updated number cell
+                        $updatedCell.show();
+
+                        if (currentNumber !== updatedNumber) {
+                            // Highlight the current and updated values
+                            $currentCell.css({ "font-weight": "bold", "color": "black" });
+                            $updatedCell.css({ "font-weight": "bold", "color": "red" }).text(updatedNumber);
+                        }
+                        else {
+                            // Grey out the numbers if no update
+                            $currentCell.css({ "font-weight": "normal", "color": "grey" });
+                            $updatedCell.css({ "font-weight": "normal", "color": "grey" }).text("-");
+                        }
+                    } else {
+                        // If the video name doesn't exist, add a new row
+                        var newRowHtml = `
+                            <tr data-video-name="${videoName}">
+                                <td>${videoName}</td>
+                                <td class="current-number" style="font-weight: normal; color: grey;">-</td>
+                            <td class="updated-number" style="font-weight: bold; color: red;">${updatedNumber}</td>
+                            </tr>
+                        `;
+                        $("#video-stream-rows").append(newRowHtml);
+                    }
+    
+                    rowsUpdated.add(videoName);
+                }
+    
+                // Mark rows with no updates as unchanged
+                $("#video-stream-rows tr").each(function () {
+                    var videoName = $(this).data("video-name");
+                
+                    if (videoName === undefined) {
+                        return;
+                    }
+                
+                    videoName = videoName.toString();
+                
+                    if (!rowsUpdated.has(videoName)) {
+                        $(this).css({
+                            "text-decoration": "line-through", 
+                            "font-weight": "bold",
+                            "color": "red" 
+                        });
+            
+                    }
+                });
+    
+                // Save the JSON data to the hidden input field
+                $("#video-stream-json").val(jsonInput);
+            } catch (error) {
+                // Handle invalid JSON format
+                alert("Invalid JSON format. Please check and try again.");
+                $("#updated-number-header").hide(); 
+                $(".updated-number").hide();
+        
+                // Reset any styling on current number cells but keep their values
+                $("#video-stream-rows tr").each(function() {
+                    $(this).css({
+                        "text-decoration": "none",
+                        "font-weight": "normal",
+                        "color": "inherit"
+                    });
+                    $(".current-number", this).css({
+                        "font-weight": "normal",
+                        "color": "grey"
+                    });
+                });
+                
+                // Clear the JSON input
+                $("#video-stream-json").val("");
+            }
         }
+                
     }
 }(jQuery));
 

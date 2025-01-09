@@ -70,5 +70,13 @@ namespace GamesAdmin.Database.Entities
         public OddsMultipliersConfig OddsMultipliers { get; set; }
 
         public bool ApplyMultiplier { get; set; }
-    }
+
+		public TournamentConfig TournamentConfig { get; set; }
+
+		public VideoStreamConfig VideoStreamConfig { get; set; }
+
+		public bool HaveTournament { get; set; }
+
+		public bool HaveVideoStream { get; set; }
+	}
 }

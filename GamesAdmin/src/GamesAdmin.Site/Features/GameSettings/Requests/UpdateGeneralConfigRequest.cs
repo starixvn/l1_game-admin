@@ -6,14 +6,16 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class UpdateGeneralConfigRequest : IRequest<bool>
     {
-        public UpdateGeneralConfigRequest(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null, IEnumerable<int> otherGameIdsInGroup = null)
+        public UpdateGeneralConfigRequest(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null, IEnumerable<int> otherGameIdsInGroup = null, TournamentConfig tournamentConfig = null, VideoStreamConfig videoStreamConfig = null)
         {
             GameInfo = gameInfo;
             BotSetting = botSetting;
             EnableSetting = enableSetting;
             OddsMultipliers= oddsMultipliers;
             OtherGameIdsInGroup = otherGameIdsInGroup;
-        }
+			TournamentConfig = tournamentConfig;
+			VideoStreamConfig = videoStreamConfig;
+		}
 
         public GameInfo GameInfo { get; }
 
@@ -23,6 +25,10 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 
         public OddsMultipliersConfig OddsMultipliers { get; }
 
-        public IEnumerable<int> OtherGameIdsInGroup { get; }
+		public TournamentConfig TournamentConfig { get; }
+
+		public VideoStreamConfig VideoStreamConfig { get; }
+
+		public IEnumerable<int> OtherGameIdsInGroup { get; }
     }
 }
