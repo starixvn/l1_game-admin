@@ -50,7 +50,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig);
 
-        Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null, IEnumerable<int> otherGameIdsInGroup = null);
+        Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null, IEnumerable<int> otherGameIdsInGroup = null, TournamentConfig tournamentConfig = null, VideoStreamConfig videoStreamConfig = null);
 
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
@@ -129,7 +129,9 @@ namespace GamesAdmin.Api.Games
                     GameId = gameId,
                     DisplayName = game.Info.DisplayName,
                     CrashConfig = game.CrashConfig,
-                    ApplyMultiplier = game.Info.ApplyMultiplier
+                    ApplyMultiplier = game.Info.ApplyMultiplier,
+                    HaveTournament = game.Info.HaveTournament,
+                    HaveVideoStream = game.Info.HaveVideoStream,
                 };
 
                 if (game.Info.ApplyMultiplier)
@@ -140,7 +142,24 @@ namespace GamesAdmin.Api.Games
                     };
                 }
 
-                await repository.InsertOneAsync(entity);
+				if (game.Info.HaveTournament)
+				{
+                    entity.TournamentConfig = new TournamentConfig()
+                    {
+                        Code = "",
+                        Teams = new List<string> {}
+					};
+				}
+
+				if (game.Info.HaveVideoStream)
+				{
+					entity.VideoStreamConfig = new VideoStreamConfig()
+					{
+						VideoInfos = new List<VideoInfo> {}
+					};
+				}
+
+				await repository.InsertOneAsync(entity);
 
                 var messages = new Dictionary<string, string> { [Language.DefaultLanguageValue] = game.EnableSetting.DisabledMessage };
                 await notificationService.AddDisableMessage(game.Info.Name, messages);
@@ -546,7 +565,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null, IEnumerable<int> otherGameIdsInGroup = null)
+        public async Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null, IEnumerable<int> otherGameIdsInGroup = null, TournamentConfig tournamentConfig = null, VideoStreamConfig videoStreamConfig = null)
         {
             try
             {
@@ -558,6 +577,8 @@ namespace GamesAdmin.Api.Games
                     var changedSettings = SettingHelper.GetGeneralConfigChangedModel(gameEntity, gameInfo, botSetting, enableSetting);
                     sentryClient.CaptureChangedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
 
+                    Console.WriteLine(tournamentConfig);
+
                     var update = Builders<GameConfigEntity>.Update
                         .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
                         .Set(field => field.DelayStartTime, enableSetting.DelayStartTime)
@@ -567,7 +588,9 @@ namespace GamesAdmin.Api.Games
                         .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
                         .Set(field => field.RandomMode, gameInfo.RandomMode)
                         .Set(field => field.MaxWinPerRound, gameInfo.MaxWinPerRound)
-                        .Set(field => field.OddsMultipliers, oddsMultipliers);
+                        .Set(field => field.OddsMultipliers, oddsMultipliers)
+                        .Set(field => field.TournamentConfig, tournamentConfig)
+                        .Set(field => field.VideoStreamConfig, videoStreamConfig);
 
                     var filter = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
 

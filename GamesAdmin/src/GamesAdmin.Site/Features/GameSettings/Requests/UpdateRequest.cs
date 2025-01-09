@@ -16,6 +16,8 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             SlotRNGConfig slotRNGConfig,
             CrashConfig crashConfig,
             OddsMultipliersConfig oddsMultipliers,
+            TournamentConfig tournamentConfig,
+            VideoStreamConfig videoStreamConfig,
             IEnumerable<int> otherGameIdsInGroup)
         {
             GameInfo = gameInfo;
@@ -26,6 +28,8 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             SlotRNGConfig = slotRNGConfig;
             CrashConfig = crashConfig;
             OddsMultipliers = oddsMultipliers;
+            TournamentConfig = tournamentConfig;
+            VideoStreamConfig = videoStreamConfig;
             OtherGameIdsInGroup = otherGameIdsInGroup ?? Enumerable.Empty<int>();
         }
 
@@ -44,6 +48,10 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public CrashConfig CrashConfig { get; }
 
         public OddsMultipliersConfig OddsMultipliers { get; set; }
-        public IEnumerable<int> OtherGameIdsInGroup { get; }
+
+		public TournamentConfig TournamentConfig { get; set; }
+
+		public VideoStreamConfig VideoStreamConfig { get; set; }
+		public IEnumerable<int> OtherGameIdsInGroup { get; }
     }
 }

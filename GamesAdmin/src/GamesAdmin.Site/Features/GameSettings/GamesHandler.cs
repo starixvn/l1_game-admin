@@ -142,6 +142,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.SlotRNGConfig = game.SlotRNGConfig;
                 viewModel.CrashConfig = game.CrashConfig;
                 viewModel.OddsMultipliers = game.OddsMultipliers;
+                viewModel.TournamentConfig = game.TournamentConfig;
+                viewModel.VideoStreamConfig = game.VideoStreamConfig;
 
                 var gameGroup = await gameGroupManagementApi.GetByGameId(game.Info.GameId);
                 if (gameGroup != null)
@@ -377,7 +379,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     return gameService.UpdateCrashConfig(new UpdateCrashConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.CrashConfig));
 
                 default:
-                    return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers, request.OtherGameIdsInGroup));
+                    return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers, request.OtherGameIdsInGroup, request.TournamentConfig, request.VideoStreamConfig));
             }
         }
 

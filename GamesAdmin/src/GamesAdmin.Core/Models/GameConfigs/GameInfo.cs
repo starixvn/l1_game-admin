@@ -13,7 +13,9 @@ namespace GamesAdmin.Core.Models.GameConfigs
             int gameId = 0,
             string[] siteExclusions = null,
             int maxWinPerRound = 0,
-            bool applyMultiplier = false)
+            bool applyMultiplier = false,
+            bool haveTournament = false,
+            bool haveVideoStream = false)
         {
             Name = name;
             EnableFreeBet = enableFreeBet;
@@ -24,6 +26,8 @@ namespace GamesAdmin.Core.Models.GameConfigs
             DisplayName = displayName;
             MaxWinPerRound = maxWinPerRound;
             ApplyMultiplier = applyMultiplier;
+            HaveTournament = haveTournament;
+            HaveVideoStream = haveVideoStream;
         }
 
         public int GameId { get; }
@@ -43,5 +47,9 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public int MaxWinPerRound { get; set; }
 
         public bool ApplyMultiplier { get; set; }
+
+        public bool HaveTournament { get; set; }
+
+        public bool HaveVideoStream { get; set; }
     }
 }

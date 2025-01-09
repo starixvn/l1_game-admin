@@ -105,5 +105,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Apply Multiplier")]
         public bool ApplyMultiplier { get; set; }
-    }
+
+		[DisplayName("Have Tournament")]
+		public bool HaveTournament { get; set; }
+
+		[DisplayName("Have Video Stream")]
+		public bool HaveVideoStream { get; set; }
+	}
 }

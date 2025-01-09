@@ -83,6 +83,12 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public OddsMultipliersConfig OddsMultipliers { get; set; }
 
+        public TournamentConfig TournamentConfig { get; set; }
+
+        public VideoStreamConfig VideoStreamConfig { get; set; }
+
+        public string VideoStreamConfigJson { get; set; }
+
         public string DetailsView { get; set; }
 
         public CrashConfig CrashConfig { get; set; }
@@ -91,7 +97,12 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public int MaxWinPerRound { get; set; }
 
         public bool ApplyMultiplier { get; set; }
-        public IEnumerable<int> OtherGameIdsInGroup { get; set; }
+
+		public bool HaveTournament { get; set; }
+
+		public bool HaveVideoStream { get; set; }
+
+		public IEnumerable<int> OtherGameIdsInGroup { get; set; }
         public IEnumerable<SelectListItem> OtherGamesInGroup { get; set; }
     }
 
