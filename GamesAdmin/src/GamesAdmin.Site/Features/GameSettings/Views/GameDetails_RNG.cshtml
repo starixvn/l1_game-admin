@@ -215,6 +215,38 @@
                     <label asp-for="CrashConfig.CrashAtBase" class="control-label">Crash at Base (%)</label>
                     <input type="number" asp-for="CrashConfig.CrashAtBase" class="form-control col-2" />
                 </div>
+
+                @if(Model.CrashConfig.MultiplierConfigs != null)
+                {
+                    <div class="form-group">
+                        <label class="control-label">Multiplier Configs</label>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="control-label">Min</label>
+                            </div>
+                            <div class="col-4">
+                                <label class="control-label">Max</label>
+                            </div>
+                            <div class="col-4">
+                                <label class="control-label">Increment</label>
+                            </div>
+                        </div>
+                        @for (var i = 0; i < Model.CrashConfig.MultiplierConfigs.Stages.Count; i++)
+                        {
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <input type="number" asp-for="@Model.CrashConfig.MultiplierConfigs.Stages[i].MinMultiplier" class="form-control" />
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" asp-for="@Model.CrashConfig.MultiplierConfigs.Stages[i].MaxMultiplier" class="form-control" />
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" asp-for="@Model.CrashConfig.MultiplierConfigs.Stages[i].Increment" class="form-control" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
             }
 
             @if (Model.Type == GameType.DynamicOdds)
