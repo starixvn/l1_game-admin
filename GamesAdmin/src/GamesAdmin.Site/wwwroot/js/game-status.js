@@ -1048,7 +1048,7 @@
             this.removeAllTournamentTeams();
             
             var tournamentTeamsInput = $("#tournament-teams-input").val();
-            var tournamentTeams = tournamentTeamsInput.split(";").filter(team => team.trim() !== "");
+            var tournamentTeams = tournamentTeamsInput.split(/[,;]/).filter(team => team.trim() !== "");
         
             // Add new/updated teams
             for (let index = 0; index < tournamentTeams.length; index++) {
