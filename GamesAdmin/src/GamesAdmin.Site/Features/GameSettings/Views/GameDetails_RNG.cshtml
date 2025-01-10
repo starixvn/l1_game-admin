@@ -108,14 +108,14 @@
 
                 <div class="form-group" id="tournament-teams">
                     <label class="control-label">Tournament Teams</label>
-                    <label class="icon-add" style="margin-bottom: -10px;" onclick="gameStatus.addTournamentTeamItem()"></label>
+                    <textarea id="tournament-teams-input" class="form-control" rows="3" style="min-height: 60px; resize: vertical;" placeholder="Ex: BAR;REA;MCI;..."></textarea>
+                    <button type="button" class="btn btn-primary mt-2" onclick="gameStatus.updateTournamentTeams()">Update</button>
+                    <button type="button" class="btn btn-secondary mt-2" onclick="gameStatus.rollbackTournamentTeams()">Reset</button>
                     @for (var team = 0; team < numberOfTeams; team++)
                     {
                         <div class="row mt-2 tournament-team-item">
                             <label class="team-index-label control-label col-2 mt-2 mr-2">Team @(team + 1)</label>
-                            <input type="text" name="TournamentConfig.Teams[@team]" class="form-control col-2" value="@Model.TournamentConfig.Teams[team]" />
-                            <i class="icon-cancel text-error mt-3 ml-2" style="cursor: pointer" 
-                               onclick="gameStatus.removeTournamentTeamItem(event)"></i>
+                            <input type="text" name="TournamentConfig.Teams[@team]" class="form-control col-2" value="@Model.TournamentConfig.Teams[team]" readonly="true" />
                         </div>
                     }
                 </div>
@@ -126,7 +126,7 @@
                 <div class="form-group" id="videos-streaming">
                     <!-- Section for JSON import -->
                     <label class="control-label mt-3">Import Video Stream Configuration (JSON)</label>
-                    <textarea id="json-video-input" class="form-control" rows="5" placeholder="Paste your JSON here"></textarea>
+                    <textarea id="json-video-input" class="form-control" rows="5" style="min-height: 80px; resize: vertical;" placeholder="Paste your JSON here"></textarea>
                     <button type="button" class="btn btn-primary mt-2" onclick="gameStatus.importVideoStream()">Import JSON</button>
                     
                     <!-- Section for current video stream list -->

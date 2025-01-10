@@ -3,7 +3,7 @@
     var myChart = null;
     var $oddsMultiplierTemplate;
     var oddsMultiplierIndex;
-    var tournamentTeamIndex;
+    var originalTeams = null;
     
     return {
         checkAll: function () {
@@ -131,8 +131,6 @@
 
                     $oddsMultiplierTemplate = $("#odds-multipliers .multiplier-item").first();
                     oddsMultiplierIndex = $("#odds-multipliers .multiplier-item").length;
-
-                    tournamentTeamIndex = $("#tournament-teams .tournament-team-item").length;
 
                     gameStatus.initFanexSelect("#OtherGameIdsInGroup", "#fanexGameIds");
 
@@ -459,7 +457,7 @@
             }
 
             this.updateOddsMultipliersIndex();
-            this.updateTournamentTeamIndex();
+            this.resetOriginalTeams();
 
             $.ajax({
                 method: "POST",
@@ -1020,39 +1018,75 @@
                 $number.attr("name", $number.attr("name").replace(/\d+/, index));
             }
         },
-        addTournamentTeamItem: function () {
+        addTournamentTeamItem: function (teamIndex, teamName, currentTeamName) {
             var $newItem = $(`
                 <div class="row mt-2 tournament-team-item">
-                    <label class="team-index-label control-label col-2 mt-2 mr-2">Team ${tournamentTeamIndex + 1}</label>
-                    <input type="text" name="TournamentConfig.Teams[${tournamentTeamIndex}]" class="form-control col-2" />
-                    <i class="icon-cancel text-error mt-3 ml-2" style="cursor: pointer" 
-                       onclick="gameStatus.removeTournamentTeamItem(event)"></i>
+                    <label class="team-index-label control-label col-2 mt-2 mr-2">Team ${teamIndex + 1}</label>
+                    <input type="text" name="TournamentConfig.Teams[${teamIndex}]" value="${teamName}" class="form-control col-2" readonly="true" />
+                    ${currentTeamName ? `<span class="ml-2 mt-2 current-team" style="color: grey;">(Current: ${currentTeamName})</span>` : ''}
                 </div>
             `);
-
-            var $label = $(".team-index-label", $newItem);
-            $label.text(`Team ${tournamentTeamIndex + 1}`);
-
-            var $input = $(".form-control", $newItem);
-            $input.attr("name", `TournamentConfig.Teams[${tournamentTeamIndex}]`);
+        
+            if (currentTeamName && currentTeamName !== teamName) {
+                $newItem.find('input').css('color', 'red');
+            }
         
             $("#tournament-teams").append($newItem);
-            tournamentTeamIndex++;
         },
-        removeTournamentTeamItem: function (event) {
-            tournamentTeamIndex--;
-            $(event.target).parent().remove();
-            this.updateTournamentTeamIndex();
+        removeAllTournamentTeams: function () {
+            $("#tournament-teams .tournament-team-item").remove();
         },
-        updateTournamentTeamIndex: function () {
-            var $tournamentTeamItems = $(".tournament-team-item", "#tournament-teams");
-            for (let index = 0; index < $tournamentTeamItems.length; index++) {
-                var item = $tournamentTeamItems[index];
-                var teamIndexLabel = $(".team-index-label", item);
-                teamIndexLabel.text(`Team ${index + 1}`);
-                var teamInput = $(".form-control", item);
-                teamInput.attr("name", `TournamentConfig.Teams[${index}]`);
+        updateTournamentTeams: function () {
+            // Get current teams before clearing
+            if (originalTeams === null) {
+                originalTeams = [];
+                $("#tournament-teams .tournament-team-item input").each(function() {
+                    originalTeams.push($(this).val());
+                });
             }
+        
+            this.removeAllTournamentTeams();
+            
+            var tournamentTeamsInput = $("#tournament-teams-input").val();
+            var tournamentTeams = tournamentTeamsInput.split(";").filter(team => team.trim() !== "");
+        
+            // Add new/updated teams
+            for (let index = 0; index < tournamentTeams.length; index++) {
+                var team = tournamentTeams[index];
+                var currentTeam = originalTeams[index] || null;
+                if (team && team.trim() !== "") {
+                    this.addTournamentTeamItem(index, team, currentTeam);
+                }
+            }
+        
+            // Show removed teams
+            for (let index = tournamentTeams.length; index < originalTeams.length; index++) {
+                var removedTeam = originalTeams[index];
+                var $removedItem = $(`
+                    <div class="row mt-2 tournament-team-item">
+                        <label class="team-index-label control-label col-2 mt-2 mr-2">Team ${index + 1}</label>
+                        <input type="text" value="${removedTeam}" class="form-control col-2" readonly="true" style="text-decoration: line-through; color: red;" />
+                        <span class="ml-2 mt-2" style="color: red;">(Removed)</span>
+                    </div>
+                `);
+                $("#tournament-teams").append($removedItem);
+            }
+        },
+        rollbackTournamentTeams: function() {
+            if (originalTeams === null) {
+                return; 
+            }
+            
+            this.removeAllTournamentTeams();
+            
+            for (let index = 0; index < originalTeams.length; index++) {
+                this.addTournamentTeamItem(index, originalTeams[index], null);
+            }
+            
+            $("#tournament-teams-input").val("");
+        },
+        resetOriginalTeams: function() {
+            originalTeams = null;
         },
         importVideoStream: function () {
             var jsonInput = $("#json-video-input").val();
