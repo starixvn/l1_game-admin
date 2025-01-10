@@ -112,7 +112,7 @@
 
                 <div class="form-group" id="tournament-teams">
                     <label class="control-label">Tournament Teams</label>
-                    <textarea id="tournament-teams-input" class="form-control" rows="3" style="min-height: 60px; resize: vertical;" placeholder="Ex: BAR;REA;MCI;..."></textarea>
+                    <textarea id="tournament-teams-input" class="form-control" rows="3" style="min-height: 60px; resize: vertical;" placeholder="Ex: BAR,REA,MCI,..."></textarea>
                     <button type="button" class="btn btn-primary mt-2" onclick="gameStatus.updateTournamentTeams()">Update</button>
                     <button type="button" class="btn btn-secondary mt-2" onclick="gameStatus.rollbackTournamentTeams()">Reset</button>
                     @for (var team = 0; team < numberOfTeams; team++)
