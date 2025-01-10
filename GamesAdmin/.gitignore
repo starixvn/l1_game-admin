@@ -389,3 +389,4 @@ __snapshots__
 
 # Ignore local eslint
 .eslintrc.js
+.codegpt
