@@ -22,7 +22,7 @@ namespace GamesAdmin.Api.GameServers
         {
             var refitSettings = new RefitSettings
             {
-                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
+                AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken()
             };
 
             var api = string.Format(appSettings.ServiceApiTemplate, serviceName);

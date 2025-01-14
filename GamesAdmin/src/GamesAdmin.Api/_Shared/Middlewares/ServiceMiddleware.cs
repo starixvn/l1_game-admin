@@ -50,7 +50,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             var refitSettings = new RefitSettings
             {
-                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
+                AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken(),
                 ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
             };
 
@@ -330,7 +330,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
                 var authorizationHeaderRefitSettings = new RefitSettings
                 {
-                    AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
+                    AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken(),
                 };
                 services.AddSingleton(RestService.For<IGameManagementApi>(appSettings.CloudSettings.GameManagementUrl, authorizationHeaderRefitSettings));
 
