@@ -574,10 +574,8 @@ namespace GamesAdmin.Api.Games
                 var writes = new List<UpdateOneModel<GameConfigEntity>>();
                 foreach (var gameEntity in gameEntities)
                 {
-                    var changedSettings = SettingHelper.GetGeneralConfigChangedModel(gameEntity, gameInfo, botSetting, enableSetting);
+                    var changedSettings = SettingHelper.GetGeneralConfigChangedModel(gameEntity, gameInfo, botSetting, enableSetting, oddsMultipliers, tournamentConfig, videoStreamConfig);
                     sentryClient.CaptureChangedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
-
-                    Console.WriteLine(tournamentConfig);
 
                     var update = Builders<GameConfigEntity>.Update
                         .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)

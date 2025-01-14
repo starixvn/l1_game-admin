@@ -7,6 +7,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database.Entities;
+using Newtonsoft.Json;
 
 namespace GamesAdmin.Api._Shared.Helpers
 {
@@ -120,7 +121,10 @@ namespace GamesAdmin.Api._Shared.Helpers
             GameConfigEntity oldConfig,
             GameInfo gameInfo,
             BotSetting botSetting,
-            EnableSetting enableSetting)
+            EnableSetting enableSetting,
+            OddsMultipliersConfig oddsMultipliersConfig,
+            TournamentConfig tournamentConfig,
+            VideoStreamConfig videoStreamConfig)
         {
             var changedSettings = new List<SettingChangedModel>
             {
@@ -133,6 +137,21 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("RandomMode", oldConfig.RandomMode.ToString(), gameInfo.RandomMode.ToString()),
                 new SettingChangedModel("MaxWinPerRound", oldConfig.MaxWinPerRound.ToString(), gameInfo.MaxWinPerRound.ToString()),
             };
+
+            if (oldConfig.ApplyMultiplier && oddsMultipliersConfig != null)
+            {
+                changedSettings.Add(new SettingChangedModel("OddsMultipliers", JsonConvert.SerializeObject(oldConfig.OddsMultipliers), JsonConvert.SerializeObject(oddsMultipliersConfig)));
+            }
+
+            if (oldConfig.HaveTournament && tournamentConfig != null)
+            {
+                changedSettings.Add(new SettingChangedModel("TournamentConfig", JsonConvert.SerializeObject(oldConfig.TournamentConfig), JsonConvert.SerializeObject(tournamentConfig)));
+            }
+
+            if (oldConfig.VideoStreamConfig != null && videoStreamConfig != null)
+            {
+                changedSettings.Add(new SettingChangedModel("VideoStreamConfig", JsonConvert.SerializeObject(oldConfig.VideoStreamConfig), JsonConvert.SerializeObject(videoStreamConfig)));
+            }
 
             return changedSettings;
         }
