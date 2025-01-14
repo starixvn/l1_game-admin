@@ -24,6 +24,7 @@ using Microsoft.IdentityModel.Tokens;
 using Refit;
 using Sentry;
 using HiloCard = GamesAdmin.Core.Models.Card;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -80,7 +81,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly IChineseBlackjackApiFactory chineseBlackjackApiFactory;
         private readonly ICrashGameApiFactory crashGameApiFactory;
         private readonly IFootballDiceApiFactory footballDiceApiFactory;
-        private readonly IBaccaratXApi baccaratXApi;
+        private readonly IServiceProvider serviceProvider;
 
         public GameServerService(
             ISentryClient sentryClient,
@@ -99,8 +100,7 @@ namespace GamesAdmin.Api.GameServers
             IChineseBlackjackApiFactory chineseBlackjackApiFactory,
             ICrashGameApiFactory crashGameApiFactory,
             IFootballDiceApiFactory footballDiceApiFactory,
-            IBaccaratXApi baccaratXApi
-            )
+            IServiceProvider serviceProvider)
         {
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
@@ -118,7 +118,7 @@ namespace GamesAdmin.Api.GameServers
             this.chineseBlackjackApiFactory = chineseBlackjackApiFactory;
             this.crashGameApiFactory = crashGameApiFactory;
             this.footballDiceApiFactory = footballDiceApiFactory;
-            this.baccaratXApi = baccaratXApi;
+            this.serviceProvider = serviceProvider;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -402,6 +402,7 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
+                var baccaratXApi = serviceProvider.GetRequiredService<IBaccaratXApi>();
                 return await baccaratXApi.SetResult(request, request.gameConfigName);
             }
             catch (Exception ex)

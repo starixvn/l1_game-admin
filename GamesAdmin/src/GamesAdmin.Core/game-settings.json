@@ -61,7 +61,7 @@
     "DisplayName": "Pusoy",
     "BetChoices": [],
     "Odds": [],
-    "OfferedSystem": ["SC1", "VG2"]
+    "OfferedSystem": [ "SC1", "VG2" ]
   },
   {
     "GameId": 1006,
@@ -99,8 +99,40 @@
     "GameId": 104,
     "GameName": "marblefootball",
     "DisplayName": "Marble Football",
-    "BetChoices": ["home", "away", "draw", "over", "under", "odd", "even"],
-    "Odds": ["home", "away", "draw", "draw4", "over", "under", "odd", "even"],
-    "OfferedSystem": ["SC1", "VG2"]
+    "BetChoices": [ "home", "away", "draw", "over", "under", "odd", "even" ],
+    "Odds": [ "home", "away", "draw", "draw4", "over", "under", "odd", "even" ],
+    "OfferedSystem": [ "SC1", "VG2" ]
+  },
+  {
+    "GameId": 2,
+    "GameName": "xocxoc",
+    "DisplayName": "Se Die",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": [ "HD" ]
+  },
+  {
+    "GameId": 10,
+    "GameName": "baccarat",
+    "DisplayName": "Baccarat",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": [ "HD" ]
+  },
+  {
+    "GameId": 22,
+    "GameName": "vipsedie",
+    "DisplayName": "Vip Se Die",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": [ "HD" ]
+  },
+  {
+    "GameId": 26,
+    "GameName": "vipfishprawncrab",
+    "DisplayName": "Vip Fish Prawn Crab",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": [ "HD" ]
   }
 ]
