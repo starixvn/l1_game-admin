@@ -42,6 +42,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
             GameType.SlotRNG,
             GameType.Crash,
             GameType.DynamicOdds,
+            GameType.Marble,
             0
         }.Contains(GameType);
 

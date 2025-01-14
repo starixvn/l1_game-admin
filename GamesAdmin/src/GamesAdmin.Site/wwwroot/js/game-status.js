@@ -720,7 +720,7 @@
             }
         },
 
-        toogleSlotsConfig: function () {
+        toggleGameTypeConfig: function () {
             const type = $('#Type').val();
 
             switch (type) {
@@ -753,10 +753,21 @@
                     $('#slots-config').show();
                     break;
                 default:
+                    $('#tournament-config').hide();
+                    $('#video-stream-config').hide();
                     $('#slots-config').hide();
                     $('#cascading-slots-config').hide();
                     $('#slot-rng-config').hide();
                     $('#rng-game').show();
+            }
+
+            if (type === '7') {
+                $('#tournament-config').show();
+                $('#video-stream-config').show();
+            }
+            else{
+                $('#have-tournament').prop('checked', false);
+                $('#have-video-stream').prop('checked', false);
             }
         },
 
