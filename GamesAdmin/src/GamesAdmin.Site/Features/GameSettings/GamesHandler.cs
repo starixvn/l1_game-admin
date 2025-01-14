@@ -184,6 +184,12 @@ namespace GamesAdmin.Site.Features.GameSettings
                         viewModel.PayoutViewModel.MarginSettings = GenerateMarginSettings(game.Info.Name, game.Margin);
                         break;
 
+                    case GameType.Marble:
+                        viewModel.Type = GameType.Marble;
+                        viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(GetBetChoices(game.Info.Name), game.BetLimit);
+                        viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
+                        break;
+
                     default:
                         viewModel.Type = GameType.AutoRNG;
                         var choices = GetBetChoices(game.Info.Name);
@@ -226,6 +232,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 case GameType.SlotRNG:
                 case GameType.Crash:
                 case GameType.DynamicOdds:
+                case GameType.Marble:
                     name += "RNG";
                     break;
 

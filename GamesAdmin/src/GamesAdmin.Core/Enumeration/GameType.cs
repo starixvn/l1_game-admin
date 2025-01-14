@@ -7,6 +7,7 @@
         CascadingSlots,
         SlotRNG,
         Crash,
-        DynamicOdds
+        DynamicOdds,
+        Marble
     }
 }
