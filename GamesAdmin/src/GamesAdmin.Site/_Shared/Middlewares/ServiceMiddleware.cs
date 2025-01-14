@@ -40,7 +40,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             var refitSettings = new RefitSettings
             {
-                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
+                AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken(),
             };
 
             services.AddScoped<IGeneralGameSettingService, GeneralGameSettingService>();
