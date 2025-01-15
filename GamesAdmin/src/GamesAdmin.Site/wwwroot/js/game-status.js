@@ -753,8 +753,6 @@
                     $('#slots-config').show();
                     break;
                 default:
-                    $('#tournament-config').hide();
-                    $('#video-stream-config').hide();
                     $('#slots-config').hide();
                     $('#cascading-slots-config').hide();
                     $('#slot-rng-config').hide();
@@ -766,6 +764,8 @@
                 $('#video-stream-config').show();
             }
             else{
+                $('#tournament-config').hide();
+                $('#video-stream-config').hide();
                 $('#have-tournament').prop('checked', false);
                 $('#have-video-stream').prop('checked', false);
             }
