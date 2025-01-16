@@ -1,4 +1,4 @@
-FROM hub.lumigame.com/base/dotnet/core/sdk:3.1 AS builder
+FROM hub.lumigame.com/base/dotnet/core/sdk:3.1-5-6 AS builder
 WORKDIR /src
 
 RUN apt-get update
