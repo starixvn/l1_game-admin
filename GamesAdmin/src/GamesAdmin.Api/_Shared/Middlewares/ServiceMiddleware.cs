@@ -38,6 +38,7 @@ using GamesAdmin.Api.VoidGameRemote;
 using GamesAdmin.Core;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 using Refit;
 
 namespace GamesAdmin.Api._Shared.Middlewares
@@ -51,7 +52,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
             var refitSettings = new RefitSettings
             {
                 AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken(),
-                ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
+                ContentSerializer = new NewtonsoftJsonContentSerializer(
+                new Newtonsoft.Json.JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
+                })
             };
 
             services.AddScoped<IHiLoApiFactory, HiLoApiFactory>();
@@ -328,6 +334,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
                 var authorizationHeaderRefitSettings = new RefitSettings
                 {
+                    ContentSerializer = new NewtonsoftJsonContentSerializer(),
                     AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken(),
                 };
                 services.AddSingleton(RestService.For<IGameManagementApi>(appSettings.CloudSettings.GameManagementUrl, authorizationHeaderRefitSettings));

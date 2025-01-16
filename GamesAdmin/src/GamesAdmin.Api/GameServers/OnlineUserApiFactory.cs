@@ -123,6 +123,7 @@ namespace GamesAdmin.Api.GameServers
             {
                 var refitSettings = new RefitSettings
                 {
+                    ContentSerializer = new NewtonsoftJsonContentSerializer(),
                     AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken()
                 };
                 var serviceName = NamingConverter.ServiceName(gameConfig.Info.DisplayName, appSettings.ServiceNameSeparator);

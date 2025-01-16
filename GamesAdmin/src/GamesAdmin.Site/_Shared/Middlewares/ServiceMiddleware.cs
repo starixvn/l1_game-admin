@@ -40,6 +40,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             var refitSettings = new RefitSettings
             {
+                ContentSerializer = new NewtonsoftJsonContentSerializer(),
                 AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken(),
             };
 
