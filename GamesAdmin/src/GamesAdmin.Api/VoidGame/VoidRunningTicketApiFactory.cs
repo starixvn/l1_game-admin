@@ -1,5 +1,5 @@
 ﻿using GamesAdmin.Api._Shared.Configurations;
-using GamesAdmin.Core.IdentityServer;
+using GamesAdmin.Api._Shared.Helpers;
 using Refit;
 using Sentry;
 
@@ -23,11 +23,7 @@ namespace GamesAdmin.Api.VoidGame
 
         public IVoidRunningTicketApi GetVoidRunningTicketApi(string serviceName)
         {
-            var refitSettings = new RefitSettings
-            {
-                ContentSerializer = new NewtonsoftJsonContentSerializer(),
-                AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken()
-            };
+            var refitSettings = SettingHelper.GetRefitSettings();
 
             var api = string.Format(appSettings.ServiceApiTemplate, serviceName);
             this.sentryClient.CaptureMessage($"Void Ticket URL: {api}");

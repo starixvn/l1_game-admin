@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Core.IdentityServer;
 using Refit;
 
@@ -20,11 +21,7 @@ namespace GamesAdmin.Api.GameServers
 
         public ISlotBoardApi GetBoardApi(string serviceName)
         {
-            var refitSettings = new RefitSettings
-            {
-                ContentSerializer = new NewtonsoftJsonContentSerializer(),
-                AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken()
-            };
+            var refitSettings = SettingHelper.GetRefitSettings();
 
             var api = string.Format(appSettings.ServiceApiTemplate, serviceName);
 

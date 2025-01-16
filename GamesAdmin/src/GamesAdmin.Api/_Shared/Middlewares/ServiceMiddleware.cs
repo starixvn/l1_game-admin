@@ -125,7 +125,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             AddCrashGameServices(services);
             AddFootballDiceServices(services, appSettings, refitSettings);
             AddChineseBlackjackServices(services, appSettings, refitSettings);
-            AddBaccaratXServices(services,appSettings,refitSettings);
+            AddBaccaratXServices(services, appSettings, refitSettings);
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
             services.AddScoped<SeDieReportService>();
@@ -331,19 +331,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
                 services.AddSingleton(RestService.For<ILogApi>(cloudClient));
                 services.AddSingleton(RestService.For<IVoidGameRemoteApi>(cloudClient));
                 services.AddSingleton(RestService.For<IPartnerRemoteApi>(cloudClient));
-
-                var authorizationHeaderRefitSettings = new RefitSettings
-                {
-                    ContentSerializer = new NewtonsoftJsonContentSerializer(),
-                    AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken(),
-                };
-                services.AddSingleton(RestService.For<IGameManagementApi>(appSettings.CloudSettings.GameManagementUrl, authorizationHeaderRefitSettings));
-
-                // online user
-                var refitSettings = new RefitSettings
-                {
-                    ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
-                };
+                services.AddSingleton(RestService.For<IGameManagementApi>(appSettings.CloudSettings.GameManagementUrl, SettingHelper.GetRefitSettings()));
             }
         }
 

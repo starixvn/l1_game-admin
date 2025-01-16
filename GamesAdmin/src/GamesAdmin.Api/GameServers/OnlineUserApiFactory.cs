@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.IdentityServer;
@@ -121,11 +122,7 @@ namespace GamesAdmin.Api.GameServers
             }
             else
             {
-                var refitSettings = new RefitSettings
-                {
-                    ContentSerializer = new NewtonsoftJsonContentSerializer(),
-                    AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken()
-                };
+                var refitSettings = SettingHelper.GetRefitSettings();
                 var serviceName = NamingConverter.ServiceName(gameConfig.Info.DisplayName, appSettings.ServiceNameSeparator);
                 var api = string.Format(appSettings.ServiceApiTemplate, serviceName);
 

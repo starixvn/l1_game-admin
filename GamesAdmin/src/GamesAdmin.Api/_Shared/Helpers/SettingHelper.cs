@@ -3,11 +3,13 @@ using System.Linq;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database.Entities;
 using Newtonsoft.Json;
+using Refit;
 
 namespace GamesAdmin.Api._Shared.Helpers
 {
@@ -396,6 +398,15 @@ namespace GamesAdmin.Api._Shared.Helpers
         {
             return string.Join("\r\n\t", winningPrizes.Select(wp =>
                 $"- Ranking {wp.Ranking}, Value: {wp.Value}"));
+        }
+
+        public static RefitSettings GetRefitSettings()
+        {
+            return new RefitSettings
+            {
+                ContentSerializer = new NewtonsoftJsonContentSerializer(),
+                AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken(),
+            };
         }
     }
 }
