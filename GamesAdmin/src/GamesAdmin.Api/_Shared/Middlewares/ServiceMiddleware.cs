@@ -51,7 +51,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             var refitSettings = new RefitSettings
             {
-                AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken(),
+                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
                 ContentSerializer = new NewtonsoftJsonContentSerializer(
                 new Newtonsoft.Json.JsonSerializerSettings
                 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 
@@ -23,7 +24,7 @@ namespace GamesAdmin.Core.IdentityServer
             });
         }
 
-        public static async Task<string> GetAccessToken()
+        public static async Task<string> GetAccessToken(HttpRequestMessage message, CancellationToken cancellationToken)
         {
             if (tokenResponse == null || lastTokenRequest.AddSeconds(tokenResponse.ExpiresIn) < DateTime.Now.AddMinutes(5))
             {
@@ -69,7 +70,7 @@ namespace GamesAdmin.Core.IdentityServer
 
         public static async Task<string> GetAuthorizationHeader()
         {
-            var token = await GetAccessToken();
+            var token = await GetAccessToken(null, CancellationToken.None);
             return $"Bearer {token}";
         }
     }
