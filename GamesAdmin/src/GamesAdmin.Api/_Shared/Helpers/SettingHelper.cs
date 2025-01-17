@@ -405,7 +405,7 @@ namespace GamesAdmin.Api._Shared.Helpers
             return new RefitSettings
             {
                 ContentSerializer = new NewtonsoftJsonContentSerializer(),
-                AuthorizationHeaderValueGetter = async (request, cancellationToken) => await IdentityServerManager.GetAccessToken(),
+                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
             };
         }
     }
