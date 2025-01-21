@@ -21,6 +21,14 @@ namespace GamesAdmin.Site.Features.Lobby
         Task<CreateOrUpdateViewModel> GetLobbyConfig(string id);
 
         Task<bool> Delete(string id);
+
+        Task<DirectLobbyManagementViewModel> GetAllDirectLobby();
+
+        Task<string> UpdateDirectLobby(DirectLobbyModel model);
+
+        Task<CreateOrUpdateDirectLobbyViewModel> GetDirectLobby(string id);
+
+        Task<bool> DeleteDirectLobby(string id);
     }
 
     public class LobbyService : ILobbyService
@@ -98,6 +106,57 @@ namespace GamesAdmin.Site.Features.Lobby
             }
 
             return this.lobbyApi.Delete(id);
+        }
+
+        public async Task<DirectLobbyManagementViewModel> GetAllDirectLobby()
+        {
+            var currencyGroups = await currencyGroupApi.GetAll();
+            var groupIds = currencyGroups.Select(group => group.Id).AsEnumerable();
+
+            var viewModel = new DirectLobbyManagementViewModel
+            {
+                LobbyConfigs = await this.lobbyApi.GetAllDirectLobby(),
+                CurrencyGroupItems = new MultiSelectList(currencyGroups, "Id", "Name", groupIds),
+                DisplayDeleteButton = !appSettings.IsUatOrProEnvironment()
+            };
+
+            return viewModel;
+        }
+
+        public Task<string> UpdateDirectLobby(DirectLobbyModel model)
+        {
+            return this.lobbyApi.UpdateDirectLobby(model);
+        }
+
+        public async Task<CreateOrUpdateDirectLobbyViewModel> GetDirectLobby(string id)
+        {
+            var allLobbyConfigs = await this.lobbyApi.GetAllDirectLobby();
+            var lobbyConfig = string.IsNullOrEmpty(id) || id == "undefined" ? null : await this.lobbyApi.GetDirectLobby(id);
+            var otherLobbyConfigCurrencyGroups = allLobbyConfigs.Where(config => config.Id != lobbyConfig?.Id)
+                .Select(config => config.CurrencyGroupIds)
+                .SelectMany(currencygroup => currencygroup).Distinct();
+
+            var generalGameSettings = await generalGameSettingService.GetAllGames();
+
+            var viewModel = new CreateOrUpdateDirectLobbyViewModel
+            {
+                Operators = await partnerService.GetAll(),
+                CurrencyGroupModels = (await this.currencyGroupApi.GetAll()).Where(currencyGroup => !otherLobbyConfigCurrencyGroups.Contains(currencyGroup.Id)),
+                GameSettings = generalGameSettings,
+                LobbyConfig = lobbyConfig
+            };
+
+            return viewModel;
+        }
+
+        public Task<bool> DeleteDirectLobby(string id)
+        {
+            if (this.appSettings.IsUatOrProEnvironment())
+            {
+                return Task.FromResult(false);
+            }
+
+            return this.lobbyApi.DeleteDirectLobby(id);
         }
     }
 }
