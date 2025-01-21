@@ -20,6 +20,18 @@ namespace GamesAdmin.Site.Features.Lobby
 
         [Post("/lobby/delete")]
         Task<bool> Delete(string id);
+
+        [Get("/direct-lobby/get")]
+        Task<DirectLobbyModel> GetDirectLobby(string id);
+
+        [Get("/direct-lobby/getAll")]
+        Task<IEnumerable<DirectLobbyModel>> GetAllDirectLobby();
+
+        [Post("/direct-lobby/update")]
+        Task<string> UpdateDirectLobby([Body] DirectLobbyModel lobbyModel);
+
+        [Post("/direct-lobby/delete")]
+        Task<bool> DeleteDirectLobby(string id);
     }
 
 

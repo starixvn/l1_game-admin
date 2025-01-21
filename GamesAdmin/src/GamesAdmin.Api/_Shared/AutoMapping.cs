@@ -578,6 +578,11 @@ namespace GamesAdmin.Api._Shared
               }))
               ;
             //CreateMap<Database.Entities.Lobby.LobbyCategory, Core.Models.Lobby.LobbyCategory>();
+            CreateMap<DirectLobbyEntity, DirectLobbyModel>()
+             .ForMember(x => x.Id, opt => opt.MapFrom((source) => source.Id.ToString()));
+            CreateMap<DirectLobbyModel, DirectLobbyEntity>()
+              .ForMember(x => x.Id, opt => opt.MapFrom((source) => ObjectId.Parse(source.Id)));
+
 
             CreateMap<DragonTigerFightRoundEntity, DragonTigerFightRoundResult>()
                 .ForMember(dest => dest.Dragon, opt => opt.MapFrom(src => src.Result.Dragon))
