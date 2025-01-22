@@ -17,13 +17,14 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public AddSlotGameViewModel(IEnumerable<GeneralGameSetting> existingGames, IEnumerable<SelectListItem> gameTypes)
         {
-            GameTypes = gameTypes.Where(type => IsSlotGameType(type.Value));
+            GameTypes = gameTypes.Where(type => IsAccelerateGameType(type.Value));
             ExistingGames = existingGames.Select(game => new SelectListItem($"{game.DisplayName}{GetJackpotText(game.IsEnabledJackpot)}", game.GameId.ToString()));
         }
-        private static bool IsSlotGameType(string type)
+        private static bool IsAccelerateGameType(string type)
         {
             var gameType = Enum.Parse<GameType>(type);
-            return gameType == GameType.Slots || gameType == GameType.CascadingSlots || gameType == GameType.Crash ;
+            var accelerateTypes = new GameType[] { GameType.Slots, GameType.CascadingSlots, GameType.Crash, GameType.CrashTurnBase };
+            return accelerateTypes.Contains(gameType);
         }
 
         public static string GetJackpotText(bool isEnableJackpot)

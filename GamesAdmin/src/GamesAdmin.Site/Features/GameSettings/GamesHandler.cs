@@ -173,6 +173,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                         viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
                         break;
 
+                    case GameType.CrashTurnBase:
                     case GameType.Crash:
                         viewModel.SlotViewModel = new SlotViewModel();
                         viewModel.Type = GameType.Crash;
@@ -521,7 +522,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         => gameService.GetDisabledMessage(request.Name);
 
         public async Task<string> Handle(CloneSlotGameRequest request, CancellationToken cancellationToken)
-        => await gameService.CloneNewSlotGame(request.GameId, request.ClonedFrom, request.DisplayName);
+        => await gameService.CloneNewSlotGame(request.GameId, request.ClonedFrom, request.DisplayName, request.GameType);
 
         public Task<bool> Handle(UpdateSymbolWeightByModeRequest request, CancellationToken cancellationToken)
         {

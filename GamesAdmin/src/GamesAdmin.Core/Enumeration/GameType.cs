@@ -8,6 +8,7 @@
         SlotRNG,
         Crash,
         DynamicOdds,
-        Marble
+        Marble,
+        CrashTurnBase
     }
 }

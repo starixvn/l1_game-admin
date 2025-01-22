@@ -81,7 +81,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<Dictionary<string, string>> GetDisableMessage(string name);
 
         [Post("/game_settings/clone_slot_game")]
-        Task<string> CloneSlotGame(int gameId, int fromGameId, string displayName);
+        Task<string> CloneSlotGame(int gameId, int fromGameId, string displayName, byte gameType);
 
         [Post("/game_settings/update_symbol_weight")]
         Task<bool> UpdateSymbolWeight([Body] UpdateSymbolWeightRequest request);

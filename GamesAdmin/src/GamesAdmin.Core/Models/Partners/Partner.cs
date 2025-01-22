@@ -26,7 +26,7 @@
 
         public string MobiVersionUrl { get; }
 
-        public string MiniVersionUrl { get; }
+        public string MiniVersionUrl { get; } 
 
         public string MegaKenoUrl { get; }
 
