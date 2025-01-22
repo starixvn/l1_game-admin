@@ -17,7 +17,7 @@ namespace GamesAdmin.Api.GameSettings
 {
     public interface ICloneSettingService
     {
-        Task<string> CloneNewGame(int gameId, int fromGameId, string displayName);
+        Task<string> CloneNewGame(int gameId, int fromGameId, string displayName, byte gameType);
     }
 
     public class CloneSettingsService : ICloneSettingService
@@ -45,7 +45,7 @@ namespace GamesAdmin.Api.GameSettings
             this.currencyGroupGameService = currencyGroupGameService;
         }
 
-        public async Task<string> CloneNewGame(int gameId, int fromGameId, string displayName)
+        public async Task<string> CloneNewGame(int gameId, int fromGameId, string displayName, byte gameType)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace GamesAdmin.Api.GameSettings
 
                 if (fromGameId == 0)
                 {
-                    var createResult = await CreateNewCrashGame(displayName, gameId);
+                    var createResult = await CreateNewCrashGame(displayName, gameId, gameType);
                     return createResult ? string.Empty : "Clone game failed!";
                 }
 
@@ -105,9 +105,9 @@ namespace GamesAdmin.Api.GameSettings
             }
         }
 
-        public async Task<bool> CreateNewCrashGame(string displayName, int gameId)
+        public async Task<bool> CreateNewCrashGame(string displayName, int gameId, byte gameType)
         {
-            var gameInfo = new GameInfo(NamingConverter.GameConfigName(displayName), false, GameType.Crash, 1, displayName, gameId, null);
+            var gameInfo = new GameInfo(NamingConverter.GameConfigName(displayName), false, (GameType)gameType, 1, displayName, gameId, null);
             var enableSetting = new EnableSetting(false);
             var botSetting = new BotSetting(false, BOT_MAX_BET_DEFAULT, new double[24]);
             var betLimit = new BetLimit();
@@ -122,6 +122,15 @@ namespace GamesAdmin.Api.GameSettings
                  null,
                  null,
                  new CrashConfig());
+
+            if (gameType == (byte)GameType.CrashTurnBase)
+            {
+                gameConfig.CrashConfig.MultiplierConfigs = new MultiplierConfig
+                {
+                    InitialMultiplier = 1.01,
+                    Stages = new List<MultiplierStage> { new MultiplierStage(), new MultiplierStage(), new MultiplierStage(), new MultiplierStage() }
+                };
+            }
 
             await gameService.Create(gameConfig);
 

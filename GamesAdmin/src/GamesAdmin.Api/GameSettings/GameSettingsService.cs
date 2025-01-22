@@ -176,7 +176,7 @@ namespace GamesAdmin.Api.Games
 
         private int GetGameId(GameInfo gameInfo)
         {
-            if (gameInfo.Type == GameType.Slots || gameInfo.Type == GameType.Crash)
+            if (gameInfo.Type == GameType.Slots || gameInfo.Type == GameType.Crash || gameInfo.Type == GameType.CrashTurnBase)
             {
                 return gameInfo.GameId;
             }

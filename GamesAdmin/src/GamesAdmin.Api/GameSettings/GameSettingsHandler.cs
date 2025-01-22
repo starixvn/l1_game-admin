@@ -99,7 +99,7 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateSlotRNGConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig);
 
         public Task<string> Handle(CloneNewSlotGameRequest request, CancellationToken cancellationToken)
-        => slotSettingService.CloneNewGame(request.GameId, request.FromGameId, request.DisplayName);
+        => slotSettingService.CloneNewGame(request.GameId, request.FromGameId, request.DisplayName, request.GameType);
 
         public Task<bool> Handle(UpdateSymbolWeightRequest request, CancellationToken cancellationToken)
         => gameService.UpdateSymbolWeight(request.Name, request.SymbolWeight);
