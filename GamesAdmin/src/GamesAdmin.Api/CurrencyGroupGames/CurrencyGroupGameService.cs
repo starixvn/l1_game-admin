@@ -37,17 +37,20 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
         private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
+        private readonly IGenericRepository<GameConfigEntity> gameConfigRepository;
 
         public CurrencyGroupGameService(
             IGenericRepository<CurrencyGroupGameEntity> currencyGroupGameRepository,
             IMapper mapper,
             ISentryClient sentryClient,
-            IGenericRepository<CurrencyGroupEntity> currencyGroupRepository)
+            IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
+            IGenericRepository<GameConfigEntity> gameConfigRepository)
         {
             this.currencyGroupGameRepository = currencyGroupGameRepository;
             this.mapper = mapper;
             this.sentryClient = sentryClient;
             this.currencyGroupRepository = currencyGroupRepository;
+            this.gameConfigRepository = gameConfigRepository;
         }
 
         public async Task<CurrencyGroupGame> Get(int gameId, string currencyGroupId)
@@ -121,19 +124,22 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                 var gameIds = new List<int>(currencyGroupGame.OtherGameIdsInGroup) { currencyGroupGame.GameId };
                 var currencyGroupGames = (await currencyGroupGameRepository.FilterByAsync(
                     entity => gameIds.Contains(entity.GameId) && entity.GroupId == ObjectId.Parse(currencyGroupGame.GroupId))).ToList();
+                var gameConfigs = (await gameConfigRepository.FilterByAsync(x => gameIds.Contains(x.GameId))).ToList();
+
                 var writes = new List<WriteModel<CurrencyGroupGameEntity>>();
 
                 foreach (var gameId in gameIds)
                 {
-                    var gameConfig = currencyGroupGames.FirstOrDefault(x => x.GameId == gameId);
+                    var groupGameConfig = currencyGroupGames.FirstOrDefault(x => x.GameId == gameId);
 
-                    if (gameConfig != null)
+                    if (groupGameConfig != null)
                     {
-                        var group = await currencyGroupRepository.FindByIdAsync(gameConfig.GroupId.ToString());
-                        var changedSettings = SettingHelper.GetCurrencyGroupGameChangedModel(gameConfig, currencyGroupGame);
-                        sentryClient.CaptureChangedSettings(currencyGroupGame.GameName, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
+                        var group = await currencyGroupRepository.FindByIdAsync(groupGameConfig.GroupId.ToString());
+                        var changedSettings = SettingHelper.GetCurrencyGroupGameChangedModel(groupGameConfig, currencyGroupGame);
+                        sentryClient.CaptureChangedSettings(groupGameConfig.GameName, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
                     }
 
+                    var gameConfig = gameConfigs.FirstOrDefault(x => x.GameId == gameId);
                     var sortedCoinValues = currencyGroupGame.CoinValues.OrderBy(x => x).ToArray();
                     var sortedBetLevels = currencyGroupGame.BetLevels.OrderBy(x => x).ToArray();
 
@@ -148,7 +154,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                         .Set(field => field.DefaultBetLevel, currencyGroupGame.DefaultBetLevel ?? sortedBetLevels.FirstOrDefault())
                         .Set(field => field.BetLevels, currencyGroupGame.BetLevels.OrderBy(x => x).ToArray() ?? new double[10])
                         .Set(field => field.MaxWinPerRound, currencyGroupGame.MaxWinPerRound)
-                        .Set(field => field.GameName, gameConfig?.GameName ?? currencyGroupGame.GameName);
+                        .Set(field => field.GameName, gameConfig.Name);
 
                     var filterBuilder = Builders<CurrencyGroupGameEntity>.Filter;
                     var filterDefinition = filterBuilder.And(
