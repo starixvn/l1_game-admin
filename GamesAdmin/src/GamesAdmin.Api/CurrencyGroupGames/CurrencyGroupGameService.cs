@@ -147,13 +147,13 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                         .Set(field => field.DefaultCoinValue, currencyGroupGame.DefaultCoinValue ?? sortedCoinValues.FirstOrDefault())
                         .Set(field => field.DefaultBetLevel, currencyGroupGame.DefaultBetLevel ?? sortedBetLevels.FirstOrDefault())
                         .Set(field => field.BetLevels, currencyGroupGame.BetLevels.OrderBy(x => x).ToArray() ?? new double[10])
-                        .Set(field => field.MaxWinPerRound, currencyGroupGame.MaxWinPerRound);
+                        .Set(field => field.MaxWinPerRound, currencyGroupGame.MaxWinPerRound)
+                        .Set(field => field.GameName, gameConfig?.GameName ?? currencyGroupGame.GameName);
 
                     var filterBuilder = Builders<CurrencyGroupGameEntity>.Filter;
                     var filterDefinition = filterBuilder.And(
                         filterBuilder.Eq(x => x.GroupId, ObjectId.Parse(currencyGroupGame.GroupId)),
-                        filterBuilder.Eq(x => x.GameId, gameId),
-                        filterBuilder.Eq(x => x.GameName, currencyGroupGame.GameName));
+                        filterBuilder.Eq(x => x.GameId, gameId));
 
                     writes.Add(new UpdateOneModel<CurrencyGroupGameEntity>(filterDefinition, update) { IsUpsert = true });
                 }
