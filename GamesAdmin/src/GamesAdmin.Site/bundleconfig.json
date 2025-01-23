@@ -351,5 +351,11 @@
       "wwwroot/lib/data-tables/datatables.min.css",
       "wwwroot/scss/pages/game-group-management.min.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/internal-account.min.js",
+    "inputFiles": [
+      "wwwroot/js/internal-account.js"
+    ]
   }
 ]
