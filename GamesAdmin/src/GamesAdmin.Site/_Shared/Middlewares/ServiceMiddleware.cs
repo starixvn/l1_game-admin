@@ -16,6 +16,7 @@ using GamesAdmin.Site.Features.ExchangeRates;
 using GamesAdmin.Site.Features.GameRoundResult;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.GameUsers;
+using GamesAdmin.Site.Features.InternalTestAccount;
 using GamesAdmin.Site.Features.Lobby;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.Partners;
@@ -119,6 +120,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IDomainApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IDomainService, DomainService>();
 
+
+            services.AddSingleton(RestService.For<IInternalTestAccountApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IInternalTestAccountService, InternalTestAccountService>();
             services.AddReportServices();
         }
     }

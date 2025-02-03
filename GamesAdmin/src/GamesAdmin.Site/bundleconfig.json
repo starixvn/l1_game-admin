@@ -325,5 +325,11 @@
     "inputFiles": [
       "wwwroot/scss/pages/site.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/internal-account.min.js",
+    "inputFiles": [
+      "wwwroot/js/internal-account.js"
+    ]
   }
 ]

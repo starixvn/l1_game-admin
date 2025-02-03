@@ -78,6 +78,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IRoundWatcherService, RoundWatcherService>();
             services.AddScoped<IGameServerService, GameServerService>();
             services.AddScoped<IStatusCheckerService, StatusCheckerService>();
+            services.AddScoped<IInternalTestAccountService, InternalTestAccountService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddSingleton(RestService.For<IUserServiceApi>(appSettings.GameServers.UserService.Api, refitSettings));
