@@ -17,6 +17,7 @@ using GamesAdmin.Site.Features.GameGroupManagement;
 using GamesAdmin.Site.Features.GameRoundResult;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.GameUsers;
+using GamesAdmin.Site.Features.InternalTestAccount;
 using GamesAdmin.Site.Features.Lobby;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.Partners;
@@ -123,6 +124,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IDomainService, DomainService>();
 
             services.AddScoped(x => RestService.For<IGameGroupManagementApi>(appSettings.ApiHost, refitSettings));
+
+            services.AddSingleton(RestService.For<IInternalTestAccountApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IInternalTestAccountService, InternalTestAccountService>();
 
             services.AddReportServices();
         }

@@ -1,0 +1,39 @@
+﻿@using GamesAdmin.Site.Features._Shared;
+
+@model GamesAdmin.Site.Features.InternalTestAccount.ViewModels.IndexViewModel
+
+@section Styles {
+    <link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
+}
+@{
+    ViewData["Title"] = "Internal UUS Test Account";
+}
+<form>
+    <div id="internal-test">
+        <input readonly hidden asp-for="@Model.OriginalAccountTest" />
+        <br />
+        <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
+
+        <div class="text-message ml-4">
+            <label class="font-weight-bold">UUS Test Account </label>
+            <label>(Names are separated by ';' ):</label>
+            <br />
+            <textarea rows="3" cols="50" id="account-test">@Model.CurrentAccountTest</textarea>
+        </div>
+        <div class="col-auto list-buttons">
+            @if (Context.HasAdminPermission())
+            {
+                <button type="button" class="btn-submit" id="internal-test-submit">Save</button>
+            }
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <environment include="Development">
+        <script src="~/js/internal-account.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/internal-account.min.js" asp-append-version="true"></script>
+    </environment>
+}

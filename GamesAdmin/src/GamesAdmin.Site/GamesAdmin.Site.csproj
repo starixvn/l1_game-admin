@@ -79,6 +79,7 @@
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\game-admin\**" />
     <AdditionalFiles Include="..\..\.sonarlint\l1-game-admin\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    <None Include="wwwroot\js\internal-account.min.js" />
     <None Include="wwwroot\js\domain.min.js" />
     <None Include="wwwroot\js\hilo-report.min.js" />
     <None Include="wwwroot\js\promotion-leaderboard.min.js" />
