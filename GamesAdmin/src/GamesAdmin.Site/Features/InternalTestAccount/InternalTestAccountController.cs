@@ -25,8 +25,9 @@
         public async Task<IActionResult> Update(string[] addAccounts, string[] deletedAccounts)
         {
             var result = await mediator.Send(new UpdateInternalTestAccountRequest(addAccounts, deletedAccounts));
-
-            return Ok(result);
+           
+            return Json(result);
         }
+
     }
 }
