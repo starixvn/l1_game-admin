@@ -4,10 +4,9 @@
     using MediatR;
     using System.Threading;
     using System.Threading.Tasks;
-    using System;
-    using System.Linq;
+    using GamesAdmin.Core.Models;
 
-    public class InternalTestAccountHandler : IRequestHandler<GetInternalTestAccountRequest, IndexViewModel>, IRequestHandler<UpdateInternalTestAccountRequest, bool>
+    public class InternalTestAccountHandler : IRequestHandler<GetInternalTestAccountRequest, IndexViewModel>, IRequestHandler<UpdateInternalTestAccountRequest, UpdateInternalUUSTestResult>
     {
         private readonly IInternalTestAccountService internalTestAccountService;
 
@@ -28,7 +27,7 @@
         }
 
 
-        public Task<bool> Handle(UpdateInternalTestAccountRequest request, CancellationToken cancellationToken)
+        public Task<UpdateInternalUUSTestResult> Handle(UpdateInternalTestAccountRequest request, CancellationToken cancellationToken)
         {         
             return internalTestAccountService.UpdateInternalTestAcount(request);
         }

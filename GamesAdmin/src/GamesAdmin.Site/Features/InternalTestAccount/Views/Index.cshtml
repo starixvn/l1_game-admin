@@ -12,11 +12,12 @@
     <div id="internal-test">
         <input readonly hidden asp-for="@Model.OriginalAccountTest" />
         <br />
+        <div class="message-error hidden-cls" id="errorMsg"><i class="icon-check"></i></div>
         <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
 
         <div class="text-message ml-4">
             <label class="font-weight-bold">UUS Test Account </label>
-            <label>(Names follow the format OperatorId_PlayerId and are separated by a semicolon (';').):</label>
+            <label>(Names follow the format OperatorId_PlayerId and are separated by ; )</label>
             <br />
             <textarea rows="3" cols="50" id="account-test">@Model.CurrentAccountTest</textarea>
         </div>
