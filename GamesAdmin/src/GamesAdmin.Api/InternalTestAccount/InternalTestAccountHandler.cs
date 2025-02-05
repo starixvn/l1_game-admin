@@ -2,11 +2,12 @@
 {
     using AutoMapper;
     using GamesAdmin.Api.InternalTestAccount.Requests;
+    using GamesAdmin.Core.Models;
     using MediatR;
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class InternalTestAccountHandler : IRequestHandler<GetInternalTestAccountRequest, string[]>, IRequestHandler<UpdateInternalTestAccountRequest, bool>
+    public class InternalTestAccountHandler : IRequestHandler<GetInternalTestAccountRequest, string[]>, IRequestHandler<UpdateInternalTestAccountRequest, UpdateInternalUUSTestResult>
     {
         private readonly IInternalTestAccountService internalTestAccountService;
 
@@ -18,7 +19,7 @@
             this.mapper = mapper;
         }
 
-        public Task<bool> Handle(UpdateInternalTestAccountRequest request, CancellationToken cancellationToken)
+        public Task<UpdateInternalUUSTestResult> Handle(UpdateInternalTestAccountRequest request, CancellationToken cancellationToken)
             => this.internalTestAccountService.UpdateInternalTest(request.AddAccounts, request.DeletedAccounts);
         
     

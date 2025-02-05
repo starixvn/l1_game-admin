@@ -1,8 +1,9 @@
 ﻿namespace GamesAdmin.Site.Features.InternalTestAccount
 {
+    using GamesAdmin.Core.Models;
     using MediatR;
 
-    public class UpdateInternalTestAccountRequest : IRequest<bool>
+    public class UpdateInternalTestAccountRequest : IRequest<UpdateInternalUUSTestResult>
     {
         public UpdateInternalTestAccountRequest(string[] addAccounts, string[] deletedAccounts)
         {

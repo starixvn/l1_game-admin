@@ -1,10 +1,12 @@
 ﻿namespace GamesAdmin.Api
 {
+    using GamesAdmin.Core.Models;
     using GamesAdmin.Database;
     using GamesAdmin.Database.Entities;
     using MongoDB.Driver;
     using Sentry;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -12,7 +14,7 @@
     {
         Task<string[]> Get();
 
-        Task<bool> UpdateInternalTest(string[] addAccounts, string[] deletedAccounts);
+        Task<UpdateInternalUUSTestResult> UpdateInternalTest(string[] addAccounts, string[] deletedAccounts);
     }
 
     public class InternalTestAccountService : IInternalTestAccountService
@@ -44,41 +46,93 @@
             }
         }
 
-        public async Task<bool> UpdateInternalTest(string[] addAccounts, string[] deletedAccounts)
+        public async Task<UpdateInternalUUSTestResult> UpdateInternalTest(string[] addAccounts, string[] deletedAccounts)
         {
             try
             {
-                if (addAccounts.Length == 0 && deletedAccounts.Length == 0)
+                if (IsInputEmpty(addAccounts, deletedAccounts))
                 {
-                    return true;
+                    return SuccessResult();
                 }
 
-                if (addAccounts.Length > 0)
+                var invalidAccounts = new List<string>();
+
+                if (addAccounts?.Length > 0)
                 {
-                    var updateTrue = Builders<UserEntity>.Update.Set(x => x.IsInternal, true);
-                    await userRepository.UpdateManyAsync(
-                        x => addAccounts.Contains(x.Local.Username),
-                        updateTrue
-                    );
+                    invalidAccounts = await ProcessAccounts(addAccounts, true);
+                    if (invalidAccounts.Any())
+                    {
+                        return FailureResult(invalidAccounts);
+                    }
                 }
 
-                if (deletedAccounts.Length > 0)
+                if (deletedAccounts?.Length > 0)
                 {
-                    var updateFalse = Builders<UserEntity>.Update.Set(x => x.IsInternal, false);
-                    await userRepository.UpdateManyAsync(
-                        x => deletedAccounts.Contains(x.Local.Username),
-                        updateFalse
-                    );
+                    invalidAccounts = await ProcessAccounts(deletedAccounts, false);
+                    if (invalidAccounts.Any())
+                    {
+                        return FailureResult(invalidAccounts);
+                    }
                 }
 
-                return true;
+                return SuccessResult();
             }
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
-
-                return false;
+                return FailureResult(new List<string>());
             }
+        }
+
+        private static bool IsInputEmpty(string[] addAccounts, string[] deletedAccounts)
+        {
+            return (addAccounts == null || addAccounts.Length == 0) &&
+                   (deletedAccounts == null || deletedAccounts.Length == 0);
+        }
+
+        private static UpdateInternalUUSTestResult SuccessResult()
+        {
+            return new UpdateInternalUUSTestResult(true, new List<string>());
+        }
+
+        private static UpdateInternalUUSTestResult FailureResult(List<string> invalidAccounts)
+        {
+            return new UpdateInternalUUSTestResult(false, invalidAccounts);
+        }
+
+        private async Task<List<string>> ProcessAccounts(string[] accounts, bool isAdding)
+        {
+            var accountsIgnoreCase = NormalizeToHashSet(accounts);
+
+            var existingUsers = await FindExistingUsers(accountsIgnoreCase);
+            var existingUsernames = existingUsers.Select(u => u.Local.Username.ToLowerInvariant());
+
+            var invalidAccounts = accountsIgnoreCase.Where(acc => !existingUsernames.Contains(acc.ToLowerInvariant())).ToList();
+
+            if (invalidAccounts.Any())
+            {
+                return invalidAccounts;
+            }
+
+            await UpdateAccounts(accountsIgnoreCase, isAdding);
+
+            return new List<string>();
+        }
+
+        private static HashSet<string> NormalizeToHashSet(IEnumerable<string> accounts)
+        {
+            return new HashSet<string>(accounts, StringComparer.OrdinalIgnoreCase);
+        }
+
+        private async Task<List<UserEntity>> FindExistingUsers(HashSet<string> accounts)
+        {
+            return (await userRepository.FilterByAsync(x => accounts.Contains(x.Local.Username))).ToList();
+        }
+
+        private async Task UpdateAccounts(HashSet<string> accounts, bool isAdding)
+        {
+            var update = Builders<UserEntity>.Update.Set(x => x.IsInternal, isAdding);
+            await userRepository.UpdateManyAsync(x => accounts.Contains(x.Local.Username), update);
         }
     }
 }

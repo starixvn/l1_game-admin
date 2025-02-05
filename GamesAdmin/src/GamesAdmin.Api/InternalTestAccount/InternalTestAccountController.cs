@@ -2,6 +2,7 @@
 {
     using GamesAdmin.Api._Shared;
     using GamesAdmin.Api.InternalTestAccount.Requests;
+    using GamesAdmin.Core.Models;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
@@ -25,7 +26,7 @@
         }
 
         [HttpPost("update")]
-        public Task<bool> Update(UpdateInternalTestAccountRequest model)
+        public Task<UpdateInternalUUSTestResult> Update(UpdateInternalTestAccountRequest model)
          => mediator.Send(model);
     }
 }

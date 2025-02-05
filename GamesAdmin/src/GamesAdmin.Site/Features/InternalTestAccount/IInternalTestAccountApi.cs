@@ -1,5 +1,6 @@
 ﻿namespace GamesAdmin.Site.Features.InternalTestAccount
 {
+    using GamesAdmin.Core.Models;
     using GamesAdmin.Site.Features._Shared;
     using Refit;
     using System.Threading.Tasks;
@@ -10,6 +11,6 @@
         Task<string[]> Get();
 
         [Post("/internalTestAccount/update")]
-        Task<bool> Update(UpdateInternalTestAccountRequest model);
+        Task<UpdateInternalUUSTestResult> Update(UpdateInternalTestAccountRequest model);
     }
 }
