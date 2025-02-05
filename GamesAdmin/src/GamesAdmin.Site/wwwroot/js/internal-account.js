@@ -4,11 +4,15 @@
         $('#errorMsg').hide();
         const value = $('#account-test').val().replaceAll(/\s/g, '');
         const currentAccounts = value.split(';').filter(account => account);
-        const original = $('#OriginalAccountTest').val();
-        const originalAccounts = original.split(';').filter(account => account);
+        const originalAccounts = $('#OriginalAccountTest').val().split(';').filter(account => account);
 
-        const deletedAccounts = originalAccounts.filter(account => !currentAccounts.includes(account));
-        const addAccounts = currentAccounts.filter(account => !originalAccounts.includes(account));
+        const deletedAccounts = originalAccounts.filter(
+            account => !currentAccounts.some(curr => curr.toLowerCase() === account.toLowerCase())
+        );
+
+        const addAccounts = currentAccounts.filter(
+            account => !originalAccounts.some(orig => orig.toLowerCase() === account.toLowerCase())
+        );
 
         $.ajax({
             type: 'POST',
