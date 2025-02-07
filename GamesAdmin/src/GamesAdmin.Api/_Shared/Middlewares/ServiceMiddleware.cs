@@ -33,6 +33,7 @@ using GamesAdmin.Api.VoidGameRemote;
 using GamesAdmin.Core;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 using Refit;
 using System;
 using System.Net;
@@ -50,7 +51,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
             var refitSettings = new RefitSettings
             {
                 AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
-                ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
+                ContentSerializer = new NewtonsoftJsonContentSerializer(
+                new Newtonsoft.Json.JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
+                })
             };
 
             services.AddScoped<IHiLoApiFactory, HiLoApiFactory>();
@@ -310,18 +316,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
                 services.AddSingleton(RestService.For<ILogApi>(cloudClient));
                 services.AddSingleton(RestService.For<IVoidGameRemoteApi>(cloudClient));
                 services.AddSingleton(RestService.For<IPartnerRemoteApi>(cloudClient));
-
-                var authorizationHeaderRefitSettings = new RefitSettings
-                {
-                    AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
-                };
-                services.AddSingleton(RestService.For<IGameManagementApi>(appSettings.CloudSettings.GameManagementUrl, authorizationHeaderRefitSettings));
-
-                // online user
-                var refitSettings = new RefitSettings
-                {
-                    ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
-                };
+                services.AddSingleton(RestService.For<IGameManagementApi>(appSettings.CloudSettings.GameManagementUrl, SettingHelper.GetRefitSettings()));
             }
         }
 

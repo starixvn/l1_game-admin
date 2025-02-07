@@ -39,7 +39,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             var refitSettings = new RefitSettings
             {
-                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
+                ContentSerializer = new NewtonsoftJsonContentSerializer(),
+                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
             };
 
             services.AddScoped<IGeneralGameSettingService, GeneralGameSettingService>();

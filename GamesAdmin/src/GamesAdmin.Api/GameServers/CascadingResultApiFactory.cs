@@ -1,5 +1,5 @@
 ﻿using GamesAdmin.Api._Shared.Configurations;
-using GamesAdmin.Core.IdentityServer;
+using GamesAdmin.Api._Shared.Helpers;
 using Refit;
 
 namespace GamesAdmin.Api.GameServers
@@ -20,10 +20,7 @@ namespace GamesAdmin.Api.GameServers
 
         public ICascadingSlotResultApi SetResultApi(string serviceName)
         {
-            var refitSettings = new RefitSettings
-            {
-                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
-            };
+            var refitSettings = SettingHelper.GetRefitSettings();
 
             var api = string.Format(appSettings.ServiceApiTemplate, serviceName);
 

@@ -1,9 +1,11 @@
 ﻿using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database.Entities;
+using Refit;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -328,5 +330,17 @@ namespace GamesAdmin.Api._Shared.Helpers
         private static string GetValue(Bonus bonus) => $"Min: {bonus.Min} - Max: {bonus.Max}";
 
         private static string GetValue(StakeLevel stakeLevel) => $"Initial Amount: {stakeLevel.Jackpot} - Bot Ratio: {stakeLevel.BotRatio}";
+
+        public static RefitSettings GetRefitSettings()
+        {
+            return new RefitSettings
+            {
+                ContentSerializer = new NewtonsoftJsonContentSerializer(),
+                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
+            };
+        }
     }
+
+        
+    
 }
