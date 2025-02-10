@@ -33,7 +33,8 @@
                         {
                             if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Slots ||
                             @Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.CascadingSlots ||
-                            @Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Crash)
+                            @Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Crash ||
+                            @Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.CrashTurnBase)
                             {
                                 if (role == Role.Admin.Value)
                                 {

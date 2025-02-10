@@ -393,6 +393,7 @@
                 case "Slots": return "SlotResult";
                 case "CascadingSlots": return "CascadingSlotResult";
                 case "Crash": return "CrashGameResult";
+                case "CrashTurnBase": return "CrashTurnBaseResult"
             }
         },
 
