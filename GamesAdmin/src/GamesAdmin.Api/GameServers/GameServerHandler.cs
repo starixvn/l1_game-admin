@@ -27,6 +27,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<SetCrashGameResultRequest, bool>
         , IRequestHandler<SetFootballDiceResultRequest, FootballDiceControlResult>
         , IRequestHandler<SetBaccaratXRersultRequest, bool>
+        , IRequestHandler<SetCrashTurnBaseResultRequest, bool>
 
     {
         private readonly IGameServerService gameServerService;
@@ -84,5 +85,8 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<bool> Handle(SetBaccaratXRersultRequest request, CancellationToken cancellationToken)
             => gameServerService.SetBaccaratXRersult(request);
+
+        public Task<bool> Handle(SetCrashTurnBaseResultRequest request, CancellationToken cancellationToken)
+            => gameServerService.SetCrashTurnBaseResult(request);
     }
 }

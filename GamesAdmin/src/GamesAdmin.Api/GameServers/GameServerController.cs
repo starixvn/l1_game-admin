@@ -81,5 +81,9 @@ namespace GamesAdmin.Api.GameServers
         [HttpPost("baccaratx/set_result")]
         public Task<bool> SetBaccaratXResult([FromBody] SetBaccaratXRersultRequest request)
         => mediator.Send(request);
+
+        [HttpPost("crashturnbase/set_result")]
+        public Task<bool> SetCrashTurnBaseResult([FromBody] SetCrashTurnBaseResultRequest request)
+         => mediator.Send(request);
     }
 }
