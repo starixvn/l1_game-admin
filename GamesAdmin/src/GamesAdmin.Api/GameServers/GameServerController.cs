@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameServers.Requests;
@@ -31,8 +32,19 @@ namespace GamesAdmin.Api.GameServers
            => mediator.Send(request);
 
         [HttpGet("online_users/{game?}")]
-        public Task<OnlineUsers> OnlineUsers(string game)
-           => mediator.Send(new OnlineUserRequest(game));
+        public async Task<OnlineUsers> OnlineUsers(string game)
+        {
+            try
+            {
+                return    await mediator.Send(new OnlineUserRequest(game));
+
+            }
+            catch (Exception ex )
+            {
+                return null;
+            } 
+
+        }
 
         [HttpPost("slot/set_board")]
         public Task<SettlementBoard> SetSlotResult([FromBody] SetSlotBoardRequest request)

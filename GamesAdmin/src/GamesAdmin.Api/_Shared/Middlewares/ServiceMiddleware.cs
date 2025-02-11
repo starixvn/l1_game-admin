@@ -275,6 +275,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddCrashGameServices(this IServiceCollection services)
         {
             services.AddScoped<ICrashGameApiFactory, CrashGameApiFactory>();
+            services.AddScoped<ICrashTurnBaseApiFactory, CrashTurnBaseApiFactory>();
         }
 
         private static void AddChineseBlackjackServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)

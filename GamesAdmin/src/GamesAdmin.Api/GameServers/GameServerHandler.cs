@@ -28,7 +28,6 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<SetFootballDiceResultRequest, FootballDiceControlResult>
         , IRequestHandler<SetBaccaratXRersultRequest, bool>
         , IRequestHandler<SetCrashTurnBaseResultRequest, bool>
-
     {
         private readonly IGameServerService gameServerService;
 
