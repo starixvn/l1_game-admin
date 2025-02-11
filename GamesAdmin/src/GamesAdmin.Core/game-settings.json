@@ -134,5 +134,13 @@
     "BetChoices": [],
     "Odds": [],
     "OfferedSystem": [ "HD" ]
+  },
+  {
+    "GameId": 67,
+    "GameName": "dragontigerfight",
+    "DisplayName": "Dragon Tiger Fight",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": [ "HD" ]
   }
 ]
