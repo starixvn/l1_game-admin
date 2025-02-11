@@ -235,7 +235,7 @@ namespace GamesAdmin.Core.Enumeration
             var gameSettings = GamesSettings.GetGamesSettings().Games
                                 .Where(game => game.OfferedSystem.Contains(systemType))
                                 .Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
-            if (systemType.Equals(SystemType.SC1) || systemType.Equals(SystemType.VG2))
+            if (systemType.Equals(SystemType.SC1) || systemType.Equals(SystemType.VG2) || systemType.Equals(SystemType.HD))
             {
                 return GetAll<Game>().Concat(gameSettings);
             }
