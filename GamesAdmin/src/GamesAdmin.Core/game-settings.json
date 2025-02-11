@@ -3,57 +3,57 @@
     "GameId": 1001,
     "GameName": "bacball1",
     "DisplayName": "Bac Ball 1",
-    "BetChoices": [ "player", "banker", "tie" ],
-    "Odds": [ "player", "banker", "tie" ],
-    "OfferedSystem": [ "GN", "HD" ]
+    "BetChoices": ["player", "banker", "tie"],
+    "Odds": ["player", "banker", "tie"],
+    "OfferedSystem": ["GN", "HD"]
   },
   {
     "GameId": 1002,
     "GameName": "bacball2",
     "DisplayName": "Bac Ball 2",
-    "BetChoices": [ "player", "banker", "tie" ],
-    "Odds": [ "player", "banker", "tie" ],
-    "OfferedSystem": [ "GN", "HD" ]
+    "BetChoices": ["player", "banker", "tie"],
+    "Odds": ["player", "banker", "tie"],
+    "OfferedSystem": ["GN", "HD"]
   },
   {
     "GameId": 1003,
     "GameName": "luckynext1",
     "DisplayName": "Lucky Next 1",
-    "BetChoices": [ "over", "under", "odd", "even" ],
-    "Odds": [ "over", "under", "odd", "even" ],
-    "OfferedSystem": [ "GN", "HD" ]
+    "BetChoices": ["over", "under", "odd", "even"],
+    "Odds": ["over", "under", "odd", "even"],
+    "OfferedSystem": ["GN", "HD"]
   },
   {
     "GameId": 1004,
     "GameName": "luckynext2",
     "DisplayName": "Lucky Next 2",
-    "BetChoices": [ "over", "under", "odd", "even" ],
-    "Odds": [ "over", "under", "odd", "even" ],
-    "OfferedSystem": [ "GN", "HD" ]
+    "BetChoices": ["over", "under", "odd", "even"],
+    "Odds": ["over", "under", "odd", "even"],
+    "OfferedSystem": ["GN", "HD"]
   },
   {
     "GameId": 80,
     "GameName": "cointoss",
     "DisplayName": "Coin Toss",
-    "BetChoices": [ "head", "tail" ],
-    "Odds": [ "head", "tail" ],
-    "OfferedSystem": [ "SC1", "VG2" ]
+    "BetChoices": ["head", "tail"],
+    "Odds": ["head", "tail"],
+    "OfferedSystem": ["SC1", "VG2"]
   },
   {
     "GameId": 1005,
     "GameName": "seball1",
     "DisplayName": "Se Ball",
-    "BetChoices": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
-    "Odds": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
-    "OfferedSystem": [ "GN", "HD" ]
+    "BetChoices": ["odd", "even", "red2", "red3", "red4", "blue3", "blue4"],
+    "Odds": ["odd", "even", "red2", "red3", "red4", "blue3", "blue4"],
+    "OfferedSystem": ["GN", "HD"]
   },
   {
     "GameId": 93,
     "GameName": "footballcointoss",
     "DisplayName": "Football Coin Toss",
-    "BetChoices": [ "home", "away" ],
-    "Odds": [ "home", "away" ],
-    "OfferedSystem": [ "SC1", "VG2" ]
+    "BetChoices": ["home", "away"],
+    "Odds": ["home", "away"],
+    "OfferedSystem": ["SC1", "VG2"]
   },
   {
     "GameId": 94,
@@ -61,47 +61,56 @@
     "DisplayName": "Pusoy",
     "BetChoices": [],
     "Odds": [],
-    "OfferedSystem": [ "SC1", "VG2" ]
+    "OfferedSystem": ["SC1", "VG2"]
   },
   {
     "GameId": 1006,
     "GameName": "luckythree",
     "DisplayName": "Lucky Three",
-    "BetChoices": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
-    "Odds": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
-    "OfferedSystem": [ "GN", "HD" ]
+    "BetChoices": ["over", "under", "red2", "red3", "blue2", "blue3"],
+    "Odds": ["over", "under", "red2", "red3", "blue2", "blue3"],
+    "OfferedSystem": ["GN", "HD"]
   },
   {
     "GameId": 95,
     "GameName": "sedie3",
     "DisplayName": "Se Die 3",
-    "BetChoices": [ "red", "white", "red3", "red2", "red1", "white3" ],
-    "Odds": [ "red", "white", "red3", "red2", "red1", "white3" ],
-    "OfferedSystem": [ "SC1", "VG2" ]
+    "BetChoices": ["red", "white", "red3", "red2", "red1", "white3"],
+    "Odds": ["red", "white", "red3", "red2", "red1", "white3"],
+    "OfferedSystem": ["SC1", "VG2"]
   },
   {
     "GameId": 1007,
     "GameName": "sicball",
     "DisplayName": "Sic Ball",
-    "BetChoices": [ "big", "small", "specific1", "specific2", "specific3", "specific4", "specific5", "specific6" ],
-    "Odds": [ "big", "small", "single", "double", "triple" ],
-    "OfferedSystem": [ "GN", "HD" ]
+    "BetChoices": [
+      "big",
+      "small",
+      "specific1",
+      "specific2",
+      "specific3",
+      "specific4",
+      "specific5",
+      "specific6"
+    ],
+    "Odds": ["big", "small", "single", "double", "triple"],
+    "OfferedSystem": ["GN", "HD"]
   },
   {
     "GameId": 96,
     "GameName": "karakrus",
     "DisplayName": "Kara Krus",
-    "BetChoices": [ "kara", "krus", "head3", "head2", "head1", "tail3" ],
-    "Odds": [ "kara", "krus", "head3", "head2", "head1", "tail3" ],
-    "OfferedSystem": [ "SC1", "VG2" ]
+    "BetChoices": ["kara", "krus", "head3", "head2", "head1", "tail3"],
+    "Odds": ["kara", "krus", "head3", "head2", "head1", "tail3"],
+    "OfferedSystem": ["SC1", "VG2"]
   },
   {
     "GameId": 104,
     "GameName": "marblefootball",
     "DisplayName": "Marble Football",
-    "BetChoices": [ "home", "away", "draw", "over", "under", "odd", "even" ],
-    "Odds": [ "home", "away", "draw", "draw4", "over", "under", "odd", "even" ],
-    "OfferedSystem": [ "SC1", "VG2" ]
+    "BetChoices": ["home", "away", "draw", "over", "under", "odd", "even"],
+    "Odds": ["home", "away", "draw", "draw4", "over", "under", "odd", "even"],
+    "OfferedSystem": ["SC1", "VG2"]
   },
   {
     "GameId": 2,
@@ -109,7 +118,7 @@
     "DisplayName": "Se Die",
     "BetChoices": [],
     "Odds": [],
-    "OfferedSystem": [ "HD" ]
+    "OfferedSystem": ["HD"]
   },
   {
     "GameId": 10,
@@ -117,7 +126,7 @@
     "DisplayName": "Baccarat",
     "BetChoices": [],
     "Odds": [],
-    "OfferedSystem": [ "HD" ]
+    "OfferedSystem": ["HD"]
   },
   {
     "GameId": 22,
@@ -125,7 +134,7 @@
     "DisplayName": "Vip Se Die",
     "BetChoices": [],
     "Odds": [],
-    "OfferedSystem": [ "HD" ]
+    "OfferedSystem": ["HD"]
   },
   {
     "GameId": 26,
@@ -133,7 +142,7 @@
     "DisplayName": "Vip Fish Prawn Crab",
     "BetChoices": [],
     "Odds": [],
-    "OfferedSystem": [ "HD" ]
+    "OfferedSystem": ["HD"]
   },
   {
     "GameId": 67,
@@ -141,6 +150,94 @@
     "DisplayName": "Dragon Tiger Fight",
     "BetChoices": [],
     "Odds": [],
-    "OfferedSystem": [ "HD" ]
+    "OfferedSystem": ["HD"]
+  },
+  {
+    "GameId": 25,
+    "GameName": "sicbo",
+    "DisplayName": "Sic Bo",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["HD"]
+  },
+  {
+    "GameId": 50,
+    "GameName": "unbalancedbigsmall1",
+    "DisplayName": "Las Vegas Big Small",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["HD"]
+  },
+  {
+    "GameId": 23,
+    "GameName": "blackjack",
+    "DisplayName": "Blackjack",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["HD"]
+  },
+  {
+    "GameId": 21,
+    "GameName": "roulette",
+    "DisplayName": "Roulette",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["HD"]
+  },
+  {
+    "GameId": 72,
+    "GameName": "pontoon",
+    "DisplayName": "Pontoon",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["HD"]
+  },
+  {
+    "GameId": 103,
+    "GameName": "sevenupdown",
+    "DisplayName": "7 Up 7 Down",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["HD"]
+  },
+  {
+    "GameId": 35,
+    "GameName": "threecards",
+    "DisplayName": "Three Cards",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["HD"]
+  },
+  {
+    "GameId": 71,
+    "GameName": "colorgame",
+    "DisplayName": "Color Game",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["HD"]
+  },
+  {
+    "GameId": 8,
+    "GameName": "kenopromax",
+    "DisplayName": "Keno Pro Max",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["HD"]
+  },
+  {
+    "GameId": 78,
+    "GameName": "footballdice",
+    "DisplayName": "Football Dice",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["HD"]
+  },
+  {
+    "GameId": 75,
+    "GameName": "bandarqiuqiu",
+    "DisplayName": "Bandar Qiu Qiu",
+    "BetChoices": [],
+    "Odds": [],
+    "OfferedSystem": ["HD"]
   }
 ]
