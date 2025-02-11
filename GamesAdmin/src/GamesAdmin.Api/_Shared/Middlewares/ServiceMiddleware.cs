@@ -109,7 +109,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IRoundWatcherServiceApi>(appSettings.RoundWatcherServiceSettings.Url, refitSettings));
             services.AddSingleton(RestService.For<IStatusServiceApi>(appSettings.StatusCheckerServiceSettings.Url, refitSettings));
             services.AddSingleton(RestService.For<IRTPServiceApi>(appSettings.RtpCheckerServiceSettings.Url, refitSettings));
-
+            
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
             services.AddSingleton(RestService.For<IAwardGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();

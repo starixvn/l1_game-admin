@@ -31,7 +31,7 @@ namespace GamesAdmin.Site._Shared.Configurations
         {
             [SystemType.SC1] = 1,
             [SystemType.VG2] = 1000,
-            [SystemType.GN] = 1000,
+            [SystemType.GN] = 1,
         };
 
         public string System { get; }

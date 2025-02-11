@@ -21,6 +21,17 @@ namespace GamesAdmin.Site.Extensions
             {
                 return string.Empty;
             }
+
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            return textInfo.ToTitleCase(s);
+        }
+
+        public static string ToTitleCase(this string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
             var result = Regex.Replace(s, "[A-Z]", " $0");
             return result.UppercaseFirst();
         }

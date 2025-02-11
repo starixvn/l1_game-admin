@@ -142,8 +142,6 @@ namespace GamesAdmin.Site.Features.Report
             return RedirectToAction("Index", new { game = GameId.VipSeDieWar });
         }
 
-
-        [HttpGet]
         [ActionName("kenosoccer")]
         public IActionResult KenoMatch1()
         {

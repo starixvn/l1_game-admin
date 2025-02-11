@@ -8,8 +8,8 @@ namespace GamesAdmin.Site.UnitTests.GameSettings.ViewModels
     public class MonitorViewModelItemTests
     {
         [Theory]
-        [InlineData(0,Game.LuckyWheelValue, true)]
-        [InlineData((int)GameId.BigSmall, Game.BigSmallValue,  true)]
+        [InlineData(0, Game.LuckyWheelValue, true)]
+        [InlineData((int)GameId.BigSmall, Game.BigSmallValue, true)]
         [InlineData((int)GameId.OddEven, Game.OddEvenValue, true)]
         [InlineData((int)GameId.Blackjack, Game.BlackJackValue, true)]
         [InlineData((int)GameId.BitcoinMaster, Game.BitcoinMasterValue, true)]

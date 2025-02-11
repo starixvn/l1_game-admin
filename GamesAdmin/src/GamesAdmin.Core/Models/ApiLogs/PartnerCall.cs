@@ -73,4 +73,13 @@ namespace GamesAdmin.Core.Models.ApiLogs
     public class PartnerGetBetLimitCall : PartnerCall
     {
     }
+    public class PartnerAwardCall : PartnerCall
+    { 
+        public string Currency { get; set; }
+        public int PromotionId { get; set; }
+        public decimal Amount { get; set; }
+    }
+    public class PartnerGetBetLimitCall : PartnerCall
+    {
+    }
 }

@@ -1,7 +1,7 @@
 @using GamesAdmin.Core.Enumeration;
 @using GamesAdmin.Core;
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
-
+@inject Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine ViewEngine
 @inject GamesAdmin.Site._Shared.Configurations.ISystemSettings systemSettings;
 
 @model EditViewModel;
@@ -221,7 +221,7 @@
                 </div>
             }
 
-            @if (systemSettings.System == SystemType.GN)
+            @if (systemSettings.System == SystemType.GN || Model.Type == GameType.DynamicOdds)
             {
                 <div class="form-group">
                     <label asp-for="MaxWinPerRound" class="control-label max-win-per-round-label"></label>

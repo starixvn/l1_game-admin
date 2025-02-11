@@ -665,6 +665,7 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Uid));
             CreateMap<LuckyNext1BetLogEntity, NextBallBetHistoryRecord>();
             
+            
             CreateMap<FootballSlotRoundEntity, SlotRNGRoundResult>()
                  .ForMember(x => x.ResultNumber, opt => opt.MapFrom((source) => source.Result.Number))
                  .ForMember(x => x.Symbols, opt => opt.MapFrom((source) => source.Result.Symbols));

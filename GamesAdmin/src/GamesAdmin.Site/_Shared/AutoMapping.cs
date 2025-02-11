@@ -178,6 +178,7 @@ namespace GamesAdmin.Site._Shared
 
             CreateMap<NextBallBetRecord, NextBallRecordViewModel>();
             CreateMap<NextBallBetHistoryRecord, NextBallBetHistoryRecordViewModel>();
+
             CreateMap<FootballDiceRoundResult, FootballDiceRoundResultViewModel>();
             CreateMap<FootballDiceBetRecord, FootballDiceRecordViewModel>();
             CreateMap<FootballDiceBetHistoryRecord, FootballDiceBetHistoryRecordViewModel>();
