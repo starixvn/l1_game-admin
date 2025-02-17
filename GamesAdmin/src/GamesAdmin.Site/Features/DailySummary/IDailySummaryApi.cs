@@ -1,6 +1,7 @@
 ﻿namespace GamesAdmin.Site.Features.DailySummary
 {
     using System.Threading.Tasks;
+    using GamesAdmin.Site.Features._Shared;
     using GamesAdmin.Site.Features.DailySummary.Models;
     using Refit;
 
@@ -8,6 +9,6 @@
     {
         [Headers("Content-Type: application/json")]
         [Post("/Integrity/DailySummarize")]
-        Task<dynamic> GetDailySummary([Body(BodySerializationMethod.Serialized)] DailySummaryRequest request, [Header("Access-Key")] string accessKey);
+        Task<SGApiResponse<DailySummaryResult>> GetDailySummary([Body(BodySerializationMethod.Serialized)] DailySummaryRequest request, [Header("Access-Key")] string accessKey);
     }
 }
