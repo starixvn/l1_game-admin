@@ -16,6 +16,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> Add(GameConfig game);
 
+        Task<bool> Import(GameConfig game);
+
         Task<GameConfig> GetByName(string name);
 
         Task<bool> IsExistName(string name);
@@ -98,6 +100,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<bool> Add(GameConfig game)
         => await gameApi.Add(game);
+
+        public async Task<bool> Import(GameConfig game)
+       => await gameApi.Import(game);
 
         public async Task<IList<GameConfig>> GetAll()
         {

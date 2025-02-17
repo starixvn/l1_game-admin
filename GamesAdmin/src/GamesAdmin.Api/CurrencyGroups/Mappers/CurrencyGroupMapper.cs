@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GamesAdmin.Api.CurrencyGroups.Requests;
+using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Database.Entities.Currencies;
 
 namespace GamesAdmin.Api.CurrencyGroups.Mappers
@@ -9,6 +10,8 @@ namespace GamesAdmin.Api.CurrencyGroups.Mappers
         public CurrencyGroupMapper()
         {
             CreateMap<CreateCurrencyGroupModel, CurrencyGroupEntity>();
+            CreateMap<CurrencyGroupModel, CurrencyGroupEntity>();
+            CreateMap<CurrencyGroupModel, CreateCurrencyGroupModel>();
         }
     }
 }

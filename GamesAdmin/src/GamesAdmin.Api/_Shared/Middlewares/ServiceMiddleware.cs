@@ -13,6 +13,7 @@ using GamesAdmin.Api.Currencies;
 using GamesAdmin.Api.CurrencyGroupGames;
 using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.GameGroupManagement;
+using GamesAdmin.Api.Features.OperateSettings;
 using GamesAdmin.Api.GameManagementApi;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers;
@@ -176,6 +177,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.InitApiLog();
 
             services.AddCloudServices(appSettings);
+
+            OperatorSettingsServiceRegister.Register(services);
         }
 
         private static void AddOnlineUserApiSCVG(IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
