@@ -1,0 +1,404 @@
+﻿@using GamesAdmin.Site.Features.OperateSettings.ViewModels
+@model GameSettingOperationViewModel
+@{
+    ViewData["Title"] = "Operate Settings";
+    Layout = "../_Shared/_BodyLayout";
+}
+
+<style>
+    .checkbox-column {
+        min-width: 50px;
+        width: 50px;
+        max-width: 50px;
+    }
+
+    .container-fluid {
+        padding: 20px;
+    }
+
+    .hidden-file-input {
+        display: none;
+    }
+
+    .settings-pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .sortable {
+        cursor: pointer;
+    }
+
+    .sort-icon::after {
+        content: '↕';
+        margin-left: 5px;
+        opacity: 0.3;
+    }
+
+    .sort-asc::after {
+        content: '↑';
+        opacity: 1;
+    }
+
+    .sort-desc::after {
+        content: '↓';
+        opacity: 1;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+</style>
+
+<div class="container-fluid">
+    
+    <div class="mb-3">
+        <button class="btn btn-add" onclick="exportSelectedGameConfigs()">Export Selected Game Configs</button>
+        <button class="btn btn-submit" onclick="importGameConfigs()">Import Game Configs</button>
+        <input type="file" 
+               id="importFileInput" 
+               accept=".json" 
+               class="hidden-file-input" 
+               onchange="handleFileImport(this)">
+    </div>
+
+    <div class="mb-3">
+        <input type="text" 
+               id="gameNameFilter" 
+               class="form-control" 
+               placeholder="Search by game name..."
+               onkeyup="filterGames()">
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered w-100">
+            <thead>
+                <tr>
+                    <th class="text-center align-top checkbox-column">
+                        <input type="checkbox" 
+                               id="selectAllGames" 
+                               onclick="toggleAllGames()"
+                               class="form-check-input">
+                    </th>
+                    <th class="text-center align-top sortable" onclick="sortTable(1)">
+                        Id<span class="sort-icon"></span>
+                    </th>
+                    <th class="text-center align-top sortable" onclick="sortTable(2)">
+                        Game Name<span class="sort-icon"></span>
+                    </th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody id="gamesTableBody">
+                @foreach (var game in Model.GameConfigs)
+                {
+                    <tr>
+                        <td class="text-center align-top checkbox-column">
+                            <input type="checkbox" 
+                                   class="form-check-input game-checkbox" 
+                                   value="@game.GameId">
+                        </td>
+                        <td class="text-center align-top">@game.GameId</td>
+                        <td class="text-center align-top">@game.Name</td>
+                        <td>
+                            <pre class="mb-0 settings-pre">@Model.BuildSetting(game)</pre>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="importConfirmModal" tabindex="-1" aria-labelledby="importConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importConfirmModalLabel">Confirm Import Game Settings</h5>
+                <button type="button" class="btn-close close" data-dismiss="modal" onclick="closeImportModal()" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Please select the games you want to import:</p>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="selectAllImportGames" onclick="toggleAllImportGames()">
+                        <label class="form-check-label" for="selectAllImportGames">Select All</label>
+                    </div>
+                </div>
+                <div id="importGamesList" class="list-group">
+                    <!-- Games will be populated here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeImportModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitImport()">Import Selected</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleAllGames() {
+            const selectAllCheckbox = document.getElementById('selectAllGames');
+            const gameCheckboxes = document.querySelectorAll('.game-checkbox');
+            
+            gameCheckboxes.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                if (row.style.display !== 'none') { // Only toggle visible rows
+                    checkbox.checked = selectAllCheckbox.checked;
+                }
+            });
+        }
+
+        function exportSelectedGameConfigs() {
+            const selectedGameIds = Array.from(document.querySelectorAll('.game-checkbox:checked'))
+                .map(checkbox => parseInt(checkbox.value));
+
+            if (selectedGameIds.length === 0) {
+                alert('Please select at least one game to export');
+                return;
+            }
+
+            fetch('/api/OperateSettings/ExportGameConfigs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    gameIds: selectedGameIds,
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const today = new Date();
+                const date = today.toISOString().split('T')[0];
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `game-configs-${date}.json`;
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while exporting Game configs');
+            });
+        }
+
+        function filterGames() {
+            const filterValue = document.getElementById('gameNameFilter').value.toLowerCase();
+            const tableBody = document.getElementById('gamesTableBody');
+            const rows = tableBody.getElementsByTagName('tr');
+            let visibleCheckedCount = 0;
+            let visibleCount = 0;
+
+            for (let row of rows) {
+                const gameName = row.getElementsByTagName('td')[2].textContent.toLowerCase();
+                if (gameName.includes(filterValue)) {
+                    row.style.display = '';
+                    visibleCount++;
+                    if (row.querySelector('.game-checkbox').checked) {
+                        visibleCheckedCount++;
+                    }
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+
+            // Update select all checkbox state based on visible rows
+            const selectAllCheckbox = document.getElementById('selectAllGames');
+            if (visibleCount > 0) {
+                selectAllCheckbox.checked = visibleCount === visibleCheckedCount;
+                selectAllCheckbox.indeterminate = visibleCheckedCount > 0 && visibleCount !== visibleCheckedCount;
+            }
+        }
+
+        function importGameConfigs() {
+            document.getElementById('importFileInput').click();
+        }
+
+        let importData = null;
+        const importModal = new bootstrap.Modal(document.getElementById('importConfirmModal'));
+        
+        function handleFileImport(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        importData = JSON.parse(e.target.result);
+                        showImportConfirmation(importData);
+                    } catch (error) {
+                        console.error('Error parsing JSON:', error);
+                        alert('Invalid JSON file');
+                    }
+                };
+
+                reader.readAsText(input.files[0]);
+            }
+        }
+
+        function showImportConfirmation(data) {
+            const gamesList = document.getElementById('importGamesList');
+            gamesList.innerHTML = '';
+
+            // Assuming the data structure has games with id and name properties
+            data.forEach((game, index) => {
+                const listItem = document.createElement('div');
+                listItem.className = 'list-group-item';
+                listItem.innerHTML = `
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input import-game-checkbox" 
+                               id="importGame${index}" value="${index}" checked>
+                        <label class="form-check-label" for="importGame${index}">
+                            ${game.gameId} - ${game.name}
+                        </label>
+                    </div>
+                `;
+                gamesList.appendChild(listItem);
+            });
+
+            document.getElementById('selectAllImportGames').checked = true;
+            importModal.show();
+        }
+
+        function toggleAllImportGames() {
+            const selectAllCheckbox = document.getElementById('selectAllImportGames');
+            const gameCheckboxes = document.querySelectorAll('.import-game-checkbox');
+            
+            gameCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        }
+
+        function closeImportModal() {
+            importModal.hide();
+            // Clear the file input so the same file can be selected again
+            document.getElementById('importFileInput').value = '';
+            // Reset importData
+            importData = null;
+        }
+
+        function submitImport() {
+            const selectedIndexes = Array.from(document.querySelectorAll('.import-game-checkbox:checked'))
+                .map(checkbox => parseInt(checkbox.value));
+
+            if (selectedIndexes.length === 0) {
+                alert('Please select at least one game to import');
+                return;
+            }
+
+            const selectedGames = selectedIndexes.map(index => importData[index]);
+            
+            fetch('/api/OperateSettings/ImportGameConfigs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    gameSettings: selectedGames
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Import failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                closeImportModal();
+                
+                let successCount = 0;
+                let failCount = 0;
+                let alertMessage = 'Import Result:\n\n';
+                let successMessages = [];
+                let failMessages = [];
+                
+                for (var gameId in data.importResult) {
+                    // Find the game in selectedGames array
+                    const game = selectedGames.find(g => g.gameId.toString() === gameId.toString());
+                    const gameName = game ? `${game.gameId} - ${game.name}` : gameId;
+                    
+                    if (data.importResult[gameId]) {
+                        successCount++;
+                        successMessages.push(`✓ ${gameName}`);
+                    } else {
+                        failCount++;
+                        failMessages.push(`✗ ${gameName}`);
+                    }
+                }
+
+                alertMessage += `Success: ${successCount}, Failed: ${failCount}\n\n`;
+                
+                if (successMessages.length > 0) {
+                    alertMessage += 'Successful:\n' + successMessages.join('\n') + '\n\n';
+                }
+                
+                if (failMessages.length > 0) {
+                    alertMessage += 'Failed:\n' + failMessages.join('\n');
+                }
+
+                alert(alertMessage);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to import game settings');
+            });
+        }
+
+        let currentSortColumn = -1;
+        let isAscending = true;
+
+        function sortTable(columnIndex) {
+            const table = document.getElementById('gamesTableBody');
+            const rows = Array.from(table.getElementsByTagName('tr'));
+            const headers = document.querySelectorAll('th.sortable');
+            
+            // Reset all sort icons
+            headers.forEach(header => {
+                header.querySelector('.sort-icon').className = 'sort-icon';
+            });
+
+            // Update sort direction
+            if (currentSortColumn === columnIndex) {
+                isAscending = !isAscending;
+            } else {
+                isAscending = true;
+                currentSortColumn = columnIndex;
+            }
+
+            // Update sort icon
+            const currentHeader = headers[columnIndex - 1];
+            currentHeader.querySelector('.sort-icon').className = 
+                'sort-icon ' + (isAscending ? 'sort-asc' : 'sort-desc');
+
+            // Sort rows
+            rows.sort((a, b) => {
+                const aValue = a.cells[columnIndex].textContent.trim();
+                const bValue = b.cells[columnIndex].textContent.trim();
+                
+                // Handle numeric sorting for ID column
+                if (columnIndex === 1) {
+                    return isAscending 
+                        ? parseInt(aValue) - parseInt(bValue)
+                        : parseInt(bValue) - parseInt(aValue);
+                }
+                
+                // String sorting for other columns
+                return isAscending 
+                    ? aValue.localeCompare(bValue)
+                    : bValue.localeCompare(aValue);
+            });
+
+            // Reorder table rows
+            rows.forEach(row => table.appendChild(row));
+        }
+    </script>
+}

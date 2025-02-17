@@ -23,6 +23,8 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> Create(GameConfig game);
 
+        Task<bool> ImportGame(GameConfig game);
+
         Task<GameConfig> GetByName(string name);
 
         Task<bool> UpdateStatus(string[] names, bool enabled);
@@ -144,6 +146,58 @@ namespace GamesAdmin.Api.Games
             return true;
         }
 
+        public async Task<bool> ImportGame(GameConfig gameConfig)
+        {
+            try
+            {
+                if(!string.IsNullOrWhiteSpace((await GetGameEntity(gameConfig.Info.Name))?.Name))
+                {
+                    return false;
+                }
+
+                var entity = new GameConfigEntity
+                {
+                    Name = gameConfig.Info.Name,
+                    Type = (byte)gameConfig.Info.Type,
+                    EnableFreeBet = gameConfig.Info.EnableFreeBet,
+                    Enabled = gameConfig.EnableSetting.Enabled,
+                    DelayStartTime = gameConfig.EnableSetting.DelayStartTime,
+                    DisabledMessage = gameConfig.EnableSetting.DisabledMessage,
+                    Maxbet = gameConfig.BetLimit.MaxBet,
+                    Minbet = gameConfig.BetLimit.MinBet,
+                    Botenabled = gameConfig.BotSetting.BotEnabled,
+                    BotMaxBet = gameConfig.BotSetting.BotMaxBet,
+                    HoursMaxBot = gameConfig.BotSetting.HoursMaxBot,
+                    SlotsConfig = gameConfig.SlotsConfig,
+                    CascadingSlotsConfig = gameConfig.CascadingSlotsConfig,
+                    SlotRNGConfig = gameConfig.SlotRNGConfig,
+                    SiteExclusions = gameConfig.Info.SiteExclusions,
+                    Time = DateTime.Now,
+                    GameId = gameConfig.Info.GameId,
+                    DisplayName = gameConfig.Info.DisplayName,
+                    CrashConfig = gameConfig.CrashConfig,
+                    RandomMode = gameConfig.Info.RandomMode,
+                    Odds = gameConfig.Odds,
+                    Margin = gameConfig.Margin,
+                    MaxWinPerRound = gameConfig.Info.MaxWinPerRound,
+                    MaxBetChoices = gameConfig.BetLimit.MaxBetChoices
+                };
+
+                await repository.InsertOneAsync(entity);
+
+                var messages = new Dictionary<string, string> { [Language.DefaultLanguageValue] = gameConfig.EnableSetting.DisabledMessage };
+                await notificationService.AddDisableMessage(gameConfig.Info.Name, messages);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+
+            return true;
+        }
+
         private int GetGameId(GameInfo gameInfo)
         {
             if (gameInfo.Type == GameType.Slots || gameInfo.Type == GameType.Crash)
@@ -152,6 +206,11 @@ namespace GamesAdmin.Api.Games
             }
 
             return (int)Game.FromGameName(gameInfo.Name).GameId;
+        }
+
+        private async Task<GameConfigEntity> GetGameEntity(string gameName)
+        {
+            return await repository.FindOneAsync(entity => entity.Name == gameName);
         }
 
         public async Task<GameConfig> GetByName(string name)

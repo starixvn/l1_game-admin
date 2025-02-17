@@ -1,0 +1,313 @@
+﻿@using GamesAdmin.Site.Features.OperateSettings.ViewModels
+@model CurrencySettingViewModel
+
+@{
+    ViewData["Title"] = "Currency Settings";
+    Layout = "../_Shared/_BodyLayout";
+}
+
+<style>
+
+    .operator-group {
+        background-color: #f8f9fa;
+    }
+    .operator-name {
+        width: 200px;
+    }
+    .operator-id {
+        width: 100px;
+    }
+    .currency-json {
+        font-family: monospace;
+        white-space: pre;
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 4px;
+        max-height: 400px;
+        overflow-y: auto;
+        font-size: 0.9em;
+        width: 100%;
+    }
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .table th, .table td {
+        border: 1px solid #dee2e6;
+        vertical-align: middle;
+    }
+    .table th {
+        text-align: center;
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+    }
+    .select-column, 
+    .operator-id, 
+    .operator-name {
+        text-align: center;
+    }
+    .container-fluid {
+        padding: 20px;
+    }
+    .select-column {
+        width: 50px;
+    }
+    .export-button {
+        margin-bottom: 1rem;
+    }
+    .import-result-success {
+        color: #28a745;
+    }
+    .import-result-error {
+        color: #dc3545;
+    }
+    .import-result-line {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 4px;
+    }
+    .import-result-icon {
+        font-size: 1.2em;
+        min-width: 20px;
+    }
+    .modal-title {
+        font-weight: 500;
+    }
+    .import-result-line strong {
+        font-weight: 500;
+    }
+    body {
+        overflow-x: hidden;
+    }
+</style>
+
+<div class="container-fluid">
+   
+    <button id="exportSelected" class="btn btn-add export-button">
+        Export Selected Operator Currencies
+    </button>
+    <button id="importCurrencies" class="btn btn-submit export-button">
+        Import Currencies
+    </button>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="select-column">
+                            <input type="checkbox" id="selectAll" />
+                        </th>
+                        <th class="operator-id">Operator Id</th>
+                        <th class="operator-name">Operator Name</th>
+                        <th>Currencies</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var operatorCurrencies in Model.OperatorCurrencies)
+                    {
+                        <tr class="operator-group">
+                            <td>
+                                <input type="checkbox" class="operator-checkbox" 
+                                       data-operator="@operatorCurrencies.Operator.PartnerId" />
+                            </td>
+                            <td class="operator-id">@operatorCurrencies.Operator.PartnerId</td>
+                            <td class="operator-name">@operatorCurrencies.Operator.Name</td>
+                            <td><pre class="currency-json">@operatorCurrencies.BuildCurrencyJson()</pre></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add this after the card div -->
+    <div class="modal fade" id="importResultModal" tabindex="-1" role="dialog" aria-labelledby="importResultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importResultModalLabel">Import Results</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeImportModal()"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div id="importResultMessage"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeImportModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let importResultModal = null;
+
+        function closeImportModal() {
+            importResultModal.hide();
+        }
+
+        $(document).ready(function() {
+            const $selectAll = $('#selectAll');
+            const $exportButton = $('#exportSelected');
+            const $importButton = $('#importCurrencies');
+            const $operatorCheckboxes = $('.operator-checkbox');
+
+            // Create hidden file input
+            const $fileInput = $('<input type="file" accept=".json" style="display: none">');
+            $('body').append($fileInput);
+
+            function formatDate(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${year}${month}${day}_${hours}${minutes}`;
+            }
+
+            function updateExportButton() {
+                const hasSelected = $('.operator-checkbox:checked').length > 0;
+                $exportButton.prop('disabled', !hasSelected);
+            }
+
+            function validateImportData(data) {
+                if (!Array.isArray(data)) {
+                    throw new Error('Import data must be an array');
+                }
+
+                for (const item of data) {
+                    if (!item.operator || !item.currencies) {
+                        throw new Error('Each item must have operator and currencies properties');
+                    }
+                    if (!Array.isArray(item.currencies)) {
+                        throw new Error('Currencies must be an array');
+                    }
+                }
+            }
+
+            $selectAll.change(function() {
+                const isChecked = $(this).prop('checked');
+                $operatorCheckboxes.prop('checked', isChecked);
+                updateExportButton();
+            });
+
+            $operatorCheckboxes.change(function() {
+                const allChecked = $operatorCheckboxes.length === $('.operator-checkbox:checked').length;
+                $selectAll.prop('checked', allChecked);
+                updateExportButton();
+            });
+
+            $exportButton.click(function() {
+                const selectedOperators = $('.operator-checkbox:checked').map(function() {
+                    return $(this).data('operator');
+                }).get();
+
+                if (selectedOperators.length === 0) {
+                    alert('Please select at least one operator to export.');
+                    return;
+                }
+
+                const exportData = selectedOperators.map(operatorId => {
+                    const $row = $(`.operator-checkbox[data-operator="${operatorId}"]`).closest('tr');
+                    const currencyJson = $row.find('.currency-json').text();
+                    return {
+                        operator: operatorId,
+                        currencies: JSON.parse(currencyJson)
+                    };
+                });
+
+                const now = new Date();
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `operator-currencies_${formatDate(now)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+
+            $importButton.click(function() {
+                $fileInput.click();
+            });
+
+            function showImportResult(message) {
+                const $messageContainer = $('#importResultMessage');
+                $messageContainer.text(message);
+                
+                if (!importResultModal) {
+                    importResultModal = new bootstrap.Modal(document.getElementById('importResultModal'), {
+                        keyboard: true,
+                        backdrop: true
+                    });
+                }
+                importResultModal.show();
+            }
+
+            $fileInput.change(function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    try {
+                        const importData = JSON.parse(e.target.result);
+                        validateImportData(importData);
+
+                        const response = await fetch('/api/OperateSettings/ImportCurrencies', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                            },
+                            body: JSON.stringify({
+                                operatorCurrencies: importData
+                            })
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`Import failed: ${response.statusText}`);
+                        }
+
+                        const result = await response.json();
+                        if (typeof result === 'object' && Object.keys(result).length > 0) {
+                            let message = '<div>Import Results:</div><br>';
+                            for (const [operator, details] of Object.entries(result)) {
+                                message += `<div>${operator}:</div>`;
+                                message += `<div>${details.message}</div>`;
+                                message += '<br>';
+                            }
+                            const $messageContainer = $('#importResultMessage');
+                            $messageContainer.html(message);
+                            
+                            if (!importResultModal) {
+                                importResultModal = new bootstrap.Modal(document.getElementById('importResultModal'), {
+                                    keyboard: true,
+                                    backdrop: true
+                                });
+                            }
+                            importResultModal.show();
+                        } else {
+                            showImportResult('Currencies imported successfully');
+                        }
+                    } catch (error) {
+                        showImportResult(`Error importing currencies: ${error.message}`);
+                    }
+
+                    $fileInput.val('');
+                };
+
+                reader.onerror = function() {
+                    showImportResult('Error reading file');
+                    $fileInput.val('');
+                };
+
+                reader.readAsText(file);
+            });
+        });
+    </script>
+}

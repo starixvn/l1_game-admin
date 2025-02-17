@@ -19,6 +19,7 @@ using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.InternalTestAccount;
 using GamesAdmin.Site.Features.Lobby;
 using GamesAdmin.Site.Features.Notifications;
+using GamesAdmin.Site.Features.OperateSettings;
 using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Promotions;
 using GamesAdmin.Site.Features.Report;
@@ -125,6 +126,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IInternalTestAccountApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IInternalTestAccountService, InternalTestAccountService>();
             services.AddReportServices();
+
+            services.RegisterOperatorSettings(appSettings, refitSettings);
         }
     }
 }

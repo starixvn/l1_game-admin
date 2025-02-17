@@ -31,9 +31,9 @@ namespace GamesAdmin.Core.Models
             CrashConfig = crashConfig;
         }
 
-        public string Id { get; }
+        public string Id { get; set;  }
 
-        public Dictionary<string, double> Odds { get; }
+        public Dictionary<string, double> Odds { get; set; }
 
         public GameInfo Info { get; set; }
 
@@ -52,5 +52,9 @@ namespace GamesAdmin.Core.Models
         public CrashConfig CrashConfig { get; set; }
 
         public IEnumerable<Dictionary<string, double>> Margin { get; set; }
+
+        public int GameId { get; set; }
+
+        public string Name { get; set; }
     }
 }

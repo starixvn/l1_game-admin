@@ -30,6 +30,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<CloneNewSlotGameRequest, string>
         , IRequestHandler<UpdateSymbolWeightRequest, bool>
         , IRequestHandler<UpdateCrashConfigRequest, bool>
+        , IRequestHandler<ImportRequest, bool>
     {
         private readonly IGameSettingsService gameService;
         private readonly ICloneSettingService slotSettingService;
@@ -103,5 +104,8 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(UpdateCrashConfigRequest request, CancellationToken cancellationToken)
        => gameService.UpdateCrashConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.CrashConfig);
+
+        public Task<bool> Handle(ImportRequest request, CancellationToken cancellationToken)
+            => gameService.ImportGame(request.Game);
     }
 }
