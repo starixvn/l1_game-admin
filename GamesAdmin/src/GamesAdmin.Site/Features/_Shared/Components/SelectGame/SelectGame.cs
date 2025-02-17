@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features._Shared.Components.SelectGame;
@@ -18,11 +19,20 @@ namespace GamesAdmin.Site._Shared.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(string name, bool selectAll = false)
         {
-            var games = await generalGameSettingService.GetAllGames();
+            try
+            {
+                var games = await generalGameSettingService.GetAllGames();
 
-            var items = games.Select(game => new SelectListItem { Text = game.DisplayName, Value = game.GameId.ToString() });
+                var items = games.Select(game => new SelectListItem { Text = game.DisplayName, Value = game.GameId.ToString() });
 
-            return View(new SelectGameModel(name, items, selectAll));
+                return View(new SelectGameModel(name, items, selectAll));
+            }
+            catch (Exception ex)
+            {
+                Sentry.SentrySdk.CaptureException(ex);
+            }
+
+            return View(new SelectGameModel(name, Enumerable.Empty<SelectListItem>(), selectAll));
         }
     }
 }

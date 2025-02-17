@@ -17,6 +17,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/game_settings/")]
         Task<bool> Add([Body] GameConfig game);
 
+        [Post("/game_settings/import")]
+        Task<bool> Import([Body] GameConfig game);
+
         [Get("/game_settings/{name}")]
         Task<GameConfig> GetByName(string name);
 
