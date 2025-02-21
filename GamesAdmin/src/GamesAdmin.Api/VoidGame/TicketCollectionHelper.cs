@@ -74,7 +74,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.SeDie3, new GameTicketCollection("sedie3_bets", "sedie3_betlogs") },
             { GameId.KaraKrus, new GameTicketCollection("karakrus_bets", "karakrus_betlogs") },
             { GameId.MarbleFootball, new GameTicketCollection("marblefootball_bets", "marblefootball_betlogs") },
-           };
+        };
 
         public static GameTicketCollection GetCollections(int gameTypeId, GameType type = GameType.AutoRNG, string gameName = "", bool isCheckBetLog = false)
         {
@@ -86,8 +86,17 @@ namespace GamesAdmin.Api.VoidGame
 
             if (!string.IsNullOrWhiteSpace(gameName))
             {
-                var betCollection = NamingConverter.BetCollection(gameName);
+
+                var betCollection = type switch
+                {
+                    GameType.CrashTurnBase => NamingConverter.RoundCollection(gameName),
+                    _ => NamingConverter.BetCollection(gameName)
+                };
                 var betLogCollection = NamingConverter.BetLogCollection(gameName);
+                if (type == GameType.CrashTurnBase)
+                {
+                    isCheckBetLog = true;
+                }
                 var primaryCollection = isCheckBetLog ? betCollection : string.Empty;
                 var secondaryCollection = isCheckBetLog ? betLogCollection : betCollection;
 
