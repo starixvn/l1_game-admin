@@ -157,19 +157,19 @@ namespace GamesAdmin.Api.Report
         public async Task<IEnumerable<HiLoBetRecord>> HiLo([FromQuery] HiLoBetReportFilter filter)
             => (await mediator.Send(new HiLoReportRequest(filter)));
 
-        [HttpGet]
+        [HttpPost]
         [Route("cascading_slot")]
-        public async Task<IEnumerable<CascadingSlotBetRecord>> CascadingSlot([FromQuery] CascadingSlotReportFilter filter)
+        public async Task<IEnumerable<CascadingSlotBetRecord>> CascadingSlot([FromBody] CascadingSlotReportFilter filter)
             => (await mediator.Send(new CascadingSlotReportRequest(filter)));
 
-        [HttpGet]
+        [HttpPost]
         [Route("bet_history/cascading_slot")]
-        public async Task<CascadingSlotBetHistory> CascadingSlotBetHistory([FromQuery] CascadingSlotReportFilter filter)
+        public async Task<CascadingSlotBetHistory> CascadingSlotBetHistory([FromBody] CascadingSlotReportFilter filter)
             => (await mediator.Send(new CascadingSlotBetHistoryRequest(filter)));
 
-        [HttpGet]
+        [HttpPost]
         [Route("crash_game")]
-        public async Task<CrashGameBetReport> CrashGame([FromQuery] SpeedUpGameBetReportFilter filter)
+        public async Task<CrashGameBetReport> CrashGame([FromBody] SpeedUpGameBetReportFilter filter)
          => (await mediator.Send(new CrashGameReportRequest(filter)));
     }
 }
