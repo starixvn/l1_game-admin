@@ -28,7 +28,15 @@ using GamesAdmin.Site.Features.UmSchedule;
 using GamesAdmin.Site.Features.Users;
 using GamesAdmin.Site.Features.VoidGame;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 using Refit;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Threading;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GamesAdmin.Site._Shared.Middlewares
 {
@@ -40,7 +48,11 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             var refitSettings = new RefitSettings
             {
-                ContentSerializer = new NewtonsoftJsonContentSerializer(),
+                ContentSerializer = new NewtonsoftJsonContentSerializer(new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    StringEscapeHandling = StringEscapeHandling.EscapeHtml
+                }),
                 AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
             };
 
@@ -116,7 +128,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IPromotionApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IPromotionService, PromotionService>();
             services.AddScoped<IPromotionCampaignService, PromotionCampaignService>();
- 
 
             services.AddSingleton(RestService.For<ILobbyApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<ILobbyService, LobbyService>();
