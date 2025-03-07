@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.GeneralGameSettings;
@@ -17,6 +16,7 @@ using GamesAdmin.Database.Entities.KenoProMax;
 using GamesAdmin.Database.Entities.SeDie3;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 using Sentry;
 
 namespace GamesAdmin.Api.VoidGame
@@ -182,7 +182,10 @@ namespace GamesAdmin.Api.VoidGame
             try
             {
                 var ticket = await Find<HoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
-                return new GameTicketRecord<HoldemPokerBetEntity>(ticket.BetRecords as IList<HoldemPokerBetEntity>, ticket.IsFromArchive);
+                string json = JsonConvert.SerializeObject(ticket.BetRecords);
+                var betRecods = JsonConvert.DeserializeObject<IList<HoldemPokerBetEntity>>(json);
+
+                return new GameTicketRecord<HoldemPokerBetEntity>(betRecods, ticket.IsFromArchive);
             }
             catch (Exception ex)
             {
