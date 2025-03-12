@@ -16,8 +16,6 @@
                     <th rowspan="2">Round ID</th>
                     <th rowspan="2">Result(Crash Point)</th>
                     <th colspan="3" class="col-number">Cashout</th>
-                    <th rowspan="2" class="col-number">Total Bet</th>
-                    <th rowspan="2" class="col-number">Win</th>
                 </tr>
                 <tr>
                     <th>Multiplier</th>
@@ -50,24 +48,9 @@
                             <td class="text-center">-</td>
                             <td class="text-center">-</td>
                         }
-                       
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amount)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
                     </tr>
                 }
             </tbody>
-            <tfoot>
-                @if (!Model.Records.Any())
-                {
-                    <tr>
-                        <td class="text-center" colspan="15">No data</td>
-                    </tr>
-                }
-                else if (Model.ConvertToUSD)
-                {
-                   
-                }
-            </tfoot>
         </table>
     </div>
 </div>
