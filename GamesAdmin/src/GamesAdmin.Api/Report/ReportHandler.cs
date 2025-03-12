@@ -37,6 +37,7 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<CascadingSlotReportRequest, IEnumerable<CascadingSlotBetRecord>>,
         IRequestHandler<CascadingSlotBetHistoryRequest, CascadingSlotBetHistory>,
         IRequestHandler<CrashGameReportRequest, CrashGameBetReport>,
+        IRequestHandler<CrashTurnGameReportRequest, IEnumerable<CrashTurnGameBetRecord>>,
         IRequestHandler<ChineseBlackjackReportRequest, IEnumerable<BlackjackBetRecord>>
     {
         private readonly IReportService reportService;
@@ -127,6 +128,9 @@ namespace GamesAdmin.Api.Report
 
         public Task<CrashGameBetReport> Handle(CrashGameReportRequest request, CancellationToken cancellationToken)
            => reportService.GetCrashGameReportAsync(request.Filter);
+
+        public Task<IEnumerable<CrashTurnGameBetRecord>> Handle(CrashTurnGameReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetCrashTurnGameReportAsync(request.Filter);
 
         public Task<IEnumerable<BlackjackBetRecord>> Handle(ChineseBlackjackReportRequest request, CancellationToken cancellationToken)
             => serviceProvider.GetRequiredService<ChineseBlackjackReportService>().Get(request.Filter);

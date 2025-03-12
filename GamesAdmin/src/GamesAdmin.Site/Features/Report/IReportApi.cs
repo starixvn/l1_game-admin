@@ -88,6 +88,9 @@ namespace GamesAdmin.Site.Features.Report
         Task<CascadingSlotBetHistory> GetCascadingSlotBetHistory([Body] CascadingSlotReportFilter filter);
 
         [Post("/report/crash_game")]
-        Task<CrashGameBetReport> GetCrashGameReport([Body] SpeedUpGameBetReportFilter filter);
+        Task<CrashGameBetReport> GetCrashGameReport([Body] CrashGameBetReportFilter filter);
+        
+        [Post("/report/crash_turn_game")]
+        Task<IEnumerable<CrashTurnGameBetRecord>> GetCrashTurnGameReport([Body] CrashTurnGameBetReportFilter filter);
     }
 }

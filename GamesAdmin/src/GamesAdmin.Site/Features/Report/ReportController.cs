@@ -630,6 +630,53 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public async Task<IActionResult> CrashTurnGameReport(string game)
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var games = await generalGameSettingService.GetAllGames();
+            var gameSetting = games.FirstOrDefault(gameInfo => gameInfo.Name == game);
+
+            var viewModel = new TurnGameReportViewModel
+            {
+                ExcludeUUS = true,
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency,
+                SystemType = systemSettings.System,
+                GameConfigName = game,
+                GameDisplayName = gameSetting?.DisplayName,
+                GameId = gameSetting.GameId,
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCrashTurnGameReport(
+           string partnerId,
+           DateTime fromDate,
+           DateTime toDate,
+           long roundId,
+           string nickname,
+           string username,
+           bool convertToUSD,
+           bool excludeUUS,
+           string game)
+        {
+            var request = new GetCrashTurnGameReportRequest(
+                roundId,
+                fromDate,
+                toDate,
+                nickname,
+                excludeUUS,
+                game,
+                partnerId,
+                username,
+                convertToUSD);
+
+            return PartialView("CrashTurnGames/_CrashTurnGameRecords", await mediator.Send(request));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetNextBallBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return PartialView("_NextBallBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));

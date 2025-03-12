@@ -60,7 +60,9 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<CascadingSlotBetHistory> GetCascadingSlotBetHistory(CascadingSlotReportFilter filter);
 
-        Task<CrashGameBetReport> GetCrashGameReport(SpeedUpGameBetReportFilter filter);
+        Task<CrashGameBetReport> GetCrashGameReport(CrashGameBetReportFilter filter);
+
+        Task<IEnumerable<CrashTurnGameBetRecord>> GetCrashTurnGameReport(CrashTurnGameBetReportFilter filter);
 
         Task<string> GetRemoteRoundHistoryUrl(BetReportFilter request);
     }
@@ -175,7 +177,10 @@ namespace GamesAdmin.Site.Features.Report
         public Task<CascadingSlotBetHistory> GetCascadingSlotBetHistory(CascadingSlotReportFilter filter)
             => reportApi.GetCascadingSlotBetHistory(filter);
 
-        public Task<CrashGameBetReport> GetCrashGameReport(SpeedUpGameBetReportFilter filter)
+        public Task<CrashGameBetReport> GetCrashGameReport(CrashGameBetReportFilter filter)
            => reportApi.GetCrashGameReport(filter);
+
+        public Task<IEnumerable<CrashTurnGameBetRecord>> GetCrashTurnGameReport(CrashTurnGameBetReportFilter filter)
+           => reportApi.GetCrashTurnGameReport(filter);
     }
 }

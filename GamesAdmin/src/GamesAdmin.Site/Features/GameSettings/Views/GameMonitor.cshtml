@@ -99,6 +99,10 @@
                             {
                                 <a class="icon-action" href="~/Report/CascadingSlotGameReport?game=@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
                             }
+                            else if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.CrashTurnBase)
+                            {
+                                <a class="icon-action" href="~/Report/CrashTurnGameReport?game=@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
+                            }
                             else if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Crash)
                             {
                                 <a class="icon-action" href="~/Report/CrashGameReport?game=@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>

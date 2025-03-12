@@ -169,7 +169,13 @@ namespace GamesAdmin.Api.Report
 
         [HttpPost]
         [Route("crash_game")]
-        public async Task<CrashGameBetReport> CrashGame([FromBody] SpeedUpGameBetReportFilter filter)
+        public async Task<CrashGameBetReport> CrashGame([FromBody] CrashGameBetReportFilter filter)
          => (await mediator.Send(new CrashGameReportRequest(filter)));
+
+        [HttpPost]
+        [Route("crash_turn_game")]
+        public async Task<IEnumerable<CrashTurnGameBetRecord>> CrashTurnGame([FromBody] CrashTurnGameBetReportFilter filter)
+        => (await mediator.Send(new CrashTurnGameReportRequest(filter)));
+
     }
 }

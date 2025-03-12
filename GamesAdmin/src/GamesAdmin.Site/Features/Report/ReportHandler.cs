@@ -52,6 +52,7 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetCascadingSlotReportRequest, CascadingSlotReportResultViewModel>,
         IRequestHandler<GetCascadingSlotBetHistoryRequest, CascadingSlotBetHistoryViewModel>,
         IRequestHandler<GetCrashGameReportRequest, CrashGameReportResultViewModel>,
+        IRequestHandler<GetCrashTurnGameReportRequest, CrashTurnGameReportResultViewModel>,
         IRequestHandler<GetChineseBlackjackReportRequest, BlackjackGameReportResultViewModel>
     {
         private readonly IReportService reportService;
@@ -773,9 +774,9 @@ namespace GamesAdmin.Site.Features.Report
             }
         }
 
-        private SpeedUpGameBetReportFilter CreateFilterFromRequest(GetCrashGameReportRequest request)
+        private CrashGameBetReportFilter CreateFilterFromRequest(GetCrashGameReportRequest request)
         {
-            return new SpeedUpGameBetReportFilter
+            return new CrashGameBetReportFilter
             {
                 RoundId = request.RoundId,
                 Nickname = request.Nickname,
@@ -815,6 +816,72 @@ namespace GamesAdmin.Site.Features.Report
                 Partner = GetPartnerName(partners, record.PartnerId),
                 Rate = record.Rate,
                 BetLogs = record.BetLogs.Select(c => new CrashGameBetHistoryViewModel
+                {
+                    Action = c.Action,
+                    WinAmount = c.WinAmount,
+                    Multiplier = c.Multiplier,
+                    Amount = c.Amount,
+                    CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1
+                }),
+            };
+        }
+
+        public async Task<CrashTurnGameReportResultViewModel> Handle(GetCrashTurnGameReportRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var filter = CreateFilterFromRequestTurnGame(request);
+                var result = await reportService.GetCrashTurnGameReport(filter);
+                var partners = await partnerService.GetPartnersForSelection(model => true);
+
+                return MapToViewModelTurnGame(result, partners, filter.ConvertToUSD);
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException($"Exceptions", ex);
+            }
+        }
+
+        private CrashTurnGameBetReportFilter CreateFilterFromRequestTurnGame(GetCrashTurnGameReportRequest request)
+        {
+            return new CrashTurnGameBetReportFilter
+            {
+                RoundId = request.RoundId,
+                Nickname = request.Nickname,
+                ExcludeUUS = request.ExcludeUUS,
+                PartnerId = request.PartnerId,
+                Username = request.Username,
+                ConvertToUSD = request.ConvertToUSD,
+                Game = request.Game,
+                ToDate = request.ToDate,
+                FromDate = request.FromDate
+            };
+        }
+
+        private CrashTurnGameReportResultViewModel MapToViewModelTurnGame(IEnumerable<CrashTurnGameBetRecord> result, IEnumerable<SelectListItem> partners, bool convertToUSD)
+        {
+            return new CrashTurnGameReportResultViewModel
+            {
+                Records = result.Select(x => MapRecordToViewModelTurnGame(x, partners, convertToUSD)).ToList(),
+            };
+        }
+
+        private CrashTurnGameRecordViewModel MapRecordToViewModelTurnGame(CrashTurnGameBetRecord record, IEnumerable<SelectListItem> partners, bool convertToUSD)
+        {
+            return new CrashTurnGameRecordViewModel
+            {
+                Result = record.Result,
+                Time = TimeZoneInfo.ConvertTimeFromUtc(record.Time, appSettings.DefaultTimeZone),
+                CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1,
+                Username = record.Username,
+                Nickname = record.Nickname,
+                BetWin = record.BetWin,
+                Amount = record.Amount,
+                Currency = record.Currency,
+                Partner = GetPartnerName(partners, record.PartnerId),
+                Rate = record.Rate,
+                RoundId= record.RoundId,
+                BetLogs = record.BetLogs.Select(c => new CrashTurnGameBetHistoryViewModel
                 {
                     Action = c.Action,
                     WinAmount = c.WinAmount,

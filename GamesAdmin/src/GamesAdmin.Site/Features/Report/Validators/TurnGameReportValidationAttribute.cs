@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace GamesAdmin.Site.Features.Report.Validators
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class SlotGameReportValidationAttribute : ValidationAttribute, IClientModelValidator
+    public class TurnGameReportValidationAttribute : ValidationAttribute, IClientModelValidator
     {
         public void AddValidation(ClientModelValidationContext context)
         {
