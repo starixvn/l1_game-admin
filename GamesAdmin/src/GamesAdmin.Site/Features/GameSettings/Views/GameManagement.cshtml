@@ -63,7 +63,7 @@
                     @{
                         var firstPartner = Model.Partners.FirstOrDefault();
                         var partnerGroups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner?.PartnerId);
-
+                        var currencyGroupGames = Model.CurrencyGroupGames?.Where(groupGame => groupGame.GameId == Model.GameList[index].GameId);
                         <td>
                             @(firstPartner?.Name)
                         </td>
@@ -72,7 +72,7 @@
                             @{
                                 foreach (var partnerGroup in partnerGroups)
                                 {
-                                    var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id && groupGame.GameId == Model.GameList[index].GameId);
+                                    var setting = currencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id);
                                     if (setting != null && setting.Enabled)
                                     {
 
@@ -147,7 +147,7 @@
 
                                     foreach (var partnerGroup in groups)
                                     {
-                                        var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id && groupGame.GameId == Model.GameList[index].GameId);
+                                        var setting = currencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id);
 
                                         if (setting != null && setting.Enabled)
                                         {
