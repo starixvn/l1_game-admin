@@ -56,6 +56,7 @@
 
     public static class CrashGameAction
     {
+        public const string Crash = "crash";
         public const string Refund = "refund";
         public const string CashOut = "cashOut";
         public const string HalfCashOut = "halfCashOut";

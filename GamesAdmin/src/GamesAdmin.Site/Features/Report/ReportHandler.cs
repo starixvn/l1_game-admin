@@ -821,6 +821,8 @@ namespace GamesAdmin.Site.Features.Report
                     WinAmount = c.WinAmount,
                     Multiplier = c.Multiplier,
                     Amount = c.Amount,
+                    ClientSeed = c.ClientSeed,
+                    Time = c.Time,
                     CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1
                 }),
             };

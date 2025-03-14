@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -8,5 +9,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<CrashGameRecordViewModel> Records { get; set; }
 
+        public bool HasTwoHand => Records.Any(x => x.HasTwoHand);
     }
 }

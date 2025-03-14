@@ -11,5 +11,7 @@ namespace GamesAdmin.Database.Entities
         public decimal Multiplier { get; set; }
 
         public string Action { get; set; }
+
+        public string ClientSeed { get; set; }
     }
 }
