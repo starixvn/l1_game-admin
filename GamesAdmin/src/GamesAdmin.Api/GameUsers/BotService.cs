@@ -51,12 +51,12 @@ namespace GamesAdmin.Api.GameUser
                 }
             },
             {SystemType.VG2, new SystemBotSetting {
-                minBalance = 500,
-                maxBalance = 3_000,
-                minAmount = 500,
-                maxAmount = 12_000,
-                minAddAmount = 1_000,
-                maxAddAmount = 8_000,
+                minBalance = 100,
+                maxBalance = 1_000,
+                minAmount = 100,
+                maxAmount = 3_000,
+                minAddAmount = 200,
+                maxAddAmount = 2_000,
                 }
             },
             {SystemType.GN, new SystemBotSetting {
