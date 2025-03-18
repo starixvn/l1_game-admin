@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using GamesAdmin.Database.Attributes;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities.Promotion
 {
@@ -38,5 +40,6 @@ public class WinningPrize
 {
     public string Ranking { get; set; }
 
+    [BsonRepresentation(BsonType.Double, AllowTruncation = true)]
     public double Value { get; set; }
 }
