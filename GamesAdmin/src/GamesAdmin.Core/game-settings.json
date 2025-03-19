@@ -102,5 +102,15 @@
     "BetChoices": ["home", "away", "draw", "over", "under", "odd", "even"],
     "Odds": ["home", "away", "draw", "draw4", "over", "under", "odd", "even"],
     "OfferedSystem": ["SC1", "VG2"]
+  },
+  {
+    "GameId": 114,
+    "GameName": "marblefootball2",
+    "DisplayName": "Marble Football 2",
+    "BetChoices": ["firstHalfHome", "firstHalfAway", "firstHalfDraw", "firstHalfOver", "firstHalfUnder", "firstHalfOdd", "firstHalfEven",
+  "secondHalfHome", "secondHalfAway", "secondHalfDraw", "secondHalfOver", "secondHalfUnder", "secondHalfOdd", "secondHalfEven"],
+    "Odds": ["firstHalfHome", "firstHalfAway", "firstHalfDraw", "firstHalfDraw4", "firstHalfOver", "firstHalfUnder", "firstHalfOdd", "firstHalfEven",
+    "secondHalfHome", "secondHalfAway", "secondHalfDraw", "secondHalfDraw4", "secondHalfOver", "secondHalfUnder", "secondHalfOdd", "secondHalfEven"],
+    "OfferedSystem": ["SC1", "VG2"]
   }
 ]
