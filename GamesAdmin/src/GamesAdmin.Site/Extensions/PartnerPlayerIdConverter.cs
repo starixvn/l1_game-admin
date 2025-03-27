@@ -12,7 +12,7 @@ namespace GamesAdmin.Site.Extensions
     {
         private readonly Dictionary<string, Type> operatorPlayerIdTypes = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase)
         {
-            { "ONEworks1", typeof(string) },
+            { "ONEworks1", typeof(int) },
             { "SBO", typeof(int) },
             { "PFF", typeof(int) },
             { "ONEworksVGCash", typeof(string) },
