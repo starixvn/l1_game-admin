@@ -6,7 +6,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
     {
         public string Seq { get; set; }
 
-        public string PlayerId { get; set; }
+        public object PlayerId { get; set; }
 
         public string SiteId { get; set; }
 
