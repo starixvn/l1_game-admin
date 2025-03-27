@@ -1,5 +1,4 @@
-﻿using System;
-using GamesAdmin.Core.Models.ApiLogs;
+﻿using GamesAdmin.Core.Models.ApiLogs;
 using GamesAdmin.Site.Features.BetDetails.ViewModels;
 
 namespace GamesAdmin.Site.Features.BetDetails.Models
@@ -28,7 +27,7 @@ namespace GamesAdmin.Site.Features.BetDetails.Models
 
         public long GameRoundId { get; set; }
 
-        public string PlayerId { get; set; }
+        public object PlayerId { get; set; }
 
         public bool FreeBet { get; set; }
 

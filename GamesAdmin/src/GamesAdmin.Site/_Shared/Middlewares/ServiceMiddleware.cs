@@ -2,6 +2,7 @@
 using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
+using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.BetDetails;
@@ -135,6 +136,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IInternalTestAccountApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IInternalTestAccountService, InternalTestAccountService>();
+            services.AddScoped<IPartnerPlayerIdConverter, PartnerPlayerIdConverter>();
 
             services.AddReportServices();
         }
