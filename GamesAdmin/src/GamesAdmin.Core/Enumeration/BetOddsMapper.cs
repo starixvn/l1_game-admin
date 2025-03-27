@@ -160,7 +160,8 @@ namespace GamesAdmin.Core.Enumeration
 
                 case Game.SevenUpDownValue:
                     return Enumeration.GetAll<SevenUpDownOdds>();
-
+                case Game.MarbleFootball2Value:
+                    return Enumeration.GetAll<MarbleFootball2BetOdds>();    
                 default: return default;
             }
         }
