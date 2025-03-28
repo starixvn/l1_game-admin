@@ -61,6 +61,7 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
             CreateMap<PartnerCallEntity, PartnerVoidGameCall>();
             CreateMap<PartnerCallEntity, PartnerCall>();
             CreateMap<PartnerCallEntity, PartnerAwardCall>();
+            CreateMap<PartnerCallEntity, PartnerHitJackpotCall>();
 
             CreateMap<PartnerResultEntity, PartnerResult>();
             CreateMap<PartnerResultEntity, PartnerPlaceBetResult>();
