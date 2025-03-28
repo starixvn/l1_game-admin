@@ -14,7 +14,7 @@ namespace GamesAdmin.Site.Extensions
         {
             { "ONEworks1", typeof(int) },
             { "SBO", typeof(int) },
-            { "PFF", typeof(int) },
+            { "PFF", typeof(string) },
             { "ONEworksVGCash", typeof(string) },
             { "ONEworks_VG", typeof(string) },
             { "ONEworksSeal888", typeof(string) },
