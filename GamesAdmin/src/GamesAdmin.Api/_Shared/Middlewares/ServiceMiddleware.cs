@@ -236,6 +236,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IFootballCoinTossOnlineUserApi>(appSettings.GameServers.FootballCoinToss.Api, refitSettings));
             services.AddSingleton(RestService.For<ISevenUpDownOnlineUserApi>(appSettings.GameServers.SevenUpDown.Api, refitSettings));
             services.AddSingleton(RestService.For<IMarbleFootballOnlineUserApi>(appSettings.GameServers.MarbleFootball.Api, refitSettings));
+            services.AddSingleton(RestService.For<IMarbleFootball2OnlineUserApi>(appSettings.GameServers.MarbleFootball2.Api, refitSettings));
         }
 
         private static void AddOnlineUserApiGN(IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)

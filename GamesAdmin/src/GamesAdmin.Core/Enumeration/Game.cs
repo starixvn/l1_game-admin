@@ -182,7 +182,6 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game Bac101 = new Game(Bac101Value, "Speed Baccarat 3", GameId.Bac101);
         public static readonly Game Bac102 = new Game(Bac102Value, "Baccarat Lobby", GameId.Bac102);
         public static readonly Game SevenUpDown = new Game(SevenUpDownValue, "7 Up 7 Down", GameId.SevenUpDown);
-        public static readonly Game MarbleFootball2 = new Game(MarbleFootball2Value, "Marble Football 2", GameId.MarbleFootball2);
 
         public Game()
         {

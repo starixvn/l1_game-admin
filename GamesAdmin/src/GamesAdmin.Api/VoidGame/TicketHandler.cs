@@ -166,6 +166,7 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.SeDie3 => await Move<SeDie3BetEntity, SeDie3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.KaraKrus => await Move<KaraKrusBetEntity, KaraKrusBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.MarbleFootball => await Move<MarbleFootballBetEntity, MarbleFootballBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.MarbleFootball2 => await Move<MarbleFootball2BetEntity, MarbleFootball2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            _ => await Move<BaseBetEntity, BaseBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                        };
             }
@@ -274,6 +275,7 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.SeDie3 => await Find<SeDie3BetEntity, SeDie3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.KaraKrus => await Find<KaraKrusBetEntity, KaraKrusBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.MarbleFootball => await Find<MarbleFootballBetEntity, MarbleFootballBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.MarbleFootball2 => await Find<MarbleFootball2BetEntity, MarbleFootball2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         _ => await Find<BaseBetEntity, BaseBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     };
                 }
