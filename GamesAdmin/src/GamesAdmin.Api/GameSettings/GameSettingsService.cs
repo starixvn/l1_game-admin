@@ -132,6 +132,7 @@ namespace GamesAdmin.Api.Games
                     ApplyMultiplier = game.Info.ApplyMultiplier,
                     HaveTournament = game.Info.HaveTournament,
                     HaveVideoStream = game.Info.HaveVideoStream,
+                    UseMargin = game.Info.UseMargin,
                 };
 
                 if (game.Info.ApplyMultiplier)

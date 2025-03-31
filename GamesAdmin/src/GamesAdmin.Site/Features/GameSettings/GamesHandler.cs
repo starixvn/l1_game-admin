@@ -188,7 +188,15 @@ namespace GamesAdmin.Site.Features.GameSettings
                     case GameType.Marble:
                         viewModel.Type = GameType.Marble;
                         viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(GetBetChoices(game.Info.Name), game.BetLimit);
-                        viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
+                        if (game.Info.UseMargin == true)
+                        {
+                            viewModel.PayoutViewModel.MarginSettings = GenerateMarginSettings(game.Info.Name, game.Margin);
+
+                        }
+                        else
+                        {
+                            viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
+                        }
                         break;
 
                     default:

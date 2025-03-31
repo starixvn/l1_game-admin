@@ -102,6 +102,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
 		public bool HaveVideoStream { get; set; }
 
+        public bool UseMargin { get; set; }
+
 		public IEnumerable<int> OtherGameIdsInGroup { get; set; }
         public IEnumerable<SelectListItem> OtherGamesInGroup { get; set; }
     }

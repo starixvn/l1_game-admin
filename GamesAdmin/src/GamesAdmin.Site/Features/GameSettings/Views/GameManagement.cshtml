@@ -81,7 +81,7 @@
                         @{
                             if (Model.GameList[index].Name != "luckywheel")
                             {
-                                if (Model.GameList[index].GameConfig.Info.Type ==  GamesAdmin.Core.Enumeration.GameType.DynamicOdds)
+                                if (Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.DynamicOdds || Model.GameList[index].Name == "marblefootball2" )
                                 {
                                     <button class="btn-edit" onclick='gameStatus.showGameForm("@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "MarginSettings")'><i class="icon-edit"></i></button>
                                 }

@@ -29,6 +29,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.ApplyMultiplier, opt => opt.MapFrom(src => src.Info.ApplyMultiplier))
 				.ForMember(dest => dest.HaveTournament, opt => opt.MapFrom(src => src.Info.HaveTournament))
 				.ForMember(dest => dest.HaveVideoStream, opt => opt.MapFrom(src => src.Info.HaveVideoStream))
+                .ForMember(dest => dest.UseMargin, opt => opt.MapFrom(src => src.Info.UseMargin))
 				.ForMember(dest => dest.GameId, opt => opt.MapFrom(src => src.Info.GameId));
 
             CreateMap<GameConfig, PayoutViewModel>()

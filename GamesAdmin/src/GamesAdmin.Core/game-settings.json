@@ -107,8 +107,38 @@
     "GameId": 114,
     "GameName": "marblefootball2",
     "DisplayName": "Marble Football 2",
-    "BetChoices": [],
-    "Odds": [],
+    "BetChoices": [
+      "home",
+      "homeLive",
+      "away",
+      "awayLive",
+      "draw",
+      "drawLive",
+      "over",
+      "overLive",
+      "under",
+      "underLive",
+      "odd",
+      "oddLive",
+      "even",
+      "evenLive"
+    ],
+    "Odds": [
+      "home",
+      "homeLive",
+      "away",
+      "awayLive",
+      "draw",
+      "drawLive",
+      "over",
+      "overLive",
+      "under",
+      "underLive",
+      "odd",
+      "oddLive",
+      "even",
+      "evenLive"
+    ],
     "OfferedSystem": ["SC1", "VG2"]
   }
 ]

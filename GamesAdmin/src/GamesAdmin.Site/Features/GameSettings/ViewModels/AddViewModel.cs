@@ -111,5 +111,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
 		[DisplayName("Have Video Stream")]
 		public bool HaveVideoStream { get; set; }
+
+        [DisplayName("Use Margin")]
+        public bool UseMargin { get; set; }
 	}
 }
