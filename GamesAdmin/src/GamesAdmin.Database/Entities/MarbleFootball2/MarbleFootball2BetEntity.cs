@@ -1,5 +1,5 @@
-using GamesAdmin.Database.Attributes;
 using System.Collections.Generic;
+using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
@@ -19,6 +19,20 @@ namespace GamesAdmin.Database.Entities
         public decimal Odd { get; set; }
 
         public decimal Even { get; set; }
+
+        public decimal HomeLive { get; set; }
+
+        public decimal AwayLive { get; set; }
+
+        public decimal DrawLive { get; set; }
+
+        public decimal OverLive { get; set; }
+
+        public decimal UnderLive { get; set; }
+
+        public decimal OddLive { get; set; }
+
+        public decimal EvenLive { get; set; }
 
         public double TotalAmount { get; set; }
 
