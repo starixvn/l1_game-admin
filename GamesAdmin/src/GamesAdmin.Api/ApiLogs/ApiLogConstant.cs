@@ -21,14 +21,14 @@ namespace GamesAdmin.Api.ApiLogs
         private const string GetBetLimitCollectionName = "bet_limits";
         private const string AwardCollectionName = "awards";
 
-        private const string PlaceBetCall = "PartnerPlaceBetCall";
-        private const string PlaceBetResult = "PartnerPlaceBetResult";
+        private const string PlaceBetCall = "PlaceBetCall";
+        private const string PlaceBetResult = "PlaceBetResult";
 
-        private const string EndGameCall = "PartnerEndGameCall";
-        private const string EndGameResult = "PartnerEndGameResult";
+        private const string EndGameCall = "EndGameCall";
+        private const string EndGameResult = "EndGameResult";
 
-        private const string VoidGameCall = "PartnerVoidGameCall";
-        private const string VoidGameResult = "PartnerVoidGameResult";
+        private const string VoidGameCall = "VoidGameCall";
+        private const string VoidGameResult = "VoidGameResult";
 
         private const string SignInRequest = "SignIn";
         private const string SignInResult = "SingleSignOnResult";
@@ -40,13 +40,13 @@ namespace GamesAdmin.Api.ApiLogs
         private const string RetrieveEndRoundInfoRequest = "RetrieveEndRoundInfoRequest";
         private const string EndRoundInfoResult = "EndRoundInfoResult";
 
-        private const string EnterPortalCall = "PartnerEnterPortalCall";
-        private const string EnterPortalResult = "PartnerEnterPortalResult";
+        private const string EnterPortalCall = "EnterPortalCall";
+        private const string EnterPortalResult = "EnterPortalResult";
 
-        private const string GetBetLimitCall = "PartnerGetBetLimitCall";
-        private const string GetBetLimitResult = "PartnerGetBetLimitResult";
+        private const string GetBetLimitCall = "GetBetLimitCall";
+        private const string GetBetLimitResult = "GetBetLimitResult";
 
-        private const string AwardTournamentCall = "PartnerAwardCall";
+        private const string AwardTournamentCall = "AwardCall";
 
         private const string HitJackpotCall = "HitJackpotCall";
 

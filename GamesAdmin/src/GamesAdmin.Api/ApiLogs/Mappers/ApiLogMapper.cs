@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
 using GamesAdmin.Api.ApiLogs.Requests;
-using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models.ApiLogs;
 using GamesAdmin.Database.ApiLogs.Entities;
 
@@ -134,12 +133,13 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
 
         private static Type GetDestinationType(string typeName)
         {
-            if (ApiLogConstant.CallOrRequestTypeMapping.ContainsKey(typeName))
-            {
-                return ApiLogConstant.CallOrRequestTypeMapping[typeName];
-            }
+            if (string.IsNullOrWhiteSpace(typeName))
+                return null;
 
-            return null;
+            var matchedKey = ApiLogConstant.CallOrRequestTypeMapping.Keys
+                .FirstOrDefault(suffix => typeName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase));
+
+            return matchedKey != null ? ApiLogConstant.CallOrRequestTypeMapping[matchedKey] : null;
         }
     }
 };
