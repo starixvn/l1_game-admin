@@ -36,6 +36,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public bool DisplayMinMaxBet => Type == GameType.AutoRNG;
 
         public List<MarginSettingViewModel> MarginSettings { get; set; }
+
+        public Dictionary<string, string> DisplayMargins { get; set; }
     }
 
     public class IconOddsViewModel

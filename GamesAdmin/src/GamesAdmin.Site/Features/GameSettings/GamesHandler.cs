@@ -190,6 +190,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                         viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(GetBetChoices(game.Info.Name), game.BetLimit);
                         if (game.Info.UseMargin == true)
                         {
+                            viewModel.PayoutViewModel.DisplayMargins = gamesSettings.GetGameFromName(game.Info.Name)?.DisplayOdds;
                             viewModel.PayoutViewModel.MarginSettings = GenerateMarginSettings(game.Info.Name, game.Margin);
 
                         }
@@ -307,12 +308,13 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             var betOdds2 = gamesSettings.GetGameFromName(name)?.Odds;
+            var displayOdds = gamesSettings.GetGameFromName(name)?.DisplayOdds;
             if (betOdds2?.Any() == true)
             {
                 foreach (var odds in betOdds2)
                 {
                     var oddsValue = oddsSettings.ContainsKey(odds) ? oddsSettings[odds] : 0;
-                    items.Add(new OddsViewModel(odds, oddsValue, odds.ToTitleCase()));
+                    items.Add(new OddsViewModel(odds, oddsValue, displayOdds?[odds] ?? odds.ToTitleCase()));
                 }
             }
 
@@ -334,12 +336,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         private IEnumerable<Enumeration> GetBetChoices(string name)
         {
             var betChoices = gamesSettings.GetGameFromName(name)?.BetChoices;
+            var displayBetChoices = gamesSettings.GetGameFromName(name)?.DisplayBetChoices;
+
             if (betChoices?.Any() == true)
             {
                 var items = new List<BaseBetChoice>();
                 foreach (var betChoice in betChoices)
                 {
-                    items.Add(new BaseBetChoice(betChoice, betChoice.ToTitleCase()));
+                    items.Add(new BaseBetChoice(betChoice, displayBetChoices?[betChoice] ?? betChoice.ToTitleCase()));
                 }
                 return items;
             }
@@ -365,6 +369,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             else
             {
                 var Odds = gamesSettings.GetGameFromName(name)?.Odds;
+                
                 var defaultSetting = new Dictionary<string, double> { { "max", 0 } };
                 if (Odds?.Any() == true)
                 {

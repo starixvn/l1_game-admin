@@ -12,7 +12,9 @@ namespace GamesAdmin.Core.Games
         public string GameName { get; set; }
         public string DisplayName { get; set; }
         public IEnumerable<string> BetChoices { get; set; }
+        public Dictionary<string, string> DisplayBetChoices { get; set; }
         public IEnumerable<string> Odds { get; set; }
+        public Dictionary<string, string> DisplayOdds { get; set; }
         public IEnumerable<string> OfferedSystem { get; set; }
     }
 
@@ -36,7 +38,9 @@ namespace GamesAdmin.Core.Games
 
         public GamesSettings()
         {
-            Games = JsonConvert.DeserializeObject<IEnumerable<GameSettings>>(ReadSettingsFromFile());
+            Games = JsonConvert.DeserializeObject<IEnumerable<GameSettings>>(
+                ReadSettingsFromFile()
+            );
         }
 
         private string ReadSettingsFromFile()
