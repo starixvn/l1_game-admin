@@ -64,6 +64,8 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
 
             CreateMap<PartnerResultEntity, PartnerResult>();
             CreateMap<PartnerResultEntity, PartnerPlaceBetResult>();
+            CreateMap<PartnerResultEntity, PartnerGetBetLimitResult>();
+            CreateMap<PartnerResultEntity, PartnerEnterPortalResult>();
 
             CreateMap<SBRequestEntity, SignInRequest>();
             CreateMap<SBRequestEntity, EndGameInfoRequest>();
