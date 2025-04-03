@@ -13,6 +13,7 @@ using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Baccarat;
 using GamesAdmin.Database.Entities.Keno;
 using GamesAdmin.Database.Entities.KenoProMax;
+using GamesAdmin.Database.Entities.RnGSoccer;
 using GamesAdmin.Database.Entities.SeDie3;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -167,6 +168,7 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.KaraKrus => await Move<KaraKrusBetEntity, KaraKrusBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.MarbleFootball => await Move<MarbleFootballBetEntity, MarbleFootballBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.MarbleFootball2 => await Move<MarbleFootball2BetEntity, MarbleFootball2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.RnGSoccer => await Move< RnGSoccerBetEntity, RnGSoccerBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            _ => await Move<BaseBetEntity, BaseBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                        };
             }
@@ -276,6 +278,7 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.KaraKrus => await Find<KaraKrusBetEntity, KaraKrusBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.MarbleFootball => await Find<MarbleFootballBetEntity, MarbleFootballBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.MarbleFootball2 => await Find<MarbleFootball2BetEntity, MarbleFootball2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.RnGSoccer => await Find<RnGSoccerBetEntity, RnGSoccerBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         _ => await Find<BaseBetEntity, BaseBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     };
                 }

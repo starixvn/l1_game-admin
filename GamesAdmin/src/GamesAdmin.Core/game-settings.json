@@ -99,9 +99,9 @@
     "GameId": 104,
     "GameName": "marblefootball",
     "DisplayName": "Marble Football",
-    "BetChoices": ["home", "away", "draw", "over", "under", "odd", "even"],
-    "Odds": ["home", "away", "draw", "draw4", "over", "under", "odd", "even"],
-    "OfferedSystem": ["SC1", "VG2"]
+    "BetChoices": [ "home", "away", "draw", "over", "under", "odd", "even" ],
+    "Odds": [ "home", "away", "draw", "draw4", "over", "under", "odd", "even" ],
+    "OfferedSystem": [ "SC1", "VG2" ]
   },
   {
     "GameId": 114,
@@ -172,5 +172,13 @@
       "evenLive": "Even (Live)"
     },
     "OfferedSystem": ["SC1", "VG2"]
+  },
+  {
+    "GameId": 118,
+    "GameName": "rngsoccer",
+    "DisplayName": "RnG Soccer",
+    "BetChoices": [ "home", "away" ],
+    "Odds": [ "home", "away" ],
+    "OfferedSystem": [ "SC1", "VG2", "GN" ]
   }
 ]
