@@ -177,8 +177,8 @@
     "GameId": 118,
     "GameName": "rngsoccer",
     "DisplayName": "RnG Soccer",
-    "BetChoices": [ "home", "away" ],
-    "Odds": [ "home", "away" ],
+    "BetChoices": [ "home", "away", "draw" ],
+    "Odds": [ "home", "away", "draw"  ],
     "OfferedSystem": [ "SC1", "VG2", "GN" ]
   }
 ]
