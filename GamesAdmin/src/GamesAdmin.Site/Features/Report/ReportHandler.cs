@@ -494,7 +494,7 @@ namespace GamesAdmin.Site.Features.Report
             var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
             var currencies = await currencyService.GetAll();
             var currencyGroupGame = await currencyGroupGameService.GetAll();
-           
+
             return new JackpotReportResultViewModel
             {
                 EnableConvertBase = !isFourGuardians,
@@ -506,8 +506,8 @@ namespace GamesAdmin.Site.Features.Report
                         betViewModel.BaseBetLevel = GetBetLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
                         betViewModel.BetLevelByCurrency = GetBetLevel(currencies, currencyGroupGame, request.GameId, x.Currency);
                         betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
-                    }                
-                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);                  
+                    }
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     return betViewModel;
                 }).OrderByDescending(x => x.Time)
             };
@@ -770,7 +770,7 @@ namespace GamesAdmin.Site.Features.Report
             }
             catch (Exception ex)
             {
-                throw new SystemException($"Exceptions", ex);            
+                throw new SystemException($"Exceptions", ex);
             }
         }
 
@@ -821,10 +821,10 @@ namespace GamesAdmin.Site.Features.Report
                     WinAmount = c.WinAmount,
                     Multiplier = c.Multiplier,
                     Amount = c.Amount,
-                    ClientSeed = c.ClientSeed,
                     Time = c.Time,
                     CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1
                 }),
+                ClientSeed = record.ClientSeed,
             };
         }
 
@@ -882,7 +882,7 @@ namespace GamesAdmin.Site.Features.Report
                 Currency = record.Currency,
                 Partner = GetPartnerName(partners, record.PartnerId),
                 Rate = record.Rate,
-                RoundId= record.RoundId,
+                RoundId = record.RoundId,
                 BetLogs = record.BetLogs.Select(c => new CrashTurnGameBetHistoryViewModel
                 {
                     Action = c.Action,

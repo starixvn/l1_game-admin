@@ -67,6 +67,7 @@ namespace GamesAdmin.Database.Report
                             Round = bet.Round,
                             PartnerId = bet.OperatorId,
                             BetLogs = betLogs.Where(x => x.Uid == bet.Uid),
+                            ClientSeed = bet.ClientSeed
                         });
                     }
                 }                            

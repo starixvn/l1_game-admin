@@ -9,6 +9,8 @@ namespace GamesAdmin.Core.Models.BetReport
         public decimal Amount { get; set; }
 
         public int ExchangeRateId { get; set; }
+        
+        public string ClientSeed { get; set; }
 
         public IEnumerable<CrashGameBetHistory> BetLogs { get; set; }
     }

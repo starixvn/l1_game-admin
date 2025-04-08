@@ -35,7 +35,5 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string DisplayMultiplier => Multiplier > 0 ? $"{HtmlHelpers.formatNumber(Multiplier)}x" : "-";
 
         public bool HasShowBetLog => Action == CrashGameAction.CashOut || Action == CrashGameAction.Crash;
-
-        public string ClientSeed { get; set; }
     }
 }

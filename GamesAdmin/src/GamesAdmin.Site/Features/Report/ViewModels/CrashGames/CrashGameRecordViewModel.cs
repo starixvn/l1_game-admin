@@ -47,6 +47,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public CrashGameBetHistoryViewModel RefundBetLog => BetLogs.FirstOrDefault(x => x.Action.Equals(CrashGameAction.Refund));
         
-        public bool HasTwoHand => BetLogs.Any(x => !string.IsNullOrWhiteSpace(x.ClientSeed));
+        public string ClientSeed { get; set; }
+
+        public bool HasTwoHand => BetLogs.Any(x => !string.IsNullOrWhiteSpace(ClientSeed));
     }
 }
