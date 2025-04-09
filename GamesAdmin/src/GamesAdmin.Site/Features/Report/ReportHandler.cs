@@ -822,9 +822,9 @@ namespace GamesAdmin.Site.Features.Report
                     Multiplier = c.Multiplier,
                     Amount = c.Amount,
                     Time = c.Time,
-                    CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1
+                    CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1,
+                    BetKey = c.BetKey
                 }),
-                ClientSeed = record.ClientSeed,
             };
         }
 

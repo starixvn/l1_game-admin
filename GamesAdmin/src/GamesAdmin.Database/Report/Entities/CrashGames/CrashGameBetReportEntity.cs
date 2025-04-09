@@ -15,8 +15,6 @@ namespace GamesAdmin.Database.Report.Entities
 
         public string OperatorId { get; set; }
         
-        public string ClientSeed { get; set; }
-
         public IEnumerable<CrashGameBetLogEntity> BetLogs { get; set; }
     }
 }

@@ -7,7 +7,5 @@ namespace GamesAdmin.Database.Entities
     {
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Amount { get; set; }
-        
-        public string ClientSeed { get; set; }
     }
 }

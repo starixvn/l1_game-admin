@@ -14,5 +14,7 @@ namespace GamesAdmin.Core.Models.BetReport
         public decimal Amount { get; set; }
         
         public DateTime Time { get; set; }
+
+        public byte? BetKey { get; set; }
     }
 }

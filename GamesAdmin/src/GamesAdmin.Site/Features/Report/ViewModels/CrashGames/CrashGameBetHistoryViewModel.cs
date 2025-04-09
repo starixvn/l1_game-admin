@@ -33,6 +33,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Action { get; set; }
 
         public string DisplayMultiplier => Multiplier > 0 ? $"{HtmlHelpers.formatNumber(Multiplier)}x" : "-";
+        
+        public byte? BetKey { get; set; }
 
         public bool HasShowBetLog => Action == CrashGameAction.CashOut || Action == CrashGameAction.Crash;
     }
