@@ -17,7 +17,5 @@
         public decimal FourWhite { get; set; }
 
         public decimal BetWin { get; set; }
-
-        public string UserId { get; set; }
     }
 }
