@@ -131,11 +131,17 @@ namespace GamesAdmin.Api.Lobby
             }
             if (HasChange(newEntity.GameIds, oldEntity.GameIds))
             {
-                var oldMiniPanelGames = oldEntity.GameIds.Select(gameId => GetGameDisplayName(gameId, gameSettings));
-                var newMiniPanelGames = newEntity.GameIds.Select(gameId => GetGameDisplayName(gameId, gameSettings));
-                changedSettings.Add($"{"GameIds"}: {JsonConvert.SerializeObject(oldMiniPanelGames)} -> {JsonConvert.SerializeObject(newMiniPanelGames)}\r\n");
+                var oldGameIds = oldEntity.GameIds.Select(gameId => GetGameDisplayName(gameId, gameSettings));
+                var newGameIds = newEntity.GameIds.Select(gameId => GetGameDisplayName(gameId, gameSettings));
+                changedSettings.Add($"{"GameIds"}: {JsonConvert.SerializeObject(oldGameIds)} -> {JsonConvert.SerializeObject(newGameIds)}\r\n");
             }
-           
+            if (HasChange(newEntity.NewGames, oldEntity.NewGames))
+            {
+                var oldNewGames = oldEntity.NewGames?.Select(gameId => GetGameDisplayName(gameId, gameSettings));
+                var newNewGames = newEntity.NewGames.Select(gameId => GetGameDisplayName(gameId, gameSettings));
+                changedSettings.Add($"{"NewGames"}: {JsonConvert.SerializeObject(oldNewGames)} -> {JsonConvert.SerializeObject(newNewGames)}\r\n");
+            }
+
             return string.Join("\r\n", changedSettings);
         }
     }

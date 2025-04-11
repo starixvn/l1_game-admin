@@ -8,5 +8,6 @@ namespace GamesAdmin.Database.Entities.Lobby
         public string Name { get; set; }
         public string[] CurrencyGroupIds { get; set; }
         public int[] GameIds { get; set; }
+        public int[] NewGames { get; set; }
     }
 }

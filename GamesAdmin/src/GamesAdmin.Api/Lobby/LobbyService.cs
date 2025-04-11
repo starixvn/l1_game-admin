@@ -215,7 +215,8 @@ namespace GamesAdmin.Api.Lobby
                     var update = Builders<DirectLobbyEntity>.Update
                         .Set(field => field.Name, directLobbyEntity.Name)
                         .Set(field => field.CurrencyGroupIds, directLobbyEntity.CurrencyGroupIds)
-                        .Set(field => field.GameIds, directLobbyEntity.GameIds);
+                        .Set(field => field.GameIds, directLobbyEntity.GameIds)
+                        .Set(field => field.NewGames, directLobbyEntity.NewGames);
 
                     await directLobbyRepository.UpdateAsync(entity => entity.Id == directLobbyEntity.Id, update);
                 }

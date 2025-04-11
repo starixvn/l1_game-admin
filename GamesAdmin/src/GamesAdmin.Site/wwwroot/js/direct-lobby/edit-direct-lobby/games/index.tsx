@@ -31,11 +31,13 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 type Props = {
-  onChange: (gameIds: number[]) => void;
+  onChangeGameIds: (gameIds: number[]) => void;
+  onChangeNewGames: (newGames: number[]) => void;
   allGameSettings: Game[];
   gameIds: number[];
+  newGames: number[];
   isSuperAdmin: boolean;
-};
+}; 
 
 const reorderGameIds = (
   gameIds: number[],
@@ -50,13 +52,16 @@ const reorderGameIds = (
 
 const Games: React.FC<Props> = ({
   gameIds,
+  newGames,
   allGameSettings,
-  onChange,
+  onChangeGameIds,
+  onChangeNewGames,
   isSuperAdmin,
 }) => {
   const [availableGames, setAvailableGames] = useState<Game[]>([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedGameId, setSelectedGameId] = useState<number>(0);
+  const [selectedNewGame, setSelectedNewGame] = useState<boolean>(false);
   const [editingGameId, setEditingGameId] = useState<number>(0);
 
   const getAvailableGames = (selectedGameId = 0): Game[] => {
@@ -71,6 +76,12 @@ const Games: React.FC<Props> = ({
       result = allGameSettings
         .filter(filter)
         .sort((a, b) => a.gameId - b.gameId);
+      if (newGames) {
+        result = result.map((game) => ({
+          ...game,
+          newTag: newGames.includes(game.gameId),
+        }));
+      }
     }
 
     return result;
@@ -89,6 +100,7 @@ const Games: React.FC<Props> = ({
     setModalIsOpen(false);
     setSelectedGameId(0);
     setEditingGameId(0);
+    setSelectedNewGame(false);
   };
 
   const onDragEnd = (result) => {
@@ -102,7 +114,7 @@ const Games: React.FC<Props> = ({
       result.destination.index
     );
 
-    onChange(itemToSet);
+    onChangeGameIds(itemToSet);
   };
 
   const clickEdit = (e: React.MouseEvent<HTMLAnchorElement>, index: number) => {
@@ -110,12 +122,14 @@ const Games: React.FC<Props> = ({
     setAvailableGames(getAvailableGames(gameIds[index]));
     setSelectedGameId(gameIds[index]);
     setEditingGameId(gameIds[index]);
+    setSelectedNewGame(newGames.includes(gameIds[index]));
     openModal();
   };
 
   const addHandler = () => {
     setAvailableGames(getAvailableGames());
     setSelectedGameId(0);
+    setSelectedNewGame(false);
     openModal();
   };
 
@@ -127,6 +141,14 @@ const Games: React.FC<Props> = ({
     } else {
       !gameIds.includes(gameId) && gameId > 0 && gameIds.push(gameId);
     }
+    if (selectedNewGame) {
+      if (!newGames.includes(gameId)) {
+        newGames.push(gameId);
+      }
+    } else {
+      newGames = newGames.filter((id) => id !== gameId);
+    }
+    onChangeNewGames(newGames);
     closeModal();
   };
 
@@ -136,7 +158,12 @@ const Games: React.FC<Props> = ({
 
   const remove = () => {
     const index = gameIds.indexOf(selectedGameId);
+    const gameId = gameIds[index];
     index >= 0 && gameIds.splice(index, 1);
+    if (newGames.includes(gameId)) {
+      newGames = newGames.filter((id) => id !== gameId);
+    }
+    onChangeNewGames(newGames);
     closeModal();
   };
 
@@ -147,6 +174,16 @@ const Games: React.FC<Props> = ({
   const getGameName = (id: number) => {
     return allGameSettings.find((game) => +game.gameId === id)?.displayName;
   };
+
+  const getStyleNew = (isNew: boolean) => ({
+    display: isNew ? `` : `none`,
+  });
+
+  const getGameIconStyle = () => ({
+    width: `100px`,
+    height: `100px`,
+    display: `flex`,
+  });
 
   return (
     <div className="lobby-panel">
@@ -173,8 +210,14 @@ const Games: React.FC<Props> = ({
                       {...provided.dragHandleProps}
                       style={getItemStyle(provided.draggableProps.style)}
                     >
-                      <span>
+                      <span className="lobby-icon" style={getGameIconStyle()}>
                         <span>{getGameName(item)}</span>
+                        <span
+                          className="tag-new"
+                          style={getStyleNew(newGames.includes(gameIds[index]))}
+                        >
+                          <span className="tag-new-inner">New</span>
+                        </span>
                         {isSuperAdmin && (
                           <a
                             className="edit-button"
@@ -241,6 +284,20 @@ const Games: React.FC<Props> = ({
                 </option>
               ))}
             </select>
+          </div>
+          <div className="form-group">
+            <input
+              type="checkbox"
+              defaultChecked={selectedNewGame}
+              onChange={(e) => {
+                setSelectedNewGame(e.target.checked);
+              }}
+              name="newTag"
+              id="newTag"
+            />
+            <label className="control-label" htmlFor="newTag">
+              New Tag
+            </label>
           </div>
           <div className="form-group text-right">
             {isEditing() && (

@@ -20,6 +20,7 @@ const EditDirectLobby: React.FC = () => {
   let { id } = useParams();
   const [name, setName] = useState("");
   let [gameIds, setGameIds] = useState<number[]>([]);
+  let [newGames, setNewGames] = useState<number[]>([]);
   let [gameSettings, setGameSettings] = useState<Game[]>([]);
   let [currencyGroupIds, setCurrencyGroupIds] = useState<string[]>([]);
   let [currentLobbyConfigs, setCurrentLobbyConfigs] =
@@ -55,6 +56,7 @@ const EditDirectLobby: React.FC = () => {
       setName(res.lobbyConfig.name);
       setCurrencyGroupIds(res.lobbyConfig.currencyGroupIds);
       setGameIds(res.lobbyConfig.gameIds);
+      setNewGames(res.lobbyConfig.newGames);
 
       cloneAndSetLobbyConfig(res.lobbyConfig);
     }
@@ -156,6 +158,7 @@ const EditDirectLobby: React.FC = () => {
     clonedLobbyConfigs.currencyGroupIds = lobbyConfigs.currencyGroupIds.slice();
     clonedLobbyConfigs.name = lobbyConfigs.name;
     clonedLobbyConfigs.gameIds = [...lobbyConfigs.gameIds];
+    clonedLobbyConfigs.newGames = [...lobbyConfigs.newGames];
     return clonedLobbyConfigs;
   };
 
@@ -180,7 +183,8 @@ const EditDirectLobby: React.FC = () => {
     }
     if (
       checkDifference(currencyGroupIds, currentLobbyConfigs.currencyGroupIds) ||
-      checkDifference(gameIds, currentLobbyConfigs.gameIds)
+      checkDifference(gameIds, currentLobbyConfigs.gameIds) || 
+      checkDifference(newGames, currentLobbyConfigs.newGames)
     ) {
       return true;
     }
@@ -212,6 +216,7 @@ const EditDirectLobby: React.FC = () => {
       name,
       currencyGroupIds,
       gameIds,
+      newGames,
     };
     const valid = validateLobbyConfig();
     if (valid) {
@@ -221,6 +226,7 @@ const EditDirectLobby: React.FC = () => {
         currencyGroupIds,
         gameIds,
         name,
+        newGames,
       });
 
       setMsg("Updated successfully!", true);
@@ -233,6 +239,10 @@ const EditDirectLobby: React.FC = () => {
 
   const onChangeGameIds = (gameIds: number[]) => {
     setGameIds(gameIds);
+  };
+
+  const onChangeNewGames = (newGames: number[]) => {
+    setNewGames(newGames);
   };
 
   return (
@@ -282,7 +292,9 @@ const EditDirectLobby: React.FC = () => {
         <div className="card-body">
           <Games
             gameIds={gameIds}
-            onChange={onChangeGameIds}
+            newGames={newGames}
+            onChangeGameIds={onChangeGameIds}
+            onChangeNewGames={onChangeNewGames}
             isSuperAdmin={isSuperAdmin}
             allGameSettings={gameSettings}
           />

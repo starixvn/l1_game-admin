@@ -2,6 +2,7 @@ export type Game = {
   gameId: number;
   name: string;
   displayName: string;
+  newTag: boolean;
 };
 
 export type DirectLobbyConfig = {
@@ -9,6 +10,7 @@ export type DirectLobbyConfig = {
   name: string;
   currencyGroupIds: string[];
   gameIds: number[];
+  newGames: number[];
 };
 
 export type CurrencyGroup = {
