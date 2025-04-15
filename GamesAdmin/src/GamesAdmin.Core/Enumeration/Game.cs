@@ -200,24 +200,41 @@ namespace GamesAdmin.Core.Enumeration
 
         public static Game FromGameId(GameId id)
         {
-            var gameSettings = GamesSettings.GetGamesSettings().GetGameFromId((int)id);
-            if (gameSettings?.GameId > 0)
+            try
             {
-                GameId a = (GameId)gameSettings.GameId;
-                return new Game(gameSettings.GameName, gameSettings.DisplayName, a);
+                var gameSettings = GamesSettings.GetGamesSettings().GetGameFromId((int)id);
+                if (gameSettings?.GameId > 0)
+                {
+                    GameId a = (GameId)gameSettings.GameId;
+                    return new Game(gameSettings.GameName, gameSettings.DisplayName, a);
+                }
+                return Parse<Game, GameId>(id, "game id", item => item.GameId == id);
             }
-            return Parse<Game, GameId>(id, "game id", item => item.GameId == id);
+            catch
+            {
+                var gameIdError = $"Game_Id_{id}_Not_Found";
+                return new Game(gameIdError, gameIdError);
+            }
         }
 
         public static Game FromGameName(string gameName)
         {
-            var gameSettings = GamesSettings.GetGamesSettings().GetGameFromName(gameName);
-            if (gameSettings?.GameId > 0)
+            try
             {
-                GameId a = (GameId)gameSettings.GameId;
-                return new Game(gameSettings.GameName, gameSettings.DisplayName, a);
+
+                var gameSettings = GamesSettings.GetGamesSettings().GetGameFromName(gameName);
+                if (gameSettings?.GameId > 0)
+                {
+                    GameId a = (GameId)gameSettings.GameId;
+                    return new Game(gameSettings.GameName, gameSettings.DisplayName, a);
+                }
+                return Parse<Game, string>(gameName, "game value", item => item.Value == gameName);
             }
-            return Parse<Game, string>(gameName, "game value", item => item.Value == gameName);
+            catch
+            {
+                var gameNameError = $"Game_Name_{gameName}_Not_Found";
+                return new Game(gameNameError, gameNameError);
+            }
         }
 
         public static bool ContainsGame(string gameName)

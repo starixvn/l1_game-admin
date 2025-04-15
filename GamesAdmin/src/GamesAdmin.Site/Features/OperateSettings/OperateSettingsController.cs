@@ -73,7 +73,8 @@ namespace GamesAdmin.Site.Features.OperateSettings
             }
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         [Route("api/OperateSettings/ImportGameConfigs")]
         public async Task<IActionResult> ImportGameConfigs([FromBody] ImportGameSettingRequest gameSettingRequest)
         {
@@ -91,7 +92,8 @@ namespace GamesAdmin.Site.Features.OperateSettings
             });
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         [Route("api/OperateSettings/ImportCurrencies")]
         public async Task<IActionResult> ImportCurrencies([FromBody] ImportCurrenciesRequest importCurrenciesRequest)
         {
@@ -110,7 +112,8 @@ namespace GamesAdmin.Site.Features.OperateSettings
             });
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         [Route("api/OperateSettings/ImportCurrencyGroupGames")]
         public async Task<IActionResult> ImportCurrencyGroupGames([FromBody] ImportCurrencyGroupGameRequest importData)
         {
