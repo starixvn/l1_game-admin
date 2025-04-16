@@ -12,12 +12,10 @@
 
         public string Proxy { get; set; }
 
-        public double HighStakeAmount { get; set; }
     }
 
     public class ConversationIds
     {
-        public string HighStake { get; set; }
         public string Promotion { get; set; }
         public string PromotionTournament { get; set; }
     }
