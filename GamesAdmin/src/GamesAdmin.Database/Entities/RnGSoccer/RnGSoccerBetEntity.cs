@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities.RnGSoccer
 {
     [BsonCollection("rngsoccer_bets")]
-    public class RnGSoccerBetEntity : DragonTigerFightBetEntity
+    public class RnGSoccerBetEntity : BaseBetEntity
     {
     }
 }

@@ -179,6 +179,6 @@
     "DisplayName": "RnG Soccer",
     "BetChoices": [ "home", "away", "draw" ],
     "Odds": [ "home", "away", "draw"  ],
-    "OfferedSystem": [ "SC1", "VG2", "GN" ]
+    "OfferedSystem": [ "SC1", "VG2" ]
   }
 ]
