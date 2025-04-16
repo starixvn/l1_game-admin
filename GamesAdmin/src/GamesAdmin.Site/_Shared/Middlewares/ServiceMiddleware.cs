@@ -23,6 +23,7 @@ using GamesAdmin.Site.Features.InternalTestAccount;
 using GamesAdmin.Site.Features.Lobby;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.Partners;
+using GamesAdmin.Site.Features.PlayerInfo;
 using GamesAdmin.Site.Features.Promotions;
 using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.RetrieveEndRound;
@@ -137,6 +138,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IInternalTestAccountApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IInternalTestAccountService, InternalTestAccountService>();
             services.AddScoped<IPartnerPlayerIdConverter, PartnerPlayerIdConverter>();
+
+            services.AddSingleton(RestService.For<IPlayerInfoApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IPlayerInfoService, PlayerInfoService>();
 
             services.AddReportServices();
         }
