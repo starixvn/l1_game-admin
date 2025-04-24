@@ -21,5 +21,11 @@ namespace GamesAdmin.Api.GeneralGameSettings
         [HttpGet("getAll")]
         public Task<IEnumerable<GeneralGameSetting>> GetAll()
         => mediator.Send(new GetAllRequest());
+
+        [HttpGet("games/{partnerId}/{gameType}")]
+        public Task<IEnumerable<GeneralGameSetting>> GetByPartnerAndType(string partnerId, int gameType)
+        {
+            return mediator.Send(new GetGameByPartnerAndTypeRequest(partnerId, gameType));
+        }
     }
 }

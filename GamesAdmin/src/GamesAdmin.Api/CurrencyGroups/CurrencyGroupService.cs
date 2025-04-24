@@ -15,6 +15,8 @@ namespace GamesAdmin.Api.CurrencyGroups
         Task<CurrencyGroupModel> GetByOperatorAndCurrency(string operatorId, string currencyName);
 
         Task<bool> IsFractionalOddsFormat(string operatorId, string currencyName);
+
+        Task<IEnumerable<CurrencyGroupModel>> GetByPartner(string partnerId);
     }
 
     public class CurrencyGroupService : ICurrencyGroupService
