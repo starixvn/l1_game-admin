@@ -154,7 +154,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                         .Set(field => field.DefaultBetLevel, currencyGroupGame.DefaultBetLevel ?? sortedBetLevels.FirstOrDefault())
                         .Set(field => field.BetLevels, currencyGroupGame.BetLevels.OrderBy(x => x).ToArray() ?? new double[10])
                         .Set(field => field.MaxWinPerRound, currencyGroupGame.MaxWinPerRound)
-                        .Set(field => field.GameName, gameConfig.Name);
+                        .Set(field => field.GameName, gameConfig?.Name ?? currencyGroupGame.GameName);
 
                     var filterBuilder = Builders<CurrencyGroupGameEntity>.Filter;
                     var filterDefinition = filterBuilder.And(
