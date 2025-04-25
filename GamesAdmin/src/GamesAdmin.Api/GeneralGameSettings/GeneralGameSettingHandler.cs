@@ -36,19 +36,26 @@ namespace GamesAdmin.Api.GeneralGameSettings
             var games = await currencyGroupGameService.GetAll();
             var gameSettings = await generalGameSettingService.GetAll();
             var partnerGroupIds = groups.Select(g => g.Id).ToHashSet();
+            var totalGroupCount = partnerGroupIds.Count;
 
             var filteredGames = from game in games
                                 join setting in gameSettings on game.GameId equals setting.GameId
                                 where partnerGroupIds.Contains(game.GroupId)
                                       && (int)setting.Type == request.GameType
-                                select setting;
+                                select new { game.GameId, game.GroupId, Setting = setting };
+            var validGameIds = filteredGames
+                .GroupBy(x => x.GameId)
+                .Where(g => g.Select(x => x.GroupId).Distinct().Count() == totalGroupCount)
+                .Select(g => g.Key)
+                .ToHashSet();
 
-            var distinctGames = filteredGames
-                .GroupBy(g => g.GameId)
-                .Select(g => g.First())
+            var result = filteredGames
+                .Where(x => validGameIds.Contains(x.GameId))
+                .GroupBy(x => x.GameId)
+                .Select(g => g.First().Setting)
                 .ToList();
 
-            return distinctGames;
+            return result;
         }
     }
 }
