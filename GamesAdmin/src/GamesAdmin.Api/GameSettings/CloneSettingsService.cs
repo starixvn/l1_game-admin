@@ -75,6 +75,7 @@ namespace GamesAdmin.Api.GameSettings
                 {
                     setting.GameId = gameId;
                     setting.GameName = NamingConverter.GameConfigName(displayName);
+                    setting.Enabled = false;
 
                     await currencyGroupGameService.Update(setting);
                 }

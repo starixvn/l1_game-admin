@@ -48,7 +48,7 @@ namespace GamesAdmin.Core.Models
 
         public string GameName { get; set; }
 
-        public bool Enabled { get; }
+        public bool Enabled { get; set; }
 
         public double MinBet { get; }
 
