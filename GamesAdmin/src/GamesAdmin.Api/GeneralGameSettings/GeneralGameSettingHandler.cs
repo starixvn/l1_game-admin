@@ -12,7 +12,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
 {
     public class GeneralGameSettingHandler :
         IRequestHandler<GetAllRequest, IEnumerable<GeneralGameSetting>>,
-        IRequestHandler<GetGameByPartnerAndTypeRequest, IEnumerable<GeneralGameSetting>>
+        IRequestHandler<GetGameByCurrencyGroupsRequest, IEnumerable<GeneralGameSetting>>
     {
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly ICurrencyGroupService currencyGroupService;
@@ -30,19 +30,19 @@ namespace GamesAdmin.Api.GeneralGameSettings
         public Task<IEnumerable<GeneralGameSetting>> Handle(GetAllRequest request, CancellationToken cancellationToken)
         => generalGameSettingService.GetAll();
 
-        public async Task<IEnumerable<GeneralGameSetting>> Handle(GetGameByPartnerAndTypeRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<GeneralGameSetting>> Handle(GetGameByCurrencyGroupsRequest request, CancellationToken cancellationToken)
         {
-            var groups = await currencyGroupService.GetByPartner(request.PartnerId);
             var games = await currencyGroupGameService.GetAll();
             var gameSettings = await generalGameSettingService.GetAll();
-            var partnerGroupIds = groups.Select(g => g.Id).ToHashSet();
-            var totalGroupCount = partnerGroupIds.Count;
+            var selectedGroupIds = request.CurrencyGroupIds.ToHashSet();
+            var totalGroupCount = selectedGroupIds.Count;
 
             var filteredGames = from game in games
                                 join setting in gameSettings on game.GameId equals setting.GameId
-                                where partnerGroupIds.Contains(game.GroupId)
+                                where selectedGroupIds.Contains(game.GroupId)
                                       && (int)setting.Type == request.GameType
                                 select new { game.GameId, game.GroupId, Setting = setting };
+
             var validGameIds = filteredGames
                 .GroupBy(x => x.GameId)
                 .Where(g => g.Select(x => x.GroupId).Distinct().Count() == totalGroupCount)

@@ -22,10 +22,13 @@ namespace GamesAdmin.Api.GeneralGameSettings
         public Task<IEnumerable<GeneralGameSetting>> GetAll()
         => mediator.Send(new GetAllRequest());
 
-        [HttpGet("games/{partnerId}/{gameType}")]
-        public Task<IEnumerable<GeneralGameSetting>> GetByPartnerAndType(string partnerId, int gameType)
+        [HttpGet("games")]
+        public Task<IEnumerable<GeneralGameSetting>> GetByCurrencyGroups(
+            [FromQuery] int gameType,
+            [FromQuery] string currencyGroups)
         {
-            return mediator.Send(new GetGameByPartnerAndTypeRequest(partnerId, gameType));
+            return mediator.Send(new GetGameByCurrencyGroupsRequest(gameType, currencyGroups));
         }
+
     }
 }
