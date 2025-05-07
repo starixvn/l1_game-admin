@@ -6,11 +6,11 @@
 
         public string Text { get; }
 
-        public int Value { get; }
+        public double Value { get; }
 
         public string Color { get; }
 
-        public ChipModel(string id, string text, int value, string color)
+        public ChipModel(string id, string text, double value, string color)
         {
             Id = id;
             Text = text;

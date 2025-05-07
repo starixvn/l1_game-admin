@@ -25,7 +25,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
 
         public double MaxBet { get; set; }
 
-        public int[] Chips { get; set; }
+        public double[] Chips { get; set; }
 
         public List<ChipModel> AllChips { get; set; }
 

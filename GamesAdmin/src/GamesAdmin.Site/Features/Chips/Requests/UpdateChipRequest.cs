@@ -2,7 +2,7 @@
 {
     public class UpdateChipRequest : CreateChipRequest
     {
-        public UpdateChipRequest(string id, string text, int value, string color) : base(text, value, color)
+        public UpdateChipRequest(string id, string text, double value, string color) : base(text, value, color)
         {
             Id = id;
         }

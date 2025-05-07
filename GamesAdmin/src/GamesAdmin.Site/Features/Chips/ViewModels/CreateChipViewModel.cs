@@ -9,8 +9,8 @@ namespace GamesAdmin.Site.Features.Chips.ViewModels
         public string Text { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Value must be a postive number.")]
-        public int Value { get; set; }
+        [Range(0.01, double.MaxValue, ErrorMessage = "Value must greater than 0.01")]
+        public double Value { get; set; }
 
         [Required]
         public string Color { get; set; }

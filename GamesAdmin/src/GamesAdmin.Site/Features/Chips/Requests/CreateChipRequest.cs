@@ -7,11 +7,11 @@ namespace GamesAdmin.Site.Features.Chips.Requests
     {
         public string Text { get; }
 
-        public int Value { get; }
+        public double Value { get; }
 
         public string Color { get; }
 
-        public CreateChipRequest(string text, int value, string color)
+        public CreateChipRequest(string text, double value, string color)
         {
             Text = text;
             Value = value;
