@@ -32,5 +32,9 @@ namespace GamesAdmin.Api.GeneralGameSettings
             return mediator.Send(new GetGameByCurrencyGroupsRequest(gameType, currencyGroups, gameIds));
         }
 
+
+        [HttpGet("jackpot-games")]
+        public Task<IEnumerable<GeneralGameSetting>> GetJackpotGames()
+        => mediator.Send(new GetJackpotGamesRequest());
     }
 }

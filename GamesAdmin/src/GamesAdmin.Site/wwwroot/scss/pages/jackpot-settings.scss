@@ -1,0 +1,15 @@
+@import "../base/variables";
+@import "../components/customize-datatable";
+@import "../components/fanex-select";
+
+.btn-submit-inline {
+    padding-top: 22px;
+}
+
+.adjust-bot-hours .ratio {
+    width: 5rem;
+    line-height: 1.5rem;
+    border-radius: .2rem;
+    border: 1px solid #ced4da;
+    text-align: center
+}

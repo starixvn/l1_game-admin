@@ -10,6 +10,9 @@ namespace GamesAdmin.Site._Shared.Services.GeneralGameSettings
     {
         [Get("/general_game_settings/getAll")]
         Task<IEnumerable<GeneralGameSetting>> GetAll();
+
+        [Get("/general_game_settings/jackpot-games")]
+        Task<IEnumerable<GeneralGameSetting>> GetJackpotGames();
     }
 
 }

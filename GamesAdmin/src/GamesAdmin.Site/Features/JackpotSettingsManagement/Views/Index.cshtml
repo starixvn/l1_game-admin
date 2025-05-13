@@ -1,0 +1,67 @@
+﻿@using GamesAdmin.Site._Shared.ViewComponents
+@model GamesAdmin.Site.Features.JackpotSettingsManagement.ViewModels.JackpotSettingsPageViewModel
+
+@section Styles {
+    <link rel="stylesheet" type="text/css" href="~/lib/data-tables/datatables.min.css">
+    <link href="~/lib/fanex.multiselect/fanex.multiSelect.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/scss/pages/jackpot-settings.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Jackpot Management";
+}
+
+<form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetOnlineUsers" data-ajax-mode="replace"
+    data-ajax-update="#jackpot-settings-container" data-ajax-loading="#spinner" data-ajax-success="japotSettings.init"
+    method="get">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <label class="required-field-label" asp-for="GameIds"></label>
+            <select hidden asp-items="Model.Games" asp-for="GameIds" class="form-control" multiple></select>
+            <select class="form-control" id="fanexSelectGameId"></select>
+        </div>
+        <div class="col-auto">
+            <label class="required-field-label" asp-for="SiteNames"></label>
+            <input type="text" asp-for="SiteNames" class="form-control" />
+        </div>
+        <div class="col-auto btn-submit-inline">
+            <button type="submit" class="btn-submit">Submit</button>
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="col-auto btn-submit-inline">
+            <a type="button" class="btn-add" data-ajax="true" data-ajax-mode="replace"
+                data-ajax-update="#modal .modal-content" data-ajax-success="jackpotSettings.openCreateForm"
+                asp-action="Create">
+                Add Jackpot Config
+            </a>
+        </div>
+    </div>
+</form>
+
+<div class="card">
+    <div class="card-body" id="jackpot-settings-container">
+    </div>
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script type="text/javascript" src="~/lib/data-tables/datatables.js"></script>
+        <script type="text/javascript" src="~/lib/fanex.multiselect/fanex.multiSelect.js"></script>
+        <script type="text/javascript" src="~/js/jackpot-settings.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/jackpot-settings.min.js" asp-append-version="true"></script>
+    </environment>
+}

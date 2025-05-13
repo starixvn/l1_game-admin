@@ -365,5 +365,12 @@
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/crash-turn-game-report.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/jackpot-settings.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/jackpot-settings.min.css"
+    ]
   }
 ]

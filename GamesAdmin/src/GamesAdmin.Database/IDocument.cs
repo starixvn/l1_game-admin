@@ -9,7 +9,6 @@ namespace GamesAdmin.Database
     public interface IDocument
     {
         [BsonId]
-        [BsonRepresentation(BsonType.String)]
         [BsonElement("_id")]
         ObjectId Id { get; set; }
     }

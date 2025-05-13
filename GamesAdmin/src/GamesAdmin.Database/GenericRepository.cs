@@ -131,7 +131,7 @@ namespace GamesAdmin.Database
         public Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression)
         => collection.DeleteManyAsync(filterExpression);
 
-        public Task UpdateAsync(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition, UpdateOptions options = null)
+        public Task<UpdateResult> UpdateAsync(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition, UpdateOptions options = null)
         => collection.UpdateOneAsync(filterExpression, updateDefinition, options);
 
         public void Update(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition, UpdateOptions options = null)

@@ -26,6 +26,8 @@ namespace GamesAdmin.Api.GeneralGameSettings
         Task<bool> IsCrashGame(int gameId);
 
         Task<GameConfigEntity> GetGameConfig(int gameId);
+
+        Task<IEnumerable<GeneralGameSetting>> GetJackpotGames();
     }
 
     public class GeneralGameSettingService : IGeneralGameSettingService
@@ -126,6 +128,13 @@ namespace GamesAdmin.Api.GeneralGameSettings
         {
             return await Task.Run(() => repository.AsQueryable()
                 .FirstOrDefault(game => game.GameId == gameId));
+        }
+
+        public async Task<IEnumerable<GeneralGameSetting>> GetJackpotGames()
+        {
+             var gameEntities = (await repository.FilterByAsync(game => game.Type == (byte)GameType.Slots)).ToList();
+
+             return gameEntities.Select(game => new GeneralGameSetting(game.GameId, game.Name, game.DisplayName, (GameType)game.Type, game.SlotsConfig.Jackpot.Enabled));
         }
     }
 }

@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
+using GamesAdmin.Site.Features.JackpotSettingsManagement.ViewModels;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -27,10 +30,10 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.SmartBotEnabled, opt => opt.MapFrom(src => src.BotSetting.SmartBotEnabled))
                 .ForMember(dest => dest.SmartBotGroupRatio, opt => opt.MapFrom(src => src.BotSetting.SmartBotGroupRatio.ToPercentage()))
                 .ForMember(dest => dest.ApplyMultiplier, opt => opt.MapFrom(src => src.Info.ApplyMultiplier))
-				.ForMember(dest => dest.HaveTournament, opt => opt.MapFrom(src => src.Info.HaveTournament))
-				.ForMember(dest => dest.HaveVideoStream, opt => opt.MapFrom(src => src.Info.HaveVideoStream))
+                .ForMember(dest => dest.HaveTournament, opt => opt.MapFrom(src => src.Info.HaveTournament))
+                .ForMember(dest => dest.HaveVideoStream, opt => opt.MapFrom(src => src.Info.HaveVideoStream))
                 .ForMember(dest => dest.UseMargin, opt => opt.MapFrom(src => src.Info.UseMargin))
-				.ForMember(dest => dest.GameId, opt => opt.MapFrom(src => src.Info.GameId));
+                .ForMember(dest => dest.GameId, opt => opt.MapFrom(src => src.Info.GameId));
 
             CreateMap<GameConfig, PayoutViewModel>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type == 0 ? GameType.AutoRNG : src.Info.Type))
@@ -93,18 +96,10 @@ namespace GamesAdmin.Site.Features.GameSettings
             CreateMap<AddViewModel, BotSetting>();
             CreateMap<AddViewModel, BetLimit>();
             CreateMap<AddViewModel, Bonus>();
-        }
 
-        private static List<StakeLevel> ConvertStakeLevels(double[] stakes, double[] jackpots, double[] botRatios)
-        {
-            var stakeLevels = new List<StakeLevel>();
-
-            for (var i = 0; i < stakes.Length; i++)
-            {
-                stakeLevels.Add(new StakeLevel(stakes[i], jackpots[i], botRatios[i].ConvertPercentValue()));
-            }
-
-            return stakeLevels;
+            CreateMap<JackpotSettingsViewModel, JackpotSettings>()
+                .ForMember(dest => dest.HoursMaxBot, opt => opt.MapFrom(src => src.BotRatios.OrderBy(x => x.UtcHour).Select(x => x.BotRatio).ToArray()))
+                .ForMember(dest => dest.SiteNames, opt => opt.MapFrom(src => string.IsNullOrWhiteSpace(src.SiteNames) ? Array.Empty<string>() : src.SiteNames.Split(new[] { ';' })));
         }
     }
 }

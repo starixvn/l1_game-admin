@@ -98,5 +98,9 @@
   {
     "outputFile": "wwwroot/js/game-status.es5.js",
     "inputFile": "wwwroot/js/game-status.js"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/jackpot-settings.css",
+    "inputFile": "wwwroot/scss/pages/jackpot-settings.scss"
   }
 ]

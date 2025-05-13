@@ -12,14 +12,15 @@ namespace GamesAdmin.Api.GeneralGameSettings
 {
     public class GeneralGameSettingHandler :
         IRequestHandler<GetAllRequest, IEnumerable<GeneralGameSetting>>,
-        IRequestHandler<GetGameByCurrencyGroupsRequest, IEnumerable<GeneralGameSetting>>
+        IRequestHandler<GetGameByCurrencyGroupsRequest, IEnumerable<GeneralGameSetting>>,
+        IRequestHandler<GetJackpotGamesRequest, IEnumerable<GeneralGameSetting>>
     {
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly ICurrencyGroupService currencyGroupService;
         private readonly ICurrencyGroupGameService currencyGroupGameService;
 
         public GeneralGameSettingHandler(IGeneralGameSettingService generalGameSettingService,
-            ICurrencyGroupService currencyGroupService, 
+            ICurrencyGroupService currencyGroupService,
             ICurrencyGroupGameService currencyGroupGameService)
         {
             this.generalGameSettingService = generalGameSettingService;
@@ -58,5 +59,8 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
             return result;
         }
+
+        public Task<IEnumerable<GeneralGameSetting>> Handle(GetJackpotGamesRequest request, CancellationToken cancellationToken)
+        => generalGameSettingService.GetJackpotGames();
     }
 }

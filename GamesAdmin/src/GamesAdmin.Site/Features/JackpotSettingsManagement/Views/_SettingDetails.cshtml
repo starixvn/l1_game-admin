@@ -1,0 +1,241 @@
+@model GamesAdmin.Site.Features.JackpotSettingsManagement.ViewModels.JackpotSettingsViewModel
+
+<ul class="nav nav-tabs nav-custom" role="tablist" id="setting-tabs">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="jackpot-tab" href="#" data-target="#jackpot-tab-content"
+           data-toggle="tab" role="tab">Jackpot Settings</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="bot-tab" href="#" data-target="#bot-tab-content" data-toggle="tab"
+           role="tab">Bot Settings</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link @(string.IsNullOrWhiteSpace(Model.Id) ? "disabled" : "")" id="bot-ratio-tab" href="#" data-target="#bot-ratio-tab-content" data-toggle="tab"
+           role="tab">Bot Ratio</a>
+    </li>
+</ul>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="jackpot-tab-content" role="tabpanel"
+         aria-labelledby="jackpot-tab">
+        <form data-ajax="true" class="form" asp-action="UpdatePlayerSettings" method="post" id="player-settings-form"
+              data-ajax-success="jackpotSettings.onUpdateSuccess">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="GameId" />
+            <input type="hidden" asp-for="OperatorId" />
+            <input type="hidden" asp-for="SiteNames" />
+            <div class="form-group" style="margin-bottom: 0;">
+                <input type="checkbox" asp-for="Enabled" />
+                <label asp-for="Enabled" class="control-label"></label>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+                <input type="checkbox" asp-for="ExcludeTestCurrency" />
+                <label asp-for="ExcludeTestCurrency" class="control-label"></label>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-8">
+                    Note:<br />
+                    <b>"ON"</b> mode(default setting):<br />
+                    + Jackpot prizes are not available for test currency accounts.<br />
+                    + Stakes from test currency tickets will not be contributed to Jackpot pool<br />
+                </div>
+            </div>
+
+            <fieldset class="slots-jackpot">
+                <legend>Initial value</legend>
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <label>Minor</label>
+                        <input type="number" asp-for="@Model.Pools.Minor.Init" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Major</label>
+                        <input type="number" asp-for="@Model.Pools.Minor.Init" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Grand</label>
+                        <input type="number" asp-for="@Model.Pools.Major.Init" />
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="player-contribution">
+                <legend>Contribution (%)</legend>
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <label>Minor</label>
+                        <input type="number" asp-for="@Model.Pools.Grand.PlayerSettings.Contrib" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Major</label>
+                        <input type="number" asp-for="@Model.Pools.Minor.PlayerSettings.Contrib" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Grand</label>
+                        <input type="number" asp-for="@Model.Pools.Major.PlayerSettings.Contrib" />
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label class="control-label" asp-for="@Model.DisplayWinningRatio"></label>
+                    <input type="number" asp-for="@Model.DisplayWinningRatio" class="form-control" onchange="jackpotSettings.updateServiceFee(event)" />
+                </div>
+                <div class="col-lg-6">
+                    <label class="control-label" asp-for="@Model.JackpotServiceFee"></label>
+                    <input type="number" asp-for="@Model.JackpotServiceFee" readonly class="form-control" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="tab-pane fade" id="bot-tab-content" role="tabpanel"
+         aria-labelledby="bot-tab">
+        <form data-ajax="true" class="form" asp-action="UpdateBotSettings" method="post" id="bot-settings-form"
+              data-ajax-success="jackpotSettings.onUpdateSuccess">
+            <input type="hidden" class="setting-id" asp-for="Id" />
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="GameId" />
+            <input type="hidden" asp-for="OperatorId" />
+            <input type="hidden" asp-for="SiteNames" />
+
+            <fieldset class="slots-jackpot">
+                <legend>Jackpot Prize Allocation (%)</legend>
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <label>Minor</label>
+                        <input type="number" asp-for="@Model.Pools.Minor.BotSettings.Alloc" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Major</label>
+                        <input type="number" asp-for="@Model.Pools.Major.BotSettings.Alloc" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Grand</label>
+                        <input type="number" asp-for="@Model.Pools.Grand.BotSettings.Alloc" />
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="player-contribution">
+                <legend>Bot Contribution (%)</legend>
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <label>Minor</label>
+                        <input type="number" asp-for="@Model.Pools.Minor.BotSettings.Contrib" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Major</label>
+                        <input type="number" asp-for="@Model.Pools.Major.BotSettings.Contrib" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Grand</label>
+                        <input type="number" asp-for="@Model.Pools.Grand.BotSettings.Contrib" />
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend id="bot-bet-level-legend">Bot Bet Levels (@Model.BotBetLevels.Count levels)</legend>
+                <div class="form-group" id="bot-bet-levels">
+                    <input type="hidden" id="bot-bet-level-length" value="@Model.BotBetLevels.Count" class="form-control" />
+                    <div class="form-group row">
+                        <label class="pl-5 mr-5 pr-5"><b>Bet per line</b></label>
+                        <label class="pl-5 ml-5 text-center"><b>Total Bet</b> <br /> (on 25 fixed paylines)</label>
+                    </div>
+                    @for (var i = 0; i < Model.BotBetLevels.Count; i++)
+                    {
+                        <div class="form-group row ml-5">
+                            <input id="bot-bet-level-@i" type="number" asp-for="@Model.BotBetLevels[i]" class="col-2 form-control txt-bot-bet-level"
+                                   min="0"
+                                   step=".01"
+                                   data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
+                                   data-val-range-max="1.7976931348623157E+308"
+                                   data-val-range-min="5E-324"
+                                   data-val-unique="Value should be unique"
+                                   oninput="jackpotSettings.updateTotalBet(this.value,@i)" />
+                            <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="jackpotSettings.removeBotBetLevel(event)"></i>
+                            <label class=" mt-3 ml-5 pl-5" id="total-bet-@i">@((decimal)Model.BotBetLevels[i] * 25m)</label>
+                        </div>
+                    }
+                    <div class="add-container">
+                        <button type="button" class="btn btn-add" id="addBotBetLevelBtn" onclick="jackpotSettings.addBotBetLevel()">Add new Bet Level</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="tab-pane fade adjust-bot-hours" id="bot-ratio-tab-content" role="tabpanel"
+         aria-labelledby="bot-tab">
+        <form data-ajax="true" class="form" asp-action="UpdateBotRatioSettings" method="post" id="bot-ratios-form"
+              data-ajax-success="jackpotSettings.onUpdateSuccess">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="GameId" />
+            <input type="hidden" asp-for="OperatorId" />
+            <input type="hidden" asp-for="SiteNames" />
+
+            <div class="form-group" style="margin-bottom: 0;">
+                <input type="checkbox" asp-for="@Model.BotEnabled" />
+                <label asp-for="@Model.BotEnabled" class="control-label"></label>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+                <label class="control-label">Total bots: <strong>@Model.TotalBot</strong></label>
+                <input type="hidden" asp-for="TotalBot">
+            </div>
+            <div class="row options">
+                <div class="col-lg-6">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="col-gmt">From (GMT-4)</th>
+                                <th class="col-gmt">From (GMT+7)</th>
+                                <th>% Bot</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < 12; i++)
+                            {
+                                <tr>
+                                    <td class="text-center">@Model.BotRatios[i].GreenwichHour</td>
+                                    <td class="text-center">@Model.BotRatios[i].AsiaPacificHour</td>
+                                    <td class="ratio-cell">
+                                        <div>
+                                            <input type="number" class="ratio" asp-for="BotRatios[i].BotRatio" onchange="jackpotSettings.updateBotCount(this)">
+                                            <input type="hidden" class="utc-hour" asp-for="BotRatios[i].UtcHour">
+                                            <span class="bot-number">@Model.BotRatios[i].CurrentBot bot(s)</span>
+                                        </div>
+                                        <span id="validate_ratio" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-6">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="col-gmt">From (GMT-4)</th>
+                                <th class="col-gmt">From (GMT+7)</th>
+                                <th>% Bot</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 12; i < 24; i++)
+                            {
+                                <tr>
+                                    <td class="text-center">@Model.BotRatios[i].GreenwichHour</td>
+                                    <td class="text-center">@Model.BotRatios[i].AsiaPacificHour</td>
+                                    <td class="ratio-cell">
+                                        <div>
+                                            <input type="number" class="ratio" asp-for="BotRatios[i].BotRatio" onchange="jackpotSettings.updateBotCount(this)">
+                                            <input type="hidden" class="utc-hour" asp-for="BotRatios[i].UtcHour">
+                                            <span class="bot-number">@Model.BotRatios[i].CurrentBot bot(s)</span>
+                                        </div>
+                                        <span id="validate_ratio" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

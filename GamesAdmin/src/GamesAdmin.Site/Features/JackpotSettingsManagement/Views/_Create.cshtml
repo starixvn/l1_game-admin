@@ -1,0 +1,44 @@
+﻿@model GamesAdmin.Site.Features.JackpotSettingsManagement.ViewModels.JackpotSettingsViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title">Add Jackpot Configuration</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form class="form" id="general-settings-form" onsubmit="return false">
+        <input type="hidden" class="setting-id" asp-for="Id" />
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label class="required-field-label" asp-for="GameId"></label>
+                <select class="form-control" asp-items="Model.Games" asp-for="GameId"></select>
+            </div>
+            <div class="col-sm-6">
+                <label class="required-field-label" asp-for="OperatorId"></label>
+                <select class="form-control" asp-items="Model.Operators" asp-for="OperatorId"></select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="required-field-label" asp-for="SiteNames"></label>
+                <input class="form-control" type="text" asp-for="SiteNames">
+                <span class="text-danger" asp-validation-for="SiteNames"></span>
+            </div>
+        </div>
+    </form>
+    <div id="setting-details">
+        <partial name="_SettingDetails" model="@Model" />
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <label class="control-label" id="result-label"></label>
+        </div>
+    </div>
+</div>
+<div class=" modal-footer">
+    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+    <button type="button" class="btn-submit">Save</button>
+</div>

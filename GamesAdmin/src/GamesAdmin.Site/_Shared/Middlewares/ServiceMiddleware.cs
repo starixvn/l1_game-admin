@@ -20,6 +20,7 @@ using GamesAdmin.Site.Features.GameRoundResult;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.InternalTestAccount;
+using GamesAdmin.Site.Features.JackpotSettingsManagement;
 using GamesAdmin.Site.Features.Lobby;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.Partners;
@@ -141,6 +142,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IPlayerInfoApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IPlayerInfoService, PlayerInfoService>();
+
+            services.AddSingleton(RestService.For<IJackpotSettingApi>(appSettings.ApiHost, refitSettings));
 
             services.AddReportServices();
         }

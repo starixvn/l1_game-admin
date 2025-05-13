@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 
@@ -8,6 +9,8 @@ namespace GamesAdmin.Site._Shared.Services.GeneralGameSettings
     public interface IGeneralGameSettingService
     {
         Task<IEnumerable<GeneralGameSetting>> GetAllGames();
+
+        Task<IEnumerable<GeneralGameSetting>> GetJackpotGames();
     }
 
     public class GeneralGameSettingService : IGeneralGameSettingService
@@ -33,7 +36,18 @@ namespace GamesAdmin.Site._Shared.Services.GeneralGameSettings
 
                 return null;
             }
-       
+        }
+
+        public async Task<IEnumerable<GeneralGameSetting>> GetJackpotGames()
+        {
+            try
+            {
+                return await generalgameSettingApi.GetJackpotGames();
+            }
+            catch
+            {
+                return Enumerable.Empty<GeneralGameSetting>();
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Sentry;
 
@@ -59,6 +60,14 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdateSymbolWeight(string name, SymbolWeight symbolWeight, IEnumerable<int> otherGameIdsInGroup);
 
         Task<bool> UpdateCrashConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, CrashConfig crashConfig);
+
+        Task<IEnumerable<JackpotConfig>> GetJackpotConfigs(int gameId);
+
+        Task<string> UpdateJackpotPlayerSettings(JackpotSettings settings);
+
+        Task<string> UpdateJackpotBotSettings(JackpotSettings settings);
+
+        Task<bool> UpdateBotRatioSettings(JackpotSettings settings);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -70,13 +79,16 @@ namespace GamesAdmin.Api.Games
         private readonly ISentryClient sentryClient;
 
         private readonly IGenericRepository<GameConfigEntity> repository;
-
+        private readonly IGenericRepository<JackpotConfigEntity> jackpotConfigsRepository;
+        private readonly IGenericRepository<BotConfigEntity> botConfigsRepository;
         private readonly INotificationService notificationService;
 
         public GameSettingsService(
             IMapper mapper,
             ISentryClient sentryClient,
             IGenericRepository<GameConfigEntity> repository,
+            IGenericRepository<JackpotConfigEntity> jackpotConfigsRepository,
+            IGenericRepository<BotConfigEntity> botConfigsRepository,
             INotificationService notificationService
             )
         {
@@ -84,6 +96,8 @@ namespace GamesAdmin.Api.Games
             this.sentryClient = sentryClient;
             this.mapper = mapper;
             this.notificationService = notificationService;
+            this.jackpotConfigsRepository = jackpotConfigsRepository;
+            this.botConfigsRepository = botConfigsRepository;
         }
 
         public async Task<IEnumerable<GameConfig>> Get()
@@ -306,7 +320,7 @@ namespace GamesAdmin.Api.Games
                     var changedSettings = SettingHelper.GetOddsChangedModel(gameEntity.Odds, odds);
                     sentryClient.CaptureChangedSettings(gameEntity.Name, "Odds", string.Empty, changedSettings);
                     var update = Builders<GameConfigEntity>.Update.Set(field => field.Odds, odds);
-                    var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId); ;
+                    var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
                     writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
                 }
 
@@ -771,6 +785,113 @@ namespace GamesAdmin.Api.Games
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
             return true;
+        }
+
+        public async Task<IEnumerable<JackpotConfig>> GetJackpotConfigs(int gameId)
+        {
+            var configfs = await jackpotConfigsRepository.FilterByAsync(x => x.GameId == gameId);
+            return configfs.Select(entity => mapper.Map<JackpotConfig>(entity));
+        }
+
+        public async Task<string> UpdateJackpotPlayerSettings(JackpotSettings settings)
+        {
+            try
+            {
+                var update = Builders<JackpotConfigEntity>.Update
+                    .Set(x => x.Enabled, settings.Enabled)
+                    .Set(x => x.SiteNames, settings.SiteNames)
+                    .Set(x => x.ExcludeTestCurrency, settings.ExcludeTestCurrency)
+                    .Set(x => x.WinningRatio, settings.WinningRatio)
+                    .Set(x => x.Pools.Minor.Init, settings.Pools.Minor.Init)
+                    .Set(x => x.Pools.Minor.PlayerSettings, settings.Pools.Minor.PlayerSettings)
+                    .Set(x => x.Pools.Major.Init, settings.Pools.Major.Init)
+                    .Set(x => x.Pools.Major.PlayerSettings, settings.Pools.Major.PlayerSettings)
+                    .Set(x => x.Pools.Grand.Init, settings.Pools.Grand.Init)
+                    .Set(x => x.Pools.Grand.PlayerSettings, settings.Pools.Grand.PlayerSettings);
+
+                FilterDefinition<JackpotConfigEntity> filter;
+                if (string.IsNullOrWhiteSpace(settings.Id))
+                {
+                    update = update.Set(x => x.GameId, settings.GameId)
+                        .Set(x => x.OperatorId, settings.OperatorId);
+                    filter = Builders<JackpotConfigEntity>.Filter.Eq(x => x.Id, ObjectId.GenerateNewId());
+                }
+                else
+                {
+                    filter = Builders<JackpotConfigEntity>.Filter.Eq(x => x.Id, new ObjectId(settings.Id));
+                }
+
+                var entity = await jackpotConfigsRepository.Collection()
+                        .FindOneAndUpdateAsync(
+                            filter,
+                            update,
+                            new FindOneAndUpdateOptions<JackpotConfigEntity>
+                            {
+                                IsUpsert = true,
+                                ReturnDocument = ReturnDocument.After
+                            });
+
+                return entity.Id.ToString();
+            }
+            catch (Exception e)
+            {
+                sentryClient.CaptureException(e);
+                return string.Empty;
+            }
+        }
+
+        public async Task<string> UpdateJackpotBotSettings(JackpotSettings settings)
+        {
+            try
+            {
+                var update = Builders<JackpotConfigEntity>.Update
+                    .Set(x => x.SiteNames, settings.SiteNames)
+                    .Set(x => x.BotBetLevels, settings.BotBetLevels)
+                    .Set(x => x.Pools.Minor.BotSettings, settings.Pools.Minor.BotSettings)
+                .Set(x => x.Pools.Major.BotSettings, settings.Pools.Major.BotSettings)
+                .Set(x => x.Pools.Grand.BotSettings, settings.Pools.Grand.BotSettings);
+
+            FilterDefinition<JackpotConfigEntity> filter;
+            if (string.IsNullOrWhiteSpace(settings.Id))
+            {
+                update = update.Set(x => x.GameId, settings.GameId)
+                    .Set(x => x.OperatorId, settings.OperatorId);
+                filter = Builders<JackpotConfigEntity>.Filter.Eq(x => x.Id, new ObjectId());
+            }
+            else
+            {
+                filter = Builders<JackpotConfigEntity>.Filter.Eq(x => x.Id, new ObjectId(settings.Id));
+            }
+
+
+            var entity = await jackpotConfigsRepository.Collection()
+                .FindOneAndUpdateAsync(
+                    filter,
+                    update,
+                    new FindOneAndUpdateOptions<JackpotConfigEntity>
+                        {
+                            IsUpsert = true,
+                            ReturnDocument = ReturnDocument.After
+                        });
+
+                return entity.Id.ToString();
+            }
+            catch (Exception e)
+            {
+                sentryClient.CaptureException(e);
+                return string.Empty;
+            }
+        }
+
+        public async Task<bool> UpdateBotRatioSettings(JackpotSettings settings)
+        {
+            var update = Builders<BotConfigEntity>.Update
+                .Set(x => x.Enabled, settings.BotEnabled)
+                .Set(x => x.HoursMaxBot, settings.HoursMaxBot)
+                .Set(x => x.GameId, settings.GameId);
+
+            var result = await botConfigsRepository.UpdateAsync(x => x.JackpotConfigId == ObjectId.Parse(settings.Id), update, new UpdateOptions { IsUpsert = true });
+            return result.IsAcknowledged;
         }
     }
 }
