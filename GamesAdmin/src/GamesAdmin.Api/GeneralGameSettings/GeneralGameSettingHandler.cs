@@ -32,28 +32,24 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
         public async Task<IEnumerable<GeneralGameSetting>> Handle(GetGameByCurrencyGroupsRequest request, CancellationToken cancellationToken)
         {
-            var games = await currencyGroupGameService.GetAll();
-            var gameSettings = await generalGameSettingService.GetAll();
             var selectedGroupIds = request.CurrencyGroupIds.ToHashSet();
             var totalGroupCount = selectedGroupIds.Count;
 
-            var filteredGames = from game in games
-                                join setting in gameSettings on game.GameId equals setting.GameId
-                                where selectedGroupIds.Contains(game.GroupId)
-                                      && (int)setting.Type == request.GameType
-                                select new { game.GameId, game.GroupId, Setting = setting };
+            var games = await currencyGroupGameService.GetAll();
+            var gameSettings = await generalGameSettingService.GetAll();
 
-            var validGameIds = filteredGames
+            var settingDict = gameSettings
+                .Where(s => (int)s.Type == request.GameType)
+                .ToDictionary(s => s.GameId, s => s);
+
+            var filtered = games
+                .Where(g => selectedGroupIds.Contains(g.GroupId) && settingDict.ContainsKey(g.GameId))
+                .Select(g => new { g.GameId, g.GroupId, Setting = settingDict[g.GameId] });
+
+            var result = filtered
                 .GroupBy(x => x.GameId)
                 .Where(g => g.Select(x => x.GroupId).Distinct().Count() == totalGroupCount)
-                .Select(g => g.Key)
-                .ToHashSet();
-
-            var result = filteredGames
-                .Where(x => validGameIds.Contains(x.GameId))
-                .GroupBy(x => x.GameId)
-                .Select(g => g.First().Setting)
-                .ToList();
+                .Select(g => g.First().Setting);
 
             return result;
         }
