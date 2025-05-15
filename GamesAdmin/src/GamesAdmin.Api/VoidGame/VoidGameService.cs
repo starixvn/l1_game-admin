@@ -278,6 +278,11 @@ namespace GamesAdmin.Api.VoidGame
                 if (gameRound24h.TryGetValue(gameId, out var gameName))
                 {
                     var serviceName = NamingConverter.ServiceName(gameName, appSettings.ServiceNameSeparator);
+
+                    if (appSettings.Env=="DEV")
+                    {
+                        serviceName = NamingConverter.ServiceName(gameName, "");
+                    }
                     var voidRunningTicketApi = voidRunningTicketApiFactory.GetVoidRunningTicketApi(serviceName);
                     var result = await voidRunningTicketApi.VoidTicket(new VoidRunningTicketRequest(userIndentify, accountInfoEntity?.Name));
                     return result;

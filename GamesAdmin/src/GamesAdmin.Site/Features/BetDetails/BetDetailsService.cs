@@ -1,6 +1,7 @@
 ﻿namespace GamesAdmin.Site.Features.BetDetails
 {
     using System.Threading.Tasks;
+    using GamesAdmin.Site.Extensions;
     using GamesAdmin.Site.Features._Shared;
     using GamesAdmin.Site.Features.BetDetails.Models;
     using GamesAdmin.Site.Features.BetDetails.ViewModels;
@@ -13,15 +14,21 @@
     public class BetDetailsService : IBetDetailsService
     {
         private readonly IBetDetailsApi betDetailsApi;
-
-        public BetDetailsService(IBetDetailsApi betDetailsApi)
+        private readonly IPartnerPlayerIdConverter playerIdConverter;
+        public BetDetailsService(IBetDetailsApi betDetailsApi, IPartnerPlayerIdConverter playerIdConverter)
         {
             this.betDetailsApi = betDetailsApi;
+            this.playerIdConverter = playerIdConverter;
         }
 
         public async Task<string> GetAccessUrlAsync(BetDetailsViewModel model)
         {
-            var request = new BetDetailsAccessUrlApiRequest(model);
+            var convertedPlayerId = playerIdConverter.ConvertPlayerId(model.OperatorId, model.PlayerId);
+
+            var request = new BetDetailsAccessUrlApiRequest(model)
+            {
+                PlayerId = convertedPlayerId
+            };
 
             if (model.UseHmacHash)
             {

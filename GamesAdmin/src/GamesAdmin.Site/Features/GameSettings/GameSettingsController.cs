@@ -52,7 +52,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var request = new CloneSlotGameRequest(addViewModel.DisplayName,
                 addViewModel.GameId,
-                addViewModel.SelectedGame);
+                addViewModel.SelectedGame,
+                (byte)addViewModel.GameType);
 
             return await mediator.Send(request);
         }

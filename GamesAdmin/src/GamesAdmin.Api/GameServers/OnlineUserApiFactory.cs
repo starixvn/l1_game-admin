@@ -89,6 +89,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.FootballCoinTossValue, typeof(IFootballCoinTossOnlineUserApi) },
             { Game.Bac82Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.MarbleFootballValue, typeof(IMarbleFootballOnlineUserApi) },
+            { Game.MarbleFootball2Value, typeof(IMarbleFootball2OnlineUserApi) },
             { Game.Bac83Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.Bac84Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.Bac85Value, typeof(IBaccaratXOnlineUserApi) },

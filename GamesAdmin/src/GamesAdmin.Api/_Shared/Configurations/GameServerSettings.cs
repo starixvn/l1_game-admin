@@ -124,6 +124,8 @@
         public GameServerConfigs FootballCoinToss { get; set; }
         public GameServerConfigs SevenUpDown { get; set; }
         public GameServerConfigs MarbleFootball { get; set; }
+        public GameServerConfigs MarbleFootball2 { get; set; }
+
 
     }
 

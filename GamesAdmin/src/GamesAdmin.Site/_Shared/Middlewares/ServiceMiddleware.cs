@@ -1,6 +1,8 @@
-﻿using GamesAdmin.Core.IdentityServer;
+﻿using System.Globalization;
+using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
+using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.BetDetails;
@@ -22,6 +24,7 @@ using GamesAdmin.Site.Features.Lobby;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.OperateSettings;
 using GamesAdmin.Site.Features.Partners;
+using GamesAdmin.Site.Features.PlayerInfo;
 using GamesAdmin.Site.Features.Promotions;
 using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.RetrieveEndRound;
@@ -29,6 +32,8 @@ using GamesAdmin.Site.Features.UmSchedule;
 using GamesAdmin.Site.Features.Users;
 using GamesAdmin.Site.Features.VoidGame;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Refit;
 
 namespace GamesAdmin.Site._Shared.Middlewares
@@ -41,7 +46,12 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             var refitSettings = new RefitSettings
             {
-                ContentSerializer = new NewtonsoftJsonContentSerializer(),
+                ContentSerializer = new NewtonsoftJsonContentSerializer(new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+                    Culture = CultureInfo.InvariantCulture
+                }),
                 AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
             };
 
@@ -117,7 +127,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IPromotionApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IPromotionService, PromotionService>();
             services.AddScoped<IPromotionCampaignService, PromotionCampaignService>();
- 
 
             services.AddSingleton(RestService.For<ILobbyApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<ILobbyService, LobbyService>();
@@ -129,6 +138,10 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IInternalTestAccountApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IInternalTestAccountService, InternalTestAccountService>();
+            services.AddScoped<IPartnerPlayerIdConverter, PartnerPlayerIdConverter>();
+
+            services.AddSingleton(RestService.For<IPlayerInfoApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IPlayerInfoService, PlayerInfoService>();
 
             services.AddReportServices();
 

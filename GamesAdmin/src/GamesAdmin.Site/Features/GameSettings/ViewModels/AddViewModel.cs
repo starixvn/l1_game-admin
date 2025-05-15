@@ -95,7 +95,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double PlayerJackpotContribution { get; set; }
 
         [DisplayName("Allowed Currency")]
-        public string AllowedCurrency { get; set; } = "INH";
+        public string AllowedCurrency { get; set; } = "USD";
 
         public int[] BetLevels { get; set; }
         public double BetMultiplier { get; set; }
@@ -111,5 +111,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
 		[DisplayName("Have Video Stream")]
 		public bool HaveVideoStream { get; set; }
+
+        [DisplayName("Use Margin")]
+        public bool UseMargin { get; set; }
 	}
 }

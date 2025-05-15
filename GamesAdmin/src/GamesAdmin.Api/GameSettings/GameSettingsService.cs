@@ -134,6 +134,7 @@ namespace GamesAdmin.Api.Games
                     ApplyMultiplier = game.Info.ApplyMultiplier,
                     HaveTournament = game.Info.HaveTournament,
                     HaveVideoStream = game.Info.HaveVideoStream,
+                    UseMargin = game.Info.UseMargin,
                 };
 
                 if (game.Info.ApplyMultiplier)
@@ -230,7 +231,7 @@ namespace GamesAdmin.Api.Games
 
         private int GetGameId(GameInfo gameInfo)
         {
-            if (gameInfo.Type == GameType.Slots || gameInfo.Type == GameType.Crash)
+            if (gameInfo.Type == GameType.Slots || gameInfo.Type == GameType.Crash || gameInfo.Type == GameType.CrashTurnBase)
             {
                 return gameInfo.GameId;
             }
@@ -765,7 +766,8 @@ namespace GamesAdmin.Api.Games
                 .Set(field => field.BotMaxBet, botSetting.BotMaxBet)
                 .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
                 .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
-                .Set(field => field.RandomMode, gameInfo.RandomMode);
+                .Set(field => field.RandomMode, gameInfo.RandomMode)
+                .Set(field => field.CrashConfig.MultiplierConfigs, crashConfig.MultiplierConfigs);
 
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 

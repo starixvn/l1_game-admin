@@ -41,7 +41,7 @@ namespace GamesAdmin.Database.Entities
 
         public int ExchangeRateId { get; set; } = 4308;
 
-        public string Currency { get; set; } = "INH";
+        public string Currency { get; set; } = "USD";
 
         public string OperatorId { get; set; } = "ONEworksVGCash";
 

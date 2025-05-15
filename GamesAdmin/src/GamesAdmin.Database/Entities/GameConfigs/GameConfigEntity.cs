@@ -78,5 +78,7 @@ namespace GamesAdmin.Database.Entities
 		public bool HaveTournament { get; set; }
 
 		public bool HaveVideoStream { get; set; }
+
+        public bool UseMargin { get; set; }
 	}
 }

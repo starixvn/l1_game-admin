@@ -99,6 +99,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string Bac102Value = "bac102";
         public const string SevenUpDownValue = "sevenupdown";
         public const string MarbleFootballValue = "marblefootball";
+        public const string MarbleFootball2Value = "marblefootball2";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -181,6 +182,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game Bac101 = new Game(Bac101Value, "Speed Baccarat 3", GameId.Bac101);
         public static readonly Game Bac102 = new Game(Bac102Value, "Baccarat Lobby", GameId.Bac102);
         public static readonly Game SevenUpDown = new Game(SevenUpDownValue, "7 Up 7 Down", GameId.SevenUpDown);
+
         public Game()
         {
         }

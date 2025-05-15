@@ -53,6 +53,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IColorGameReportRepository, ColorGameReportRepository>();
             services.AddScoped<IBandarQiuQiuReportRepository, BandarQiuQiuReportRepository>();
             services.AddScoped<ICrashGameReportRepository, CrashGameReportRepository>();
+            services.AddScoped<ICrashTurnGameReportRepository, CrashTurnGameReportRepository>();
             services.AddScoped<IUserInfoService, UserInfoService>();
             services.AddScoped<IChineseBlackjackReportRepository, ChineseBlackjackReportRepository>();
             services.AddScoped<IBacBall1ReportRepository, BacBall1ReportRepository>();

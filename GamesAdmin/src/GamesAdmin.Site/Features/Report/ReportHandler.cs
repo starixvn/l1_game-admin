@@ -52,6 +52,7 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetCascadingSlotReportRequest, CascadingSlotReportResultViewModel>,
         IRequestHandler<GetCascadingSlotBetHistoryRequest, CascadingSlotBetHistoryViewModel>,
         IRequestHandler<GetCrashGameReportRequest, CrashGameReportResultViewModel>,
+        IRequestHandler<GetCrashTurnGameReportRequest, CrashTurnGameReportResultViewModel>,
         IRequestHandler<GetChineseBlackjackReportRequest, BlackjackGameReportResultViewModel>
     {
         private readonly IReportService reportService;
@@ -493,7 +494,7 @@ namespace GamesAdmin.Site.Features.Report
             var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
             var currencies = await currencyService.GetAll();
             var currencyGroupGame = await currencyGroupGameService.GetAll();
-           
+
             return new JackpotReportResultViewModel
             {
                 EnableConvertBase = !isFourGuardians,
@@ -505,8 +506,8 @@ namespace GamesAdmin.Site.Features.Report
                         betViewModel.BaseBetLevel = GetBetLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
                         betViewModel.BetLevelByCurrency = GetBetLevel(currencies, currencyGroupGame, request.GameId, x.Currency);
                         betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
-                    }                
-                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);                  
+                    }
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     return betViewModel;
                 }).OrderByDescending(x => x.Time)
             };
@@ -769,13 +770,13 @@ namespace GamesAdmin.Site.Features.Report
             }
             catch (Exception ex)
             {
-                throw new SystemException($"Exceptions", ex);            
+                throw new SystemException($"Exceptions", ex);
             }
         }
 
-        private SpeedUpGameBetReportFilter CreateFilterFromRequest(GetCrashGameReportRequest request)
+        private CrashGameBetReportFilter CreateFilterFromRequest(GetCrashGameReportRequest request)
         {
-            return new SpeedUpGameBetReportFilter
+            return new CrashGameBetReportFilter
             {
                 RoundId = request.RoundId,
                 Nickname = request.Nickname,
@@ -815,6 +816,74 @@ namespace GamesAdmin.Site.Features.Report
                 Partner = GetPartnerName(partners, record.PartnerId),
                 Rate = record.Rate,
                 BetLogs = record.BetLogs.Select(c => new CrashGameBetHistoryViewModel
+                {
+                    Action = c.Action,
+                    WinAmount = c.WinAmount,
+                    Multiplier = c.Multiplier,
+                    Amount = c.Amount,
+                    Time = c.Time,
+                    CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1,
+                    BetKey = c.BetKey
+                }),
+            };
+        }
+
+        public async Task<CrashTurnGameReportResultViewModel> Handle(GetCrashTurnGameReportRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var filter = CreateFilterFromRequestTurnGame(request);
+                var result = await reportService.GetCrashTurnGameReport(filter);
+                var partners = await partnerService.GetPartnersForSelection(model => true);
+
+                return MapToViewModelTurnGame(result, partners, filter.ConvertToUSD);
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException($"Exceptions", ex);
+            }
+        }
+
+        private CrashTurnGameBetReportFilter CreateFilterFromRequestTurnGame(GetCrashTurnGameReportRequest request)
+        {
+            return new CrashTurnGameBetReportFilter
+            {
+                RoundId = request.RoundId,
+                Nickname = request.Nickname,
+                ExcludeUUS = request.ExcludeUUS,
+                PartnerId = request.PartnerId,
+                Username = request.Username,
+                ConvertToUSD = request.ConvertToUSD,
+                Game = request.Game,
+                ToDate = request.ToDate,
+                FromDate = request.FromDate
+            };
+        }
+
+        private CrashTurnGameReportResultViewModel MapToViewModelTurnGame(IEnumerable<CrashTurnGameBetRecord> result, IEnumerable<SelectListItem> partners, bool convertToUSD)
+        {
+            return new CrashTurnGameReportResultViewModel
+            {
+                Records = result.Select(x => MapRecordToViewModelTurnGame(x, partners, convertToUSD)).ToList(),
+            };
+        }
+
+        private CrashTurnGameRecordViewModel MapRecordToViewModelTurnGame(CrashTurnGameBetRecord record, IEnumerable<SelectListItem> partners, bool convertToUSD)
+        {
+            return new CrashTurnGameRecordViewModel
+            {
+                Result = record.Result,
+                Time = TimeZoneInfo.ConvertTimeFromUtc(record.Time, appSettings.DefaultTimeZone),
+                CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1,
+                Username = record.Username,
+                Nickname = record.Nickname,
+                BetWin = record.BetWin,
+                Amount = record.Amount,
+                Currency = record.Currency,
+                Partner = GetPartnerName(partners, record.PartnerId),
+                Rate = record.Rate,
+                RoundId = record.RoundId,
+                BetLogs = record.BetLogs.Select(c => new CrashTurnGameBetHistoryViewModel
                 {
                     Action = c.Action,
                     WinAmount = c.WinAmount,

@@ -357,5 +357,13 @@
     "inputFiles": [
       "wwwroot/js/internal-account.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/crash-turn-game-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/crash-turn-game-report.js"
+    ]
   }
 ]

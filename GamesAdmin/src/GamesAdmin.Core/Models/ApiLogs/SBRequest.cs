@@ -14,7 +14,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         public string ObCustId { get; set; }
 
-        public string PlayerId { get; set; }
+        public object PlayerId { get; set; }
 
         public virtual string RequestType { get; set; }
     }

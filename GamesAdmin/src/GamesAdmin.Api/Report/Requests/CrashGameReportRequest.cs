@@ -6,11 +6,11 @@ namespace GamesAdmin.Api.Report.Requests
 {
     public class CrashGameReportRequest : IRequest<CrashGameBetReport>
     {
-        public CrashGameReportRequest(SpeedUpGameBetReportFilter filter)
+        public CrashGameReportRequest(CrashGameBetReportFilter filter)
         {
             Filter = filter;
         }
 
-        public SpeedUpGameBetReportFilter Filter { get; }
+        public CrashGameBetReportFilter Filter { get; }
     }
 }

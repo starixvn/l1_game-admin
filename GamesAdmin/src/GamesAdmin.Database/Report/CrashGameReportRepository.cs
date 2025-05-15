@@ -16,7 +16,7 @@ namespace GamesAdmin.Database.Report
     public interface ICrashGameReportRepository
     {
 
-        Task<(CrashGameRoundEntity, IEnumerable<CrashGameBetReportEntity>)> GetRecordAsync(SpeedUpGameBetReportFilter filter);
+        Task<(CrashGameRoundEntity, IEnumerable<CrashGameBetReportEntity>)> GetRecordAsync(CrashGameBetReportFilter filter);
 
     }
     public class CrashGameReportRepository: ICrashGameReportRepository
@@ -28,7 +28,7 @@ namespace GamesAdmin.Database.Report
             this.database = database;
         }
 
-        public async Task<(CrashGameRoundEntity, IEnumerable<CrashGameBetReportEntity>)> GetRecordAsync(SpeedUpGameBetReportFilter filter)
+        public async Task<(CrashGameRoundEntity, IEnumerable<CrashGameBetReportEntity>)> GetRecordAsync(CrashGameBetReportFilter filter)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace GamesAdmin.Database.Report
             }
         }
 
-        private Expression<Func<CrashGameBetEntity, bool>> GetFilterExpression(SpeedUpGameBetReportFilter filter)
+        private Expression<Func<CrashGameBetEntity, bool>> GetFilterExpression(CrashGameBetReportFilter filter)
         {
             Expression<Func<CrashGameBetEntity, bool>> expression;
             if (string.IsNullOrWhiteSpace(filter.Nickname))
@@ -105,7 +105,7 @@ namespace GamesAdmin.Database.Report
         }
 
 
-        private Expression<Func<CrashGameBetLogEntity, bool>> GetFilterBetLogExpression(SpeedUpGameBetReportFilter filter)
+        private Expression<Func<CrashGameBetLogEntity, bool>> GetFilterBetLogExpression(CrashGameBetReportFilter filter)
         {
             Expression<Func<CrashGameBetLogEntity, bool>> expression;
             if (string.IsNullOrWhiteSpace(filter.Nickname))

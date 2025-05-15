@@ -14,7 +14,7 @@ namespace GamesAdmin.Database.Report.Entities
         public int ExchangeRateId { get; set; }
 
         public string OperatorId { get; set; }
-
+        
         public IEnumerable<CrashGameBetLogEntity> BetLogs { get; set; }
     }
 }

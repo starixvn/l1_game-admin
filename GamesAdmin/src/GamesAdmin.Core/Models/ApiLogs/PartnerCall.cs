@@ -6,7 +6,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
     {
         public string Seq { get; set; }
 
-        public string PlayerId { get; set; }
+        public object PlayerId { get; set; }
 
         public string SiteId { get; set; }
 
@@ -72,5 +72,10 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
     public class PartnerGetBetLimitCall : PartnerCall
     {
+    }
+
+    public class PartnerHitJackpotCall : PartnerCall
+    {
+        public decimal WinningAmount { get; set; }
     }
 }

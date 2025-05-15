@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using GamesAdmin.Site.Extensions;
 using System.Text;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Site.Features._Shared.Helpers;
 
 namespace GamesAdmin.Site.Features.Promotions.ViewModels
 {
@@ -168,8 +169,8 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 public class WinningPrizeViewModel
 {
     public string Ranking { get; set; }
-    public int Value { get; set; }
-    public string DisplayValue => Value.ToString();
+    public double Value { get; set; }
+    public string DisplayValue => HtmlHelpers.formatNumber3(Value);
 }
 
 public class OperatorViewModel

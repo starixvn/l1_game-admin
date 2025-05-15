@@ -28,11 +28,20 @@ namespace GamesAdmin.Api.Lobby
         Task<bool> Delete(string id);
 
         Task<Game[]> UniqueRoundTimerGameAllMarket();
+
+        Task<string> CreateOrUpdateDirectLobby(DirectLobbyModel model);
+
+        Task<IEnumerable<DirectLobbyModel>> GetAllDirectLobby();
+
+        Task<DirectLobbyModel> GetDirectLobby(string id);
+
+        Task<bool> DeleteDirectLobby(string id);
     }
 
     public class LobbyService : ILobbyService
     {
         private readonly IGenericRepository<LobbyEntity> lobbyRepository;
+        private readonly IGenericRepository<DirectLobbyEntity> directLobbyRepository;
         private readonly ISentryClient sentryClient;
         private readonly IMapper mapper;
         private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
@@ -40,6 +49,7 @@ namespace GamesAdmin.Api.Lobby
         private readonly IRoundWatcherService roundWatcherService;
 
         public LobbyService(IGenericRepository<LobbyEntity> lobbyRepository,
+            IGenericRepository<DirectLobbyEntity> directLobbyRepository,
             ISentryClient sentryClient,
             IMapper mapper,
             IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
@@ -47,6 +57,7 @@ namespace GamesAdmin.Api.Lobby
             IRoundWatcherService roundWatcherService)
         {
             this.lobbyRepository = lobbyRepository;
+            this.directLobbyRepository = directLobbyRepository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
             this.currencyGroupRepository = currencyGroupRepository;
@@ -180,6 +191,93 @@ namespace GamesAdmin.Api.Lobby
 
                 return Array.Empty<Game>();
             }
-        } 
+        }
+
+        public async Task<string> CreateOrUpdateDirectLobby(DirectLobbyModel model)
+        {
+            try
+            {
+                var directLobbyEntity = mapper.Map<DirectLobbyEntity>(model);
+
+                var existingLobbyEntity = await directLobbyRepository.FindOneAsync(entity => entity.Id == directLobbyEntity.Id);
+
+                if (existingLobbyEntity == null)
+                {
+                    sentryClient.CaptureMessage(string.Format("Added Direct Lobby \"{0}\"", model.Name), SentryLevel.Error);
+                    await directLobbyRepository.InsertOneAsync(directLobbyEntity);
+                }
+                else
+                {
+                    var currencyGroups = (await currencyGroupRepository.FilterByAsync(entity => true)).ToList();
+                    var gameSettings = await generalGameSettingService.GetAll();
+                    var log = LobbyLog.BuildDirectLobbyChangedLog(existingLobbyEntity, directLobbyEntity, currencyGroups, gameSettings.ToList());
+                    sentryClient.CaptureMessage(string.Format("Updated Direct Lobby \"{0}\": \n\n{1}", model.Name, log), SentryLevel.Error);
+                    var update = Builders<DirectLobbyEntity>.Update
+                        .Set(field => field.Name, directLobbyEntity.Name)
+                        .Set(field => field.CurrencyGroupIds, directLobbyEntity.CurrencyGroupIds)
+                        .Set(field => field.GameIds, directLobbyEntity.GameIds)
+                        .Set(field => field.NewGames, directLobbyEntity.NewGames);
+
+                    await directLobbyRepository.UpdateAsync(entity => entity.Id == directLobbyEntity.Id, update);
+                }
+                return directLobbyEntity.Id.ToString();
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return null;
+        }
+
+        public async Task<IEnumerable<DirectLobbyModel>> GetAllDirectLobby()
+        {
+            try
+            {
+                var lobbyEntities = await Task.Run(() => directLobbyRepository.AsQueryable().ToList());
+
+                var lobbyModels = lobbyEntities.Select(lobbyEntity => mapper.Map<DirectLobbyModel>(lobbyEntity));
+                return lobbyModels;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return Enumerable.Empty<DirectLobbyModel>();
+            }
+        }
+
+        public async Task<DirectLobbyModel> GetDirectLobby(string id)
+        {
+            try
+            {
+                var lobbyEntity = await directLobbyRepository.FindOneAsync(entity => entity.Id == ObjectId.Parse(id));
+                var lobbyModel = mapper.Map<DirectLobbyModel>(lobbyEntity);
+                return lobbyModel;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteDirectLobby(string id)
+        {
+            try
+            {
+                var lobbyConfig = await directLobbyRepository.FindOneAsync(entity => entity.Id == ObjectId.Parse(id));
+                sentryClient.CaptureMessage(string.Format("Deleted Lobby \"{0}\"", lobbyConfig.Name), SentryLevel.Error);
+                await directLobbyRepository.DeleteOneAsync(entity => entity.Id == ObjectId.Parse(id));
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
     }
 }

@@ -43,4 +43,13 @@ var lobbyLayoutConfig = Object.assign({}, commonConfig, {
     },
 });
 
-module.exports = [lobbyLayoutConfig];
+var directLobbyLayoutConfig = Object.assign({}, commonConfig, {
+    name: "lobbyLayoutConfig",
+    entry: "./wwwroot/js/direct-lobby/index.tsx",
+    output: {
+        filename: "direct-lobby.min.js",
+        path: path.resolve(__dirname, "wwwroot/js/direct-lobby/bundles"),
+    },
+});
+
+module.exports = [lobbyLayoutConfig, directLobbyLayoutConfig];

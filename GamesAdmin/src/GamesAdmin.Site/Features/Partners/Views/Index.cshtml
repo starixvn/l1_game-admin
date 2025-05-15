@@ -36,6 +36,7 @@
                 <th>Instant URL</th>
                 <th>Mobi URL</th>
                 <th>Mega Keno URL</th>
+                <th>Mobile Direct URL</th>
                 <th>Test Currency URL</th>
                 <th>Display Player Currency</th>
                 @if (Model.EditPermission)
@@ -84,6 +85,7 @@
                         <td>@firstRowData.MiniVersionUrl</td>
                         <td>@firstRowData.MobiVersionUrl</td>
                         <td>@firstRowData.MegaKenoUrl</td>
+                        <td>@firstRowData.MobileDirectUrl</td>
                         <td>@firstRowData.TestCurrencyUrl</td>
                         <td class="text-center">
                             @if (firstRowData.IsDisplayPlayerCurrency)
@@ -138,6 +140,7 @@
                         <td>@item.MiniVersionUrl</td>
                         <td>@item.MobiVersionUrl</td>
                         <td>@item.MegaKenoUrl</td>
+                        <td>@item.MobileDirectUrl</td>
                         <td>@item.TestCurrencyUrl</td>
                         <td class="text-center">
                             @if (item.IsDisplayPlayerCurrency)

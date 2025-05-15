@@ -94,5 +94,9 @@
   {
     "outputFile": "wwwroot/scss/pages/game-group-management.css",
     "inputFile": "wwwroot/scss/pages/game-group-management.scss"
+  },
+  {
+    "outputFile": "wwwroot/js/game-status.es5.js",
+    "inputFile": "wwwroot/js/game-status.js"
   }
 ]

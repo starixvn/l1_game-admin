@@ -116,12 +116,14 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         private static List<GameSettings.ViewModels.MaxBetChoiceViewModel> GenerateMaxBetPerChoices(string gameName, Dictionary<string, double> maxBetPerChoices)
         {
             var betChoicesSettings = GamesSettings.GetGamesSettings().GetGameFromName(gameName)?.BetChoices;
+            var displayBetChoices = GamesSettings.GetGamesSettings().GetGameFromName(gameName)?.DisplayBetChoices;
+
             if (betChoicesSettings?.Any() == true)
             {
                 return betChoicesSettings.Select(choice => new GameSettings.ViewModels.MaxBetChoiceViewModel(
                 choice,
                 maxBetPerChoices != null && maxBetPerChoices.ContainsKey(choice) ? maxBetPerChoices[choice] : 0,
-                choice.ToTitleCase())).ToList();
+                displayBetChoices?[choice] ?? choice.ToTitleCase())).ToList();
             }
             if (string.IsNullOrWhiteSpace(gameName) || !Game.ContainsGame(gameName))
             {

@@ -114,5 +114,35 @@ namespace GamesAdmin.Api.Lobby
 
             return gameSetting.DisplayName;
         }
+
+        public static string BuildDirectLobbyChangedLog(DirectLobbyEntity oldEntity, DirectLobbyEntity newEntity, List<CurrencyGroupEntity> currencyGroups, List<GeneralGameSetting> gameSettings)
+        {
+            var changedSettings = new List<string>();
+            if (!newEntity.Name.Equals(oldEntity.Name))
+            {
+                changedSettings.Add($"{"Name"}: {oldEntity.Name} -> {newEntity.Name}\r\n");
+            }
+
+            if (HasChange(newEntity.CurrencyGroupIds, oldEntity.CurrencyGroupIds))
+            {
+                var oldCurrencyGroupNames = oldEntity.CurrencyGroupIds.Select(groupId => currencyGroups.FirstOrDefault(group => group.Id.ToString() == groupId)?.Name);
+                var newCurrencyGroupNames = newEntity.CurrencyGroupIds.Select(groupId => currencyGroups.FirstOrDefault(group => group.Id.ToString() == groupId)?.Name);
+                changedSettings.Add($"{"CurrencyGroupIds"}: {JsonConvert.SerializeObject(oldCurrencyGroupNames)} -> {JsonConvert.SerializeObject(newCurrencyGroupNames)}\r\n");
+            }
+            if (HasChange(newEntity.GameIds, oldEntity.GameIds))
+            {
+                var oldGameIds = oldEntity.GameIds.Select(gameId => GetGameDisplayName(gameId, gameSettings));
+                var newGameIds = newEntity.GameIds.Select(gameId => GetGameDisplayName(gameId, gameSettings));
+                changedSettings.Add($"{"GameIds"}: {JsonConvert.SerializeObject(oldGameIds)} -> {JsonConvert.SerializeObject(newGameIds)}\r\n");
+            }
+            if (HasChange(newEntity.NewGames, oldEntity.NewGames))
+            {
+                var oldNewGames = oldEntity.NewGames?.Select(gameId => GetGameDisplayName(gameId, gameSettings));
+                var newNewGames = newEntity.NewGames.Select(gameId => GetGameDisplayName(gameId, gameSettings));
+                changedSettings.Add($"{"NewGames"}: {JsonConvert.SerializeObject(oldNewGames)} -> {JsonConvert.SerializeObject(newNewGames)}\r\n");
+            }
+
+            return string.Join("\r\n", changedSettings);
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => request.GameRoundId == 0 || entity.Call.GameRoundId == 0 || request.GameRoundId == entity.Call.GameRoundId;
 
         private static Expression<Func<PartnerLogEntity, bool>> PartnerObCustIdExpression(QueryLogRequest request)
-            => entity => string.IsNullOrEmpty(request.PlayerId) || string.IsNullOrEmpty(entity.Call.PlayerId) || request.PlayerId == entity.Call.PlayerId;
+            => entity => string.IsNullOrEmpty(request.PlayerId) || string.IsNullOrEmpty(entity.Call.PlayerId.ToString()) || request.PlayerId == entity.Call.PlayerId.ToString();
 
         private static Expression<Func<PartnerLogEntity, bool>> PartnerIdExpression(QueryLogRequest request)
             => entity => string.Equals(request.PartnerId, entity.PartnerId) || string.Equals(request.PartnerId, entity.OperatorId);
@@ -35,7 +35,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => request.GameRoundId == 0 || entity.Request.GameRoundId == 0 || request.GameRoundId == entity.Request.GameRoundId;
 
         private static Expression<Func<SBLogEntity, bool>> SBObCustIdExpression(QueryLogRequest request)
-            => entity => string.IsNullOrEmpty(request.PlayerId) || string.IsNullOrEmpty(entity.Request.PlayerId) || request.PlayerId == entity.Request.PlayerId;
+            => entity => string.IsNullOrEmpty(request.PlayerId) || string.IsNullOrEmpty(entity.Request.PlayerId.ToString()) || request.PlayerId == entity.Request.PlayerId.ToString();
 
         private static Expression<Func<SBLogEntity, bool>> SBPartnerIdExpression(QueryLogRequest request)
             => entity => string.Equals(request.PartnerId, entity.Request.Auth.OperatorId);
@@ -50,7 +50,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => request.GameRoundId == 0 || entity.Call.GameRoundId == 0 || request.GameRoundId == entity.Call.GameRoundId;
 
         private static Expression<Func<TicketDetailLogEntitty, bool>> TicketDetailObCustIdExpression(QueryLogRequest request)
-            => entity => string.IsNullOrEmpty(request.PlayerId) || string.IsNullOrEmpty(entity.Call.PlayerId) || request.PlayerId == entity.Call.PlayerId;
+            => entity => string.IsNullOrEmpty(request.PlayerId) || string.IsNullOrEmpty(entity.Call.PlayerId.ToString()) || request.PlayerId == entity.Call.PlayerId.ToString();
 
         private static Expression<Func<TicketDetailLogEntitty, bool>> TicketDetailPartnerIdExpression(QueryLogRequest request)
             => entity => string.Equals(request.PartnerId, entity.Call.Auth.OperatorId);

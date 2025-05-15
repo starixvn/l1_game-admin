@@ -62,44 +62,14 @@
 
                     @{
                         var firstPartner = Model.Partners.FirstOrDefault();
-                        var partnerGroups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner?.PartnerId);
-
+                        //var partnerGroups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner?.PartnerId);
+                        //var currencyGroupGames = Model.CurrencyGroupGames?.Where(groupGame => groupGame.GameId == Model.GameList[index].GameId);
                         <td>
                             @(firstPartner?.Name)
                         </td>
 
                         <td>
-                            @{
-                                foreach (var partnerGroup in partnerGroups)
-                                {
-                                    var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id && groupGame.GameId == Model.GameList[index].GameId);
-                                    if (setting != null && setting.Enabled)
-                                    {
-
-                                        <b>@(partnerGroup.Name)</b>
-
-                                        switch (Model.GameList[index].GameConfig.Info.Type)
-                                        {
-                                            case GamesAdmin.Core.Enumeration.GameType.CascadingSlots:
-                                                var minBetLevel = Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels.Min();
-                                                var maxBetLevel = Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels.Max();
-                                                var minCoin = setting.CoinValues.Min();
-                                                var maxCoin = setting.CoinValues.Max();
-
-                                                @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * minCoin * minBetLevel, Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * maxCoin * maxBetLevel }))
-                                                break;
-                                            case GamesAdmin.Core.Enumeration.GameType.Slots:
-                                                @(": " + (setting.StakeLevels.Length > 0 ? string.Join(" - ", setting.StakeLevels.Select(stake => stake.Stake).ToArray()) : string.Join(" - ", setting.BetLevels)))
-                                                break;
-                                            default:
-                                                @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
-                                                break;
-                                        }
-                                        <br />
-
-                                    }
-                                }
-                            }
+                           
                         </td>
 
                         <td class="text-center">
@@ -111,7 +81,7 @@
                         @{
                             if (Model.GameList[index].Name != "luckywheel")
                             {
-                                if (Model.GameList[index].GameConfig.Info.Type ==  GamesAdmin.Core.Enumeration.GameType.DynamicOdds)
+                                if (Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.DynamicOdds || Model.GameList[index].GameConfig.Info.UseMargin == true)
                                 {
                                     <button class="btn-edit" onclick='gameStatus.showGameForm("@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "MarginSettings")'><i class="icon-edit"></i></button>
                                 }
@@ -142,38 +112,7 @@
                             <td style="display: none"></td>
                             <td>@Model.Partners[j].Name</td>
                             <td>
-                                @{
-                                    var groups = Model.CurrencyGroups.Where(group => group.PartnerId == Model.Partners[j].PartnerId);
-
-                                    foreach (var partnerGroup in groups)
-                                    {
-                                        var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id && groupGame.GameId == Model.GameList[index].GameId);
-
-                                        if (setting != null && setting.Enabled)
-                                        {
-                                            <b>@(partnerGroup.Name)</b>
-
-                                            switch (Model.GameList[index].GameConfig.Info.Type)
-                                            {
-                                                case GamesAdmin.Core.Enumeration.GameType.CascadingSlots:
-                                                    var minBetLevel = Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels.Min();
-                                                    var maxBetLevel = Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels.Max();
-                                                    var minCoin = setting.CoinValues.Min();
-                                                    var maxCoin = setting.CoinValues.Max();
-
-                                                    @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * minCoin * minBetLevel, Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * maxCoin * maxBetLevel }))
-                                                    break;
-                                                case GamesAdmin.Core.Enumeration.GameType.Slots:
-                                                    @(": " + (setting.StakeLevels.Length > 0 ? string.Join(" - ", setting.StakeLevels.Select(stake => stake.Stake).ToArray()) : string.Join(" - ", setting.BetLevels)))
-                                                    break;
-                                                default:
-                                                    @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
-                                                    break;
-                                            }
-                                            <br />
-                                        }
-                                    }
-                                }
+                              
                             </td>
                             <td class="text-center">
                                 <button class="btn-edit" onclick='gameStatus.showPartnerSetting("@Model.Partners[j].PartnerId", "@Model.Partners[j].Name", "@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "@((int)Model.GameList[index].GameConfig.Info.Type)")'><i class="icon-edit"></i></button>

@@ -26,6 +26,7 @@
             <i>*Note: Max value of Odds Range 1 will be Min value of Odds Range 2, etc.</i>
             @if (Model.PayoutViewModel.MarginSettings != null && Model.PayoutViewModel.MarginSettings.Any())
             {
+                var displayMargins = Model.PayoutViewModel.DisplayMargins;
                 <div class="form-group row">
                     @for (var i = 0; i < Model.PayoutViewModel.MarginSettings.Count; i++)
                     {
@@ -47,7 +48,7 @@
                                         @if(key != "max")
                                         {
                                             <div class="col-lg-6">
-                                                <label class="control-label">@key.ToTitleCase()</label>
+                                                <label class="control-label">@(displayMargins?[key] ?? key.ToTitleCase())</label>
                                                 <input type="number" value="@value" class="form-control mb-3" name="@key" />
                                             </div>
                                         }

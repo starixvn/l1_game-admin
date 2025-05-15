@@ -63,5 +63,58 @@ namespace GamesAdmin.Site.Features.Lobby
 
             return Json(result);
         }
+
+        [Route("direct-lobby")]
+        public IActionResult DirectLobby(string id)
+        {
+            return View("DirectLobby");
+        }
+
+        [Route("direct-lobby/add")]
+        [Route("direct-lobby/edit/{id}")]
+        public IActionResult CreatOrUpdateDirectLobby(string id)
+        {
+            return View("DirectLobby");
+        }
+
+        [HttpGet]
+        [Route("/direct-lobby/GetAll")]
+        public async Task<IActionResult> GetAllDirectLobby()
+        {
+            var result = await this.lobbyService.GetAllDirectLobby();
+            result.IsSuperAdmin = HttpContext.HasAdminPermission();
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        [Route("/direct-lobby/Get")]
+        public async Task<IActionResult> GetDirectLobbyConfig(string id)
+        {
+            var result = await this.lobbyService.GetDirectLobby(id);
+            result.IsSuperAdmin = HttpContext.HasAdminPermission();
+
+            return Json(result);
+        }
+
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
+        [Route("/direct-lobby")]
+        public async Task<IActionResult> CreateOrUpdateDirectLobby([FromBody] DirectLobbyModel model)
+        {
+            var result = await this.lobbyService.UpdateDirectLobby(model);
+
+            return Json(result);
+        }
+
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
+        [Route("/direct-lobby/delete")]
+        public async Task<IActionResult> DeleteDirectLobby(string id)
+        {
+            var result = await this.lobbyService.DeleteDirectLobby(id);
+
+            return Json(result);
+        }
     }
 }

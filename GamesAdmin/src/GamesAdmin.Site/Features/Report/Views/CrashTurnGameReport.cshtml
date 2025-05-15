@@ -1,0 +1,92 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels;
+@model TurnGameReportViewModel
+@{
+    ViewData["Title"] = Model.GameDisplayName;
+}
+
+@section Styles {
+    <link href="~/css/big-small-reports.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/slot-game-report.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="normal" role="tabpanel" aria-labelledby="home-tab">
+        <form class="form filter" data-ajax="true" data-ajax-method="GET"
+              asp-action="GetCrashTurnGameReport"
+              data-ajax-mode="replace"
+              data-ajax-update="#report-result"
+              data-ajax-loading="#spinner"
+              data-ajax-success="crashTurnGameReportController.initResult()"
+              method="get">
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <label class="required" asp-for="PartnerId">Operator</label>
+                    <select asp-items="@Model.Selections.Partners" asp-for="PartnerId" class="form-control">
+                        <option selected="selected" value="">All</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <label asp-for="FromDate" class="control-label">From Date</label>
+                    <input type="date" class="form-control" asp-for="FromDate">
+                </div>
+                <div class="col-auto">
+                    <label asp-for="ToDate" class="control-label">To Date</label>
+                    <input type="date" class="form-control" asp-for="ToDate">
+                </div>
+
+                <div class="col-auto">
+                    <label asp-for="RoundId" class="control-label"></label>
+                    <input type="number" class="form-control" asp-for="RoundId">
+                </div>
+                <div class="col-auto">
+                    <label asp-for="Nickname" class="control-label"></label>
+                    <input type="text" class="form-control" placeholder="Nickname" asp-for="Nickname">
+                </div>
+                <div class="col-auto">
+                    <label asp-for="Username" class="control-label"></label>
+                    <input type="text" class="form-control" placeholder="Username" asp-for="Username">
+                </div>
+                <div class="col-auto mt-5">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" asp-for="ConvertToUSD">
+                        <label class="form-check-label" asp-for="ConvertToUSD">
+                            Convert to @Model.BaseCurrency
+                        </label>
+                    </div>
+                </div>
+                <div class="col-auto mt-5">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" asp-for="ExcludeUUS">
+                        <label class="form-check-label" asp-for="ExcludeUUS">
+                        </label>
+                    </div>
+                </div>
+                <input type="hidden" class="form-control" asp-for="Game" value=@Model.GameConfigName>
+                <div class="col-auto mt-5">
+                    <button type="submit" class="btn-submit">Submit</button>
+                    <div id="spinner" class="spinner-border" style="display: none">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            <span asp-validation-for="RoundId" class="text-danger"></span>
+        </form>
+        <div id="report-result" class="col-sm-12 report-container">
+        </div>
+    </div>
+</div>
+
+<partial name="_Modal" />
+
+@section Scripts {
+
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/data-tables/datatables.js"></script>
+        <script src="~/js/crash-turn-game-report.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/crash-turn-game-report.min.js" asp-append-version="true"></script>
+    </environment>
+
+}

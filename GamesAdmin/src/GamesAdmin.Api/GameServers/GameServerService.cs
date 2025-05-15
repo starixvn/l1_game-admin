@@ -61,6 +61,8 @@ namespace GamesAdmin.Api.GameServers
         Task<FootballDiceControlResult> SetFootballDiceResult(SetFootballDiceResultRequest request);
 
         Task<bool> SetBaccaratXRersult(SetBaccaratXRersultRequest request);
+
+        Task<bool> SetCrashTurnBaseResult(SetCrashTurnBaseResultRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -82,6 +84,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly ICrashGameApiFactory crashGameApiFactory;
         private readonly IFootballDiceApiFactory footballDiceApiFactory;
         private readonly IServiceProvider serviceProvider;
+        private readonly ICrashTurnBaseApiFactory crashTurnBaseApiFactory;
 
         public GameServerService(
             ISentryClient sentryClient,
@@ -100,7 +103,8 @@ namespace GamesAdmin.Api.GameServers
             IChineseBlackjackApiFactory chineseBlackjackApiFactory,
             ICrashGameApiFactory crashGameApiFactory,
             IFootballDiceApiFactory footballDiceApiFactory,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvide,
+            ICrashTurnBaseApiFactory crashTurnBaseApiFactory)
         {
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
@@ -119,6 +123,7 @@ namespace GamesAdmin.Api.GameServers
             this.crashGameApiFactory = crashGameApiFactory;
             this.footballDiceApiFactory = footballDiceApiFactory;
             this.serviceProvider = serviceProvider;
+            this.crashTurnBaseApiFactory = crashTurnBaseApiFactory;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -411,5 +416,23 @@ namespace GamesAdmin.Api.GameServers
             }
             return false;
         }
+
+        public async Task<bool> SetCrashTurnBaseResult(SetCrashTurnBaseResultRequest request)
+        {
+            try
+            {
+                var config = await gameSettingService.GetByName(request.gameConfigName);
+
+                var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName, appSettings.ServiceNameSeparator);
+                return await crashTurnBaseApiFactory.SetResultApi(serviceName).SetResult(request);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return false;
+        }
+
     }
 }

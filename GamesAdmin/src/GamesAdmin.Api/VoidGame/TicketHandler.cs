@@ -14,6 +14,7 @@ using GamesAdmin.Database.Entities.KenoProMax;
 using GamesAdmin.Database.Entities.SeDie3;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 using Sentry;
 
 namespace GamesAdmin.Api.VoidGame
@@ -74,8 +75,15 @@ namespace GamesAdmin.Api.VoidGame
             {
                 var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
                 var isCrashGame = await generalGameSettingService.IsCrashGame((int)gameId);
+                var gameType = await generalGameSettingService.GetGameType((int)gameId);
+
                 return isCrashGame
-                       ? await Move<CrashGameBetEntity, CrashGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, GameType.Crash)
+                       ?
+                       gameType switch
+                       {
+                           (byte)GameType.CrashTurnBase => await MoveCrashTurnBaseGame(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           _ => await Move<CrashGameBetEntity, CrashGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, (GameType)gameType)
+                       }
                        : gameId switch
                        {
                            GameId.BigSmall => await Move<BigSmallOnesEntity, BigSmallBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
@@ -147,6 +155,7 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.SeDie3 => await Move<SeDie3BetEntity, SeDie3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.KaraKrus => await Move<KaraKrusBetEntity, KaraKrusBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.MarbleFootball => await Move<MarbleFootballBetEntity, MarbleFootballBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.MarbleFootball2 => await Move<MarbleFootball2BetEntity, MarbleFootball2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            _ => await Move<BaseBetEntity, BaseBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                        };
             }
@@ -163,7 +172,10 @@ namespace GamesAdmin.Api.VoidGame
             try
             {
                 var ticket = await Find<HoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
-                return new GameTicketRecord<HoldemPokerBetEntity>(ticket.BetRecords as IList<HoldemPokerBetEntity>, ticket.IsFromArchive);
+                string json = JsonConvert.SerializeObject(ticket.BetRecords);
+                var betRecods = JsonConvert.DeserializeObject<IList<HoldemPokerBetEntity>>(json);
+
+                return new GameTicketRecord<HoldemPokerBetEntity>(betRecods, ticket.IsFromArchive);
             }
             catch (Exception ex)
             {
@@ -179,10 +191,10 @@ namespace GamesAdmin.Api.VoidGame
                 IGameTicket gameTicket;
                 var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
                 bool isCrashGame = await generalGameSettingService.IsCrashGame((int)gameId);
-
                 if (isCrashGame)
                 {
-                    gameTicket = await Find<CrashGameBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, GameType.Crash);
+                    var gameType = await generalGameSettingService.GetGameType((int)gameId);
+                    gameTicket = await Find<CrashGameBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, (GameType)gameType);
                 }
                 else
                 {
@@ -252,6 +264,7 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.SeDie3 => await Find<SeDie3BetEntity, SeDie3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.KaraKrus => await Find<KaraKrusBetEntity, KaraKrusBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.MarbleFootball => await Find<MarbleFootballBetEntity, MarbleFootballBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.MarbleFootball2 => await Find<MarbleFootball2BetEntity, MarbleFootball2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         _ => await Find<BaseBetEntity, BaseBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     };
                 }
@@ -309,8 +322,10 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId);
-                var gameTicket = await Find<Bet>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
+                var gameConfig = await generalGameSettingService.GetGameConfig(gameTypeId);
+
+                var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, (GameType)gameConfig.Type, gameConfig.Name);
+                var gameTicket = await Find<Bet>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, (GameType)gameConfig.Type);
 
                 if (gameTicket.BetRecords.Count > 0)
                 {
@@ -417,8 +432,8 @@ namespace GamesAdmin.Api.VoidGame
                 GameType gameType = GameType.AutoRNG)
             where Bet : BaseBetEntity
         {
-            var gameName = await this.generalGameSettingService.GetGameName(gameTypeId);
-            var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, gameName);
+
+            var gameCollection = await GetGameTicketCollection(gameTypeId);
 
             var gameTickets = await FindInActiveOrArchive<Bet>(gameCollection, obCustId, partnerId, siteId, gameRoundId, freeBet);
 
@@ -513,6 +528,20 @@ namespace GamesAdmin.Api.VoidGame
             return result.DeletedCount > 0;
         }
 
+        private async Task<GameTicketCollection> GetGameTicketCollection(int gameId)
+        {
+            var gameConfig = await generalGameSettingService.GetGameConfig(gameId);
+            return TicketCollectionHelper.GetCollections(gameId, (GameType)gameConfig.Type, gameConfig.Name, true);
+        }
+
+        private async Task<bool> MoveCrashTurnBaseGame(string obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet)
+        {
+            await Move<CrashGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
+
+            var gameCollection = await GetGameTicketCollection(gameTypeId);
+            return await MoveRound<CrashGameRoundEntity>(gameRoundId, gameCollection.One);
+        }
+
         private async Task<bool> MoveHiLo(string obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet)
         {
             await Move<HiLoBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
@@ -531,12 +560,16 @@ namespace GamesAdmin.Api.VoidGame
             return await MoveRound<TexasHoldemPokerRoundEntity>(gameRoundId);
         }
 
-        private async Task<bool> MoveRound<RoundEntity>(long gameRoundId)
+        private async Task<bool> MoveRound<RoundEntity>(long gameRoundId, string collectionName = "")
           where RoundEntity : BaseRoundEntity
         {
             try
             {
-                var collectionName = Document.GetCollectionName(typeof(RoundEntity));
+                if (string.IsNullOrWhiteSpace(collectionName))
+                {
+                    collectionName = Document.GetCollectionName(typeof(RoundEntity));
+                }
+
                 var collection = activeDatabase.GetCollection<RoundEntity>(collectionName);
 
                 var round = await collection.Find(x => x.Number == gameRoundId).FirstOrDefaultAsync();

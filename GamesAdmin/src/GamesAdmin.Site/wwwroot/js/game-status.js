@@ -393,6 +393,7 @@
                 case "Slots": return "SlotResult";
                 case "CascadingSlots": return "CascadingSlotResult";
                 case "Crash": return "CrashGameResult";
+                case "CrashTurnBase": return "CrashTurnBaseResult"
             }
         },
 
@@ -762,10 +763,12 @@
             if (type === '7') {
                 $('#tournament-config').show();
                 $('#video-stream-config').show();
+                $('#use-margin').show();
             }
             else{
                 $('#tournament-config').hide();
                 $('#video-stream-config').hide();
+                $('#use-margin').hide();
                 $('#have-tournament').prop('checked', false);
                 $('#have-video-stream').prop('checked', false);
             }

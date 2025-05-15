@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using GamesAdmin.Database.ApiLogs.Serializers;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.ApiLogs.Entities
 {
@@ -80,6 +82,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public string SiteName { get; set; }
 
         public int PromotionId { get; set; }
+
+        public decimal WinningAmount { get; set; }
     }
 
     public class PartnerResultEntity : ApiLogResultEntity
@@ -94,7 +98,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
 
         public string ObCustId { get; set; }
 
-        public string PlayerId { get; set; }
+        [BsonSerializer(typeof(PlayerIdSerializer))]
+        public object PlayerId { get; set; }
 
         public decimal MinBet { get; set; }
 

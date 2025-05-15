@@ -66,7 +66,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<int> GetConnectedUsers();
 
-        Task<string> CloneNewSlotGame(int gameId, int fromGameId, string displayName);
+        Task<string> CloneNewSlotGame(int gameId, int fromGameId, string displayName, byte gameType);
 
         Task<bool> UpdateSymbolWeight(UpdateSymbolWeightRequest request);
 
@@ -221,8 +221,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<int> GetConnectedUsers()
             => gameApi.GetConnectedUsers();
 
-        public async Task<string> CloneNewSlotGame(int gameId, int fromGameId, string displayName)
-        => await gameApi.CloneSlotGame(gameId, fromGameId, displayName);
+        public async Task<string> CloneNewSlotGame(int gameId, int fromGameId, string displayName, byte gameType)
+        => await gameApi.CloneSlotGame(gameId, fromGameId, displayName, gameType);
 
         public Task<bool> UpdateSymbolWeight(UpdateSymbolWeightRequest request)
         => gameApi.UpdateSymbolWeight(request);

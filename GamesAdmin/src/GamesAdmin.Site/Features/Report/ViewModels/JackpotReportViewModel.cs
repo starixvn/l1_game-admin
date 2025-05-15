@@ -14,7 +14,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public bool ExcludeUUS { get; set; } = true;
 
-        public bool ConvertToINH { get; set; } = true;
+        public bool ConvertToUSD { get; set; } = true;
 
         public string BaseCurrency { get; set; }
 

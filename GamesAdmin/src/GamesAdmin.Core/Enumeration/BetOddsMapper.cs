@@ -160,7 +160,6 @@ namespace GamesAdmin.Core.Enumeration
 
                 case Game.SevenUpDownValue:
                     return Enumeration.GetAll<SevenUpDownOdds>();
-
                 default: return default;
             }
         }

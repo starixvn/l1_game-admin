@@ -51,7 +51,9 @@ namespace GamesAdmin.Api.Report
 
         Task<CascadingSlotBetHistory> GetCascadingSlotBetHistoryAsync(CascadingSlotReportFilter filter);
 
-        Task<CrashGameBetReport> GetCrashGameReportAsync(SpeedUpGameBetReportFilter filter);
+        Task<CrashGameBetReport> GetCrashGameReportAsync(CrashGameBetReportFilter filter);
+
+        Task<IEnumerable<CrashTurnGameBetRecord>> GetCrashTurnGameReportAsync(CrashTurnGameBetReportFilter filter);
     }
 
     public class ReportService : IReportService
@@ -63,6 +65,7 @@ namespace GamesAdmin.Api.Report
         private readonly ISlotGameReportRepository slotGameReportRepository;
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly ICrashGameReportRepository crashGameReportRepository;
+        private readonly ICrashTurnGameReportRepository crashTurnGameReportRepository;
 
         public ReportService(
             IServiceProvider serviceProvider,
@@ -71,7 +74,9 @@ namespace GamesAdmin.Api.Report
             ICascadingSlotGameReportRepository cascadingSlotGameReportRepository,
             ISlotGameReportRepository slotGameReportRepository,
             IGeneralGameSettingService generalGameSettingService,
-            ICrashGameReportRepository crashGameReportRepository)
+            ICrashGameReportRepository crashGameReportRepository,
+            ICrashTurnGameReportRepository crashTurnGameReportRepository
+            )
         {
             this.serviceProvider = serviceProvider;
             this.mapper = mapper;
@@ -80,6 +85,7 @@ namespace GamesAdmin.Api.Report
             this.slotGameReportRepository = slotGameReportRepository;
             this.generalGameSettingService = generalGameSettingService;
             this.crashGameReportRepository = crashGameReportRepository;
+            this.crashTurnGameReportRepository = crashTurnGameReportRepository;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
@@ -422,7 +428,7 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<CrashGameBetReport> GetCrashGameReportAsync(SpeedUpGameBetReportFilter filter)
+        public async Task<CrashGameBetReport> GetCrashGameReportAsync(CrashGameBetReportFilter filter)
         {
             var games = await generalGameSettingService.GetAll();
 
@@ -435,6 +441,41 @@ namespace GamesAdmin.Api.Report
                 RoundResult = mapper.Map<CrashGameRoundResult>(result.Item1),
                 Records = result.Item2.Select(x => mapper.Map<CrashGameBetRecord>(x))
             };
+        }
+        public async Task<IEnumerable<CrashTurnGameBetRecord>> GetCrashTurnGameReportAsync(CrashTurnGameBetReportFilter filter)
+        {
+            var games = await generalGameSettingService.GetAll();
+
+            filter.GameInfo = games.FirstOrDefault(game => game.Name == filter.Game);
+
+            var result = await crashTurnGameReportRepository.GetRoundHistoryAsync(filter);
+            var records = new List<CrashTurnGameBetRecord>();
+            foreach (var round in result)
+            {
+                var record = new CrashTurnGameBetRecord()
+                {
+                    RoundId = round.Round,
+                    Amount = round.Amount,
+                    Result = round.Result,
+                    Time = round.Time,
+                    Nickname = round.Nickname,
+                    Username = round.Username,
+                    Currency = round.Currency,
+                    PartnerId = round.PartnerId,
+                    Rate = round.Rate,
+                    BetWin = round.BetWin,
+                    BetLogs = round.BetLogs.Select(x => new CrashTurnGameBetHistory()
+                    {
+                        Action = x.Action,
+                        Amount = x.Amount,
+                        Multiplier = x.Multiplier,
+                        WinAmount = x.WinAmount,
+                    }),
+
+                };
+                records.Add(record);
+            }
+            return records;
         }
     }
 }
