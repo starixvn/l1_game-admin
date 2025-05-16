@@ -34,6 +34,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
         {
             var selectedGroupIds = request.CurrencyGroupIds.ToHashSet();
             var totalGroupCount = selectedGroupIds.Count;
+            var gameIds = request.GameIds?.ToHashSet();
 
             var games = await currencyGroupGameService.GetAll();
             var gameSettings = await generalGameSettingService.GetAll();
@@ -43,8 +44,12 @@ namespace GamesAdmin.Api.GeneralGameSettings
                 .ToDictionary(s => s.GameId, s => s);
 
             var filtered = games
-                .Where(g => selectedGroupIds.Contains(g.GroupId) && g.Enabled && settingDict.ContainsKey(g.GameId))
-                .Select(g => new { g.GameId, g.GroupId, Setting = settingDict[g.GameId] });
+                 .Where(g =>
+                     selectedGroupIds.Contains(g.GroupId) &&
+                     (g.Enabled || (gameIds != null && gameIds.Contains(g.GameId))) &&
+                     settingDict.ContainsKey(g.GameId)
+                 )
+                 .Select(g => new { g.GameId, g.GroupId, Setting = settingDict[g.GameId] });
 
             var result = filtered
                 .GroupBy(x => x.GameId)

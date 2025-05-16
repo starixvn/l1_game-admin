@@ -25,9 +25,11 @@ namespace GamesAdmin.Api.GeneralGameSettings
         [HttpGet("games")]
         public Task<IEnumerable<GeneralGameSetting>> GetByCurrencyGroups(
             [FromQuery] int gameType,
-            [FromQuery] string currencyGroups)
+            [FromQuery] string currencyGroups,
+            [FromQuery] string gameIds
+            )
         {
-            return mediator.Send(new GetGameByCurrencyGroupsRequest(gameType, currencyGroups));
+            return mediator.Send(new GetGameByCurrencyGroupsRequest(gameType, currencyGroups, gameIds));
         }
 
     }
