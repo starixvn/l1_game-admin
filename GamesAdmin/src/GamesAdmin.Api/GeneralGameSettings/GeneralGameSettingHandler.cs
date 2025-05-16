@@ -43,7 +43,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
                 .ToDictionary(s => s.GameId, s => s);
 
             var filtered = games
-                .Where(g => selectedGroupIds.Contains(g.GroupId) && settingDict.ContainsKey(g.GameId))
+                .Where(g => selectedGroupIds.Contains(g.GroupId) && g.Enabled && settingDict.ContainsKey(g.GameId))
                 .Select(g => new { g.GameId, g.GroupId, Setting = settingDict[g.GameId] });
 
             var result = filtered
