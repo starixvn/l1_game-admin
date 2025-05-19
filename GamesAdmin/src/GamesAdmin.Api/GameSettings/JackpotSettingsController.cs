@@ -1,5 +1,6 @@
 
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameSettings.JackpotSettingsRequests;
@@ -29,5 +30,13 @@ namespace GamesAdmin.Api.GameSettings
         [HttpPost("update-player-settings")]
         public Task<UpdateJackpotSettingsResult> UpdatePlayerSettings(JackpotSettings settings)
             => mediator.Send(new UpdatePlayerSettingsRequest { Settings = settings });
+
+        [HttpGet("getall")]
+        public Task<IEnumerable<JackpotSettings>> GetAllJackpotSettings()
+            => mediator.Send(new GetAllJackpotSettingsRequest());
+
+        [HttpGet("get/{configId}")]
+        public Task<JackpotSettings> GetJackpotSettings(string configId)
+            => mediator.Send(new GetJackpotSettingsRequest { ConfigId = configId });
     }
 }

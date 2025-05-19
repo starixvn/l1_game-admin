@@ -47,5 +47,12 @@ namespace GamesAdmin.Site.Features.JackpotSettingsManagement
             var result = await mediator.Send(new UpdateBotRatioSettingsRequest { Settings = model });
             return Json(result);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetJackpotSettingDetails(string configId)
+        {
+            var result = await mediator.Send(new CopyJackpotSettingsRequest { ConfigId = configId });
+            return PartialView("_SettingDetails", result);
+        }
     }
 }

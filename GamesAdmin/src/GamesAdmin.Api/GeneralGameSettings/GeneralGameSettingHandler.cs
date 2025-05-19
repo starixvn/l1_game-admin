@@ -61,6 +61,6 @@ namespace GamesAdmin.Api.GeneralGameSettings
         }
 
         public Task<IEnumerable<GeneralGameSetting>> Handle(GetJackpotGamesRequest request, CancellationToken cancellationToken)
-        => generalGameSettingService.GetJackpotGames();
+        => generalGameSettingService.GetSlotsGames();
     }
 }

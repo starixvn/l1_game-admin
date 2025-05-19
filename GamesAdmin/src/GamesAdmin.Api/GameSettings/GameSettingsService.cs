@@ -68,6 +68,12 @@ namespace GamesAdmin.Api.Games
         Task<string> UpdateJackpotBotSettings(JackpotSettings settings);
 
         Task<bool> UpdateBotRatioSettings(JackpotSettings settings);
+
+        Task<IEnumerable<string>> GetExistedSites(string configId, int gameId, string operatorId, string[] siteNames);
+
+        Task<IEnumerable<JackpotSettings>> GetAllJackpotSettings();
+
+        Task<JackpotSettings> GetJackpotSettings(string configId);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -851,24 +857,24 @@ namespace GamesAdmin.Api.Games
                 .Set(x => x.Pools.Major.BotSettings, settings.Pools.Major.BotSettings)
                 .Set(x => x.Pools.Grand.BotSettings, settings.Pools.Grand.BotSettings);
 
-            FilterDefinition<JackpotConfigEntity> filter;
-            if (string.IsNullOrWhiteSpace(settings.Id))
-            {
-                update = update.Set(x => x.GameId, settings.GameId)
-                    .Set(x => x.OperatorId, settings.OperatorId);
-                filter = Builders<JackpotConfigEntity>.Filter.Eq(x => x.Id, new ObjectId());
-            }
-            else
-            {
-                filter = Builders<JackpotConfigEntity>.Filter.Eq(x => x.Id, new ObjectId(settings.Id));
-            }
+                FilterDefinition<JackpotConfigEntity> filter;
+                if (string.IsNullOrWhiteSpace(settings.Id))
+                {
+                    update = update.Set(x => x.GameId, settings.GameId)
+                        .Set(x => x.OperatorId, settings.OperatorId);
+                    filter = Builders<JackpotConfigEntity>.Filter.Eq(x => x.Id, new ObjectId());
+                }
+                else
+                {
+                    filter = Builders<JackpotConfigEntity>.Filter.Eq(x => x.Id, new ObjectId(settings.Id));
+                }
 
 
-            var entity = await jackpotConfigsRepository.Collection()
-                .FindOneAndUpdateAsync(
-                    filter,
-                    update,
-                    new FindOneAndUpdateOptions<JackpotConfigEntity>
+                var entity = await jackpotConfigsRepository.Collection()
+                    .FindOneAndUpdateAsync(
+                        filter,
+                        update,
+                        new FindOneAndUpdateOptions<JackpotConfigEntity>
                         {
                             IsUpsert = true,
                             ReturnDocument = ReturnDocument.After
@@ -892,6 +898,47 @@ namespace GamesAdmin.Api.Games
 
             var result = await botConfigsRepository.UpdateAsync(x => x.JackpotConfigId == ObjectId.Parse(settings.Id), update, new UpdateOptions { IsUpsert = true });
             return result.IsAcknowledged;
+        }
+
+        public async Task<IEnumerable<string>> GetExistedSites(string configId, int gameId, string operatorId, string[] siteNames)
+        {
+            var configs = await jackpotConfigsRepository.Collection().Find(
+                x => x.GameId == gameId && x.OperatorId == operatorId &&
+                (string.IsNullOrWhiteSpace(configId) || x.Id != ObjectId.Parse(configId))).ToListAsync();
+
+            return siteNames.Where(x => configs.Any(y => y.SiteNames.Contains(x)));
+        }
+
+        public async Task<IEnumerable<JackpotSettings>> GetAllJackpotSettings()
+        {
+            var configs = await jackpotConfigsRepository.Collection().Find(x => true).ToListAsync();
+            return configs.Select(x => new JackpotSettings
+            {
+                Id = x.Id.ToString(),
+                GameId = x.GameId,
+                OperatorId = x.OperatorId,
+                SiteNames = x.SiteNames,
+            });
+        }
+
+        public async Task<JackpotSettings> GetJackpotSettings(string configId)
+        {
+            var config = await jackpotConfigsRepository.FindOneAsync(x => x.Id == ObjectId.Parse(configId));
+            var botConfigs = await botConfigsRepository.FindOneAsync(x => x.JackpotConfigId == ObjectId.Parse(configId));
+            return new JackpotSettings
+            {
+                Id = config.Id.ToString(),
+                GameId = config.GameId,
+                OperatorId = config.OperatorId,
+                SiteNames = config.SiteNames,
+                Enabled = config.Enabled,
+                ExcludeTestCurrency = config.ExcludeTestCurrency,
+                WinningRatio = config.WinningRatio,
+                BotBetLevels = config.BotBetLevels,
+                Pools = config.Pools,
+                BotEnabled = botConfigs?.Enabled ?? false,
+                HoursMaxBot = botConfigs?.HoursMaxBot ?? Array.Empty<double>(),
+            };
         }
     }
 }

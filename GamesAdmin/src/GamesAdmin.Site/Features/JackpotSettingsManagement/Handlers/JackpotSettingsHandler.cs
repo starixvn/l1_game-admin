@@ -14,15 +14,17 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Extensions;
+using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Site.Features.JackpotSettingsManagement.Handlers
 {
-    public class JackpotSettingsHandler : 
-        IRequestHandler<IndexPageRequest, JackpotSettingsPageViewModel>, 
+    public class JackpotSettingsHandler :
+        IRequestHandler<IndexPageRequest, JackpotSettingsPageViewModel>,
         IRequestHandler<CreatePageRequest, JackpotSettingsViewModel>,
         IRequestHandler<UpdatePlayerSettingsRequest, UpdateJackpotSettingsResult>,
         IRequestHandler<UpdateBotSettingsRequest, UpdateJackpotSettingsResult>,
-        IRequestHandler<UpdateBotRatioSettingsRequest, UpdateJackpotSettingsResult>
+        IRequestHandler<UpdateBotRatioSettingsRequest, UpdateJackpotSettingsResult>,
+        IRequestHandler<CopyJackpotSettingsRequest, JackpotSettingsViewModel>
     {
         private readonly IMediator mediator;
         private readonly IMapper mapper;
@@ -54,6 +56,7 @@ namespace GamesAdmin.Site.Features.JackpotSettingsManagement.Handlers
             var games = await generalGameSettingService.GetJackpotGames();
             var operators = await mediator.Send(new GetPartnersForSelectionRequest());
             var totalBot = await gameUserService.GetBotCount();
+            var jackpotSettings = await jackpotSettingApi.GetAllJackpotSettings();
 
             return new JackpotSettingsViewModel
             {
@@ -66,8 +69,23 @@ namespace GamesAdmin.Site.Features.JackpotSettingsManagement.Handlers
                 Games = games.Select(game => new SelectListItem(game.DisplayName, game.GameId.ToString(), true)),
                 Operators = operators,
                 TotalBot = totalBot,
-                BotRatios = GenerateBotRatioItems(Array.Empty<double>(), totalBot)
+                BotRatios = GenerateBotRatioItems(Array.Empty<double>(), totalBot),
+                OtherSettings = InitSettingsSelectionList(jackpotSettings, games, operators)
             };
+        }
+
+        private IEnumerable<SelectListItem> InitSettingsSelectionList(IEnumerable<JackpotSettings> jackpotSettings,
+         IEnumerable<GeneralGameSetting> games,
+         IEnumerable<SelectListItem> operators)
+        {
+            return jackpotSettings.Select(setting =>
+            {
+                var game = games.FirstOrDefault(g => g.GameId == setting.GameId);
+                var @operator = operators.FirstOrDefault(o => o.Value == setting.OperatorId);
+                return new SelectListItem(
+                    $"{game.DisplayName} - {@operator.Text} - {string.Join(", ", setting.SiteNames)}",
+                    setting.Id);
+            });
         }
 
         private static List<BotRatioItemViewModel> GenerateBotRatioItems(double[] botRatios, int totalBot)
@@ -106,6 +124,24 @@ namespace GamesAdmin.Site.Features.JackpotSettingsManagement.Handlers
         {
             var model = mapper.Map<JackpotSettings>(request.Settings);
             return await jackpotSettingApi.UpdateBotRatioSettings(model);
+        }
+
+        public async Task<JackpotSettingsViewModel> Handle(CopyJackpotSettingsRequest request, CancellationToken cancellationToken)
+        {
+            var jackpotSettings = await jackpotSettingApi.GetJackpotSettings(request.ConfigId);
+            var totalBot = await gameUserService.GetBotCount();
+
+            return new JackpotSettingsViewModel
+            {
+                Enabled = jackpotSettings.Enabled,
+                ExcludeTestCurrency = jackpotSettings.ExcludeTestCurrency,
+                WinningRatio = jackpotSettings.WinningRatio,
+                Pools = jackpotSettings.Pools,
+                BotBetLevels = jackpotSettings.BotBetLevels.ToList(),
+                BotEnabled = jackpotSettings.BotEnabled,
+                TotalBot = totalBot,
+                BotRatios = GenerateBotRatioItems(jackpotSettings.HoursMaxBot, totalBot),
+            };
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace GamesAdmin.Core.Models.GameConfigs
+﻿using System.Collections.Generic;
+
+namespace GamesAdmin.Core.Models.GameConfigs
 {
     public class JackpotSettings
     {
@@ -19,7 +21,7 @@
 
         public double[] BotBetLevels { get; set; }
 
-        public bool BotEnabled { get; }
+        public bool BotEnabled { get; set; }
 
         public double[] HoursMaxBot { get; set; }
     }
@@ -40,6 +42,14 @@
         public static UpdateJackpotSettingsResult FailedResult(string message = "Failed")
         {
             return new UpdateJackpotSettingsResult { Code = 1, Message = message };
+        }
+
+        public static UpdateJackpotSettingsResult ExistedSiteResult(string gameName, string operatorName, IEnumerable<string> siteNames)
+        {
+            return new UpdateJackpotSettingsResult { 
+                Code = 2,
+                Message = $"Site Name '{string.Join(", ", siteNames)}' already exists for {gameName} - {operatorName}"
+            };
         }
     }
 }

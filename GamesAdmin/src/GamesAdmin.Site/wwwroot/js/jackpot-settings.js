@@ -2,15 +2,6 @@ var jackpotSettings = (function ($) {
     var $modal = $("#modal");
 
     function onUpsertSucess(data) {
-        if (data.success) {
-            $("input, select", "#general-settings-form").prop("disabled", true);
-            $("#bot-ratio-tab").removeClass("disabled");
-
-            if (data.id) {
-                $("#Id", "#general-settings-form").val(data.id);
-            }
-        }
-
         var label = $("#result-label");
 
         label.removeClass();
@@ -18,22 +9,53 @@ var jackpotSettings = (function ($) {
         label.addClass(`text-${data.success ? "success" : "danger"}`);
         label.text(data.message);
         label.show();
-        setTimeout(function () {
-            label.hide();
-        }, 1000);
+
+        if (data.success) {
+            $("input, select", "#general-settings-form").prop("disabled", true);
+            $("#bot-ratio-tab").removeClass("disabled");
+
+            if (data.id) {
+                $("#Id", "#general-settings-form").val(data.id);
+            }
+
+            setTimeout(function () {
+                label.hide();
+            }, 1000);
+        }
     }
 
     function openModal() {
         $modal.modal({ backdrop: "static", show: true });
 
-        var $generalSettingsForm = $("#general-settings-form");
-        $.validator.unobtrusive.parse($generalSettingsForm);
+        $.validator.addMethod("unique", function (value, element, params) {
+            for (const coinElement of $(
+                ".txt-bot-bet-level",
+                "#bot-bet-levels"
+            )) {
+                if (coinElement.value === value && coinElement !== element) {
+                    return false;
+                }
+            }
+            return true;
+        });
 
-        $forms = $("form", "#modal .tab-pane");
-        $.validator.unobtrusive.parse($forms);
-        $forms.on("submit", function (event) {
+        $.validator.unobtrusive.adapters.addBool("unique");
+
+        $(".btn-submit", "#modal").on("click", function (e) {
+            $("form", "#modal .active.tab-pane").trigger("submit");
+        });
+
+        reparseFormValidation($("form", "#modal"));
+        registerFormSubmitEvents();
+    }
+
+    function registerFormSubmitEvents() {
+        var $generalSettingsForm = $("#general-settings-form");
+
+        $("#modal #setting-details").on("submit", "form", function (event) {
             event.preventDefault();
             var $form = $(this);
+
             if ($form.valid() && $generalSettingsForm.valid()) {
                 $("#Id", $form).val($("#Id", $generalSettingsForm).val());
                 $("#GameId", $form).val(
@@ -53,10 +75,6 @@ var jackpotSettings = (function ($) {
                 }
             }
         });
-
-        $(".btn-submit", "#modal").on("click", function (e) {
-            $("form", "#modal .active.tab-pane").trigger("submit");
-        });
     }
 
     function convertPartnerSelectToFanexItem(item) {
@@ -67,6 +85,14 @@ var jackpotSettings = (function ($) {
             enable: true,
             checked: item.selected,
         };
+    }
+
+    function reparseFormValidation(formSelector) {
+        var $form = $(formSelector)
+            .removeData("validator")
+            .removeData("unobtrusiveValidation");
+
+        $.validator.unobtrusive.parse($form);
     }
 
     return {
@@ -86,6 +112,20 @@ var jackpotSettings = (function ($) {
                     $gameIds.val(value);
                 },
             });
+        },
+        onCopySettingsSuccess: function () {
+            reparseFormValidation($("form", "#modal #setting-details"));
+        },
+        onCopySettingsChange: function (event) {
+            if (event.target.value) {
+                $("#copy-setting-form", "#modal").trigger("submit");
+            }
+        },
+        toggleCopySettings: function (event) {
+            $("select", "#modal #copy-setting-form").prop(
+                "disabled",
+                !event.target.checked
+            );
         },
         openCreateForm: function () {
             openModal();
@@ -123,7 +163,7 @@ var jackpotSettings = (function ($) {
             $("#bot-bet-level-legend")[0].innerHTML = `Bot Bet Levels (${
                 length + 1
             } levels)`;
-            this.reparseFormValidation("#bot-settings-form");
+            reparseFormValidation("#bot-settings-form");
         },
         removeBotBetLevel: function (event) {
             $(event.target).parent().remove();
@@ -150,14 +190,7 @@ var jackpotSettings = (function ($) {
                     $betLevel.attr("name").replace(/\d+/, index)
                 );
             }
-            this.reparseFormValidation("#bot-settings-form");
-        },
-        reparseFormValidation: function (formSelector) {
-            var $form = $(formSelector)
-                .removeData("validator")
-                .removeData("unobtrusiveValidation");
-
-            $.validator.unobtrusive.parse($form);
+            reparseFormValidation("#bot-settings-form");
         },
         updateBotCount: function (element) {
             var per = parseFloat(element.value);

@@ -27,7 +27,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
         Task<GameConfigEntity> GetGameConfig(int gameId);
 
-        Task<IEnumerable<GeneralGameSetting>> GetJackpotGames();
+        Task<IEnumerable<GeneralGameSetting>> GetSlotsGames();
     }
 
     public class GeneralGameSettingService : IGeneralGameSettingService
@@ -130,7 +130,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
                 .FirstOrDefault(game => game.GameId == gameId));
         }
 
-        public async Task<IEnumerable<GeneralGameSetting>> GetJackpotGames()
+        public async Task<IEnumerable<GeneralGameSetting>> GetSlotsGames()
         {
              var gameEntities = (await repository.FilterByAsync(game => game.Type == (byte)GameType.Slots)).ToList();
 

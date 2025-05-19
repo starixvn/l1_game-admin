@@ -57,5 +57,10 @@ namespace GamesAdmin.Site.Features.JackpotSettingsManagement.ViewModels
         public int TotalBot { get; set; }
 
         public List<BotRatioItemViewModel> BotRatios { get; set; }
+
+        public IEnumerable<SelectListItem> OtherSettings { get; set; }
+
+        [DisplayName("Copy Setting from")]
+        public bool CopyFrom { get; set; }
     }
 }
