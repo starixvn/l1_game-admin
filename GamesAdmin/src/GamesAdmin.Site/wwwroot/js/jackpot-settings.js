@@ -1,71 +1,91 @@
 var jackpotSettings = (function ($) {
-    var $modal = $("#modal");
+    var elements = {
+        $modal: $("#modal"),
+    };
 
     function onUpsertSucess(data) {
-        var label = $("#result-label");
-
-        label.removeClass();
-
-        label.addClass(`text-${data.success ? "success" : "danger"}`);
-        label.text(data.message);
-        label.show();
+        elements.$resultLabel
+            .removeClass()
+            .addClass(`text-${data.success ? "success" : "danger"}`)
+            .text(data.message)
+            .show();
 
         if (data.success) {
-            $("input, select", "#general-settings-form").prop("disabled", true);
-            $("#bot-ratio-tab").removeClass("disabled");
+            elements.$generalSettingsForm
+                .find("input, select")
+                .prop("disabled", true);
+
+            elements.$modal.find("#bot-ratio-tab").removeClass("disabled");
 
             if (data.id) {
-                $("#Id", "#general-settings-form").val(data.id);
+                $("#Id", elements.$generalSettingsForm).val(data.id);
             }
 
             setTimeout(function () {
-                label.hide();
+                elements.$resultLabel.hide();
             }, 1000);
         }
     }
 
-    function openModal() {
-        $modal.modal({ backdrop: "static", show: true });
+    function updateElements() {
+        elements.$generalSettingsForm = elements.$modal.find(
+            "#general-settings-form"
+        );
+        elements.$resultLabel = elements.$modal.find("#result-label");
+        elements.$botBetLevels = elements.$modal.find("#bot-bet-levels");
+        elements.$settingDetails = elements.$modal.find("#setting-details");
+        elements.$copySettingForm = elements.$modal.find("#copy-setting-form");
+    }
 
-        $.validator.addMethod("unique", function (value, element, params) {
-            for (const coinElement of $(
-                ".txt-bot-bet-level",
-                "#bot-bet-levels"
-            )) {
-                if (coinElement.value === value && coinElement !== element) {
-                    return false;
-                }
-            }
-            return true;
-        });
+    function setupValidation() {
+        $.validator.addMethod(
+            "unique",
+            (value, element) => {
+                const betLevels =
+                    elements.$botBetLevels.find(".txt-bot-bet-level");
+                return ![...betLevels].some(
+                    (el) => el.value === value && el !== element
+                );
+            },
+            "Value must be unique"
+        );
 
         $.validator.unobtrusive.adapters.addBool("unique");
+    }
 
-        $(".btn-submit", "#modal").on("click", function (e) {
-            $("form", "#modal .active.tab-pane").trigger("submit");
+    function openModal() {
+        elements.$modal.modal({ backdrop: "static", show: true });
+        updateElements();
+
+        setupValidation();
+
+        elements.$modal.find(".btn-submit").on("click", function (e) {
+            elements.$settingDetails
+                .find(".active.tab-pane form")
+                .trigger("submit");
         });
 
-        reparseFormValidation($("form", "#modal"));
+        reparseFormValidation(elements.$modal.find("form"));
         registerFormSubmitEvents();
     }
 
     function registerFormSubmitEvents() {
-        var $generalSettingsForm = $("#general-settings-form");
-
-        $("#modal #setting-details").on("submit", "form", function (event) {
+        elements.$settingDetails.on("submit", "form", function (event) {
             event.preventDefault();
             var $form = $(this);
 
-            if ($form.valid() && $generalSettingsForm.valid()) {
-                $("#Id", $form).val($("#Id", $generalSettingsForm).val());
+            if ($form.valid()) {
+                $("#Id", $form).val(
+                    $("#Id", elements.$generalSettingsForm).val()
+                );
                 $("#GameId", $form).val(
-                    $("#GameId", $generalSettingsForm).val()
+                    $("#GameId", elements.$generalSettingsForm).val()
                 );
                 $("#OperatorId", $form).val(
-                    $("#OperatorId", $generalSettingsForm).val()
+                    $("#OperatorId", elements.$generalSettingsForm).val()
                 );
                 $("#SiteNames", $form).val(
-                    $("#SiteNames", $generalSettingsForm).val()
+                    $("#SiteNames", elements.$generalSettingsForm).val()
                 );
 
                 if (confirm("Are you sure you want to submit?")) {
@@ -114,18 +134,17 @@ var jackpotSettings = (function ($) {
             });
         },
         onCopySettingsSuccess: function () {
-            reparseFormValidation($("form", "#modal #setting-details"));
+            reparseFormValidation(elements.$settingDetails.find("form"));
         },
         onCopySettingsChange: function (event) {
             if (event.target.value) {
-                $("#copy-setting-form", "#modal").trigger("submit");
+                elements.$copySettingForm.trigger("submit");
             }
         },
         toggleCopySettings: function (event) {
-            $("select", "#modal #copy-setting-form").prop(
-                "disabled",
-                !event.target.checked
-            );
+            elements.$copySettingForm
+                .find("select")
+                .prop("disabled", !event.target.checked);
         },
         openCreateForm: function () {
             openModal();
@@ -143,7 +162,8 @@ var jackpotSettings = (function ($) {
             return data;
         },
         addBotBetLevel: function () {
-            const length = $(".txt-bot-bet-level", "#bot-bet-levels").length;
+            const length =
+                elements.$botBetLevels.find(".txt-bot-bet-level").length;
 
             $(`<div class="form-group row ml-5">
                             <input id="bot-bet-level-${length}" type="number" name="BotBetLevels[${length}]" class="col-2 form-control txt-bot-bet-level"
@@ -158,16 +178,17 @@ var jackpotSettings = (function ($) {
                                    oninput="jackpotSettings.updateTotalBet(this.value,${length})" />
                             <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="jackpotSettings.removeBotBetLevel(event)"></i>
                             <label class=" mt-3 ml-5 pl-5" id="total-bet-${length}">${0}</label>
-                        </div>`).insertBefore($(".add-container"));
+                        </div>`).insertBefore(elements.$botBetLevels.find(".add-container"));
 
-            $("#bot-bet-level-legend")[0].innerHTML = `Bot Bet Levels (${
+            elements.$modal.find("#bot-bet-level-legend")[0].innerHTML = `Bot Bet Levels (${
                 length + 1
             } levels)`;
-            reparseFormValidation("#bot-settings-form");
+            reparseFormValidation(elements.$settingDetails.find("#bot-settings-form"));
         },
         removeBotBetLevel: function (event) {
             $(event.target).parent().remove();
-            const length = $(".txt-bot-bet-level", "#bot-bet-levels").length;
+            const length =
+                elements.$botBetLevels.find(".txt-bot-bet-level").length;
 
             $(
                 "#bot-bet-level-legend"
@@ -181,7 +202,7 @@ var jackpotSettings = (function ($) {
             )}`;
         },
         updateBetLevelIndex: function () {
-            var $betLevels = $(".txt-bot-bet-level", "#bot-bet-levels");
+            var $betLevels = elements.$botBetLevels.find(".txt-bot-bet-level");
 
             for (let index = 0; index < $betLevels.length; index++) {
                 var $betLevel = $($betLevels[index]);
@@ -190,11 +211,11 @@ var jackpotSettings = (function ($) {
                     $betLevel.attr("name").replace(/\d+/, index)
                 );
             }
-            reparseFormValidation("#bot-settings-form");
+            reparseFormValidation(elements.$settingDetails.find("#bot-settings-form"));
         },
         updateBotCount: function (element) {
             var per = parseFloat(element.value);
-            var totalBots = parseInt($("#TotalBot").val());
+            var totalBots = parseInt(elements.$modal.find("#TotalBot").val());
             var currentBot = parseInt((per * totalBots) / 100);
 
             $(element)
@@ -203,9 +224,9 @@ var jackpotSettings = (function ($) {
                 .html(`${currentBot} bot(s)`);
         },
         updateServiceFee: function (event) {
-            $("#JackpotServiceFee", "#player-settings-form").val(
-                100 - parseInt(event.target.value)
-            );
+            elements.$modal
+                .find("#player-settings-form #JackpotServiceFee")
+                .val(100 - parseInt(event.target.value));
         },
     };
 })(jQuery);

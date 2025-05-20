@@ -372,5 +372,14 @@
       "wwwroot/lib/data-tables/datatables.min.css",
       "wwwroot/scss/pages/jackpot-settings.min.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/jackpot-settings.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/lib/fanex.multiselect/fanex.multiSelect.js",
+      "wwwroot/js/jackpot-settings.js"
+    ]
   }
 ]
