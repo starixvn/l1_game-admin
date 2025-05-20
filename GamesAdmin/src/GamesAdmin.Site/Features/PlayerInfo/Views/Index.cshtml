@@ -1,0 +1,74 @@
+﻿@model GamesAdmin.Site.Features.PlayerInfo.ViewModels.IndexViewModel
+@using GamesAdmin.Site.Features._Shared
+
+@{
+    ViewData["Title"] = "View Player Info";
+}
+
+@section Styles {
+    <link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
+}
+<div class="col-md-12 w-100">
+    <form asp-action="Index" method="post" class="card">
+        <div id="view-player" class="card-body form">
+            <div class="form-row align-items-center">
+                <div class="col-auto mb-5">
+                    <label asp-for="PlayerId" class="form-label">Player ID</label>
+                    <input class="form-control" asp-for="PlayerId" />
+                </div>
+                <div class="col-auto mb-5">
+                    <label asp-for="Name" class="form-label">Player Name/Nickname</label>
+                    <input class="form-control" asp-for="Name" />
+                </div>
+                <div class="col-auto user-online-inline mb-2">
+                    <button type="submit" class="btn-submit">Search</button>
+                </div>
+            </div>
+
+
+            <table class="table table-bordered table-hover stripe has-background sticky-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>PlayerID</th>
+                        <th>Player Name</th>
+                        <th>Nickname</th>
+                        <th>Currency</th>
+                        <th>Operator</th>
+                        <th>Site Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Players?.Any() == true)
+                    {
+                        @foreach (var player in Model.Players)
+                        {
+                            <tr>
+                                <td>@player.PlayerId</td>
+                                <td>@player.PlayerName</td>
+                                <td>@player.NickName</td>
+                                <td>@player.Currency</td>
+                                <td>@player.OperatorId</td>
+                                <td>@player.SiteName</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr class="text-center">
+                            <td colspan="6">No results found.</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+         
+
+            <div class="mt-4 text-muted">
+                <strong>Condition:</strong>
+                <ul>
+                    <li>Allow to search like for PlayerID</li>
+                    <li>Or search exact match for Player Name or Game Nickname</li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
