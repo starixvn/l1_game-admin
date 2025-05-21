@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database.Attributes;
 

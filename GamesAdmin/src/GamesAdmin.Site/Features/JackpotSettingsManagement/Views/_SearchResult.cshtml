@@ -1,0 +1,57 @@
+﻿@model IEnumerable<GamesAdmin.Site.Features.JackpotSettingsManagement.ViewModels.SearchResultViewModel>
+
+
+<table id="settings-table" class="table table-bordered table-hover stripe sticky-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Operator</th>
+            <th>Site Name</th>
+            <th>Jackpot Config</th>
+            <th>Bot Enabled</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model.GroupBy(x => new { x.GameId, x.GameName }))
+        {
+            var renderGameName = true;
+            @foreach (var operatorConfigs in game.GroupBy(x => new { x.OperatorId, x.OperatorName }))
+            {
+                var renderOperator = true;
+                @foreach (var siteConfig in operatorConfigs)
+                {
+                    <tr>
+                        @if (renderGameName)
+                        {
+                            renderGameName = false;
+                            <td class="text-center" rowspan="@game.Count()">@game.Key.GameName</td>
+                        }else
+                        {
+                            <td class="text-center d-none" rowspan="@game.Count()">@game.Key.GameName</td>
+                        }
+                        @if (renderOperator)
+                        {
+                            renderOperator = false;
+                            <td class="text-center" rowspan="@operatorConfigs.Count()">@operatorConfigs.Key.OperatorName</td>
+                        }else
+                        {
+                            <td class="text-center d-none" rowspan="@operatorConfigs.Count()">@operatorConfigs.Key.OperatorName</td>
+                        }
+                        <td>@(siteConfig.SiteNames.Any() ? string.Join(";", siteConfig.SiteNames) : "All")</td>
+                        <td class="text-center">
+                            <i class="@(siteConfig.Enabled ? "icon-check" : "icon-cancel")"></i>
+                            <a class="btn-edit" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#modal .modal-content" data-ajax-success="jackpotSettings.openUpdateForm"
+                               asp-route-configId="@siteConfig.Id"
+                               asp-action="Update">
+                                <i class="icon-edit"></i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <i class="@(siteConfig.BotEnabled ? "icon-check" : "icon-cancel")"></i>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>

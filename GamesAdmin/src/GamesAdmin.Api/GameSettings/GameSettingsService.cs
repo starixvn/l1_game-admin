@@ -61,8 +61,6 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateCrashConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, CrashConfig crashConfig);
 
-        Task<IEnumerable<JackpotConfig>> GetJackpotConfigs(int gameId);
-
         Task<string> UpdateJackpotPlayerSettings(JackpotSettings settings);
 
         Task<string> UpdateJackpotBotSettings(JackpotSettings settings);
@@ -74,6 +72,7 @@ namespace GamesAdmin.Api.Games
         Task<IEnumerable<JackpotSettings>> GetAllJackpotSettings();
 
         Task<JackpotSettings> GetJackpotSettings(string configId);
+        Task<IEnumerable<JackpotSettings>> GetJackpotSettings(IEnumerable<int> gameIds, IEnumerable<string> siteNames);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -793,12 +792,6 @@ namespace GamesAdmin.Api.Games
             return true;
         }
 
-        public async Task<IEnumerable<JackpotConfig>> GetJackpotConfigs(int gameId)
-        {
-            var configfs = await jackpotConfigsRepository.FilterByAsync(x => x.GameId == gameId);
-            return configfs.Select(entity => mapper.Map<JackpotConfig>(entity));
-        }
-
         public async Task<string> UpdateJackpotPlayerSettings(JackpotSettings settings)
         {
             try
@@ -934,11 +927,34 @@ namespace GamesAdmin.Api.Games
                 Enabled = config.Enabled,
                 ExcludeTestCurrency = config.ExcludeTestCurrency,
                 WinningRatio = config.WinningRatio,
-                BotBetLevels = config.BotBetLevels,
+                BotBetLevels = config.BotBetLevels ?? Array.Empty<double>(),
                 Pools = config.Pools,
                 BotEnabled = botConfigs?.Enabled ?? false,
                 HoursMaxBot = botConfigs?.HoursMaxBot ?? Array.Empty<double>(),
             };
+        }
+
+        public async Task<IEnumerable<JackpotSettings>> GetJackpotSettings(IEnumerable<int> gameIds, IEnumerable<string> siteNames)
+        {
+            var builder = Builders<JackpotConfigEntity>.Filter;
+            var filter = builder.In(x => x.GameId, gameIds);
+            if (siteNames.Any())
+            {
+                filter = filter & builder.AnyIn(x => x.SiteNames, siteNames);
+            }
+
+            var configs = await jackpotConfigsRepository.Collection().Find(filter).ToListAsync();
+            var botConfigs = await botConfigsRepository.Collection().Find(x => configs.Any(config => x.JackpotConfigId == config.Id)).ToListAsync();
+
+            return configs.Select(x => new JackpotSettings
+            {
+                Id = x.Id.ToString(),
+                GameId = x.GameId,
+                OperatorId = x.OperatorId,
+                SiteNames = x.SiteNames,
+                Enabled = x.Enabled,
+                BotEnabled = botConfigs.FirstOrDefault(b => b.JackpotConfigId == x.Id)?.Enabled ?? false,
+            });
         }
     }
 }

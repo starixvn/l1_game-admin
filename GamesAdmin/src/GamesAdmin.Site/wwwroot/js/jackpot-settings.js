@@ -15,7 +15,7 @@ var jackpotSettings = (function ($) {
                 .find("input, select")
                 .prop("disabled", true);
 
-            elements.$modal.find("#bot-ratio-tab").removeClass("disabled");
+            elements.$botRatioTab.removeClass("disabled");
 
             if (data.id) {
                 $("#Id", elements.$generalSettingsForm).val(data.id);
@@ -35,6 +35,7 @@ var jackpotSettings = (function ($) {
         elements.$botBetLevels = elements.$modal.find("#bot-bet-levels");
         elements.$settingDetails = elements.$modal.find("#setting-details");
         elements.$copySettingForm = elements.$modal.find("#copy-setting-form");
+        elements.$botRatioTab = elements.$modal.find("#bot-ratio-tab");
     }
 
     function setupValidation() {
@@ -133,6 +134,12 @@ var jackpotSettings = (function ($) {
                 },
             });
         },
+        initTable: function () {
+            $("#settings-table").DataTable({
+                lengthMenu: [100, 200, 500],
+                columnDefs: [{ targets: [3, 4], searchable: false }],
+            });
+        },
         onCopySettingsSuccess: function () {
             reparseFormValidation(elements.$settingDetails.find("form"));
         },
@@ -148,9 +155,10 @@ var jackpotSettings = (function ($) {
         },
         openCreateForm: function () {
             openModal();
+            elements.$botRatioTab.addClass("disabled");
         },
         openUpdateForm: function () {
-            openForm("#update-form");
+            openModal();
         },
         onCreateSuccess: onUpsertSucess,
         onUpdateSuccess: onUpsertSucess,
@@ -178,12 +186,16 @@ var jackpotSettings = (function ($) {
                                    oninput="jackpotSettings.updateTotalBet(this.value,${length})" />
                             <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="jackpotSettings.removeBotBetLevel(event)"></i>
                             <label class=" mt-3 ml-5 pl-5" id="total-bet-${length}">${0}</label>
-                        </div>`).insertBefore(elements.$botBetLevels.find(".add-container"));
+                        </div>`).insertBefore(
+                elements.$botBetLevels.find(".add-container")
+            );
 
-            elements.$modal.find("#bot-bet-level-legend")[0].innerHTML = `Bot Bet Levels (${
-                length + 1
-            } levels)`;
-            reparseFormValidation(elements.$settingDetails.find("#bot-settings-form"));
+            elements.$modal.find(
+                "#bot-bet-level-legend"
+            )[0].innerHTML = `Bot Bet Levels (${length + 1} levels)`;
+            reparseFormValidation(
+                elements.$settingDetails.find("#bot-settings-form")
+            );
         },
         removeBotBetLevel: function (event) {
             $(event.target).parent().remove();
@@ -211,7 +223,9 @@ var jackpotSettings = (function ($) {
                     $betLevel.attr("name").replace(/\d+/, index)
                 );
             }
-            reparseFormValidation(elements.$settingDetails.find("#bot-settings-form"));
+            reparseFormValidation(
+                elements.$settingDetails.find("#bot-settings-form")
+            );
         },
         updateBotCount: function (element) {
             var per = parseFloat(element.value);

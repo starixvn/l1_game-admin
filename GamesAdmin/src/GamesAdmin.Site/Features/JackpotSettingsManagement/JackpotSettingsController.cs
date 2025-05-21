@@ -25,7 +25,7 @@ namespace GamesAdmin.Site.Features.JackpotSettingsManagement
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create() => PartialView("_Create", await mediator.Send(new CreatePageRequest()));
+        public async Task<IActionResult> Create() => PartialView("_CreateOrUpdate", await mediator.Send(new CreatePageRequest()));
 
         [HttpPost]
         public async Task<IActionResult> UpdatePlayerSettings([Bind] JackpotSettingsViewModel model)
@@ -53,6 +53,20 @@ namespace GamesAdmin.Site.Features.JackpotSettingsManagement
         {
             var result = await mediator.Send(new CopyJackpotSettingsRequest { ConfigId = configId });
             return PartialView("_SettingDetails", result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(SearchRequest request)
+        {
+            var result = await mediator.Send(request);
+            return PartialView("_SearchResult", result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(string configId)
+        {
+            var result = await mediator.Send(new UpdatePageRequest { ConfigId = configId });
+            return PartialView("_CreateOrUpdate", result);
         }
     }
 }

@@ -713,8 +713,6 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.BetWin, opt => opt.MapFrom((source) => source.Betwin))
                 .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.OperatorId));
             CreateMap<FootballSlotBetLogEntity, SlotRNGBetHistoryRecord>();
-
-            CreateMap<JackpotConfigEntity, JackpotConfig>();
         }
     }
 }

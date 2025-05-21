@@ -38,5 +38,9 @@ namespace GamesAdmin.Api.GameSettings
         [HttpGet("get/{configId}")]
         public Task<JackpotSettings> GetJackpotSettings(string configId)
             => mediator.Send(new GetJackpotSettingsRequest { ConfigId = configId });
+
+        [HttpGet("search")]
+        public Task<IEnumerable<JackpotSettings>> Search([FromQuery] SearchRequest request)
+            => mediator.Send(request);
     }
 }

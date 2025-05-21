@@ -22,5 +22,8 @@ namespace GamesAdmin.Site.Features.JackpotSettingsManagement
 
         [Get("/jackpot-settings/get/{configId}")]
         Task<JackpotSettings> GetJackpotSettings(string configId);
+
+        [Get("/jackpot-settings/search")]
+        Task<IEnumerable<JackpotSettings>> Search([Query(CollectionFormat.Multi)]IEnumerable<int> gameIds, [Query(CollectionFormat.Multi)] IEnumerable<string> siteNames);
     }
 }

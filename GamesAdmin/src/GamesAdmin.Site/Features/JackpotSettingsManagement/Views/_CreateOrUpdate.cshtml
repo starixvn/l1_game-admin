@@ -1,7 +1,7 @@
 ﻿@model GamesAdmin.Site.Features.JackpotSettingsManagement.ViewModels.JackpotSettingsViewModel
 
 <div class="modal-header">
-    <h5 class="modal-title">Add Jackpot Configuration</h5>
+    <h5 class="modal-title">@(string.IsNullOrWhiteSpace(Model.Id) ? "Add" : "Edit") Jackpot Configuration</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -13,11 +13,13 @@
         <div class="form-group row">
             <div class="col-sm-6">
                 <label class="required-field-label" asp-for="GameId"></label>
-                <select class="form-control" asp-items="Model.Games" asp-for="GameId"></select>
+                <select class="form-control" asp-items="Model.Games" asp-for="GameId"
+                    disabled="@(!string.IsNullOrWhiteSpace(Model.Id))"
+                ></select>
             </div>
             <div class="col-sm-6">
                 <label class="required-field-label" asp-for="OperatorId"></label>
-                <select class="form-control" asp-items="Model.Operators" asp-for="OperatorId"></select>
+                <select class="form-control" asp-items="Model.Operators" asp-for="OperatorId" disabled="@(!string.IsNullOrWhiteSpace(Model.Id))"></select>
             </div>
         </div>
         <div class="form-group row">

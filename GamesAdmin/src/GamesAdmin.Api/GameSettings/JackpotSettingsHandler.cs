@@ -16,8 +16,9 @@ namespace GamesAdmin.Api.GameSettings
         IRequestHandler<UpdateBotSettingsRequest, UpdateJackpotSettingsResult>,
         IRequestHandler<UpdateBotRatioSettingsRequest, UpdateJackpotSettingsResult>,
         IRequestHandler<GetAllJackpotSettingsRequest, IEnumerable<JackpotSettings>>,
-        IRequestHandler<GetJackpotSettingsRequest, JackpotSettings>
-    {
+        IRequestHandler<GetJackpotSettingsRequest, JackpotSettings>,
+        IRequestHandler<SearchRequest, IEnumerable<JackpotSettings>>
+    {   
         private readonly IGameSettingsService gameService;
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly IPartnerService partnerService;
@@ -69,6 +70,7 @@ namespace GamesAdmin.Api.GameSettings
         public async Task<UpdateJackpotSettingsResult> Handle(UpdateBotRatioSettingsRequest request, CancellationToken cancellationToken)
         {
             var result = await gameService.UpdateBotRatioSettings(request.Settings);
+
             if (result)
             {
                 return UpdateJackpotSettingsResult.SuccessResult(request.Settings.Id);
@@ -85,6 +87,11 @@ namespace GamesAdmin.Api.GameSettings
         public async Task<IEnumerable<JackpotSettings>> Handle(GetAllJackpotSettingsRequest request, CancellationToken cancellationToken)
         {
             return await gameService.GetAllJackpotSettings();
+        }
+
+        public async Task<IEnumerable<JackpotSettings>> Handle(SearchRequest request, CancellationToken cancellationToken)
+        {
+            return await gameService.GetJackpotSettings(request.GameIds, request.SiteNames ?? Enumerable.Empty<string>());
         }
 
         private async Task<UpdateJackpotSettingsResult> GetExistedSitesResult(JackpotSettings settings) {
