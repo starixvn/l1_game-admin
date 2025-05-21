@@ -98,7 +98,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             CreateMap<AddViewModel, Bonus>();
 
             CreateMap<JackpotSettingsViewModel, JackpotSettings>()
-                .ForMember(dest => dest.HoursMaxBot, opt => opt.MapFrom(src => src.BotRatios.OrderBy(x => x.UtcHour).Select(x => x.BotRatio.ReversePercent()).ToArray()))
+                .ForMember(dest => dest.HoursMaxBot, opt => opt.MapFrom(src => src.BotRatios.OrderBy(x => x.UtcHour).Select(x => x.BotRatio.ConvertPercentValue()).ToArray()))
                 .ForMember(dest => dest.SiteNames, opt => opt.MapFrom(src => string.IsNullOrWhiteSpace(src.SiteNames) ? Array.Empty<string>() : src.SiteNames.Split(new [] { ';'})));
         }
     }
