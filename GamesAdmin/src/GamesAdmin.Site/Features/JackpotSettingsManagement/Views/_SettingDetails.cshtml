@@ -49,11 +49,11 @@
                     </div>
                     <div class="col-lg-4">
                         <label>Major</label>
-                        <input type="number" asp-for="@Model.Pools.Minor.Init" />
+                        <input type="number" asp-for="@Model.Pools.Major.Init" />
                     </div>
                     <div class="col-lg-4">
                         <label>Grand</label>
-                        <input type="number" asp-for="@Model.Pools.Major.Init" />
+                        <input type="number" asp-for="@Model.Pools.Grand.Init" />
                     </div>
                 </div>
             </fieldset>
@@ -62,15 +62,15 @@
                 <div class="form-group row">
                     <div class="col-lg-4">
                         <label>Minor</label>
-                        <input type="number" asp-for="@Model.Pools.Grand.PlayerSettings.Contrib" />
-                    </div>
-                    <div class="col-lg-4">
-                        <label>Major</label>
                         <input type="number" asp-for="@Model.Pools.Minor.PlayerSettings.Contrib" />
                     </div>
                     <div class="col-lg-4">
-                        <label>Grand</label>
+                        <label>Major</label>
                         <input type="number" asp-for="@Model.Pools.Major.PlayerSettings.Contrib" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Grand</label>
+                        <input type="number" asp-for="@Model.Pools.Grand.PlayerSettings.Contrib" />
                     </div>
                 </div>
             </fieldset>
