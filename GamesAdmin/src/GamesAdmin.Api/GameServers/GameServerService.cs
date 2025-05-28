@@ -219,7 +219,7 @@ namespace GamesAdmin.Api.GameServers
                 var config = await gameSettingService.GetByName(request.GameConfigName);
                 var isExcludeTestCurrency = (config?.SlotsConfig?.Jackpot) != null && config.SlotsConfig.Jackpot.ExcludeTestCurrency;
 
-                if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeTestCurrency))
+                if (appSettings.Env != "PROD" && await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeTestCurrency))
                 {
                     var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName, appSettings.ServiceNameSeparator);
                     var result = await slotBoardApiFactory.GetBoardApi(serviceName).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));

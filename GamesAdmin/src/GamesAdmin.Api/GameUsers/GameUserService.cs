@@ -93,7 +93,7 @@ namespace GamesAdmin.Api.GameUser
 
             sentryClient.CaptureMessage($"Unable to set board for {nickname}, currency {playerCurrency} with excludeTestCurrency {excludeTestCurrency}");
 
-            return (!excludeTestCurrency && currencyInfo?.IsTest == true) || (accountInfo?.IsBot == true && accountInfo?.Disabled == false);
+            return (currencyInfo?.IsTest == false) || (!excludeTestCurrency && currencyInfo?.IsTest == true) || (accountInfo?.IsBot == true && accountInfo?.Disabled == false);
         }
 
         public async Task<string> GetCharacterNameAsync(string memberId)
