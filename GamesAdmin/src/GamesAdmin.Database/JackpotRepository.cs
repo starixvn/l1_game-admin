@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
@@ -16,23 +17,29 @@ namespace GamesAdmin.Database
     public class JackpotRepository : IJackpotRepository
     {
         private readonly IMongoDatabase database;
+        private readonly IGenericRepository<GameConfigEntity> gameConfigRepository;
 
-        public JackpotRepository(IMongoDatabase database)
+        public JackpotRepository(IMongoDatabase database, IGenericRepository<GameConfigEntity> gameConfigRepository)
         {
             this.database = database;
+            this.gameConfigRepository = gameConfigRepository;
         }
 
         public async Task<IEnumerable<JackpotReportEntity>> GetAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
         {
-            var jackpotCollection = database.GetCollection<JackpotEntity>(Document.GetCollectionName(typeof(JackpotEntity)));
+            var gameConfig = await gameConfigRepository.FindOneAsync(x => x.GameId == gameId);
+            var jackpotCollection = database.GetCollection<JackpotEntity>($"{gameConfig.Name}_jackpots");
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
             var jackpots = await jackpotCollection
-                .Find(jackPot => jackPot.HitTime >= fromDate && jackPot.HitTime <= toDate && jackPot.GameId == gameId && jackPot.HitAt.HasValue)
+                .Find(jackPot => jackPot.HitTime >= fromDate && jackPot.HitTime <= toDate && jackPot.HitAt.HasValue)
                 .ToListAsync();
-            var accounts = await accountCollection.AsQueryable().ToListAsync();
-            var acountInfos = await accountInfoCollection.AsQueryable().ToListAsync();
+            var winnerNames = jackpots.Select(x => x.WinnerName).Distinct();
+
+            var acountInfos = await accountInfoCollection.Find(x => winnerNames.Contains(x.Name)).ToListAsync();
+            var userIds = acountInfos.Select(x => x.UserId).Distinct().Select(x => ObjectId.Parse(x));
+            var accounts = await accountCollection.Find(x => userIds.Contains(x.Id)).ToListAsync();
 
             var result = new List<JackpotReportEntity>();
 
