@@ -177,5 +177,9 @@ namespace GamesAdmin.Api.Report
         public async Task<IEnumerable<CrashTurnGameBetRecord>> CrashTurnGame([FromBody] CrashTurnGameBetReportFilter filter)
         => (await mediator.Send(new CrashTurnGameReportRequest(filter)));
 
+        [HttpGet]
+        [Route("jackpot/running_pools")]
+        public async Task<IEnumerable<JackpotPool>> JackpotRunningPoolsReport(int gameId, string operatorId, IEnumerable<string> siteNames)
+            => (await mediator.Send(new JackpotRunningPoolsReportRequest(gameId, operatorId, siteNames)));
     }
 }

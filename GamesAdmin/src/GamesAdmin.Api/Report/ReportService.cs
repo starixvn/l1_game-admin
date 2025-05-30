@@ -54,6 +54,8 @@ namespace GamesAdmin.Api.Report
         Task<CrashGameBetReport> GetCrashGameReportAsync(CrashGameBetReportFilter filter);
 
         Task<IEnumerable<CrashTurnGameBetRecord>> GetCrashTurnGameReportAsync(CrashTurnGameBetReportFilter filter);
+
+        Task<IEnumerable<JackpotPool>> GetJackpotRunningPoolsAsync(int gameId, string operatorId, IEnumerable<string> siteNames);
     }
 
     public class ReportService : IReportService
@@ -476,6 +478,12 @@ namespace GamesAdmin.Api.Report
                 records.Add(record);
             }
             return records;
+        }
+
+        public async Task<IEnumerable<JackpotPool>> GetJackpotRunningPoolsAsync(int gameId, string operatorId, IEnumerable<string> siteNames)
+        {
+            var repository = serviceProvider.GetService<IJackpotRepository>();
+            return await repository.GetRunningPoolsAsync(gameId, operatorId, siteNames);
         }
     }
 }

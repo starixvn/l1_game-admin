@@ -1,0 +1,32 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels;
+@model JackpotPoolsReportViewModel
+
+<form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetJackpotPoolsReport"
+      data-ajax-mode="replace" data-ajax-update="#jackpot-pools-result" data-ajax-loading="#spinner" method="get">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <label class="required" asp-for="OperatorId">Operator</label>
+            <select asp-items="@Model.Operators" asp-for="OperatorId" class="form-control">
+                <option selected="selected" value="">All</option>
+            </select>
+        </div>
+       
+        <div class="col-auto">
+            <label asp-for="SiteNames" class="control-label">Site Name</label>
+            <input type="text" class="form-control" asp-for="SiteNames">
+        </div>
+        
+        <input type="hidden" asp-for="GameId">
+        <div class="col-auto mt-5">
+            <button type="submit" class="btn-submit">Submit</button>
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="card-container" class="card-container card display-none">
+    <div id="jackpot-pools-result" class="col-sm-12 report-container card-body">
+    </div>
+</div>

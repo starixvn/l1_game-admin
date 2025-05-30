@@ -65,6 +65,8 @@ namespace GamesAdmin.Site.Features.Report
         Task<IEnumerable<CrashTurnGameBetRecord>> GetCrashTurnGameReport(CrashTurnGameBetReportFilter filter);
 
         Task<string> GetRemoteRoundHistoryUrl(BetReportFilter request);
+
+        Task<IEnumerable<JackpotPool>> GetJackpotRunningPools(int gameId, string operatorId, IEnumerable<string> siteNames);
     }
 
     public class ReportService : IReportService
@@ -94,7 +96,8 @@ namespace GamesAdmin.Site.Features.Report
                 var result = await remoteReportApi.GetAccessUrl(request);
                 return result;
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 return e.Message;
             }
         }
@@ -182,5 +185,8 @@ namespace GamesAdmin.Site.Features.Report
 
         public Task<IEnumerable<CrashTurnGameBetRecord>> GetCrashTurnGameReport(CrashTurnGameBetReportFilter filter)
            => reportApi.GetCrashTurnGameReport(filter);
+
+        public Task<IEnumerable<JackpotPool>> GetJackpotRunningPools(int gameId, string operatorId, IEnumerable<string> siteNames)
+            => reportApi.GetJackpotRunningPools(gameId, operatorId, siteNames);
     }
 }

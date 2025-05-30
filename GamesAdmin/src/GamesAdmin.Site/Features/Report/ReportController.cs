@@ -55,10 +55,10 @@ namespace GamesAdmin.Site.Features.Report
                 ExcludeUUS = viewModel.ExcludeUUS
             };
             var view = reportView.GetView(viewModel.Game);
-            
+
             return view == reportView.RemoteRecordView ?
                 PartialView(view, await reportService.GetRemoteRoundHistoryUrl(filter)) :
-                PartialView(view, await mediator.Send(new ReportRequest(filter)));            
+                PartialView(view, await mediator.Send(new ReportRequest(filter)));
         }
 
         [HttpGet]
@@ -685,11 +685,17 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> GetFootballDiceBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
-                return PartialView("_FootballDiceBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return PartialView("_FootballDiceBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
 
         [HttpGet]
         [ActionName("7up7down")]
         public IActionResult SevenUpDown() => RedirectToAction("Index", new { game = GameId.SevenUpDown });
+
+        [HttpGet]
+        public async Task<IActionResult> GetJackpotPoolsReport(JackpotPoolsReportViewModel model)
+        {
+            return PartialView("_JackpotPoolsRéult", await mediator.Send(new JackpotPoolsReportRequest(model.GameId, model.OperatorId, model.SiteNames)));
+        }
     }
 }

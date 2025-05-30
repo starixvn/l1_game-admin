@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -12,6 +13,7 @@ namespace GamesAdmin.Database
     public interface IJackpotRepository
     {
         Task<IEnumerable<JackpotReportEntity>> GetAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
+        Task<IEnumerable<JackpotPool>> GetRunningPoolsAsync(int gameId, string operatorId, IEnumerable<string> siteNames);
     }
 
     public class JackpotRepository : IJackpotRepository
@@ -68,6 +70,39 @@ namespace GamesAdmin.Database
             }
 
             return result;
+        }
+
+        public async Task<IEnumerable<JackpotPool>> GetRunningPoolsAsync(int gameId, string operatorId, IEnumerable<string> siteNames)
+        {
+            var operatorCollection = database.GetCollection<PartnerEntity>(Document.GetCollectionName(typeof(PartnerEntity)));
+            var operators = await operatorCollection.Find(x => !string.IsNullOrWhiteSpace(operatorId) || x.PartnerId == operatorId).ToListAsync();
+            var operatorIds = operators.Select(x => x.PartnerId);
+
+            var jackpotConfigCollection = database.GetCollection<JackpotConfigEntity>(Document.GetCollectionName(typeof(JackpotConfigEntity)));
+            var jackpotConfigs = await jackpotConfigCollection.Find(
+                x => operatorIds.Contains(x.OperatorId)
+                    && (!siteNames.Any() || x.SiteNames.Any(siteName => siteNames.Any(siteName2 => siteName.Contains(siteName2))))
+                ).ToListAsync();
+
+            var jackpotConfigIds = jackpotConfigs.Select(x => x.Id.ToString());
+
+            var gameConfig = await gameConfigRepository.FindOneAsync(x => x.GameId == gameId);
+            var jackpotCollection = database.GetCollection<JackpotEntity>($"{gameConfig.Name}_jackpots");
+            var pools = await jackpotCollection.Find(x => !x.HitAt.HasValue && jackpotConfigIds.Contains(x.JackpotConfigId)).ToListAsync();
+
+            return pools.Select(x =>
+            {
+                var jackpotConfig = jackpotConfigs.Find(jc => jc.Id == ObjectId.Parse(x.JackpotConfigId));
+                return new JackpotPool
+                {
+                    JackpotConfigId = x.JackpotConfigId,
+                    OperatorId = jackpotConfig.OperatorId,
+                    OperatorName = operators.Find(o => o.PartnerId == jackpotConfig.OperatorId)?.Name,
+                    SiteNames = jackpotConfig.SiteNames,
+                    Prize = x.Prize,
+                    Amount = x.Amount
+                };
+            });
         }
     }
 

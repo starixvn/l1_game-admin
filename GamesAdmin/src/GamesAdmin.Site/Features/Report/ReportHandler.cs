@@ -4,6 +4,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
@@ -53,7 +54,8 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetCascadingSlotBetHistoryRequest, CascadingSlotBetHistoryViewModel>,
         IRequestHandler<GetCrashGameReportRequest, CrashGameReportResultViewModel>,
         IRequestHandler<GetCrashTurnGameReportRequest, CrashTurnGameReportResultViewModel>,
-        IRequestHandler<GetChineseBlackjackReportRequest, BlackjackGameReportResultViewModel>
+        IRequestHandler<GetChineseBlackjackReportRequest, BlackjackGameReportResultViewModel>,
+        IRequestHandler<JackpotPoolsReportRequest, IEnumerable<JackpotPool>>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -892,6 +894,11 @@ namespace GamesAdmin.Site.Features.Report
                     CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1
                 }),
             };
+        }
+
+        public async Task<IEnumerable<JackpotPool>> Handle(JackpotPoolsReportRequest request, CancellationToken cancellationToken)
+        {
+            return await reportService.GetJackpotRunningPools(request.GameId, request.OperatorId, request.SiteNames);
         }
     }
 }

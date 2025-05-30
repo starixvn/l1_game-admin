@@ -89,8 +89,11 @@ namespace GamesAdmin.Site.Features.Report
 
         [Post("/report/crash_game")]
         Task<CrashGameBetReport> GetCrashGameReport([Body] CrashGameBetReportFilter filter);
-        
+
         [Post("/report/crash_turn_game")]
         Task<IEnumerable<CrashTurnGameBetRecord>> GetCrashTurnGameReport([Body] CrashTurnGameBetReportFilter filter);
+
+        [Get("/report/jackpot/running_pools")]
+        Task<IEnumerable<JackpotPool>> GetJackpotRunningPools([Query] int gameId, [Query] string operatorId, [Query] IEnumerable<string> siteNames);
     }
 }
