@@ -41,6 +41,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             Core.Enumeration.GameId.TexasHoldemPoker,
             Core.Enumeration.GameId.BigSmallTurbo,
             Core.Enumeration.GameId.OddEvenTurbo,
+            Core.Enumeration.GameId.SoloBlackjack
         };
 
         private static readonly string[] disableMonitoring = new[] {

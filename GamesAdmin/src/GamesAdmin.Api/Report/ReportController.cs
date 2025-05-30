@@ -93,6 +93,11 @@ namespace GamesAdmin.Api.Report
             => (await mediator.Send(new ChineseBlackjackReportRequest(filter)));
 
         [HttpGet]
+        [Route("soloblackjack")]
+        public async Task<IEnumerable<BlackjackBetRecord>> SoloBlackjack([FromQuery] BlackjackBetReportFilter filter)
+            => (await mediator.Send(new SoloBlackjackReportRequest(filter)));
+
+        [HttpGet]
         [Route("slot_game/round/{roundId}/nick/{nickname?}")]
         public async Task<IEnumerable<SlotGameBetRecord>> SlotGame(long roundId,
             string nickname,

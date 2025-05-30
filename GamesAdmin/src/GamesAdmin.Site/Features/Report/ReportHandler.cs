@@ -53,7 +53,8 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetCascadingSlotBetHistoryRequest, CascadingSlotBetHistoryViewModel>,
         IRequestHandler<GetCrashGameReportRequest, CrashGameReportResultViewModel>,
         IRequestHandler<GetCrashTurnGameReportRequest, CrashTurnGameReportResultViewModel>,
-        IRequestHandler<GetChineseBlackjackReportRequest, BlackjackGameReportResultViewModel>
+        IRequestHandler<GetChineseBlackjackReportRequest, BlackjackGameReportResultViewModel>,
+        IRequestHandler<GetSoloBlackjackReportRequest, BlackjackGameReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -443,6 +444,28 @@ namespace GamesAdmin.Site.Features.Report
 
             request.Filter.ToDate.AddDays(1);
             var result = await reportService.GetChineseBlackjackReport(request.Filter);
+
+            return new BlackjackGameReportResultViewModel
+            {
+                ConvertToUSD = request.Filter.ConvertToUSD,
+                BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier,
+                Records = result.Select(x =>
+                {
+                    var betViewModel = mapper.Map<ChineseBlackjackGameRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+
+                    return betViewModel;
+                })
+            };
+        }
+
+        public async Task<BlackjackGameReportResultViewModel> Handle(GetSoloBlackjackReportRequest request, CancellationToken cancellationToken)
+        {
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+
+            request.Filter.ToDate.AddDays(1);
+            var result = await reportService.GetSoloBlackjackReport(request.Filter);
 
             return new BlackjackGameReportResultViewModel
             {

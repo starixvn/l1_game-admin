@@ -34,6 +34,8 @@ namespace GamesAdmin.Api.VoidGame
                 case GameId.CasinoHoldemPoker:
                 case GameId.TexasHoldemPoker:
                     return await voidGameService.VoidHoldemPokerTicket(request);
+                case GameId.SoloBlackjack:
+                    return await voidGameService.VoidBlackjackGameTicket<SoloBlackjackRoundEntity, SoloBlackjackBetEntity>(request);
                 default:
                     return await voidGameService.VoidGameTicket(request);
             }

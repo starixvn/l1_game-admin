@@ -61,6 +61,7 @@ namespace GamesAdmin.Core.Enumeration
                     return Enumeration.GetAll<VipFishPrawnCrabBetOdds>();
 
                 case Game.BlackJackValue:
+                case Game.SoloBlackjackValue:
                     return Enumeration.GetAll<BlackjackBetChoice>();
 
                 case Game.SicBoValue:

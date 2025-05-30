@@ -410,6 +410,11 @@
             event.preventDefault();
             this.setResultControl("ChineseBlackjackResult");
         },
+
+        setControlResultSoloBlackjack: function (event) {
+            event.preventDefault();
+            this.setResultControl("SoloBlackjackResult");
+        },
         setResultControlBaccaratX: function (gameName, displayName, enableMultiplier) {
             window.open(adminMonitoringUrl + "/ResultMonitor/BaccaratXResult" + "?gameConfigName=" + gameName + "&displayName=" + displayName + "&enableMultiplier=" + enableMultiplier + "&token=" + jwtAdminUserToken, "_blank", "width=1020,height=765");
         },

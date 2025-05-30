@@ -125,7 +125,7 @@
         public GameServerConfigs SevenUpDown { get; set; }
         public GameServerConfigs MarbleFootball { get; set; }
         public GameServerConfigs MarbleFootball2 { get; set; }
-
+        public GameServerConfigs SoloBlackjack { get; set; }
 
     }
 

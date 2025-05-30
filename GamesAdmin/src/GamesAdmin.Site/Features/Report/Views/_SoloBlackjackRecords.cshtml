@@ -1,0 +1,97 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model BlackjackGameReportResultViewModel
+
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="col-date">Date (GMT+7)</th>
+                    <th rowspan="2">Operator</th>
+                    <th rowspan="2">Username</th>
+                    <th rowspan="2" class="col-nickname">Nickname</th>
+                    <th rowspan="2">Currency</th>
+                    <th rowspan="2">HandId</th>
+                    <th rowspan="2">Exchange Id</th>
+                    <th colspan="2" class="col-nickname">Banker</th>
+                    <th colspan="2" class="col-nickname">Player</th>
+                    <th rowspan="2" class="col-number">Stake</th>
+                    <th rowspan="2" class="col-number">Win</th>
+                </tr>
+                <tr class="d-none">
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@bet.Partner</td>
+                        <td>@bet.Username</td>
+                        <td>@bet.Nickname</td>
+                        <td class="text-center">@bet.Currency</td>
+                        <td class="text-center">@bet.HandId @(bet.SplitLabel)</td>
+                        <td class="text-center">@bet.ExchangeRateId</td>
+                        <td class="blackjack-result">
+                            <div class="cards">
+                                @if (bet.Ended)
+                                {
+                                    foreach (var card in bet.DealerCards)
+                                    {
+                                        <div class="card card-type-@card.Suit">
+                                            <span>@card.Rank</span>
+                                            <img class="img" src="~/images/card_@(card.Suit).png" />
+                                        </div>
+
+                                    }
+                                }
+                                else
+                                {
+                                    var firstCard = bet.DealerCards.FirstOrDefault();
+                                    <div class="card card-type-@firstCard.Suit">
+                                        <span>@firstCard.Rank</span>
+                                        <img class="img" src="~/images/card_@(firstCard.Suit).png" />
+                                    </div>
+                                    <img class="card" src="~/images/card_back.png" />
+                                }
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            @if (bet.Ended)
+                            {
+                                @bet.GetDealerResult(100, "Blackjack")
+                            }
+                            else
+                            {
+                                @("-")
+                            }
+                        </td>
+                        <td class="blackjack-result">
+                            <div class="cards">
+                                @foreach (var card in bet.Cards)
+                                {
+                                    <div class="card card-type-@card.Suit">
+                                        <span>@card.Rank</span>
+                                        <img class="img" src="~/images/card_@(card.Suit).png" />
+                                    </div>
+
+                                }
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            @bet.GetPlayerResult(100, "Blackjack", bet.IsSplittedHand)
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Bet) / Model.BaseCurrencyMultiplier : bet.Bet)</td>
+                        <td class="text-right">@(bet.Ended ? HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) / Model.BaseCurrencyMultiplier : bet.BetWin) : "Running")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

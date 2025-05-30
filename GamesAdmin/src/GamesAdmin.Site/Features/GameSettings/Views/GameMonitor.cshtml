@@ -55,6 +55,13 @@
                                     <a href="#" class="icon-action" onclick="gameStatus.setControlResultChineseBlackjack(event)"><i class="icon-chart"></i></a>
                                 }
                             }
+                            else if (@Model.GameList[index].Name == Game.SoloBlackjack.Value)
+                            {
+                                if (role == Role.Admin.Value)
+                                {
+                                    <a href="#" class="icon-action" onclick="gameStatus.setControlResultSoloBlackjack(event)"><i class="icon-chart"></i></a>
+                                }
+                            }
                             else if (@Model.GameList[index].Name == Game.CasinoHoldemPoker.Value ||
                                 @Model.GameList[index].Name == Game.TexasHoldemPoker.Value)
                             {

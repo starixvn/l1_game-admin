@@ -232,6 +232,20 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public async Task<IActionResult> SoloBlackjack()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+
+            return View(new BlackjackGameReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSoloBlackjackReport(BlackjackBetReportFilter model)
+        {
+            return PartialView("_SoloBlackjackRecords", await mediator.Send(new GetSoloBlackjackReportRequest(model)));
+        }
+
+        [HttpGet]
         public Task<IActionResult> SpecialSeDie() => GetStakeBalancedView();
 
         [HttpGet]

@@ -45,6 +45,9 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/chineseblackjack")]
         Task<IEnumerable<BlackjackBetRecord>> GetChineseBlackjackReport(BlackjackBetReportFilter filter);
 
+        [Get("/report/soloblackjack")]
+        Task<IEnumerable<BlackjackBetRecord>> GetSoloBlackjackReport(BlackjackBetReportFilter filter);
+
         [Get("/report/slot_game/round/{roundId}/nick/{nickname}?excludeUUS={excludeUUS}&game={game}&partnerId={partnerId}&fromDate={fromDate}&toDate={toDate}&username={username}&convertToUSD={convertToUSD}")]
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(
             long roundId,

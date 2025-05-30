@@ -149,6 +149,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<HiLoReportService>();
             services.AddScoped<FruitSlotReportService>();
             services.AddScoped<WinThreeCardsReportService>();
+            services.AddScoped<SoloBlackjackReportService>();
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
             services.AddScoped<MiniSeDieReportService>();
@@ -237,6 +238,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<ISevenUpDownOnlineUserApi>(appSettings.GameServers.SevenUpDown.Api, refitSettings));
             services.AddSingleton(RestService.For<IMarbleFootballOnlineUserApi>(appSettings.GameServers.MarbleFootball.Api, refitSettings));
             services.AddSingleton(RestService.For<IMarbleFootball2OnlineUserApi>(appSettings.GameServers.MarbleFootball2.Api, refitSettings));
+            services.AddSingleton(RestService.For<ISoloBlackjackOnlineUserApi>(appSettings.GameServers.SoloBlackjack.Api, refitSettings));
         }
 
         private static void AddOnlineUserApiGN(IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)

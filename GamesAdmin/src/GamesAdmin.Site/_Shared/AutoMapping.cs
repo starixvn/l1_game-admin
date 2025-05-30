@@ -48,6 +48,7 @@ namespace GamesAdmin.Site._Shared
 
             CreateMap<BlackjackBetRecord, BlackjackGameRecordViewModel>();
             CreateMap<BlackjackBetRecord, ChineseBlackjackGameRecordViewModel>();
+            CreateMap<BlackjackBetRecord, SoloBlackjackGameRecordViewModel>();
             CreateMap<Card, CardViewModel>();
 
             CreateMap<VipFishPrawnCrabRoundResult, VipFishPrawnCrabRoundResultViewModel>()
