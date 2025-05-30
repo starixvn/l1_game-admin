@@ -1,6 +1,7 @@
 var jackpotSettings = (function ($) {
     var elements = {
         $modal: $("#modal"),
+        $searchForm: $("#search-form"),
     };
 
     function onUpsertSucess(data) {
@@ -16,6 +17,7 @@ var jackpotSettings = (function ($) {
                 .prop("disabled", true);
 
             elements.$botRatioTab.removeClass("disabled");
+            elements.$botSettingsTab.removeClass("disabled");
 
             if (data.id) {
                 $("#Id", elements.$generalSettingsForm).val(data.id);
@@ -23,6 +25,7 @@ var jackpotSettings = (function ($) {
 
             setTimeout(function () {
                 elements.$resultLabel.hide();
+                elements.$searchForm.trigger("submit");
             }, 1000);
         }
     }
@@ -36,6 +39,7 @@ var jackpotSettings = (function ($) {
         elements.$settingDetails = elements.$modal.find("#setting-details");
         elements.$copySettingForm = elements.$modal.find("#copy-setting-form");
         elements.$botRatioTab = elements.$modal.find("#bot-ratio-tab");
+        elements.$botSettingsTab = elements.$modal.find("#bot-tab");
     }
 
     function setupValidation() {
@@ -55,7 +59,7 @@ var jackpotSettings = (function ($) {
     }
 
     function openModal() {
-        elements.$modal.modal({ backdrop: "static", show: true });
+        elements.$modal.modal({ show: true });
         updateElements();
 
         setupValidation();
@@ -136,11 +140,13 @@ var jackpotSettings = (function ($) {
         },
         initTable: function () {
             $("#settings-table").DataTable({
+                ordering: false,
                 lengthMenu: [100, 200, 500],
                 columnDefs: [{ targets: [3, 4], searchable: false }],
             });
         },
         onCopySettingsSuccess: function () {
+            updateElements();
             reparseFormValidation(elements.$settingDetails.find("form"));
         },
         onCopySettingsChange: function (event) {
@@ -156,6 +162,7 @@ var jackpotSettings = (function ($) {
         openCreateForm: function () {
             openModal();
             elements.$botRatioTab.addClass("disabled");
+            elements.$botSettingsTab.addClass("disabled");
         },
         openUpdateForm: function () {
             openModal();

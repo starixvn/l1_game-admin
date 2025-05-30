@@ -102,12 +102,12 @@ namespace GamesAdmin.Site.Features.JackpotSettingsManagement.Handlers
 
             return new JackpotSettingsViewModel
             {
-                Enabled = jackpotSettings.Enabled,
+                Enabled = false,
                 ExcludeTestCurrency = jackpotSettings.ExcludeTestCurrency,
                 WinningRatio = jackpotSettings.WinningRatio,
                 Pools = jackpotSettings.Pools,
                 BotBetLevels = jackpotSettings.BotBetLevels.ToList(),
-                BotEnabled = jackpotSettings.BotEnabled,
+                BotEnabled = false,
                 TotalBot = totalBot,
                 BotRatios = GenerateBotRatioItems(jackpotSettings.HoursMaxBot, totalBot),
             };
