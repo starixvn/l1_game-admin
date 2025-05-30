@@ -106,9 +106,9 @@ namespace GamesAdmin.Api.GameSettings
                     {
                         botConfig.JackpotConfigId = newJpConfig.Id;
                         botConfig.Enabled = false;
-                    }
 
-                    await botConfigRepository.InsertManyAsync(relativeBotConfigs);
+                        await botConfigRepository.InsertOneAsync(botConfig);
+                    }
                 }
 
                 if (gameName != null)
