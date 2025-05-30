@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.Util.Internal;
 using GamesAdmin.Api.CurrencyGroupGames;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GeneralGameSettings;
@@ -106,10 +107,11 @@ namespace GamesAdmin.Api.GameSettings
                     {
                         botConfig.JackpotConfigId = newJpConfig.Id;
                         botConfig.Enabled = false;
-
-                        await botConfigRepository.InsertOneAsync(botConfig);
                     }
                 }
+
+                await botConfigRepository.InsertManyAsync(botConfigs);
+
 
                 if (gameName != null)
                 {
