@@ -28,6 +28,7 @@ namespace GamesAdmin.Api.GameSettings
         private readonly INotificationService notificationService;
         private readonly IGameSettingsService gameService;
         private readonly ICurrencyGroupGameService currencyGroupGameService;
+        private readonly IGenericRepository<JackpotConfigEntity> jackpotConfigsRepository;
         private readonly int BOT_MAX_BET_DEFAULT = 10;
 
         public CloneSettingsService(IGenericRepository<GameConfigEntity> repository,
@@ -35,7 +36,8 @@ namespace GamesAdmin.Api.GameSettings
             ISentryClient sentryClient,
             INotificationService notificationService,
             IGameSettingsService gameService,
-            ICurrencyGroupGameService currencyGroupGameService)
+            ICurrencyGroupGameService currencyGroupGameService,
+            IGenericRepository<JackpotConfigEntity> jackpotConfigsRepository)
         {
             this.repository = repository;
             this.generalGameSettingService = generalGameSettingService;
@@ -43,6 +45,7 @@ namespace GamesAdmin.Api.GameSettings
             this.notificationService = notificationService;
             this.gameService = gameService;
             this.currencyGroupGameService = currencyGroupGameService;
+            this.jackpotConfigsRepository = jackpotConfigsRepository;
         }
 
         public async Task<string> CloneNewGame(int gameId, int fromGameId, string displayName, byte gameType)
@@ -52,6 +55,7 @@ namespace GamesAdmin.Api.GameSettings
                 var gameName = await generalGameSettingService.GetGameName(fromGameId);
                 var existingGame = await repository.FindOneAsync(entity => entity.Name == NamingConverter.GameConfigName(displayName) || entity.GameId == gameId);
                 var currencyGroupGameSettings = await currencyGroupGameService.GetByGameId(fromGameId);
+                var jackpotConfigs = await jackpotConfigsRepository.FilterByAsync(entity => entity.GameId == fromGameId);
 
                 if (existingGame != null)
                 {
@@ -80,6 +84,13 @@ namespace GamesAdmin.Api.GameSettings
                     await currencyGroupGameService.Update(setting);
                 }
 
+                foreach(var jpConfig in jackpotConfigs)
+                {
+                    jpConfig.GameId = gameId;
+
+                    await jackpotConfigsRepository.InsertOneAsync(jpConfig);
+                }
+
                 if (gameName != null)
                 {
                     var gameEntity = await repository.FindOneAsync(entity => entity.Name == gameName);
@@ -88,6 +99,7 @@ namespace GamesAdmin.Api.GameSettings
                     gameEntity.GameId = gameId;
                     gameEntity.Enabled = false;
                     gameEntity.Name = NamingConverter.GameConfigName(displayName);
+                    gameEntity.Time = DateTime.Now;
 
                     await repository.InsertOneAsync(gameEntity);
 
