@@ -61,7 +61,14 @@ namespace GamesAdmin.Api.GameSettings
                 var existingGame = await repository.FindOneAsync(entity => entity.Name == NamingConverter.GameConfigName(displayName) || entity.GameId == gameId);
                 var currencyGroupGameSettings = await currencyGroupGameService.GetByGameId(fromGameId);
                 var jackpotConfigs = await jackpotConfigsRepository.FilterByAsync(entity => entity.GameId == fromGameId);
-                var botConfigs = await botConfigRepository.FilterByAsync(entity => entity.GameId == fromGameId);
+                var botConfigs = (await botConfigRepository.FilterByAsync(entity => entity.GameId == fromGameId)).ToList();
+
+                botConfigs.ForEach(config =>
+                {
+                    config.Enabled = false;
+                    config.GameId = gameId;
+                    config.Id = new MongoDB.Bson.ObjectId();
+                });
 
                 if (existingGame != null)
                 {
@@ -92,7 +99,7 @@ namespace GamesAdmin.Api.GameSettings
 
                 foreach (var jpConfig in jackpotConfigs)
                 {
-                    var relativeBotConfigs = botConfigs.Where(config => config.JackpotConfigId == jpConfig.Id);
+                    var relativeBotConfigs = botConfigs.FindAll(config => config.JackpotConfigId == jpConfig.Id);
 
                     jpConfig.GameId = gameId;
                     jpConfig.Enabled = false;
@@ -106,8 +113,8 @@ namespace GamesAdmin.Api.GameSettings
                     foreach (var botConfig in relativeBotConfigs)
                     {
                         botConfig.JackpotConfigId = newJpConfig.Id;
-                        botConfig.Enabled = false;
                     }
+
                 }
 
                 await botConfigRepository.InsertManyAsync(botConfigs);
