@@ -12,7 +12,7 @@ namespace GamesAdmin.Api.Report.Requests
         {
             GameId = gameId;
             OperatorId = operatorId;
-            SiteNames = siteNames ?? Enumerable.Empty<string>();
+            SiteNames = siteNames?.Where(x => !string.IsNullOrWhiteSpace(x)) ?? Enumerable.Empty<string>();
         }
 
         public int GameId { get; }

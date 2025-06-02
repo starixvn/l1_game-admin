@@ -12,7 +12,7 @@ namespace GamesAdmin.Database
 {
     public interface IJackpotRepository
     {
-        Task<IEnumerable<JackpotReportEntity>> GetAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
+        Task<IEnumerable<JackpotReportEntity>> GetAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot, string operatorId, IEnumerable<string> siteNames);
         Task<IEnumerable<JackpotPool>> GetRunningPoolsAsync(int gameId, string operatorId, IEnumerable<string> siteNames);
     }
 
@@ -27,15 +27,19 @@ namespace GamesAdmin.Database
             this.gameConfigRepository = gameConfigRepository;
         }
 
-        public async Task<IEnumerable<JackpotReportEntity>> GetAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+
+        public async Task<IEnumerable<JackpotReportEntity>> GetAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot, string operatorId, IEnumerable<string> siteNames)
         {
             var gameConfig = await gameConfigRepository.FindOneAsync(x => x.GameId == gameId);
             var jackpotCollection = database.GetCollection<JackpotEntity>($"{gameConfig.Name}_jackpots");
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
+            var jackpotConfigs = await GetJackpotConfigsAsync(operatorId, siteNames);
+            var jackpotConfigIds = jackpotConfigs.Select(x => x.Id.ToString());
+
             var jackpots = await jackpotCollection
-                .Find(jackPot => jackPot.HitTime >= fromDate && jackPot.HitTime <= toDate && jackPot.HitAt.HasValue)
+                .Find(jackPot => jackPot.HitTime >= fromDate && jackPot.HitTime <= toDate && jackPot.HitAt.HasValue && jackpotConfigIds.Contains(jackPot.JackpotConfigId))
                 .ToListAsync();
             var winnerNames = jackpots.Select(x => x.WinnerName).Distinct();
 
@@ -75,15 +79,10 @@ namespace GamesAdmin.Database
         public async Task<IEnumerable<JackpotPool>> GetRunningPoolsAsync(int gameId, string operatorId, IEnumerable<string> siteNames)
         {
             var operatorCollection = database.GetCollection<PartnerEntity>(Document.GetCollectionName(typeof(PartnerEntity)));
-            var operators = await operatorCollection.Find(x => !string.IsNullOrWhiteSpace(operatorId) || x.PartnerId == operatorId).ToListAsync();
+            var operators = await operatorCollection.Find(x => string.IsNullOrWhiteSpace(operatorId) || x.PartnerId == operatorId).ToListAsync();
             var operatorIds = operators.Select(x => x.PartnerId);
 
-            var jackpotConfigCollection = database.GetCollection<JackpotConfigEntity>(Document.GetCollectionName(typeof(JackpotConfigEntity)));
-            var jackpotConfigs = await jackpotConfigCollection.Find(
-                x => operatorIds.Contains(x.OperatorId)
-                    && (!siteNames.Any() || x.SiteNames.Any(siteName => siteNames.Any(siteName2 => siteName.Contains(siteName2))))
-                ).ToListAsync();
-
+            var jackpotConfigs = await GetJackpotConfigsAsync(operatorId, siteNames);
             var jackpotConfigIds = jackpotConfigs.Select(x => x.Id.ToString());
 
             var gameConfig = await gameConfigRepository.FindOneAsync(x => x.GameId == gameId);
@@ -92,7 +91,7 @@ namespace GamesAdmin.Database
 
             return pools.Select(x =>
             {
-                var jackpotConfig = jackpotConfigs.Find(jc => jc.Id == ObjectId.Parse(x.JackpotConfigId));
+                var jackpotConfig = jackpotConfigs.FirstOrDefault(jc => jc.Id == ObjectId.Parse(x.JackpotConfigId));
                 return new JackpotPool
                 {
                     JackpotConfigId = x.JackpotConfigId,
@@ -102,7 +101,16 @@ namespace GamesAdmin.Database
                     Prize = x.Prize,
                     Amount = x.Amount
                 };
-            });
+            }).OrderBy(x => x.OperatorName).ThenBy(x => x.SiteNames.Length); ;
+        }
+
+        private async Task<IEnumerable<JackpotConfigEntity>> GetJackpotConfigsAsync(string operatorId, IEnumerable<string> siteNames)
+        {
+            var jackpotConfigCollection = database.GetCollection<JackpotConfigEntity>(Document.GetCollectionName(typeof(JackpotConfigEntity)));
+            return await jackpotConfigCollection.Find(
+                x => (string.IsNullOrWhiteSpace(operatorId) || x.OperatorId == operatorId)
+                    && (!siteNames.Any() || x.SiteNames.Any(siteName => siteNames.Any(siteName2 => siteName.Contains(siteName2))))
+                ).ToListAsync();
         }
     }
 

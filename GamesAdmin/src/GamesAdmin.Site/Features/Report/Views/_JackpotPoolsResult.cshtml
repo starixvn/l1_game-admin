@@ -1,0 +1,51 @@
+﻿@using GamesAdmin.Core.Models.SlotGame
+
+@model IEnumerable<JackpotPool>
+
+<div class="row row-table">
+    <div class="col-sm-12">
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+
+                    <th class="col-nickname align-middle" rowspan="2">Operator</th>
+                    <th class="col-nickname align-middle" rowspan="2">Site Name</th>
+                    <th class="col-number" colspan="3">Prize</th>
+                    <th class="col-number align-middle" rowspan="2">Total Amount</th>
+                </tr>
+                <tr>
+                    <th class="text-center">Minor</th>
+                    <th class="text-center">Major</th>
+                    <th class="text-center">Grand</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var operatorGroup in Model.GroupBy(x => new { x.OperatorId, x.OperatorName }))
+                {
+                    var poolsGroupByConfig = operatorGroup.GroupBy(x => x.JackpotConfigId).ToList();
+                    @for (var i = 0; i < poolsGroupByConfig.Count; i++)
+                    {
+                        var configs = poolsGroupByConfig[i];
+                        var siteNames = configs.FirstOrDefault().SiteNames;
+                        var minorPoolAmount = configs.FirstOrDefault(x => x.Prize == "minor").Amount;
+                        var majorPoolAmount = configs.FirstOrDefault(x => x.Prize == "major").Amount;
+                        var grandPoolAmount = configs.FirstOrDefault(x => x.Prize == "grand").Amount;
+
+                        <tr>
+                            @if (i == 0)
+                            {
+                                <td class="text-center" rowspan="@poolsGroupByConfig.Count">@operatorGroup.Key.OperatorName</td>
+
+                            }
+                            <td class="text-center">@(siteNames.Any() ? string.Join(";", siteNames): "All")</td>
+                            <td class="text-right">@HtmlHelpers.formatNumber(minorPoolAmount)</td>
+                            <td class="text-right">@HtmlHelpers.formatNumber(majorPoolAmount)</td>
+                            <td class="text-right">@HtmlHelpers.formatNumber(grandPoolAmount)</td>
+                            <td class="text-right">@HtmlHelpers.formatNumber(minorPoolAmount + majorPoolAmount + grandPoolAmount)</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

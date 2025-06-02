@@ -41,7 +41,7 @@ namespace GamesAdmin.Api.Report
 
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(SlotGameBetReportFilter filter);
 
-        Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
+        Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot, string operatorId, IEnumerable<string> siteNames);
 
         Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
@@ -351,10 +351,10 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<SlotGameBetRecord>(x));
         }
 
-        public async Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+        public async Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot, string operatorId, IEnumerable<string> siteNames)
         {
             var repository = serviceProvider.GetService<IJackpotRepository>();
-            var result = await repository.GetAsync(gameId, fromDate, toDate, excludeUUS, excludeBot);
+            var result = await repository.GetAsync(gameId, fromDate, toDate, excludeUUS, excludeBot, operatorId, siteNames);
 
             return result.Select(x => mapper.Map<JackpotRecord>(x));
         }

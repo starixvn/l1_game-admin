@@ -44,7 +44,7 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(GetSlotGameReportRequest request);
 
-        Task<IEnumerable<JackpotRecord>> GetJackpotReport(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
+        Task<IEnumerable<JackpotRecord>> GetJackpotReport(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot, string operatorId, IEnumerable<string> siteNames);
 
         Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
@@ -156,8 +156,8 @@ namespace GamesAdmin.Site.Features.Report
                 request.Username,
                 request.ConvertToUSD);
 
-        public Task<IEnumerable<JackpotRecord>> GetJackpotReport(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
-            => reportApi.GetJackpotReport(gameId, fromDate, toDate, excludeUUS, excludeBot);
+        public Task<IEnumerable<JackpotRecord>> GetJackpotReport(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot, string operatorId, IEnumerable<string> siteNames)
+            => reportApi.GetJackpotReport(gameId, fromDate, toDate, excludeUUS, excludeBot, operatorId, siteNames);
 
         public async Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username)
             => await reportApi.GetBitcoinMasterReport(roundId, nickname, excludeBot, partnerId, username);

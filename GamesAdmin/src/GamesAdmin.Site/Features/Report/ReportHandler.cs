@@ -493,7 +493,7 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<JackpotReportResultViewModel> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
         {
             var isFourGuardians = request.GameId == (int)GameId.FourGuardians;
-            var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
+            var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot, request.OperatorId, request.SiteNames);
             var currencies = await currencyService.GetAll();
             var currencyGroupGame = await currencyGroupGameService.GetAll();
 

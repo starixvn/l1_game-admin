@@ -129,8 +129,14 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("jackpot/game/{gameId}")]
-        public async Task<IEnumerable<JackpotRecord>> JackpotReport(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
-       => (await mediator.Send(new JackpotReportRequest(gameId, fromDate, toDate, excludeUUS, excludeBot)));
+        public async Task<IEnumerable<JackpotRecord>> JackpotReport([FromRoute]int gameId,
+            [FromQuery] DateTime fromDate, 
+            [FromQuery] DateTime toDate, 
+            [FromQuery] bool excludeUUS,
+            [FromQuery] bool excludeBot, 
+            [FromQuery] string operatorId, 
+            [FromQuery] IEnumerable<string> siteNames)
+       => (await mediator.Send(new JackpotReportRequest(gameId, fromDate, toDate, excludeUUS, excludeBot, operatorId, siteNames)));
 
         [HttpGet]
         [Route("bitcoin_master/round/{roundId}/users/{nickname?}")]
@@ -179,7 +185,7 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("jackpot/running_pools")]
-        public async Task<IEnumerable<JackpotPool>> JackpotRunningPoolsReport(int gameId, string operatorId, IEnumerable<string> siteNames)
+        public async Task<IEnumerable<JackpotPool>> JackpotRunningPoolsReport([FromQuery] int gameId, [FromQuery] string operatorId, [FromQuery] string[] siteNames)
             => (await mediator.Send(new JackpotRunningPoolsReportRequest(gameId, operatorId, siteNames)));
     }
 }

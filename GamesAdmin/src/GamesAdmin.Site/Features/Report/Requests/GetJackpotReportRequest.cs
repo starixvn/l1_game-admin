@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 
@@ -7,7 +8,16 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetJackpotReportRequest : IRequest<JackpotReportResultViewModel>
     {
-        public GetJackpotReportRequest(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot, bool convertToINH, string baseCurrency)
+        public GetJackpotReportRequest(
+            int gameId,
+            DateTime fromDate,
+            DateTime toDate,
+            bool excludeUUS,
+            bool excludeBot,
+            bool convertToINH,
+            string baseCurrency,
+            string operatorId,
+            string siteNames)
         {
             GameId = gameId;
             FromDate = fromDate;
@@ -16,6 +26,8 @@ namespace GamesAdmin.Site.Features.Report.Requests
             ExcludeBot = excludeBot;
             ConvertToINH = convertToINH;
             BaseCurrency = baseCurrency;
+            OperatorId = operatorId;
+            SiteNames = string.IsNullOrWhiteSpace(siteNames) ? Enumerable.Empty<string>() : siteNames.Split(';').Select(x => x.Trim());
         }
 
         public int GameId { get; }
@@ -31,5 +43,9 @@ namespace GamesAdmin.Site.Features.Report.Requests
         public bool ConvertToINH { get; }
 
         public string BaseCurrency { get; set; }
+
+        public string OperatorId { get; set; }
+
+        public IEnumerable<string> SiteNames { get; set; }
     }
 }

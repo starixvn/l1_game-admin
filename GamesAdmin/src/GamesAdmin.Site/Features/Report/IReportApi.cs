@@ -57,8 +57,15 @@ namespace GamesAdmin.Site.Features.Report
             string username,
             bool convertToUSD);
 
-        [Get("/report/jackpot/game/{gameId}?excludeUUS={excludeUUS}&excludeBot={excludeBot}")]
-        Task<IEnumerable<JackpotRecord>> GetJackpotReport(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
+        [Get("/report/jackpot/game/{gameId}")]
+        Task<IEnumerable<JackpotRecord>> GetJackpotReport(
+            int gameId,
+             [Query] DateTime fromDate,
+             [Query] DateTime toDate,
+             [Query] bool excludeUUS,
+             [Query] bool excludeBot,
+             [Query] string operatorId,
+             [Query] IEnumerable<string> siteNames);
 
         [Get("/report/bitcoin_master/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
         Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);

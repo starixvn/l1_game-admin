@@ -387,7 +387,9 @@ namespace GamesAdmin.Site.Features.Report
                     new GetJackpotReportRequest(model.GameId,
                         model.FromDate.Date.ToUniversalTime(),
                         model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(),
-                        model.ExcludeUUS, model.ExcludeBot, model.ConvertToUSD, model.BaseCurrency)));
+                        model.ExcludeUUS, model.ExcludeBot, model.ConvertToUSD, model.BaseCurrency,
+                        model.OperatorId,
+                        model.SiteNames)));
         }
 
         private async Task<IActionResult> GetStakeBalancedView()
@@ -695,7 +697,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> GetJackpotPoolsReport(JackpotPoolsReportViewModel model)
         {
-            return PartialView("_JackpotPoolsRéult", await mediator.Send(new JackpotPoolsReportRequest(model.GameId, model.OperatorId, model.SiteNames)));
+            return PartialView("_JackpotPoolsResult", await mediator.Send(new JackpotPoolsReportRequest(model.GameId, model.OperatorId, model.SiteNames)));
         }
     }
 }
