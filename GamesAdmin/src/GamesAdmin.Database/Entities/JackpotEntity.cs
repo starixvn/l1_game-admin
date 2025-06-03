@@ -45,6 +45,8 @@ namespace GamesAdmin.Database.Entities
 
         public string OperatorId { get; set; } = "ONEworksVGCash";
 
+        public string SiteName { get; set; }
+
         public decimal Rate { get; set; } = 1000;
 
         public string JackpotConfigId { get; set; }

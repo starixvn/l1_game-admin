@@ -25,6 +25,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string OperatorId { get; set; }
 
+        public string OperatorName { get; set; }
+        public string SiteName { get; set; }
+
         public decimal Rate { get; set; }
 
         public double[] BaseBetLevel { get; set; }

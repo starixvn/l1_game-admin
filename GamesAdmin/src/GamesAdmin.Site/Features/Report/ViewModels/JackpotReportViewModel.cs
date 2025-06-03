@@ -20,8 +20,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string BaseCurrency { get; set; }
 
-        public bool EnableConvertBase { get; set; }
-
         public string OperatorId { get; set; }
 
         public string SiteNames { get; set; }

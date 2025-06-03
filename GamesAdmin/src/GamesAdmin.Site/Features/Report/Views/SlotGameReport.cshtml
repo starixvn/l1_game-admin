@@ -92,7 +92,7 @@
     <div class="tab-pane fade" id="jackpot" role="tabpanel" aria-labelledby="jackpot-tab">
         <partial name="Jackpot"
             model="new JackpotReportViewModel() {
-                    GameId = (int) Model.GameId, BaseCurrency = Model.BaseCurrency, EnableConvertBase = ((int)GameId.FourGuardians != (int) Model.GameId),
+                    GameId = (int) Model.GameId, BaseCurrency = Model.BaseCurrency,
                     Operators = Model.Selections.Partners,
                     }" />
     </div>

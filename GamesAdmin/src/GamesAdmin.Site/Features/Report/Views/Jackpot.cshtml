@@ -5,7 +5,7 @@
 <form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetJackpotReport" data-ajax-mode="replace" data-ajax-update="#jackpot-result"
       data-ajax-loading="#spinner"
       method="get">
-    <input type="hidden" asp-for="GameId"/>
+    <input type="hidden" asp-for="GameId" />
     <input type="hidden" asp-for="BaseCurrency" />
     <div class="form-row align-items-center">
         <div class="col-auto">
@@ -40,17 +40,14 @@
                 </label>
             </div>
         </div>
-        @if (Model.EnableConvertBase)
-        {
-            <div class="col-auto mt-5">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" asp-for="ConvertToUSD">
-                    <label class="form-check-label" asp-for="ConvertToUSD">
-                        Convert to @Model.BaseCurrency
-                    </label>
-                </div>
+        <div class="col-auto mt-5">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" asp-for="ConvertToUSD">
+                <label class="form-check-label" asp-for="ConvertToUSD">
+                    Convert to @Model.BaseCurrency
+                </label>
             </div>
-        }
+        </div>
 
         <div class="col-auto mt-5">
             <button type="submit" class="btn-submit">Submit</button>

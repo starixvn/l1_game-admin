@@ -9,22 +9,14 @@
             <thead>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
-                    @if (Model.EnableConvertBase)
-                    {
-                        <th class="col-nickname">OperatorId</th>
-                    }
+                    <th class="col-nickname">Operator</th>
+                    <th class="col-nickname">Site Name</th>
                     <th class="col-nickname">Username</th>
                     <th class="col-nickname">Nickname</th>
-                    @if (Model.EnableConvertBase)
-                    {
-                        <th class="col-currency">Currency</th>
-                    }
+                    <th class="col-currency">Currency</th>
                     <th class="col-number">Round</th>
-                    @if (Model.EnableConvertBase)
-                    {
-                        <th class="col-exchange-id">Exchange Id</th>
-                    }
-                    <th class="col-number">Prize (USD)</th>
+                    <th class="col-exchange-id">Exchange Id</th>
+                    <th class="col-number">Prize</th>
                     <th class="col-number">Jackpot Win</th>
                 </tr>
             </thead>
@@ -34,24 +26,16 @@
 
                     <tr>
                         <td>@item.Time.ToString(Constants.DateTimeFormat)</td>
-                        @if (Model.EnableConvertBase)
-                        {
-                            <td class="text-center">@item.OperatorId</td>
-                        }
+                        <td class="text-center">@item.OperatorName</td>
+                        <td class="text-center">@item.SiteName</td>
                         <td class="text-center">@item.Username</td>
                         <td class="text-center">@item.Nickname</td>
-                        @if (Model.EnableConvertBase)
-                        {
-                            <td class="text-center">@item.Currency</td>
-                        }
+                        <td class="text-center">@item.Currency</td>
 
                         <td class="text-center">
                             @item.RoundId
                         </td>
-                        @if (Model.EnableConvertBase)
-                        {
-                            <td class="text-center">@item.ExchangeRateId</td>
-                        }
+                        <td class="text-center">@item.ExchangeRateId</td>
                         <td class="text-center">@item.DisplayPrize</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(item.WinningAmount)</td>
                     </tr>

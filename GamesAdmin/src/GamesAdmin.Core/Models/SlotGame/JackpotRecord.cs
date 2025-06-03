@@ -23,6 +23,8 @@ namespace GamesAdmin.Core.Models.SlotGame
         public string Currency { get; set; }
 
         public string OperatorId { get; set; }
+        public string OperatorName { get; set; }
+        public string SiteName { get; set; }
 
         public decimal Rate { get; set; }
     }

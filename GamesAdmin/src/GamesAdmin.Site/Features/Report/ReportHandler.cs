@@ -492,23 +492,18 @@ namespace GamesAdmin.Site.Features.Report
 
         public async Task<JackpotReportResultViewModel> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
         {
-            var isFourGuardians = request.GameId == (int)GameId.FourGuardians;
             var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot, request.OperatorId, request.SiteNames);
             var currencies = await currencyService.GetAll();
             var currencyGroupGame = await currencyGroupGameService.GetAll();
 
             return new JackpotReportResultViewModel
             {
-                EnableConvertBase = !isFourGuardians,
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<JackpotRecordViewModel>(x);
-                    if (!isFourGuardians)
-                    {
-                        betViewModel.BaseBetLevel = GetBetLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
-                        betViewModel.BetLevelByCurrency = GetBetLevel(currencies, currencyGroupGame, request.GameId, x.Currency);
-                        betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
-                    }
+                    betViewModel.BaseBetLevel = GetBetLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
+                    betViewModel.BetLevelByCurrency = GetBetLevel(currencies, currencyGroupGame, request.GameId, x.Currency);
+                    betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     return betViewModel;
                 }).OrderByDescending(x => x.Time)

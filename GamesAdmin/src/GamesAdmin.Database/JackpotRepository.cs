@@ -34,14 +34,16 @@ namespace GamesAdmin.Database
             var jackpotCollection = database.GetCollection<JackpotEntity>($"{gameConfig.Name}_jackpots");
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
-
-            var jackpotConfigs = await GetJackpotConfigsAsync(operatorId, siteNames);
-            var jackpotConfigIds = jackpotConfigs.Select(x => x.Id.ToString());
+            var operatorCollection = database.GetCollection<PartnerEntity>(Document.GetCollectionName(typeof(PartnerEntity)));
 
             var jackpots = await jackpotCollection
-                .Find(jackPot => jackPot.HitTime >= fromDate && jackPot.HitTime <= toDate && jackPot.HitAt.HasValue && jackpotConfigIds.Contains(jackPot.JackpotConfigId))
+                .Find(jackPot => jackPot.HitTime >= fromDate && jackPot.HitTime <= toDate && jackPot.HitAt.HasValue 
+                    && (string.IsNullOrWhiteSpace(operatorId) || jackPot.OperatorId == operatorId)
+                    && (!siteNames.Any() || siteNames.Any(s => jackPot.SiteName.Contains(s))))
                 .ToListAsync();
             var winnerNames = jackpots.Select(x => x.WinnerName).Distinct();
+            var operators = await operatorCollection.Find(x => jackpots.Select(jp => jp.OperatorId).Contains(x.PartnerId)).ToListAsync();
+
 
             var acountInfos = await accountInfoCollection.Find(x => winnerNames.Contains(x.Name)).ToListAsync();
             var userIds = acountInfos.Select(x => x.UserId).Distinct().Select(x => ObjectId.Parse(x));
@@ -68,7 +70,9 @@ namespace GamesAdmin.Database
                         OperatorId = jackpot.OperatorId,
                         Currency = jackpot.Currency,
                         ExchangeRateId = jackpot.ExchangeRateId,
-                        Rate = jackpot.Rate
+                        Rate = jackpot.Rate,
+                        SiteName = jackpot.SiteName,
+                        OperatorName = operators.FirstOrDefault(x => x.PartnerId == jackpot.OperatorId).Name,
                     });
                 }
             }
@@ -134,6 +138,8 @@ namespace GamesAdmin.Database
         public string Currency { get; set; }
 
         public string OperatorId { get; set; }
+        public string OperatorName { get; set; }
+        public string SiteName { get; set; }
 
         public int ExchangeRateId { get; set; }
 
