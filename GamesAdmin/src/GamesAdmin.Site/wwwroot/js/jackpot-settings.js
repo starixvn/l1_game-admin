@@ -120,6 +120,11 @@ var jackpotSettings = (function ($) {
         $.validator.unobtrusive.parse($form);
     }
 
+    function disableBotTabs() {
+        elements.$botRatioTab.addClass("disabled");
+        elements.$botSettingsTab.addClass("disabled");
+    }
+
     return {
         init: function () {
             var $gameIds = $("#GameIds");
@@ -148,6 +153,9 @@ var jackpotSettings = (function ($) {
         onCopySettingsSuccess: function () {
             updateElements();
             reparseFormValidation(elements.$settingDetails.find("form"));
+            if (!elements.$generalSettingsForm.find("#Id").val()) {
+                disableBotTabs();
+            }
         },
         onCopySettingsChange: function (event) {
             if (event.target.value) {
@@ -161,8 +169,7 @@ var jackpotSettings = (function ($) {
         },
         openCreateForm: function () {
             openModal();
-            elements.$botRatioTab.addClass("disabled");
-            elements.$botSettingsTab.addClass("disabled");
+            disableBotTabs();
         },
         openUpdateForm: function () {
             openModal();
