@@ -1,9 +1,12 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Currencies;
-using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
@@ -13,15 +16,8 @@ using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
-using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -493,28 +489,17 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<JackpotReportResultViewModel> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot, request.OperatorId, request.SiteNames);
-            var currencies = await currencyService.GetAll();
-            var currencyGroupGame = await currencyGroupGameService.GetAll();
 
             return new JackpotReportResultViewModel
             {
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<JackpotRecordViewModel>(x);
-                    betViewModel.BaseBetLevel = GetBetLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
-                    betViewModel.BetLevelByCurrency = GetBetLevel(currencies, currencyGroupGame, request.GameId, x.Currency);
                     betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     return betViewModel;
                 }).OrderByDescending(x => x.Time)
             };
-        }
-
-        private static double[] GetBetLevel(IEnumerable<CurrencyModel> currencies, IEnumerable<CurrencyGroupGame> currencyGroupGame, int gameId, string name)
-        {
-            var currency = currencies.FirstOrDefault(x => x.Name == name);
-            var currencyGame = currencyGroupGame.FirstOrDefault(currencyGroup => currencyGroup.GameId == gameId && currencyGroup.GroupId == currency.GroupId);
-            return currencyGame?.BetLevels;
         }
 
         public async Task<BitcoinMasterReportResultViewModel> Handle(GetBitcoinMasterReportRequest request, CancellationToken cancellationToken)

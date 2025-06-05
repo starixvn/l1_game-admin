@@ -107,8 +107,6 @@
             {
                 WinningAmount = amount,
                 Rate = rate,
-                BaseBetLevel = baseStakeLevel,
-                BetLevelByCurrency = stakeLevelsByCurrency
             };
 
             // act

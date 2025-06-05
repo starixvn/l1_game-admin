@@ -30,8 +30,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal Rate { get; set; }
 
-        public double[] BaseBetLevel { get; set; }
-
         public double[] BetLevelByCurrency { get; set; }
 
         public void ConvertToUserCurrency(bool isConvert, int baseCurrencyMultiplier = 1)
@@ -39,21 +37,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             if (isConvert)
             {
                 WinningAmount /= (decimal)Rate / baseCurrencyMultiplier;
-                Pool = ConvertPool();
             }
-        }
-
-        private decimal ConvertPool()
-        {
-            var indexToGetValue = Array.FindIndex(BaseBetLevel, betLevel => (decimal)betLevel == Pool);
-            return IsIndexValid(indexToGetValue, BetLevelByCurrency.Length)
-                   ? (decimal)BetLevelByCurrency[indexToGetValue]
-                   : Pool;
-        }
-
-        private static bool IsIndexValid(int index, int arrayLength)
-        {
-            return index >= 0 && index < arrayLength;
         }
     }
 }
