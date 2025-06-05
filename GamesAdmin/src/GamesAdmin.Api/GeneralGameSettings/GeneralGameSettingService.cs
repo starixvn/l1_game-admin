@@ -27,7 +27,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
         Task<GameConfigEntity> GetGameConfig(int gameId);
 
-        Task<IEnumerable<GeneralGameSetting>> GetSlotsGames();
+        Task<IEnumerable<GeneralGameSetting>> GetSlotsGames(bool enabledJackpot = false);
     }
 
     public class GeneralGameSettingService : IGeneralGameSettingService
@@ -130,9 +130,9 @@ namespace GamesAdmin.Api.GeneralGameSettings
                 .FirstOrDefault(game => game.GameId == gameId));
         }
 
-        public async Task<IEnumerable<GeneralGameSetting>> GetSlotsGames()
+        public async Task<IEnumerable<GeneralGameSetting>> GetSlotsGames(bool enabledJackpot = false)
         {
-             var gameEntities = (await repository.FilterByAsync(game => game.Type == (byte)GameType.Slots)).ToList();
+             var gameEntities = (await repository.FilterByAsync(game => game.Type == (byte)GameType.Slots && game.SlotsConfig.Jackpot.Enabled == enabledJackpot)).ToList();
 
              return gameEntities.Select(game => new GeneralGameSetting(game.GameId, game.Name, game.DisplayName, (GameType)game.Type, game.SlotsConfig.Jackpot.Enabled));
         }
