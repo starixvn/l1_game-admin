@@ -936,14 +936,9 @@ namespace GamesAdmin.Api.Games
 
         public async Task<IEnumerable<JackpotSettings>> GetJackpotSettings(IEnumerable<int> gameIds, IEnumerable<string> siteNames)
         {
-            var builder = Builders<JackpotConfigEntity>.Filter;
-            var filter = builder.In(x => x.GameId, gameIds);
-            if (siteNames.Any())
-            {
-                filter = filter & builder.AnyIn(x => x.SiteNames, siteNames);
-            }
-
-            var configs = await jackpotConfigsRepository.Collection().Find(filter).ToListAsync();
+            var configs = await jackpotConfigsRepository.Collection()
+            .Find(x => gameIds.Contains(x.GameId) && (!siteNames.Any() || x.SiteNames.Any(siteName => siteNames.Any(siteName2 => siteName.Contains(siteName2)))))
+            .ToListAsync();
             var botConfigs = await botConfigsRepository.Collection().Find(x => configs.Any(config => x.JackpotConfigId == config.Id)).ToListAsync();
 
             return configs.Select(x => new JackpotSettings

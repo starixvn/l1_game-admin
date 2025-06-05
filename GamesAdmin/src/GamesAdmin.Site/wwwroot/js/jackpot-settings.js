@@ -61,6 +61,7 @@ var jackpotSettings = (function ($) {
     function openModal() {
         elements.$modal.modal({ show: true });
         updateElements();
+        elements.$modal.find(".icon-info").tooltip();
 
         setupValidation();
 
