@@ -23,6 +23,8 @@ namespace GamesAdmin.Database.Entities
 
         public string TestCurrencyUrl { get; set; }
 
+        public string LangliveUrl { get; set; }
+
         public bool IsDisplayPlayerCurrency { get; set; }
 
         public string Alias { get; set; }

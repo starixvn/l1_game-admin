@@ -38,6 +38,9 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
         [DisplayName("Test Currency URL")]
         public string TestCurrencyUrl { get; set; }
 
+        [DisplayName("Langlive URL")]
+        public string LangliveUrl { get; set; }
+
         [DisplayName("Display Player Currency")]
         public bool IsDisplayPlayerCurrency { get; set; }
 

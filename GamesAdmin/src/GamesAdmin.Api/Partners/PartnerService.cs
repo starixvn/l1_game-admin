@@ -153,6 +153,7 @@ namespace GamesAdmin.Api.Partners
                     .Set(field => field.MegaKenoUrl, partner.MegaKenoUrl)
                     .Set(field => field.MobileDirectUrl, partner.MobileDirectUrl)
                     .Set(field => field.TestCurrencyUrl, partner.TestCurrencyUrl)
+                    .Set(field => field.LangliveUrl, partner.LangliveUrl)
                     .Set(field => field.IsDisplayPlayerCurrency, partner.IsDisplayPlayerCurrency)
                     .Set(field => field.Alias, partner.Alias);
 
