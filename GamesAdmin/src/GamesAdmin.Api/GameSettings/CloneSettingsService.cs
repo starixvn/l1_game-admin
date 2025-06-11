@@ -117,7 +117,10 @@ namespace GamesAdmin.Api.GameSettings
 
                 }
 
-                await botConfigRepository.InsertManyAsync(botConfigs);
+                if (botConfigs?.Count > 0)
+                {
+                    await botConfigRepository.InsertManyAsync(botConfigs);
+                }
 
 
                 if (gameName != null)
