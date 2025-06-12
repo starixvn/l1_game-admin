@@ -218,6 +218,8 @@ namespace GamesAdmin.Api.Games
 
                 var messages = new Dictionary<string, string> { [Language.DefaultLanguageValue] = gameConfig.EnableSetting.DisabledMessage };
                 await notificationService.AddDisableMessage(gameConfig.Info.Name, messages);
+
+                sentryClient.CaptureAddSetting(gameConfig.Info.Name, "New Game", entity);
             }
             catch (Exception ex)
             {

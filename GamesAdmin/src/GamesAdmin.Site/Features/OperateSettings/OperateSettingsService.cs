@@ -17,14 +17,17 @@ using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.OperateSettings.ViewModels;
+using GamesAdmin.Site.Features.CurrencyGroupGames;
+using GamesAdmin.Site.Features.GameSettings.ViewModels;
+using GamesAdmin.Site.Features.CurrencyGroups;
 
 namespace GamesAdmin.Site.Features.OperateSettings
 {
     public interface IOperateSettingsApi : IBaseAuthorizationApi
     {
         [Post("/operate_settings/game/settings")]
-        Task<IEnumerable<GameConfig>> GetGameSettings([Body]IList<int> gameIds);
-    } 
+        Task<IEnumerable<GameConfig>> GetGameSettings([Body] IList<int> gameIds);
+    }
 
     public interface IOperateSettingsService
     {
@@ -35,6 +38,12 @@ namespace GamesAdmin.Site.Features.OperateSettings
         Task<IEnumerable<CurrencyByOperatorViewModel>> GetOperatorCurrencies();
 
         Task<Dictionary<string, MessageResult>> ImportCurrencies(ImportCurrenciesRequest request);
+
+        Task<IEnumerable<CurrencyGroupGame>> GetCurrencyGroupGames();
+
+        Task<StatusViewModel> GetAllGames();
+
+        Task<Dictionary<string, MessageResult>> ImportCurrencyGroupGame(ImportCurrencyGroupGameRequest request);
     }
 
     public class OperateSettingsService : IOperateSettingsService
@@ -45,34 +54,41 @@ namespace GamesAdmin.Site.Features.OperateSettings
         private readonly IPartnerService partnerService;
         private readonly ICurrencyService currencyService;
         private readonly IMediator mediator;
+        private readonly ICurrencyGroupGameService currencyGroupGameService;
+        private readonly ICurrencyGroupService currencyGroupService;
 
         public OperateSettingsService(
-            IOperateSettingsApi operateSettingsApi, 
+            IOperateSettingsApi operateSettingsApi,
             IGameSettingService gameSettingService,
             ISentryClient sentryClient,
             IPartnerService partnerService,
             ICurrencyService currencyService,
-            IMediator mediator) { 
+            IMediator mediator,
+            ICurrencyGroupGameService currencyGroupGameService,
+            ICurrencyGroupService currencyGroupService)
+        {
             this.operateSettingsApi = operateSettingsApi;
             this.gameSettingService = gameSettingService;
             this.sentryClient = sentryClient;
             this.partnerService = partnerService;
             this.currencyService = currencyService;
             this.mediator = mediator;
+            this.currencyGroupGameService = currencyGroupGameService;
+            this.currencyGroupService = currencyGroupService;
         }
 
         public async Task<IEnumerable<GameConfig>> GetGameSettings(IList<int> gameIds)
         {
             var allGameSettings = await this.operateSettingsApi.GetGameSettings(gameIds);
 
-            return allGameSettings; 
+            return allGameSettings;
         }
 
         public async Task<ImportGameSettingResponse> ImportGameSetting(ImportGameSettingRequest request)
         {
             var importSettingResponse = new ImportGameSettingResponse();
 
-            if(request.GameSettings?.Count() > 0)
+            if (request.GameSettings?.Count() > 0)
             {
                 foreach (var gameSetting in request.GameSettings)
                 {
@@ -98,14 +114,14 @@ namespace GamesAdmin.Site.Features.OperateSettings
 
                         importSettingResponse.ImportResult.Add(gameSetting.GameId, isSuccesfully);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         sentryClient.CaptureException(ex);
 
                         importSettingResponse.ImportResult.Add(gameSetting.GameId, false);
                     }
                 }
-            } 
+            }
 
             return importSettingResponse;
         }
@@ -116,7 +132,8 @@ namespace GamesAdmin.Site.Features.OperateSettings
             var operatorCurrencies = operators.Select(op => new CurrencyByOperatorViewModel { Operator = op }).ToList();
             var allCurrencies = (await currencyService.GetAll()).ToList();
 
-            foreach (var opCurrency in operatorCurrencies) {
+            foreach (var opCurrency in operatorCurrencies)
+            {
                 var currencies = allCurrencies.Where(currency => currency.PartnerId == opCurrency.Operator.PartnerId).ToList();
                 opCurrency.Currencies = currencies;
             }
@@ -128,9 +145,9 @@ namespace GamesAdmin.Site.Features.OperateSettings
         {
             var results = new Dictionary<string, MessageResult>();
 
-            foreach(var operatorCurrency in request.OperatorCurrencies)
+            foreach (var operatorCurrency in request.OperatorCurrencies)
             {
-                foreach(var currency in operatorCurrency.Currencies)
+                foreach (var currency in operatorCurrency.Currencies)
                 {
                     var createCurrencyRequest = new Currencies.Requests.CreateRequest(new Currencies.ViewModels.CreateCurrencyViewModel
                     {
@@ -150,6 +167,54 @@ namespace GamesAdmin.Site.Features.OperateSettings
             }
 
             return results;
+        }
+
+        public async Task<IEnumerable<CurrencyGroupGame>> GetCurrencyGroupGames()
+        {
+            var allCurrencyGroupGames = await this.currencyGroupGameService.GetAll();
+
+            return allCurrencyGroupGames;
+        }
+
+        public async Task<StatusViewModel> GetAllGames()
+        {
+            var statusViewModel = await mediator.Send(new GetStatusRequest());
+
+            return statusViewModel;
+        }
+
+        public async Task<Dictionary<string, MessageResult>> ImportCurrencyGroupGame(ImportCurrencyGroupGameRequest request)
+        {
+            var results = new Dictionary<string, MessageResult>();
+            var allCurrencyGroup = await this.currencyGroupService.GetAll();
+
+            foreach (var currencyGroupGame in request.CurrencyGroupGameImportModels)
+            {
+                var currencyGroup = allCurrencyGroup.FirstOrDefault(
+                    group => group.PartnerId == currencyGroupGame.OperatorId && group.Name == currencyGroupGame.GroupName);
+                if (currencyGroup != null)
+                {
+                    foreach (var gameSetting in currencyGroupGame.GameSettings)
+                    {
+                        try
+                        {
+                            gameSetting.SetGroupId(currencyGroup.Id.ToString());
+
+                            var updateResult = await this.currencyGroupGameService.Update(gameSetting);
+
+                            results.Add($"{currencyGroupGame.OperatorId} - {gameSetting.GameName}", new MessageResult(updateResult.Success, updateResult.Error));
+
+                        }
+                        catch (Exception ex)
+                        {
+                            sentryClient.CaptureException(ex);
+                            results.Add($"{currencyGroupGame.OperatorId} - {gameSetting.GameName}", new MessageResult(false, ex.Message));
+                        }
+                    }
+                }
+            }
+
+            return results; // Ensure a boolean value is returned
         }
     }
 }

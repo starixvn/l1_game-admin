@@ -1,0 +1,389 @@
+﻿@using GamesAdmin.Site.Features.OperateSettings.ViewModels
+@model CurrencyGroupGameSettingViewModel
+@{
+    Layout = "../_Shared/_BodyLayout";
+    var exportModel = Model.BuildExportModel();
+}
+<style>
+    .container-fluid {
+        padding: 20px;
+    }
+    body {
+        overflow-x: hidden;
+    }
+    .modal-full {
+        min-width: 90%;
+        margin: 0 auto;  /* Center horizontally */
+    }
+
+    .modal-full .modal-content {
+        min-height: 90vh;
+    }
+    
+    .modal-body {
+        max-height: calc(98vh - 180px);
+        overflow-y: auto;
+    }
+
+    /* Add styles for centering the modal */
+    .modal-dialog.modal-full {
+        display: flex;
+        align-items: center;
+        min-height: calc(100vh - 60px);  /* Account for some padding */
+        margin: 30px auto;  /* Add some top/bottom margin */
+    }
+
+</style>
+
+<div class="container-fluid">
+    <div class="mb-3">
+        <button id="exportSelected" class="btn btn-add export-button">
+            Export Selected Currency Group Games
+        </button>
+        <input type="file" id="fileInput" accept=".json" style="display: none;" />
+        <button id="importCurrencyGroupGames" class="btn btn-submit export-button">
+            Import Currency Group Games
+        </button>
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="align-top text-center">
+                        <input type="checkbox" id="selectAll" />
+                    </th>
+                    <th class="align-top text-center">Operator Id</th>
+                    <th class="align-top text-center">Group Name</th>
+                    <th class="align-top">Game Setting</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var currencyGroup in exportModel)
+                {
+                    <tr>
+                        <td class="align-top text-center">
+                            <input type="checkbox" class="export-select" data-group-id="@currencyGroup.OperatorId" />
+                        </td>
+                        <td class="align-top text-center">@currencyGroup.OperatorId</td>
+                        <td class="align-top text-center">@currencyGroup.CurrencyGroupName</td>
+                        <td class="align-top"><pre>@Newtonsoft.Json.JsonConvert.SerializeObject(currencyGroup.CurrencyGroupGames.Select(game =>
+                                            game), Newtonsoft.Json.Formatting.Indented)</pre>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importModalLabel">Review Import Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="importDataContainer">
+                    <!-- Data will be populated dynamically -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmImport">Import</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Export Modal -->
+<div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exportModalLabel">Review Export Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="exportDataContainer">
+                    <!-- Data will be populated dynamically -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmExport">Export</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        let selectedData = [];
+        $(document).ready(function () {
+            // Handle "Select All" checkbox
+            $("#selectAll").change(function () {
+                $(".export-select").prop('checked', $(this).prop('checked'));
+            });
+
+            // Update "Select All" state based on individual checkboxes
+            $(".export-select").change(function () {
+                var allChecked = $(".export-select:not(:checked)").length === 0;
+                $("#selectAll").prop('checked', allChecked);
+            });
+
+                   $("#exportSelected").click(function () {
+
+            $(".export-select:checked").each(function () {
+                var $row = $(this).closest('tr');
+                var groupData = {
+                    operatorId: $row.find('td:eq(1)').text(),
+                    groupName: $row.find('td:eq(2)').text(),
+                    gameSettings: JSON.parse($row.find('td:eq(3) pre').text())
+                };
+                selectedData.push(groupData);
+            });
+
+            if (selectedData.length === 0) {
+                alert("Please select at least one currency group to export.");
+                return;
+            }
+
+            // Generate modal content
+            let modalContent = '<div class="table-responsive"><table class="table table-striped table-bordered"><thead><tr><th>Operator Id</th><th>Group Name</th><th>Game Settings</th></tr></thead><tbody>';
+            selectedData.forEach((item, index) => {
+                modalContent += `<tr>
+                    <td>${item.operatorId}</td>
+                    <td>${item.groupName}</td>
+                    <td>
+                        <div class="form-check">
+                            
+                            <label class="form-check-label">
+                            <input class="form-check-input game-setting-select-all" type="checkbox" data-group-index="${index}" checked="checked">
+                                Select All
+                            </label>
+                            ${item.gameSettings.map((game, gameIndex) => `
+                                <div>
+                                    
+                                    <label class="form-check-label">
+                                    <input class="form-check-input game-setting-checkbox" type="checkbox" value="${gameIndex}" data-group-index="${index}" data-game-index="${gameIndex}" checked>
+                                        ${JSON.stringify(game, null, 2)}
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </td>
+                </tr>`;
+            });
+            modalContent += '</tbody></table></div>';
+
+            // Handle "Select All" checkbox for game settings
+            $(document).on('change', '.game-setting-select-all', function () {
+                var groupIndex = $(this).data('group-index');
+                $(`.game-setting-checkbox[data-group-index="${groupIndex}"]`).prop('checked', $(this).prop('checked'));
+            });
+
+            // Update "Select All" state based on individual game setting checkboxes
+            $(document).on('change', '.game-setting-checkbox', function () {
+                var groupIndex = $(this).data('group-index');
+                var allChecked = $(`.game-setting-checkbox[data-group-index="${groupIndex}"]:not(:checked)`).length === 0;
+                $(`.game-setting-select-all[data-group-index="${groupIndex}"]`).prop('checked', allChecked);
+            });
+
+            $("#exportDataContainer").html(modalContent);
+            $("#exportModal").modal('show');
+        });
+
+        // Handle confirm export button
+        $("#confirmExport").click(function () {
+            var finalExportData = selectedData.map((group, groupIndex) => {
+                        var selectedGameSettings = [];
+                        $(`.game-setting-checkbox[data-group-index="${groupIndex}"]:checked`).each(function () {
+                            var gameIndex = $(this).data('game-index');
+                            selectedGameSettings.push(group.gameSettings[gameIndex]);
+                        });
+                        return {
+                            operatorId: group.operatorId,
+                            groupName: group.groupName,
+                            gameSettings: selectedGameSettings
+                        };
+                    });
+
+            // Create JSON file and trigger download
+            var jsonContent = JSON.stringify(finalExportData, null, 2);
+            var blob = new Blob([jsonContent], { type: 'application/json' });
+            var url = window.URL.createObjectURL(blob);
+            var timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = `currency-group-games-${timestamp}.json`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+
+            $("#exportModal").modal('hide');
+        });
+
+            // Handle import button click
+            $("#importCurrencyGroupGames").click(function() {
+                $("#fileInput").click();
+            });
+
+            let importDataToProcess = null;
+
+            // Handle file selection
+            $("#fileInput").change(function(e) {
+                if (!e.target.files.length) return;
+
+                const file = e.target.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    try {
+                        const importData = JSON.parse(event.target.result);
+                        
+                        // Basic validation
+                        if (!Array.isArray(importData)) {
+                            throw new Error("Invalid import file format. Expected an array of currency group games.");
+                        }
+
+                        // Validate each entry
+                        importData.forEach(item => {
+                            if (!item.operatorId || !item.groupName || !Array.isArray(item.gameSettings)) {
+                                throw new Error("Invalid data structure in import file.");
+                            }
+                        });
+
+                        // Store data for later use
+                        importDataToProcess = importData;
+
+                        // Generate modal content
+                        let modalContent = '';
+                        importData.forEach((item, index) => {
+                            modalContent += `
+                                <div class="import-item mb-4">
+                                    <h6>Currency Group ${index + 1}</h6>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Operator ID:</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control operator-id" 
+                                                   value="${item.operatorId}" 
+                                                   data-index="${index}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Group Name:</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control group-name" 
+                                                   value="${item.groupName}" 
+                                                   data-index="${index}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Games:</label>
+                                        <div class="col-sm-9">
+                                            <button class="btn btn-link p-0" type="button" 
+                                                    data-toggle="collapse" 
+                                                    data-target="#gameDetails${index}" 
+                                                    aria-expanded="false">
+                                                Show ${item.gameSettings.length} games included
+                                            </button>
+                                            <div class="collapse mt-2" id="gameDetails${index}">
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Game ID</th>
+                                                                <th>Game Name</th>
+                                                                <th>Settings</td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            ${item.gameSettings.map(game => `
+                                                                <tr>
+                                                                    <td>${game.GameId}</td>
+                                                                    <td>${game.GameName}</td>
+                                                                    <td>${JSON.stringify(game)}</td>
+                                                                </tr>
+                                                            `)?.join('')}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </div>`;
+                        });
+
+                        $("#importDataContainer").html(modalContent);
+                        $("#importModal").modal('show');
+
+                    } catch (error) {
+                        alert('Error processing import file: ' + error.message);
+                    }
+
+                    // Clear the file input
+                    e.target.value = '';
+                };
+
+                reader.readAsText(file);
+            });
+
+            // Handle changes to operator ID and group name
+            $(document).on('change', '.operator-id, .group-name', function() {
+                const index = $(this).data('index');
+                const isOperatorId = $(this).hasClass('operator-id');
+                
+                if (isOperatorId) {
+                    importDataToProcess[index].operatorId = $(this).val();
+                } else {
+                    importDataToProcess[index].groupName = $(this).val();
+                }
+            });
+
+            // Handle confirm import button
+            $("#confirmImport").click(async function() {
+                if (!importDataToProcess) {
+                    alert('No data to import');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/OperateSettings/ImportCurrencyGroupGames', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            currencyGroupGameImportModels: importDataToProcess
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    $("#importModal").modal('hide');
+                    
+                    if (response.ok && result.success) {
+                        alert('Import successful!');
+                        //location.reload(); // Refresh the page to show updated data
+                    } else {
+                        alert('Import failed: ' + (result.message || 'Unknown error'));
+                    }
+                } catch (error) {
+                    $("#importModal").modal('hide');
+                    alert('Error during import: ' + error.message);
+                }
+            });
+        });
+    </script>
+} 

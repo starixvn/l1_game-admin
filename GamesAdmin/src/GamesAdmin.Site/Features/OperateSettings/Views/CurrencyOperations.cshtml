@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Currency Settings";
+    Layout = "../_Shared/_BodyLayout";
 }
 
 <style>
@@ -76,11 +77,13 @@
     .import-result-line strong {
         font-weight: 500;
     }
+    body {
+        overflow-x: hidden;
+    }
 </style>
 
 <div class="container-fluid">
-    <h2>@ViewData["Title"]</h2>
-    
+   
     <button id="exportSelected" class="btn btn-add export-button">
         Export Selected Operator Currencies
     </button>

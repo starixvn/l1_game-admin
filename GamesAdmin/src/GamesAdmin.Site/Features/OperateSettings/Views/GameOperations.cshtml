@@ -2,6 +2,7 @@
 @model GameSettingOperationViewModel
 @{
     ViewData["Title"] = "Operate Settings";
+    Layout = "../_Shared/_BodyLayout";
 }
 
 <style>
@@ -9,6 +10,10 @@
         min-width: 50px;
         width: 50px;
         max-width: 50px;
+    }
+
+    .container-fluid {
+        padding: 20px;
     }
 
     .hidden-file-input {
@@ -38,6 +43,10 @@
     .sort-desc::after {
         content: '↓';
         opacity: 1;
+    }
+
+    body {
+        overflow-x: hidden;
     }
 </style>
 

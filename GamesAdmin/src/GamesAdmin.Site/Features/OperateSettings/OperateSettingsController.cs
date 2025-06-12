@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using GamesAdmin.Site.Features.OperateSettings.ViewModels;
 using GamesAdmin.Core.Models;
+using System.Linq;
 
 namespace GamesAdmin.Site.Features.OperateSettings
 {
@@ -72,7 +73,8 @@ namespace GamesAdmin.Site.Features.OperateSettings
             }
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         [Route("api/OperateSettings/ImportGameConfigs")]
         public async Task<IActionResult> ImportGameConfigs([FromBody] ImportGameSettingRequest gameSettingRequest)
         {
@@ -90,13 +92,46 @@ namespace GamesAdmin.Site.Features.OperateSettings
             });
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         [Route("api/OperateSettings/ImportCurrencies")]
         public async Task<IActionResult> ImportCurrencies([FromBody] ImportCurrenciesRequest importCurrenciesRequest)
         {
             var importResponse = await operateSettingsService.ImportCurrencies(importCurrenciesRequest);
 
             return Json(importResponse);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CurrencyGroupGameOperations()
+        {
+            return View(new CurrencyGroupGameSettingViewModel
+            {
+                CurrencyGroupGames = await operateSettingsService.GetCurrencyGroupGames(),
+                AllGameStatusViewModel = await operateSettingsService.GetAllGames()
+            });
+        }
+
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
+        [Route("api/OperateSettings/ImportCurrencyGroupGames")]
+        public async Task<IActionResult> ImportCurrencyGroupGames([FromBody] ImportCurrencyGroupGameRequest importData)
+        {
+            try
+            {
+                if (importData == null || !importData.CurrencyGroupGameImportModels.Any())
+                {
+                    return Json(new { success = false, message = "No data to import" });
+                }
+
+                var result = await operateSettingsService.ImportCurrencyGroupGame(importData);
+
+                return Json(new { success = true, importData });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
     }
 }

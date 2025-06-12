@@ -8,6 +8,7 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
 using MediatR;
 using Sentry;
+using GamesAdmin.Api.SentryClient;
 
 namespace GamesAdmin.Api.Currencies.Handlers
 {
@@ -34,6 +35,8 @@ namespace GamesAdmin.Api.Currencies.Handlers
                     entity.Name = entity.Name.ToUpper();
 
                     await Repository.InsertOneAsync(entity);
+
+                    Sentry.CaptureAddSetting(entity.Name, "New Currency", entity);
                 }
             }
             catch (Exception exception)

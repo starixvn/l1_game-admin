@@ -2,12 +2,34 @@
 using System.Linq;
 using Sentry;
 using Sentry.Protocol;
+using Newtonsoft.Json;
 
 namespace GamesAdmin.Api.SentryClient
 {
     public static class SentryClientExtensions
     {
         private static string MessageChangedSetting = "CHANGE {0}: {1} has new {2}!!!{3} Details: {4}";
+        private static string AddedSettingMessage = "ADD {0}: {1} Details: {2}";
+
+        public static void CaptureAddSetting(
+            this ISentryClient sentryClient,
+            string gameName,
+            string settingName,
+            object addedSetting)
+        {
+            if (addedSetting == null)
+            {
+                return;
+            }
+
+            var message = string.Format(
+                AddedSettingMessage,
+                settingName.ToUpperInvariant(),
+                gameName,
+                JsonConvert.SerializeObject(addedSetting));
+
+            sentryClient.CaptureMessage(message, SentryLevel.Error);
+        }
 
         public static void CaptureChangedSetting(
             this ISentryClient sentryClient,

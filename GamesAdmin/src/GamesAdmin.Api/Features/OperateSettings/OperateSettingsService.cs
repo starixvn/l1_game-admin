@@ -1,20 +1,29 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
-using AutoMapper;
 using GamesAdmin.Api.Currencies;
-using GamesAdmin.Api.Currencies.Requests;
+using GamesAdmin.Api.CurrencyGroupGames;
 using GamesAdmin.Api.CurrencyGroups;
-using GamesAdmin.Api.CurrencyGroups.Requests;
 using GamesAdmin.Api.Features.OperateSettings.Models;
+using GamesAdmin.Api.Partners;
+using System.Text.Json;
 using GamesAdmin.Api.Games;
-using GamesAdmin.Core.Models.Currencies;
-using MediatR;
+using System.Linq;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database;
+using GamesAdmin.Core.Models;
 using Sentry;
+using GamesAdmin.Core.Models.Currencies;
+using CurrencyHandlers = GamesAdmin.Api.Currencies.Handlers;
+using CurrencyGroupHandlers = GamesAdmin.Api.CurrencyGroups.Handlers;
+using GamesAdmin.Database.Entities.Currencies;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MediatR;
 using CurrenciesRequests = GamesAdmin.Api.Currencies.Requests;
 using CurrencyGroupRequests = GamesAdmin.Api.CurrencyGroups.Requests;
+using AutoMapper;
+using GamesAdmin.Api.Currencies.Requests;
+using GamesAdmin.Api.CurrencyGroups.Requests;
 
 namespace GamesAdmin.Api.Features.OperateSettings
 {
@@ -61,6 +70,33 @@ namespace GamesAdmin.Api.Features.OperateSettings
             };
         }
 
+        public async Task<bool> ImportGameSetting(IList<GameConfig> gameConfigs)
+        {
+            try
+            {
+                foreach (var gameConfig in gameConfigs)
+                {
+                    var dbGameConfig = await gameSettingsService.GetByName(gameConfig.Info.Name);
+
+                    if (dbGameConfig == null)
+                    {
+                        await gameSettingsService.Create(gameConfig);
+                    }
+
+                    await gameSettingsService.UpdateOdds(gameConfig.Name, gameConfig.Odds, Enumerable.Empty<int>());
+                    await gameSettingsService.UpdateMarginSettings(gameConfig.Name, gameConfig.Margin);
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return false;
+        }
+
         public async Task<bool> ImportCurrency(IList<CurrencyModel> currencies)
         {
             try
@@ -90,7 +126,7 @@ namespace GamesAdmin.Api.Features.OperateSettings
                 var allDBCurrencyGroups = await currencyGroupService.GetAll();
                 foreach (var currencyGroup in currencyGroups)
                 {
-                    if (!allDBCurrencyGroups.Any(dbCurrencyGroup =>
+                    if (!allDBCurrencyGroups.Any(dbCurrencyGroup => 
                         dbCurrencyGroup.Name.ToLower() == currencyGroup.Name.ToLower()
                         && dbCurrencyGroup.PartnerId.ToLower() == currencyGroup.PartnerId.ToLower()))
                     {
