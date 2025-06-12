@@ -253,7 +253,7 @@
                 }
             }
 
-            @if (systemSettings.System == SystemType.GN)
+            @if (Model.Type == GameType.DynamicOdds)
             {
                 <div class="form-group">
                     <label asp-for="MaxWinPerRound" class="control-label max-win-per-round-label"></label>
