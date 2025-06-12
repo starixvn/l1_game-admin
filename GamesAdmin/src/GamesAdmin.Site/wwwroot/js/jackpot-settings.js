@@ -148,7 +148,7 @@ var jackpotSettings = (function ($) {
             $("#settings-table").DataTable({
                 ordering: false,
                 lengthMenu: [100, 200, 500],
-                columnDefs: [{ targets: [3, 4], searchable: false }],
+                columnDefs: [{ targets: [1, 2, 3, 4], searchable: false }],
             });
         },
         onCopySettingsSuccess: function () {
