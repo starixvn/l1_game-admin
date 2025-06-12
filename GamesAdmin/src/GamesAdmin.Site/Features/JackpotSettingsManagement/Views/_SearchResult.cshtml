@@ -37,7 +37,7 @@
                         {
                             <td class="text-center d-none" rowspan="@operatorConfigs.Count()">@operatorConfigs.Key.OperatorName</td>
                         }
-                        <td>@(siteConfig.SiteNames.Any() ? string.Join(";", siteConfig.SiteNames) : "All")</td>
+                        <td>@(siteConfig.SiteNames.Any() ? string.Join("; ", siteConfig.SiteNames) : "All")</td>
                         <td class="text-center">
                             <i class="@(siteConfig.Enabled ? "icon-check" : "icon-cancel")"></i>
                             <a class="btn-edit" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#modal .modal-content" data-ajax-success="jackpotSettings.openUpdateForm"
