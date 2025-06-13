@@ -350,6 +350,7 @@ namespace GamesAdmin.Api._Shared.Helpers
         {
             var changedSettings = new List<SettingChangedModel>
             {
+                new SettingChangedModel("SiteNames", string.Join("; ", oldConfig?.SiteNames), string.Join("; ", newConfig.SiteNames)),
                 new SettingChangedModel("Enabled", oldConfig?.Enabled.ToString() ?? string.Empty, newConfig.Enabled.ToString()),
                 new SettingChangedModel("WinningRatio", oldConfig?.WinningRatio.ToString() ?? string.Empty, newConfig.WinningRatio.ToString()),
                 new SettingChangedModel("ExcludeTestCurrency", oldConfig?.ExcludeTestCurrency.ToString() ?? string.Empty, newConfig.ExcludeTestCurrency.ToString()),
