@@ -832,8 +832,9 @@ namespace GamesAdmin.Api.Games
                                 ReturnDocument = ReturnDocument.After
                             });
 
+                var gameEntity = await repository.FindOneAsync(x => x.GameId == entity.GameId);
                 var changedSettings = SettingHelper.GetJackpotPlayerSettingsChangedModel(oldEntity, entity);
-                sentryClient.CaptureChangedSettings(settings.GameId.ToString(), $"Jackpot Player Settings - {entity.OperatorId}", string.Empty, changedSettings);
+                sentryClient.CaptureChangedSettings(gameEntity.Name, $"Jackpot Player Settings - {entity.OperatorId}", string.Empty, changedSettings);
 
                 return entity.Id.ToString();
             }
@@ -881,8 +882,9 @@ namespace GamesAdmin.Api.Games
                             ReturnDocument = ReturnDocument.After
                         });
 
+                var gameEntity = await repository.FindOneAsync(x => x.GameId == entity.GameId);
                 var changedSettings = SettingHelper.GetJackpotBotSettingsChangedModel(oldEntity, entity);
-                sentryClient.CaptureChangedSettings(settings.GameId.ToString(), $"Jackpot Bot Settings - {entity.OperatorId}", string.Empty, changedSettings);
+                sentryClient.CaptureChangedSettings(gameEntity.Name, $"Jackpot Bot Settings - {entity.OperatorId}", string.Empty, changedSettings);
 
                 return entity.Id.ToString();
             }
@@ -910,9 +912,9 @@ namespace GamesAdmin.Api.Games
                     update,
                     new FindOneAndUpdateOptions<BotConfigEntity> { IsUpsert = true, ReturnDocument = ReturnDocument.After });
 
-
+            var gameEntity = await repository.FindOneAsync(x => x.GameId == settings.GameId);
             var changedSettings = SettingHelper.GetJackpotBotRatioSettingsChangedModel(oldEntity, entity);
-            sentryClient.CaptureChangedSettings(settings.GameId.ToString(), $"Jackpot Bot Ratio Settings - {settings.OperatorId}", string.Empty, changedSettings);
+            sentryClient.CaptureChangedSettings(gameEntity.Name, $"Jackpot Bot Ratio Settings - {settings.OperatorId}", string.Empty, changedSettings);
 
             return true;
         }
