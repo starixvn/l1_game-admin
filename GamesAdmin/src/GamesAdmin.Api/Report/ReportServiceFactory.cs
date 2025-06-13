@@ -34,6 +34,7 @@ namespace GamesAdmin.Api.Report
             { GameId.KenoSouth, typeof(MiniKenoReportService<KenoSouthRoundEntity, KenoSouthOnesEntity, KenoSouthBetEntity>) },
             { GameId.KenoNorth, typeof(MiniKenoReportService<KenoNorthRoundEntity, KenoNorthOnesEntity, KenoNorthBetEntity>) },
             { GameId.Roulette, typeof(RouletteReportService) },
+            { GameId.MiniRoulette, typeof(MiniRouletteReportService) },
             { GameId.VipSeDie, typeof(VipSeDieReportService) },
             { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabReportService) },
             { GameId.SicBo, typeof(SicBoReportService) },

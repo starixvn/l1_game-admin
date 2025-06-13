@@ -29,6 +29,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.KenoSouth, new GameTicketCollection( "kenosouth_ones", "kenosouth_cuocs") },
             { GameId.KenoNorth, new GameTicketCollection( "kenonorth_ones", "kenonorth_cuocs") },
             { GameId.Roulette, new GameTicketCollection( "roulette_ones", "roulette_cuocs") },
+            { GameId.MiniRoulette, new GameTicketCollection( "miniroulette_bets", "miniroulette_betlogs") },
             { GameId.VipSeDie, new GameTicketCollection( string.Empty, "vipsedie_cuocs") },
             { GameId.Blackjack, new GameTicketCollection( string.Empty, "blackjack_cuocs") },
             { GameId.SpecialSeDie, new GameTicketCollection( "specialsedie_ones", "specialsedie_cuocs") },

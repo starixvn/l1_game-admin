@@ -169,6 +169,7 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.MarbleFootball => await Move<MarbleFootballBetEntity, MarbleFootballBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.MarbleFootball2 => await Move<MarbleFootball2BetEntity, MarbleFootball2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.RnGSoccer => await Move< RnGSoccerBetEntity, RnGSoccerBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.MiniRoulette => await Move<RouletteOnesEntity, RouletteBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            _ => await Move<BaseBetEntity, BaseBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                        };
             }
@@ -279,6 +280,7 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.MarbleFootball => await Find<MarbleFootballBetEntity, MarbleFootballBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.MarbleFootball2 => await Find<MarbleFootball2BetEntity, MarbleFootball2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.RnGSoccer => await Find<RnGSoccerBetEntity, RnGSoccerBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.MiniRoulette => await Find<RouletteOnesEntity, RouletteBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         _ => await Find<BaseBetEntity, BaseBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     };
                 }

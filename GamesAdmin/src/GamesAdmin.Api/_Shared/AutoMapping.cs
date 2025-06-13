@@ -106,6 +106,11 @@ namespace GamesAdmin.Api._Shared
             CreateMap<RouletteSettlementResultEntity, RouletteSettlementResult>();
             CreateMap<RouletteBetEntity, RouletteBetHistoryRecord>();
 
+            CreateMap<MiniRouletteBetReportEntity, RouletteBetRecord>();
+            CreateMap<MiniRouletteRoundEntity, RouletteRoundResult>();
+            CreateMap<MiniRouletteSettlementResultEntity, RouletteSettlementResult>();
+            CreateMap<MiniRouletteBetEntity, RouletteBetHistoryRecord>();
+
             CreateMap<SpinResultEntity, SpinResult>();
 
             CreateMap<VipSeDieRoundEntity, SeDieRoundResult>()

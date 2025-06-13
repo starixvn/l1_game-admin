@@ -181,6 +181,11 @@ namespace GamesAdmin.Site._Shared
             CreateMap<FootballDiceRoundResult, FootballDiceRoundResultViewModel>();
             CreateMap<FootballDiceBetRecord, FootballDiceRecordViewModel>();
             CreateMap<FootballDiceBetHistoryRecord, FootballDiceBetHistoryRecordViewModel>();
+
+            CreateMap<MiniRouletteRoundResult, MiniRouletteRoundResultViewModel>();
+            CreateMap<MiniRouletteSettlementResult, MiniRouletteSettlementResultViewModel>();
+            CreateMap<MiniRouletteBetRecord, MiniRouletteRecordViewModel>();
+            CreateMap<MiniRouletteBetHistoryRecord, MiniRouletteBetHistoryRecordViewModel>();
         }
     }
 }

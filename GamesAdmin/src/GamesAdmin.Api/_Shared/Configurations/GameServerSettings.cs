@@ -30,6 +30,8 @@
 
         public GameServerConfigs Roulette { get; set; }
 
+        public GameServerConfigs MiniRoulette { get; set; }
+
         public GameServerConfigs Baccarat { get; set; }
 
         public GameServerConfigs FishPrawnCrab { get; set; }

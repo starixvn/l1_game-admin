@@ -136,6 +136,17 @@ namespace GamesAdmin.Core.Models
         public IEnumerable<string> BigSmall { get; set; }
     }
 
+    public class MiniRouletteRoundResult : RoundResult
+    {
+        public byte Result { get; set; }
+
+        public MiniRouletteSettlementResult SettlementResult { get; set; }
+    }
+
+    public class MiniRouletteSettlementResult : RouletteSettlementResult
+    {
+    }
+
     public class VipFishPrawnCrabRoundResult : RoundResult
     {
         public byte FirstDice { get; set; }

@@ -106,6 +106,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.Bac101Value, typeof(IBaccaratXOnlineUserApi) },
             { Game.SevenUpDownValue, typeof(ISevenUpDownOnlineUserApi) },
             { Game.RnGSoccer, typeof(IRnGSoccerOnlineUserApi) },
+            { Game.MiniRouletteValue, typeof(IMiniRouletteOnlineUserApi) },
         };
 
         private readonly IServiceProvider serviceProvider;

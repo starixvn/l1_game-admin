@@ -155,6 +155,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<FishPrawnCrabReportService>();
             services.AddScoped<DragonTigerReportService>();
             services.AddScoped<RouletteReportService>();
+            services.AddScoped<MiniRouletteReportService>();
             services.AddScoped<VipSeDieReportService>();
             services.AddScoped<BlackjackReportService>();
             services.AddScoped<SicBoReportService>();
@@ -193,6 +194,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IKenoProMaxOnlineUserApi>(appSettings.GameServers.KenoProMax.Api, refitSettings));
             services.AddSingleton(RestService.For<IMiniSeDieOnlineUserApi>(appSettings.GameServers.MiniSeDie.Api, refitSettings));
             services.AddSingleton(RestService.For<IRouletteOnlineUserApi>(appSettings.GameServers.Roulette.Api, refitSettings));
+            services.AddSingleton(RestService.For<IMiniRouletteOnlineUserApi>(appSettings.GameServers.MiniRoulette.Api, refitSettings));
             services.AddSingleton(RestService.For<IBaccaratOnlineUserApi>(appSettings.GameServers.Baccarat.Api, refitSettings));
             services.AddSingleton(RestService.For<IFishPrawnCrabOnlineUserApi>(appSettings.GameServers.FishPrawnCrab.Api, refitSettings));
             services.AddSingleton(RestService.For<IDragonTigerOnlineUserApi>(appSettings.GameServers.DragonTiger.Api, refitSettings));

@@ -30,6 +30,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.KenoSouth, typeof(MiniKenoReportService) },
             { GameId.KenoNorth, typeof(MiniKenoReportService) },
             { GameId.Roulette, typeof(RouletteReportService) },
+            { GameId.MiniRoulette, typeof(MiniRouletteReportService) },
             { GameId.VipSeDie, typeof(VipSeDieReportService) },
             { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabReportService) },
             { GameId.SicBo, typeof(SicBoReportService) },

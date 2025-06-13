@@ -44,6 +44,10 @@ namespace GamesAdmin.Core.Models
     {
     }
 
+    public class MiniRouletteBetReport : BetReport<MiniRouletteRoundResult, MiniRouletteBetRecord>
+    {
+    }
+
     public class VipSeDieBetReport : BetReport<SeDieRoundResult, VipSeDieBetRecord>
     {
     }

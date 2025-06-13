@@ -171,7 +171,32 @@
       "even": "Even",
       "evenLive": "Even (Live)"
     },
-    "OfferedSystem": ["SC1", "VG2"]
+    "OfferedSystem": [ "SC1", "VG2" ]
+  },
+  {
+    "GameId": 134,
+    "GameName": "miniroulette",
+    "DisplayName": "Mini Roulette",
+    "BetChoices": [
+      "straightUp",
+      "dozen",
+      "redBlack",
+      "oddEven"
+    ],
+    "DisplayBetChoices": {
+      "straightUp": "Straight Up",
+      "dozen": "Dozen",
+      "redBlack": "Red Black",
+      "oddEven": "Odd Even"
+    },
+    "Odds": [ "straightUp","dozen", "redBlack", "oddEven" ],
+    "DisplayOdds": {
+      "straightUp": "Straight Up",
+      "dozen": "Dozen",
+      "redBlack": "Red Black",
+      "oddEven": "Odd Even",
+    },
+    "OfferedSystem": [ "SC1", "VG2" ]
   },
   {
     "GameId": 118,

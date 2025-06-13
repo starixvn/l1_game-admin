@@ -124,6 +124,11 @@ namespace GamesAdmin.Core.Models
         public decimal TotalBet { get; set; }
     }
 
+    public class MiniRouletteBetRecord : BetRecord
+    {
+        public decimal TotalBet { get; set; }
+    }
+
     public class BlackjackBetRecord : BetRecord
     {
         public long HandId { get; set; }

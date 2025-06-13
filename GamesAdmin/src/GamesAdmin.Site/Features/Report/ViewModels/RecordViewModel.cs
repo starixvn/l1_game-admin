@@ -117,6 +117,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal TotalBet { get; set; }
     }
 
+    public class MiniRouletteRecordViewModel : BetRecordViewModel
+    {
+        public decimal TotalBet { get; set; }
+    }
+
     public class CardViewModel
     {
         public string Rank { get; set; }
