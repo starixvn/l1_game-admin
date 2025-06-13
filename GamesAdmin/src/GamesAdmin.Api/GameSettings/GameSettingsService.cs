@@ -809,6 +809,7 @@ namespace GamesAdmin.Api.Games
                     .Set(x => x.Pools.Grand.PlayerSettings, settings.Pools.Grand.PlayerSettings);
 
                 FilterDefinition<JackpotConfigEntity> filter;
+                JackpotConfigEntity oldEntity = null;
                 if (string.IsNullOrWhiteSpace(settings.Id))
                 {
                     update = update.Set(x => x.GameId, settings.GameId)
@@ -818,6 +819,7 @@ namespace GamesAdmin.Api.Games
                 else
                 {
                     filter = Builders<JackpotConfigEntity>.Filter.Eq(x => x.Id, new ObjectId(settings.Id));
+                    oldEntity = await jackpotConfigsRepository.Collection().Find(filter).FirstOrDefaultAsync();
                 }
 
                 var entity = await jackpotConfigsRepository.Collection()
@@ -829,6 +831,9 @@ namespace GamesAdmin.Api.Games
                                 IsUpsert = true,
                                 ReturnDocument = ReturnDocument.After
                             });
+
+                var changedSettings = SettingHelper.GetJackpotPlayerSettingsChangedModel(oldEntity, entity);
+                sentryClient.CaptureChangedSettings(settings.GameId.ToString(), $"Jackpot Player Settings - {entity.OperatorId}", string.Empty, changedSettings);
 
                 return entity.Id.ToString();
             }
@@ -851,6 +856,8 @@ namespace GamesAdmin.Api.Games
                 .Set(x => x.Pools.Grand.BotSettings, settings.Pools.Grand.BotSettings);
 
                 FilterDefinition<JackpotConfigEntity> filter;
+                JackpotConfigEntity oldEntity = null;
+
                 if (string.IsNullOrWhiteSpace(settings.Id))
                 {
                     update = update.Set(x => x.GameId, settings.GameId)
@@ -860,6 +867,7 @@ namespace GamesAdmin.Api.Games
                 else
                 {
                     filter = Builders<JackpotConfigEntity>.Filter.Eq(x => x.Id, new ObjectId(settings.Id));
+                    oldEntity = await jackpotConfigsRepository.Collection().Find(filter).FirstOrDefaultAsync();
                 }
 
 
@@ -872,6 +880,9 @@ namespace GamesAdmin.Api.Games
                             IsUpsert = true,
                             ReturnDocument = ReturnDocument.After
                         });
+
+                var changedSettings = SettingHelper.GetJackpotBotSettingsChangedModel(oldEntity, entity);
+                sentryClient.CaptureChangedSettings(settings.GameId.ToString(), $"Jackpot Bot Settings - {entity.OperatorId}", string.Empty, changedSettings);
 
                 return entity.Id.ToString();
             }
@@ -889,8 +900,21 @@ namespace GamesAdmin.Api.Games
                 .Set(x => x.HoursMaxBot, settings.HoursMaxBot)
                 .Set(x => x.GameId, settings.GameId);
 
-            var result = await botConfigsRepository.UpdateAsync(x => x.JackpotConfigId == ObjectId.Parse(settings.Id), update, new UpdateOptions { IsUpsert = true });
-            return result.IsAcknowledged;
+
+
+            var oldEntity = await botConfigsRepository.FindOneAsync(x => x.JackpotConfigId == ObjectId.Parse(settings.Id));
+
+            var entity = await botConfigsRepository.Collection()
+                .FindOneAndUpdateAsync(
+                    Builders<BotConfigEntity>.Filter.Eq(x => x.JackpotConfigId, ObjectId.Parse(settings.Id)),
+                    update,
+                    new FindOneAndUpdateOptions<BotConfigEntity> { IsUpsert = true, ReturnDocument = ReturnDocument.After });
+
+
+            var changedSettings = SettingHelper.GetJackpotBotRatioSettingsChangedModel(oldEntity, entity);
+            sentryClient.CaptureChangedSettings(settings.GameId.ToString(), $"Jackpot Bot Ratio Settings - {settings.OperatorId}", string.Empty, changedSettings);
+
+            return true;
         }
 
         public async Task<IEnumerable<string>> GetExistedSites(string configId, int gameId, string operatorId, string[] siteNames)

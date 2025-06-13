@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Audit.Mvc;
 using GamesAdmin.Site.Features.JackpotSettingsManagement.Requests;
 using GamesAdmin.Site.Features.JackpotSettingsManagement.ViewModels;
 using MediatR;
@@ -27,21 +28,21 @@ namespace GamesAdmin.Site.Features.JackpotSettingsManagement
         [HttpGet]
         public async Task<IActionResult> Create() => PartialView("_CreateOrUpdate", await mediator.Send(new CreatePageRequest()));
 
-        [HttpPost]
+        [HttpPost, Audit]
         public async Task<IActionResult> UpdatePlayerSettings([Bind] JackpotSettingsViewModel model)
         {
             var result = await mediator.Send(new UpdatePlayerSettingsRequest { Settings = model });
             return Json(result);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         public async Task<IActionResult> UpdateBotSettings([Bind] JackpotSettingsViewModel model)
         {
             var result = await mediator.Send(new UpdateBotSettingsRequest { Settings = model });
             return Json(result);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         public async Task<IActionResult> UpdateBotRatioSettings([Bind] JackpotSettingsViewModel model)
         {
             var result = await mediator.Send(new UpdateBotRatioSettingsRequest { Settings = model });

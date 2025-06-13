@@ -345,6 +345,48 @@ namespace GamesAdmin.Api._Shared.Helpers
             return changedSettings;
         }
 
+        public static List<SettingChangedModel> GetJackpotPlayerSettingsChangedModel(JackpotConfigEntity oldConfig, JackpotConfigEntity newConfig)
+        {
+            var changedSettings = new List<SettingChangedModel>
+            {
+                new SettingChangedModel("Enabled", oldConfig?.Enabled.ToString() ?? string.Empty, newConfig.Enabled.ToString()),
+                new SettingChangedModel("WinningRatio", oldConfig?.WinningRatio.ToString() ?? string.Empty, newConfig.WinningRatio.ToString()),
+                new SettingChangedModel("ExcludeTestCurrency", oldConfig?.ExcludeTestCurrency.ToString() ?? string.Empty, newConfig.ExcludeTestCurrency.ToString()),
+                new SettingChangedModel("Minor Initial Value", oldConfig?.Pools.Minor.Init.ToString() ?? string.Empty, newConfig.Pools.Minor.Init.ToString()),
+                new SettingChangedModel("Major Initial Value", oldConfig?.Pools.Major.Init.ToString() ?? string.Empty, newConfig.Pools.Major.Init.ToString()),
+                new SettingChangedModel("Grand Initial Value", oldConfig?.Pools.Grand.Init.ToString() ?? string.Empty, newConfig.Pools.Grand.Init.ToString()),
+                new SettingChangedModel("Minor Settings", oldConfig?.Pools.Minor.PlayerSettings.ToString() ?? string.Empty, newConfig.Pools.Minor.PlayerSettings.ToString()),
+                new SettingChangedModel("Major Settings", oldConfig?.Pools.Major.PlayerSettings.ToString() ?? string.Empty, newConfig.Pools.Major.PlayerSettings.ToString()),
+                new SettingChangedModel("Grand Settings", oldConfig?.Pools.Grand.PlayerSettings.ToString() ?? string.Empty, newConfig.Pools.Grand.PlayerSettings.ToString()),
+            };
+
+            return changedSettings;
+        }
+
+        public static List<SettingChangedModel> GetJackpotBotSettingsChangedModel(JackpotConfigEntity oldConfig, JackpotConfigEntity newConfig)
+        {
+            var changedSettings = new List<SettingChangedModel>
+            {
+                new SettingChangedModel("BotBetLevels", oldConfig?.BotBetLevels.ToString() ?? string.Empty, newConfig.BotBetLevels.ToString()),
+                new SettingChangedModel("Minor Settings", oldConfig?.Pools.Minor.BotSettings.ToString() ?? string.Empty, newConfig.Pools.Minor.BotSettings.ToString()),
+                new SettingChangedModel("Major Settings", oldConfig?.Pools.Major.BotSettings.ToString() ?? string.Empty, newConfig.Pools.Major.BotSettings.ToString()),
+                new SettingChangedModel("Grand Settings", oldConfig?.Pools.Grand.BotSettings.ToString() ?? string.Empty, newConfig.Pools.Grand.BotSettings.ToString()),
+            };
+
+            return changedSettings;
+        }
+
+        public static List<SettingChangedModel> GetJackpotBotRatioSettingsChangedModel(BotConfigEntity oldConfig, BotConfigEntity newConfig)
+        {
+            var changedSettings = new List<SettingChangedModel>
+            {
+                new SettingChangedModel("Enabled", oldConfig?.Enabled.ToString() ?? string.Empty, newConfig.Enabled.ToString()),
+                new SettingChangedModel("BotRatio", oldConfig?.HoursMaxBot.ToString() ?? string.Empty, newConfig.HoursMaxBot.ToString()),
+            };
+
+            return changedSettings;
+        }
+
         private static string GetOddsByCountConfigString(IList<OddsByCount> oddsByCount)
         {
             string configString = "";
