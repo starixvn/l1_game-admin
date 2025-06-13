@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
@@ -355,9 +356,9 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("Minor Initial Value", oldConfig?.Pools.Minor.Init.ToString() ?? string.Empty, newConfig.Pools.Minor.Init.ToString()),
                 new SettingChangedModel("Major Initial Value", oldConfig?.Pools.Major.Init.ToString() ?? string.Empty, newConfig.Pools.Major.Init.ToString()),
                 new SettingChangedModel("Grand Initial Value", oldConfig?.Pools.Grand.Init.ToString() ?? string.Empty, newConfig.Pools.Grand.Init.ToString()),
-                new SettingChangedModel("Minor Settings", oldConfig?.Pools.Minor.PlayerSettings.ToString() ?? string.Empty, newConfig.Pools.Minor.PlayerSettings.ToString()),
-                new SettingChangedModel("Major Settings", oldConfig?.Pools.Major.PlayerSettings.ToString() ?? string.Empty, newConfig.Pools.Major.PlayerSettings.ToString()),
-                new SettingChangedModel("Grand Settings", oldConfig?.Pools.Grand.PlayerSettings.ToString() ?? string.Empty, newConfig.Pools.Grand.PlayerSettings.ToString()),
+                new SettingChangedModel("Minor Player Settings", JsonConvert.SerializeObject(oldConfig?.Pools.Minor.PlayerSettings), JsonConvert.SerializeObject(newConfig.Pools.Minor.PlayerSettings)),
+                new SettingChangedModel("Major Player Settings", JsonConvert.SerializeObject(oldConfig?.Pools.Major.PlayerSettings), JsonConvert.SerializeObject(newConfig.Pools.Major.PlayerSettings)),
+                new SettingChangedModel("Grand Player Settings", JsonConvert.SerializeObject(oldConfig?.Pools.Grand.PlayerSettings), JsonConvert.SerializeObject(newConfig.Pools.Grand.PlayerSettings)),
             };
 
             return changedSettings;
@@ -367,10 +368,10 @@ namespace GamesAdmin.Api._Shared.Helpers
         {
             var changedSettings = new List<SettingChangedModel>
             {
-                new SettingChangedModel("BotBetLevels", oldConfig?.BotBetLevels.ToString() ?? string.Empty, newConfig.BotBetLevels.ToString()),
-                new SettingChangedModel("Minor Settings", oldConfig?.Pools.Minor.BotSettings.ToString() ?? string.Empty, newConfig.Pools.Minor.BotSettings.ToString()),
-                new SettingChangedModel("Major Settings", oldConfig?.Pools.Major.BotSettings.ToString() ?? string.Empty, newConfig.Pools.Major.BotSettings.ToString()),
-                new SettingChangedModel("Grand Settings", oldConfig?.Pools.Grand.BotSettings.ToString() ?? string.Empty, newConfig.Pools.Grand.BotSettings.ToString()),
+                new SettingChangedModel("BotBetLevels", JsonConvert.SerializeObject(oldConfig?.BotBetLevels), JsonConvert.SerializeObject(newConfig.BotBetLevels)),
+                new SettingChangedModel("Minor Bot Settings", JsonConvert.SerializeObject(oldConfig?.Pools.Minor.BotSettings), JsonConvert.SerializeObject(newConfig.Pools.Minor.BotSettings)),
+                new SettingChangedModel("Major Bot Settings", JsonConvert.SerializeObject(oldConfig?.Pools.Major.BotSettings), JsonConvert.SerializeObject(newConfig.Pools.Major.BotSettings)),
+                new SettingChangedModel("Grand Bot Settings", JsonConvert.SerializeObject(oldConfig?.Pools.Grand.BotSettings), JsonConvert.SerializeObject(newConfig.Pools.Grand.BotSettings)),
             };
 
             return changedSettings;
@@ -381,8 +382,12 @@ namespace GamesAdmin.Api._Shared.Helpers
             var changedSettings = new List<SettingChangedModel>
             {
                 new SettingChangedModel("Enabled", oldConfig?.Enabled.ToString() ?? string.Empty, newConfig.Enabled.ToString()),
-                new SettingChangedModel("BotRatio", oldConfig?.HoursMaxBot.ToString() ?? string.Empty, newConfig.HoursMaxBot.ToString()),
             };
+
+            changedSettings.AddRange(
+                GetBotRatiosChangedModel(
+                    oldConfig?.HoursMaxBot ?? Enumerable.Repeat<double>(0, 24).ToArray(),
+                    newConfig.HoursMaxBot ?? Enumerable.Repeat<double>(0, 24).ToArray()));
 
             return changedSettings;
         }
