@@ -72,7 +72,7 @@ namespace GamesAdmin.Database
                         ExchangeRateId = jackpot.ExchangeRateId,
                         Rate = jackpot.Rate,
                         SiteName = jackpot.SiteName,
-                        OperatorName = operators.FirstOrDefault(x => x.PartnerId == jackpot.OperatorId).Name,
+                        OperatorName = operators.FirstOrDefault(x => x.PartnerId == jackpot.OperatorId)?.Name,
                     });
                 }
             }
