@@ -101,8 +101,13 @@ namespace GamesAdmin.Api._Shared.Middlewares
             {
                 AddOnlineUserApiGN(services, appSettings, refitSettings);
             }
-            else if (appSettings.SystemType == SystemType.SC1 || appSettings.SystemType == SystemType.VG2 || appSettings.SystemType == SystemType.HD)
+            else if (appSettings.SystemType == SystemType.SC1 || appSettings.SystemType == SystemType.VG2)
             {
+                AddOnlineUserApiSCVG(services, appSettings, refitSettings);
+            }
+            else if (appSettings.SystemType == SystemType.HD)
+            {
+                AddOnlineUserApiGN(services, appSettings, refitSettings);
                 AddOnlineUserApiSCVG(services, appSettings, refitSettings);
             }
 
