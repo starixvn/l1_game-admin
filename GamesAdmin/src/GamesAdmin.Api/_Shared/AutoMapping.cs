@@ -3,6 +3,7 @@ using System.Linq;
 using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
@@ -677,6 +678,9 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.BetWin, opt => opt.MapFrom((source) => source.Betwin))
                 .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.OperatorId));
             CreateMap<FootballSlotBetLogEntity, SlotRNGBetHistoryRecord>();
+
+            CreateMap<FootballCoinTossMatchEntity, MatchConfig>();
+
         }
     }
 }

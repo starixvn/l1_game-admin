@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api.GameSettings;
 using GamesAdmin.Api.GameSettings.Requests;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
 
 namespace GamesAdmin.Api.Games
@@ -31,6 +32,8 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateCrashConfigRequest, bool>
         , IRequestHandler<UpdateBotSlotSettingsRequest, bool>
         , IRequestHandler<ImportRequest, bool>
+        , IRequestHandler<GetMatchConfigRequest, IEnumerable<MatchConfig>>
+        , IRequestHandler<UpdateMatchConfigRequest, bool>
     {
         private readonly IGameSettingsService gameService;
         private readonly ICloneSettingService slotSettingService;
@@ -110,5 +113,11 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(ImportRequest request, CancellationToken cancellationToken)
             => gameService.ImportGame(request.Game);
+
+        public Task<IEnumerable<MatchConfig>> Handle(GetMatchConfigRequest request, CancellationToken cancellationToken)
+            => gameService.GetMatchConfig();
+
+        public Task<bool> Handle(UpdateMatchConfigRequest request, CancellationToken cancellationToken)
+            => gameService.UpdateMatchConfig(request.MatchConfigs);
     }
 }

@@ -73,6 +73,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<StatusGameResult> CheckServiceStatus(CheckServiceStatusRequest request);
 
         Task<RtpResult> GetSlotRtp(GetSlotRtpRequest request);
+
+        Task<IEnumerable<MatchConfig>> GetMatchConfig();
+
+        Task<bool> UpdateMatchConfig(UpdateMatchConfigRequest request);
     }
 
     public class GameSettingService : IGameSettingService
@@ -232,5 +236,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<RtpResult> GetSlotRtp(GetSlotRtpRequest request)
         => gameApi.GetSlotRtp(request);
+
+        public async Task<IEnumerable<MatchConfig>> GetMatchConfig()
+        => await gameApi.GetMatchConfig();
+
+        public async Task<bool> UpdateMatchConfig(UpdateMatchConfigRequest request)
+        => await gameApi.UpdateMatchConfig(request);
     }
 }

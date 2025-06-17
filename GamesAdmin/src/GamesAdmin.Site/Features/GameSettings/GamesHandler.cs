@@ -51,6 +51,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetSlotRtpRequest, RtpResult>
         , IRequestHandler<CheckServiceStatusRequest, StatusGameResult>
         , IRequestHandler<UpdateSlotBotConfigRequest, bool>
+        , IRequestHandler<GetMatchConfigRequest, IEnumerable<MatchConfig>>
+        , IRequestHandler<UpdateMatchConfigRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -550,5 +552,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<StatusGameResult> Handle(CheckServiceStatusRequest request, CancellationToken cancellationToken)
         => await gameService.CheckServiceStatus(request);
+
+        public async Task<IEnumerable<MatchConfig>> Handle(GetMatchConfigRequest request, CancellationToken cancellationToken)
+        => await gameService.GetMatchConfig();
+
+        public Task<bool> Handle(UpdateMatchConfigRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateMatchConfig(request);
     }
 }

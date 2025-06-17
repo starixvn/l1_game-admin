@@ -100,5 +100,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Post("/status_checker/check")]
         Task<StatusGameResult> CheckServiceStatus(CheckServiceStatusRequest request);
+
+        [Post("/game_settings/update_match_config")]
+        Task<bool> UpdateMatchConfig([Body] UpdateMatchConfigRequest request);
+
+        [Get("/game_settings/match_config")]
+        Task<IEnumerable<MatchConfig>> GetMatchConfig();
     }
 }

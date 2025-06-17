@@ -260,6 +260,25 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         [HttpPost, Audit]
+        [Route("/matchConfig/update")]
+        public async Task<IActionResult> UpdateMatchConfig([FromBody] IEnumerable<MatchConfig> matches)
+        {
+            try
+            {
+                var result = await mediator.Send(new UpdateMatchConfigRequest(matches));
+
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+
+        [HttpPost, Audit]
         [Route("/slotBot/update")]
         public async Task<IActionResult> UpdateSlotBotConfig([Bind] EditViewModel viewModel)
         {

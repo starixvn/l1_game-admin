@@ -1,11 +1,14 @@
 @using GamesAdmin.Core.Enumeration;
 @using GamesAdmin.Core;
+@using GamesAdmin.Site.Features.GameSettings.Requests
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
 
 @inject GamesAdmin.Site._Shared.Configurations.ISystemSettings systemSettings;
 
 @model EditViewModel;
 @inject Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine ViewEngine
+@inject MediatR.IMediator Mediator
+
 <div>
     <ul class="nav nav-custom" id="setting-tabs">
         <li class="nav-item">
@@ -15,6 +18,14 @@
         <li class="nav-item">
             <a class="nav-link" id="botsetting-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('botsetting')">Bot Setting</a>
         </li>
+
+        @if (Model.HasAdditionalConfig)
+        {
+            <li class="nav-item">
+                <a class="nav-link" id="additionalconfig-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('additionalconfig')">Additional Config</a>
+            </li>
+        }
+
     </ul>
 
     <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
@@ -30,8 +41,8 @@
                 </div>
                 <div class="col-4">
                     <select hidden multiple class="form-control"
-                        asp-items="Model.OtherGamesInGroup"
-                        asp-for="OtherGameIdsInGroup">
+                            asp-items="Model.OtherGamesInGroup"
+                            asp-for="OtherGameIdsInGroup">
                     </select>
                     <select class="form-control" id="fanexGameIds"></select>
                 </div>
@@ -220,7 +231,7 @@
                     <input type="number" asp-for="CrashConfig.CrashAtBase" class="form-control col-2" />
                 </div>
 
-                @if(Model.CrashConfig.MultiplierConfigs != null)
+                @if (Model.CrashConfig.MultiplierConfigs != null)
                 {
                     <div class="form-group">
                         <label class="control-label">Multiplier Configs</label>
@@ -395,5 +406,23 @@
                 </div>
             }
         </div>
+
+        <div id="additionalconfig" style="display:none;">
+            @if (Model.HasAdditionalConfig)
+            {
+                switch (Model.GameId)
+                {
+                    case (int)GamesAdmin.Core.Enumeration.GameId.FootballCoinToss:
+                        var matches = await Mediator.Send(new GetMatchConfigRequest());
+                        <partial name="_MatchConfig" for="@matches" />
+                        break;
+
+                    default: break;
+
+                }
+            }
+
+        </div>
+
     </form>
 </div>

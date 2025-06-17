@@ -12,7 +12,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
-using GamesAdmin.Database.Entities.Lobby;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Sentry;
 
@@ -61,6 +61,10 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdateSymbolWeight(string name, SymbolWeight symbolWeight);
 
         Task<bool> UpdateCrashConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, CrashConfig crashConfig);
+
+        Task<IEnumerable<MatchConfig>> GetMatchConfig();
+
+        Task<bool> UpdateMatchConfig(IEnumerable<MatchConfig> matchConfigs);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -73,12 +77,15 @@ namespace GamesAdmin.Api.Games
 
         private readonly IGenericRepository<GameConfigEntity> repository;
 
+        private readonly IGenericRepository<FootballCoinTossMatchEntity> matchRepository;
+
         private readonly INotificationService notificationService;
 
         public GameSettingsService(
             IMapper mapper,
             ISentryClient sentryClient,
             IGenericRepository<GameConfigEntity> repository,
+            IGenericRepository<FootballCoinTossMatchEntity> matchRepository,
             INotificationService notificationService
             )
         {
@@ -86,6 +93,7 @@ namespace GamesAdmin.Api.Games
             this.sentryClient = sentryClient;
             this.mapper = mapper;
             this.notificationService = notificationService;
+            this.matchRepository = matchRepository;
         }
 
         public async Task<IEnumerable<GameConfig>> Get()
@@ -145,24 +153,24 @@ namespace GamesAdmin.Api.Games
                     };
                 }
 
-				if (game.Info.HaveTournament)
-				{
+                if (game.Info.HaveTournament)
+                {
                     entity.TournamentConfig = new TournamentConfig()
                     {
                         Code = "",
-                        Teams = new List<string> {}
-					};
-				}
+                        Teams = new List<string> { }
+                    };
+                }
 
-				if (game.Info.HaveVideoStream)
-				{
-					entity.VideoStreamConfig = new VideoStreamConfig()
-					{
-						VideoInfos = new List<VideoInfo> {}
-					};
-				}
+                if (game.Info.HaveVideoStream)
+                {
+                    entity.VideoStreamConfig = new VideoStreamConfig()
+                    {
+                        VideoInfos = new List<VideoInfo> { }
+                    };
+                }
 
-				await repository.InsertOneAsync(entity);
+                await repository.InsertOneAsync(entity);
 
                 var messages = new Dictionary<string, string> { [Language.DefaultLanguageValue] = game.EnableSetting.DisabledMessage };
                 await notificationService.AddDisableMessage(game.Info.Name, messages);
@@ -181,7 +189,7 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
-                if(!string.IsNullOrWhiteSpace((await GetGameEntity(gameConfig.Info.Name))?.Name))
+                if (!string.IsNullOrWhiteSpace((await GetGameEntity(gameConfig.Info.Name))?.Name))
                 {
                     return false;
                 }
@@ -774,6 +782,53 @@ namespace GamesAdmin.Api.Games
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
             return true;
+        }
+
+        public async Task<IEnumerable<MatchConfig>> GetMatchConfig()
+        {
+            var matches = (await matchRepository.FilterByAsync(entity => true)).OrderByDescending(x => x.StartTime);
+            return matches.Select(entity => mapper.Map<MatchConfig>(entity));
+        }
+
+        public async Task<bool> UpdateMatchConfig(IEnumerable<MatchConfig> matchConfigs)
+        {
+            try
+            {
+                var newMatches = matchConfigs.Where(x => string.IsNullOrEmpty(x.Id));
+
+                var matches = (await matchRepository.FilterByAsync(entity => true)).ToList();
+
+                var toUpdateMatches = matchConfigs.Where(x => x.Id != null && matches.Any(y => y.Id.Equals(ObjectId.Parse(x.Id))));
+                var toDeleteMatches = matches.Where(x => !matchConfigs.Any(y => y.Id != null && y.Id == x.Id.ToString()));
+
+                if (newMatches.Count() > 0)
+                {
+                    await matchRepository.InsertManyAsync(newMatches.Select(x => new FootballCoinTossMatchEntity { Home = x.Home, Away = x.Away, StartTime = x.StartTime }));
+                }
+
+                foreach (var match in toUpdateMatches)
+                {
+                    var update = Builders<FootballCoinTossMatchEntity>.Update
+                        .Set(entity => entity.Home, match.Home)
+                        .Set(entity => entity.Away, match.Away)
+                        .Set(entity => entity.StartTime, match.StartTime);
+
+                    await matchRepository.UpdateAsync(entity => entity.Id.Equals(ObjectId.Parse(match.Id)), update);
+                }
+
+                if (toDeleteMatches.Count() > 0)
+                {
+                    await matchRepository.DeleteManyAsync(entity => toDeleteMatches.Any(x => x.Id == entity.Id));
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
         }
     }
 }

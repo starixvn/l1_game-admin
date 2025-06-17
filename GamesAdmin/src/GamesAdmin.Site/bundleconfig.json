@@ -9,9 +9,11 @@
     "outputFileName": "wwwroot/js/game-status.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/jquery-datetimepicker/jquery.datetimepicker.full.min.js",
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/lib/fanex.multiSelect/fanex.multiSelect.js",
       "wwwroot/js/game-constants.js",
+      "wwwroot/js/match-config.js",
       "wwwroot/js/game-status.js"
     ]
   },

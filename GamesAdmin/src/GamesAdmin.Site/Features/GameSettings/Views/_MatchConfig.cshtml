@@ -1,0 +1,12 @@
+﻿@using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Core.Models.GameConfigs
+@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@model IEnumerable<MatchConfig>
+
+<div class="form-group" id="matches">
+    <label class="control-label">Match Config</label>
+    <label class="icon-add" style="margin-bottom: -10px;" onclick="matchConfig.addMatchItem()"></label>
+    <div id="match-configs">
+        @Html.EditorFor(x => x)
+    </div>
+</div>

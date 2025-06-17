@@ -131,6 +131,7 @@
 
                     $oddsMultiplierTemplate = $("#odds-multipliers .multiplier-item").first();
                     oddsMultiplierIndex = $("#odds-multipliers .multiplier-item").length;
+                    matchConfig?.init();
 
                     gameStatus.initFanexSelect("#OtherGameIdsInGroup", "#fanexGameIds");
 
@@ -452,6 +453,16 @@
                 return;
             }
 
+            if ($('#additionalconfig').css('display') && $('#additionalconfig').css('display') !== 'none') {
+
+                const gameName = $('#settingTitle').html().replace("General Setting: ", "");
+
+                if (gameName === "Football Coin Toss") {
+                    this.updateMatchConfigs();
+                }
+                return;
+            }
+
             if (!$('#gameForm').valid()) {
                 $('#updateBtn').prop('disabled', false);
                 return
@@ -482,6 +493,32 @@
                 }, 1000);
             });
         },
+        updateMatchConfigs: function () {
+            const matches = matchConfig.updateMatchConfigsIndex();
+            $.ajax({
+                method: "POST",
+                url: "/matchConfig/update",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(matches)
+            }).done(function (result) {
+                if (result) {
+                    $('#successMsg').show();
+                }
+                else {
+                    $('#failedMsg').show();
+                }
+
+                setTimeout(function () {
+                    $('#updateBtn').prop('disabled', false);
+                    $('#successMsg').hide();
+                    $('#failedMsg').hide();
+                    $('#gameModal').modal('hide');
+                    location.reload();
+                }, 1000);
+            });
+        },
+
         updateSymbolWeight: function () {
             const weights = this.getSymbolWeight();
             const validate = this.validationSymbolWeights(weights);
@@ -780,12 +817,14 @@
             $('#botsetting').hide();
             $('#adjustweight').hide();
             $('#slotBotSetting').hide();
+            $('#additionalconfig').hide();
 
             $('#general-tab-header').removeClass("active");
             $('#jackpots-tab-header').removeClass("active");
             $('#botsetting-tab-header').removeClass("active");
             $('#adjustweight-tab-header').removeClass("active");
             $('#slotBotSetting-tab-header').removeClass("active");
+            $('#additionalconfig-tab-header').removeClass("active");
 
             const id = '#' + name;
             const headerId = '#' + name + '-tab-header';

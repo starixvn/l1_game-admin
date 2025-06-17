@@ -65,6 +65,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public JackpotViewModel JackpotViewModel { get; set; }
 
+        public bool HasAdditionalConfig => new[] { (int)Core.Enumeration.GameId.FootballCoinToss }.Contains(GameId);
+
         [DisplayName("Enable Smart Bot")]
         public bool SmartBotEnabled { get; set; }
 

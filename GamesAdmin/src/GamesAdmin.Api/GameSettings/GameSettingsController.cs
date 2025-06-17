@@ -127,5 +127,13 @@ namespace GamesAdmin.Api.Games
         [HttpGet("{name}/disabled_message")]
         public Task<Dictionary<string, string>> GetDisableMessage(string name)
             => mediator.Send(new GetDisabledMessageRequest(name));
+
+        [HttpGet("match_config")]
+        public Task<IEnumerable<MatchConfig>> GetMatchConfig()
+            => mediator.Send(new GetMatchConfigRequest());
+
+        [HttpPost("update_match_config")]
+        public Task<bool> UpdateMatchConfig(UpdateMatchConfigRequest request)
+            => mediator.Send(request);
     }
 }
