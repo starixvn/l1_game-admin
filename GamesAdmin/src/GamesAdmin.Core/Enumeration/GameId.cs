@@ -95,7 +95,7 @@
         SevenUpDown = 103,
         MarbleFootball = 104,
         MarbleFootball2 = 114,
-        RnGSoccer = 118
+        RnGSoccer = 118,
         MiniRoulette = 134
     }
 }
