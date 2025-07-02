@@ -111,7 +111,7 @@
         updateSiteExclusion: function (isContinue, modalHandlerOnUpdate) {
             var gameId = $('#GameId')[0].value;
             var partnerId = $('#PartnerId')[0].value;
-            var exclusionSites = $('#siteExclusions').val().split(';');
+            var exclusionSites = $('#siteExclusions').val().trim().split(';');
 
             $.ajax({
                 method: "POST",
