@@ -11,6 +11,7 @@ namespace GamesAdmin.Database.Entities.Lobby
         public int[] MiniPanelGameIds { get; set; }
         public LobbyCategoryEntity[] Categories { get; set; }
         public BannerEntity[] Banners { get; set; }
+        public BannerEntity[] CenterBanners { get; set; }
         public RoundTimerGameEntity RoundTimerGame { get; set; }
     }
 

@@ -90,6 +90,7 @@ namespace GamesAdmin.Api.Lobby
                         .Set(field => field.Categories, lobbyEntity.Categories)
                         .Set(field => field.MiniPanelGameIds, lobbyEntity.MiniPanelGameIds)
                         .Set(field => field.Banners, lobbyEntity.Banners)
+                        .Set(field => field.CenterBanners, lobbyEntity.CenterBanners)
                         .Set(field => field.RoundTimerGame, lobbyEntity.RoundTimerGame);
 
                     await lobbyRepository.UpdateAsync(entity => entity.Id == lobbyEntity.Id, update);

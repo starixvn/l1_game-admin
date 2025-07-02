@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Modal from "react-modal";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { FormControl } from "react-bootstrap";
-import { Game, Banner } from "../lobby-data-types";
+import Modal from "react-modal";
+import { Banner, Game } from "../lobby-data-types";
+
+export enum BANNER_TYPE {
+  REGULAR = "REGULAR",
+  CENTER = "CENTER",
+}
 
 type Props = {
   onChange: (gameCategory: Banner[]) => void;
   gameIds: Game[];
   banners: Banner[];
   isSuperAdmin: boolean;
+  bannerType?: BANNER_TYPE;
 };
 
 const reorder = (
@@ -57,6 +63,7 @@ const Banners: React.FC<Props> = ({
   onChange,
   gameIds,
   isSuperAdmin,
+  bannerType = BANNER_TYPE.REGULAR,
 }) => {
   const getAvailableGames = (editingId = 0): Game[] => {
     let result: Game[] = [];
@@ -187,10 +194,21 @@ const Banners: React.FC<Props> = ({
   const getGameName = (id: number) => {
     return gameIds.find((gameId) => +gameId.value === id)?.text;
   };
+  
+  const title = () => {
+    switch (bannerType) {
+      case BANNER_TYPE.CENTER:
+        return <div>Center Banner Layout</div>;
+      default:
+        return <div>Banner Layout</div>;
+    }
+  };
 
   return (
     <div className="lobby-panel">
-      <div className="title">Banner Layout</div>
+      <div className="title">
+        {title()}
+      </div>
 
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable" direction="horizontal">

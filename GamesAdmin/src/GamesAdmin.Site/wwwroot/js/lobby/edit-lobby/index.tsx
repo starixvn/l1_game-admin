@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 import { FormControl } from "react-bootstrap";
+import { useHistory, useParams } from "react-router-dom";
+import Banners, { BANNER_TYPE } from "./banners";
+import { LobbyConfigProvider } from "./lobby-config-context";
 import LobbyLayout from "./lobby-layout";
 import MiniPanel from "./minipanel";
-import axios from "axios";
-import { useHistory, useParams } from "react-router-dom";
-import { LobbyConfigProvider } from "./lobby-config-context";
-import Banners from "./banners";
 const _ = require("lodash");
 
 declare global {
@@ -25,6 +25,7 @@ const EditLobby: React.FC = () => {
   let [gameSettings, setGameSettings] = useState<any>({});
   let [currencyGroupIds, setCurrencyGroupIds] = useState([]);
   let [banners, setBanners] = useState([]);
+  let [centerBanners, setCenterBanners] = useState([]);
   let [currentLobbyConfigs, setCurrentLobbyConfigs] = useState<any>({});
   let [message, setMessage] = useState({ msg: "", success: true });
   let [createId, setCreateId] = useState(null);
@@ -66,6 +67,7 @@ const EditLobby: React.FC = () => {
       setCurrencyGroupIds(res.data.lobbyConfig.currencyGroupIds);
       setMiniPanelGameIds(res.data.lobbyConfig.miniPanelGameIds);
       setBanners(res.data.lobbyConfig.banners);
+      setCenterBanners(res.data.lobbyConfig.centerBanners);
       setRoundTimerGame(res.data.lobbyConfig.roundTimerGame ?? {games: [], main: -1});
 
       // update context categories
@@ -189,6 +191,9 @@ const EditLobby: React.FC = () => {
     clonedLobbyConfigs.banners = lobbyConfigs.banners.map((banner) =>
       Object.assign({}, banner)
     );
+    clonedLobbyConfigs.centerBanners = lobbyConfigs.centerBanners.map((banner) =>
+      Object.assign({}, banner)
+    );
     clonedLobbyConfigs.categories = cloneCategories(lobbyConfigs.categories);
 
     return clonedLobbyConfigs;
@@ -226,6 +231,7 @@ const EditLobby: React.FC = () => {
       ) ||
       checkDifference(miniPanelGameIds, currentLobbyConfigs.miniPanelGameIds) ||
       checkDifference(banners, currentLobbyConfigs.banners) ||
+      checkDifference(centerBanners, currentLobbyConfigs.centerBanners) ||
       checkDifference(roundTimerGame, currentLobbyConfigs.roundTimerGame)
     ) {
       result = true;
@@ -264,6 +270,7 @@ const EditLobby: React.FC = () => {
       categories: lobbyConfig.categories,
       miniPanelGameIds,
       banners,
+      centerBanners,
       roundTimerGame,
     };
     const valid = validateLobbyConfig();
@@ -275,6 +282,7 @@ const EditLobby: React.FC = () => {
         currencyGroupIds,
         miniPanelGameIds,
         banners,
+        centerBanners,
         categories: lobbyConfig.categories,
         name,
         roundTimerGame,
@@ -296,6 +304,10 @@ const EditLobby: React.FC = () => {
 
   const onChangeBanner = (banners) => {
     setBanners(banners);
+  };
+
+  const onChangeCenterBanner = (banners) => {
+    setCenterBanners(banners);
   };
 
   return (
@@ -361,6 +373,14 @@ const EditLobby: React.FC = () => {
             onChange={onChangeBanner}
             gameIds={gameIds}
             isSuperAdmin={isSuperAdmin}
+          />
+
+          <Banners
+            banners={centerBanners}
+            onChange={onChangeCenterBanner}
+            gameIds={gameIds}
+            isSuperAdmin={isSuperAdmin}
+            bannerType={BANNER_TYPE.CENTER}
           />
 
           <div className="btn-group">

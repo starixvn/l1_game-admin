@@ -533,6 +533,24 @@ namespace GamesAdmin.Api._Shared
                  }).ToArray();
 
                  return result;
+             }))
+             .ForMember(x => x.CenterBanners, opt => opt.MapFrom((source, destination, i, context) =>
+             {
+                 if (source.CenterBanners == null)
+                 {
+                     return Enumerable.Empty<Banner>().ToArray();
+                 }
+                 
+                 var result = source.CenterBanners.Select(banner =>
+                 {
+                     return new Banner
+                     {
+                         GameId = banner.GameId,
+                         DisplayTime = banner.DisplayTime
+                     };
+                 }).ToArray();
+
+                 return result;
              }));
 
             CreateMap<LobbyModel, LobbyEntity>()
@@ -566,6 +584,24 @@ namespace GamesAdmin.Api._Shared
               .ForMember(x => x.Banners, opt => opt.MapFrom((source, destination, i, context) =>
               {
                   var result = source.Banners.Select(banner =>
+                  {
+                      return new BannerEntity
+                      {
+                          GameId = banner.GameId,
+                          DisplayTime = banner.DisplayTime
+                      };
+                  }).ToArray();
+
+                  return result;
+              }))
+              .ForMember(x => x.CenterBanners, opt => opt.MapFrom((source, destination, i, context) =>
+              {
+                  if (source.CenterBanners == null)
+                  {
+                      return Enumerable.Empty<BannerEntity>().ToArray();
+                  }
+
+                  var result = source.CenterBanners.Select(banner =>
                   {
                       return new BannerEntity
                       {

@@ -8,6 +8,7 @@
         public int[] MiniPanelGameIds { get; set; }
         public LobbyCategory[] Categories { get; set; }
         public Banner[] Banners { get; set; }
+        public Banner[] CenterBanners { get; set; }
         public RoundTimerGame RoundTimerGame { get; set; }
     }
 

@@ -40,6 +40,13 @@ namespace GamesAdmin.Api.Lobby
                 changedSettings.Add($"{"Banners"}: {JsonConvert.SerializeObject(oldBanners)} -> {JsonConvert.SerializeObject(newBanners)}\r\n");
             }
 
+            if (HasChange(newEntity.CenterBanners, oldEntity.CenterBanners))
+            {
+                var oldCenterBanners = oldEntity.CenterBanners.Select(banner => new BannerLog { DisplayTime = banner.DisplayTime, GameName = GetGameDisplayName(banner.GameId, gameSettings) });
+                var newCenterBanners = newEntity.CenterBanners.Select(banner => new BannerLog { DisplayTime = banner.DisplayTime, GameName = GetGameDisplayName(banner.GameId, gameSettings) });
+                changedSettings.Add($"{"Center Banners"}: {JsonConvert.SerializeObject(oldCenterBanners)} -> {JsonConvert.SerializeObject(newCenterBanners)}\r\n");
+            }
+
             if (HasChange(newEntity.RoundTimerGame, oldEntity.RoundTimerGame))
             {
                 changedSettings.Add($"{"RoundTimerGame"}: {JsonConvert.SerializeObject(oldEntity.RoundTimerGame)} -> {JsonConvert.SerializeObject(newEntity.RoundTimerGame)}\r\n");
