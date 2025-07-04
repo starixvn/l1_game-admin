@@ -29,6 +29,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
 
         Task<IEnumerable<CurrencyGroupGame>> GetByGameId(int gameId);
 
+        Task<bool> AddRange(IEnumerable<CurrencyGroupGame> currencyGroupGames);
     }
 
     public class CurrencyGroupGameService : ICurrencyGroupGameService
@@ -160,6 +161,53 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                     var filterDefinition = filterBuilder.And(
                         filterBuilder.Eq(x => x.GroupId, ObjectId.Parse(currencyGroupGame.GroupId)),
                         filterBuilder.Eq(x => x.GameId, gameId));
+
+                    writes.Add(new UpdateOneModel<CurrencyGroupGameEntity>(filterDefinition, update) { IsUpsert = true });
+                }
+
+                await currencyGroupGameRepository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return false;
+        }
+
+        public async Task<bool> AddRange(IEnumerable<CurrencyGroupGame> currencyGroupGames)
+        {
+            try
+            {
+                var writes = new List<WriteModel<CurrencyGroupGameEntity>>();
+                var gameIds = currencyGroupGames.Select(x => x.GameId).ToList();
+                var groupIds = currencyGroupGames.Select(x => x.GroupId).Distinct().ToList();
+                var gameConfigs = (await gameConfigRepository.FilterByAsync(x => gameIds.Contains(x.GameId))).ToList();
+
+                foreach (var currencyGroupGame in currencyGroupGames)
+                {
+                    var gameConfig = gameConfigs.FirstOrDefault(x => x.GameId == currencyGroupGame.GameId);
+                    var sortedCoinValues = currencyGroupGame.CoinValues.OrderBy(x => x).ToArray();
+                    var sortedBetLevels = currencyGroupGame.BetLevels.OrderBy(x => x).ToArray();
+
+                    var update = Builders<CurrencyGroupGameEntity>.Update
+                        .Set(field => field.Enabled, currencyGroupGame.Enabled)
+                        .Set(field => field.MinBet, currencyGroupGame.MinBet)
+                        .Set(field => field.MaxBet, currencyGroupGame.MaxBet)
+                        .Set(field => field.MaxBetPerChoices, currencyGroupGame.MaxBetPerChoices)
+                        .Set(field => field.Chips, currencyGroupGame.Chips)
+                        .Set(field => field.CoinValues, sortedCoinValues)
+                        .Set(field => field.DefaultCoinValue, currencyGroupGame.DefaultCoinValue ?? sortedCoinValues.FirstOrDefault())
+                        .Set(field => field.DefaultBetLevel, currencyGroupGame.DefaultBetLevel ?? sortedBetLevels.FirstOrDefault())
+                        .Set(field => field.BetLevels, currencyGroupGame.BetLevels.OrderBy(x => x).ToArray() ?? new double[10])
+                        .Set(field => field.MaxWinPerRound, currencyGroupGame.MaxWinPerRound)
+                        .Set(field => field.GameName, gameConfig?.Name ?? currencyGroupGame.GameName);
+
+                    var filterBuilder = Builders<CurrencyGroupGameEntity>.Filter;
+                    var filterDefinition = filterBuilder.And(
+                        filterBuilder.Eq(x => x.GroupId, ObjectId.Parse(currencyGroupGame.GroupId)),
+                        filterBuilder.Eq(x => x.GameId, currencyGroupGame.GameId));
 
                     writes.Add(new UpdateOneModel<CurrencyGroupGameEntity>(filterDefinition, update) { IsUpsert = true });
                 }

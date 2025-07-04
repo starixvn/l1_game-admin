@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.CurrencyGroupGames.Requests;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Database.Entities.Lobby;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,5 +33,9 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         [HttpGet("getByGroup")]
         public Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId)
             => mediator.Send(new GetByGroupRequest(currencyGroupId));
+
+        [HttpPost("addList")]
+        public Task<bool> AddList([FromBody] IEnumerable<CurrencyGroupGame> games)
+            => mediator.Send(new AddCurrencyGroupGamesRequest(games));
     }
 }
