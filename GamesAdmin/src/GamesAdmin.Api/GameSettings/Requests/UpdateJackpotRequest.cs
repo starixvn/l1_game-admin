@@ -6,11 +6,12 @@ namespace GamesAdmin.Api.GameSettings.Requests
 {
     public class UpdateJackpotRequest : IRequest<bool>
     {
-        public UpdateJackpotRequest(string name, Jackpot jackpot, List<StakeLevel> stakeLevels)
+        public UpdateJackpotRequest(string name, Jackpot jackpot, List<StakeLevel> stakeLevels, IEnumerable<int> otherGameIdsInGroup)
         {
             Name = name;
             Jackpot = jackpot;
             StakeLevels = stakeLevels;
+            OtherGameIdsInGroup = otherGameIdsInGroup;
         }
 
         public string Name { get; }
@@ -18,5 +19,7 @@ namespace GamesAdmin.Api.GameSettings.Requests
         public Jackpot Jackpot { get; }
 
         public List<StakeLevel> StakeLevels { get; }
+
+        public IEnumerable<int> OtherGameIdsInGroup { get; }
     }
 }

@@ -126,7 +126,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 return new EditViewModel();
             }
 
-            var game = await gameService.GetByName(request.Name);
+            var games = await gameService.GetAll();
+            var game = games.FirstOrDefault(g => g.Info.Name == request.Name);
 
             var viewModel = mapper.Map<EditViewModel>(game);
 
@@ -149,7 +150,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 if (gameGroup != null)
                 {
                     viewModel.OtherGameIdsInGroup = gameGroup.GameIds.Where(x => x != game.Info.GameId);
-                    viewModel.OtherGamesInGroup = viewModel.OtherGameIdsInGroup.Select(x => new SelectListItem(Game.FromGameId((GameId)x).DisplayName, x.ToString()));
+                    viewModel.OtherGamesInGroup = games.Where(g => viewModel.OtherGameIdsInGroup.Contains(g.Info.GameId))
+                        .Select(g => new SelectListItem(g.Info.DisplayName ?? Game.FromGameName(g.Info.Name).DisplayName, g.Info.GameId.ToString()));
                 }
 
                 switch (game.Info.Type)
@@ -192,7 +194,6 @@ namespace GamesAdmin.Site.Features.GameSettings
                         {
                             viewModel.PayoutViewModel.DisplayMargins = gamesSettings.GetGameFromName(game.Info.Name)?.DisplayOdds;
                             viewModel.PayoutViewModel.MarginSettings = GenerateMarginSettings(game.Info.Name, game.Margin);
-
                         }
                         else
                         {
@@ -369,7 +370,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             else
             {
                 var Odds = gamesSettings.GetGameFromName(name)?.Odds;
-                
+
                 var defaultSetting = new Dictionary<string, double> { { "max", 0 } };
                 if (Odds?.Any() == true)
                 {
@@ -387,17 +388,17 @@ namespace GamesAdmin.Site.Features.GameSettings
             switch (request.GameInfo.Type)
             {
                 case GameType.Slots:
-                    return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig, request.GameInfo.Type));
+                    return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig, request.GameInfo.Type, request.OtherGameIdsInGroup));
 
                 case GameType.CascadingSlots:
                     return gameService
-                        .UpdateCascadingSlotsConfig(new UpdateCascadingSlotsConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.CascadingSlotsConfig, request.GameInfo.Type));
+                        .UpdateCascadingSlotsConfig(new UpdateCascadingSlotsConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.CascadingSlotsConfig, request.GameInfo.Type, request.OtherGameIdsInGroup));
 
                 case GameType.SlotRNG:
-                    return gameService.UpdateSlotRNGConfig(new UpdateSlotRNGConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig));
+                    return gameService.UpdateSlotRNGConfig(new UpdateSlotRNGConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig, request.OtherGameIdsInGroup));
 
                 case GameType.Crash:
-                    return gameService.UpdateCrashConfig(new UpdateCrashConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.CrashConfig));
+                    return gameService.UpdateCrashConfig(new UpdateCrashConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.CrashConfig, request.OtherGameIdsInGroup));
 
                 default:
                     return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers, request.OtherGameIdsInGroup, request.TournamentConfig, request.VideoStreamConfig));

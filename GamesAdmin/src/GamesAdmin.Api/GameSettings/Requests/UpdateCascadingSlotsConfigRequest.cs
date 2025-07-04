@@ -1,4 +1,6 @@
-﻿using GamesAdmin.Core.Enumeration;
+﻿using System.Collections;
+using System.Collections.Generic;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
 
@@ -11,13 +13,15 @@ namespace GamesAdmin.Api.GameSettings.Requests
             string displayName,
             bool botEnabled,
             CascadingSlotsConfig cascadingSlotsConfig,
-            GameType type)
+            GameType type,
+            IEnumerable<int> otherGameIdsInGroup)
         {
             Name = name;
             DisplayName = displayName;
             BotEnabled = botEnabled;
             CascadingSlotsConfig = cascadingSlotsConfig;
             Type = type;
+            OtherGameIdsInGroup = otherGameIdsInGroup;
         }
 
         public string Name { get; }
@@ -29,5 +33,7 @@ namespace GamesAdmin.Api.GameSettings.Requests
         public GameType Type { get; set; }
 
         public CascadingSlotsConfig CascadingSlotsConfig { get; }
+
+        public IEnumerable<int> OtherGameIdsInGroup { get; }
     }
 }

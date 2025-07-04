@@ -75,22 +75,22 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateGeneralConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers, request.OtherGameIdsInGroup,request.TournamentConfig, request.VideoStreamConfig);
 
         public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateJackpot(request.Name, request.Jackpot, request.StakeLevels);
+        => gameService.UpdateJackpot(request.Name, request.Jackpot, request.StakeLevels, request.OtherGameIdsInGroup);
 
         public Task<bool> Handle(UpdateBotSlotSettingsRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateSlotBotSettings(request.Name, request.Jackpot, request.BetLevels);
+        => gameService.UpdateSlotBotSettings(request.Name, request.Jackpot, request.BetLevels, request.OtherGameIdsInGroup);
 
         public Task<bool> Handle(UpdateSlotConfigRequest request, CancellationToken cancellationToken)
-            => gameService.UpdateSlotConfig(request.Name, request.BotEnabled, request.SlotsConfig);
+            => gameService.UpdateSlotConfig(request.Name, request.BotEnabled, request.SlotsConfig,request.OtherGameIdsInGroup);
 
         public Task<bool> Handle(UpdateCascadingSlotsConfigRequest request, CancellationToken cancellationToken)
-            => gameService.UpdateCascadingSlotsConfig(request.Name, request.BotEnabled, request.CascadingSlotsConfig);
+            => gameService.UpdateCascadingSlotsConfig(request.Name, request.BotEnabled, request.CascadingSlotsConfig, request.OtherGameIdsInGroup);
 
         public Task<bool> Handle(UpdateSlotIconOddsRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateSlotIconOdds(request.Name, request.IconOdds);
+        => gameService.UpdateSlotIconOdds(request.Name, request.IconOdds, request.OtherGameIdsInGroup);
 
         public Task<bool> Handle(UpdateOddsByCountsRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateCascadingSlotOdds(request.Name, request.CascadingSlotsConfig);
+        => gameService.UpdateCascadingSlotOdds(request.Name, request.CascadingSlotsConfig, request.OtherGameIdsInGroup);
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);
@@ -102,7 +102,7 @@ namespace GamesAdmin.Api.Games
         => slotSettingService.CloneNewGame(request.GameId, request.FromGameId, request.DisplayName, request.GameType);
 
         public Task<bool> Handle(UpdateSymbolWeightRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateSymbolWeight(request.Name, request.SymbolWeight);
+        => gameService.UpdateSymbolWeight(request.Name, request.SymbolWeight, request.OtherGameIdsInGroup);
 
         public Task<bool> Handle(UpdateCrashConfigRequest request, CancellationToken cancellationToken)
        => gameService.UpdateCrashConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.CrashConfig);

@@ -10,9 +10,9 @@ using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
-using GamesAdmin.Database.Entities.Lobby;
 using MongoDB.Driver;
 using Sentry;
 
@@ -38,17 +38,17 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateBotRatios(string name, double[] ratios, IEnumerable<int> otherGameIdsInGroup);
 
-        Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
+        Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds, IEnumerable<int> otherGameIdsInGroup);
 
-        Task<bool> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig);
+        Task<bool> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig, IEnumerable<int> otherGameIdsInGroup);
 
-        Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
+        Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels, IEnumerable<int> otherGameIdsInGroup);
 
-        Task<bool> UpdateSlotBotSettings(string name, Jackpot jackpot, double[] betLevels);
+        Task<bool> UpdateSlotBotSettings(string name, Jackpot jackpot, double[] betLevels, IEnumerable<int> otherGameIdsInGroup);
 
-        Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig);
+        Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig, IEnumerable<int> otherGameIdsInGroup);
 
-        Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig);
+        Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig, IEnumerable<int> otherGameIdsInGroup);
 
         Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null, IEnumerable<int> otherGameIdsInGroup = null, TournamentConfig tournamentConfig = null, VideoStreamConfig videoStreamConfig = null);
 
@@ -56,7 +56,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateSlotRNGConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, SlotRNGConfig slotRNGConfig);
 
-        Task<bool> UpdateSymbolWeight(string name, SymbolWeight symbolWeight);
+        Task<bool> UpdateSymbolWeight(string name, SymbolWeight symbolWeight, IEnumerable<int> otherGameIdsInGroup);
 
         Task<bool> UpdateCrashConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, CrashConfig crashConfig);
     }
@@ -143,24 +143,24 @@ namespace GamesAdmin.Api.Games
                     };
                 }
 
-				if (game.Info.HaveTournament)
-				{
+                if (game.Info.HaveTournament)
+                {
                     entity.TournamentConfig = new TournamentConfig()
                     {
                         Code = "",
-                        Teams = new List<string> {}
-					};
-				}
+                        Teams = new List<string> { }
+                    };
+                }
 
-				if (game.Info.HaveVideoStream)
-				{
-					entity.VideoStreamConfig = new VideoStreamConfig()
-					{
-						VideoInfos = new List<VideoInfo> {}
-					};
-				}
+                if (game.Info.HaveVideoStream)
+                {
+                    entity.VideoStreamConfig = new VideoStreamConfig()
+                    {
+                        VideoInfos = new List<VideoInfo> { }
+                    };
+                }
 
-				await repository.InsertOneAsync(entity);
+                await repository.InsertOneAsync(entity);
 
                 var messages = new Dictionary<string, string> { [Language.DefaultLanguageValue] = game.EnableSetting.DisabledMessage };
                 await notificationService.AddDisableMessage(game.Info.Name, messages);
@@ -182,7 +182,7 @@ namespace GamesAdmin.Api.Games
                 return gameInfo.GameId;
             }
 
-            return (int)Game.FromGameName(gameInfo.Name).GameId;
+            return (int)Core.Enumeration.Game.FromGameName(gameInfo.Name).GameId;
         }
 
         public async Task<GameConfig> GetByName(string name)
@@ -191,7 +191,7 @@ namespace GamesAdmin.Api.Games
 
             if (gameEntity != null && gameEntity.DisplayName == null)
             {
-                gameEntity.DisplayName = Game.FromGameName(name).DisplayName;
+                gameEntity.DisplayName = Core.Enumeration.Game.FromGameName(name).DisplayName;
             }
 
             return gameEntity != null ? mapper.Map<GameConfig>(gameEntity) : default;
@@ -382,7 +382,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
+        public async Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds, IEnumerable<int> otherGameIdsInGroup)
         {
             try
             {
@@ -391,13 +391,21 @@ namespace GamesAdmin.Api.Games
                     throw new InvalidOperationException($"Odds of game {name} are empty.");
                 }
 
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetIconsChangedModel(gameEntity.SlotsConfig.Icons, iconOdds);
-                sentryClient.CaptureChangedSettings(name, "Odds", string.Empty, changedSettings);
+                var gameEntities = await repository.FilterByAsync(x => (otherGameIdsInGroup != null && otherGameIdsInGroup.Contains(x.GameId)) || x.Name == name);
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
 
-                var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.Icons, iconOdds);
+                foreach (var gameEntity in gameEntities)
+                {
+                    var changedSettings = SettingHelper.GetIconsChangedModel(gameEntity.SlotsConfig.Icons, iconOdds);
+                    sentryClient.CaptureChangedSettings(name, "Odds", string.Empty, changedSettings);
 
-                await repository.UpdateAsync(config => config.Name == name, update);
+                    var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.Icons, iconOdds);
+
+                    var filter = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
+                    writes.Add(new UpdateOneModel<GameConfigEntity>(filter, update));
+                }
+
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
 
                 return true;
             }
@@ -409,7 +417,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig)
+        public async Task<bool> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig, IEnumerable<int> otherGameIdsInGroup)
         {
             try
             {
@@ -418,90 +426,23 @@ namespace GamesAdmin.Api.Games
                     throw new InvalidOperationException($"Odds of game {name} are empty.");
                 }
 
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetCascadingSlotOddsChangedModel(gameEntity.CascadingSlotsConfig, cascadingSlotsConfig);
-                sentryClient.CaptureChangedSettings(name, "Cascading Slot Odds Config", string.Empty, changedSettings);
+                var gameEntities = await repository.FilterByAsync(x => (otherGameIdsInGroup != null && otherGameIdsInGroup.Contains(x.GameId)) || x.Name == name);
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
 
-                var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.CascadingSlotsConfig.OddsByCounts, cascadingSlotsConfig.OddsByCounts)
-                    .Set(field => field.CascadingSlotsConfig.FreeSpins, cascadingSlotsConfig.FreeSpins);
-
-                await repository.UpdateAsync(config => config.Name == name, update);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-
-                return false;
-            }
-        }
-
-        public async Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels)
-        {
-            try
-            {
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetJackpotChangedModel(gameEntity, jackpot);
-                sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
-
-                if (jackpot.Pools != null)
+                foreach (var gameEntity in gameEntities)
                 {
-                    var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
-                    .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
-                    .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.Init, jackpot.Pools?.Minor?.Init)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.Init, jackpot.Pools?.Major?.Init)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.Init, jackpot.Pools?.Grand?.Init)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Contrib, jackpot.Pools?.Minor?.PlayerSettings?.Contrib)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Contrib, jackpot.Pools?.Major?.PlayerSettings?.Contrib)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Contrib, jackpot.Pools?.Grand?.PlayerSettings?.Contrib);
+                    var changedSettings = SettingHelper.GetCascadingSlotOddsChangedModel(gameEntity.CascadingSlotsConfig, cascadingSlotsConfig);
+                    sentryClient.CaptureChangedSettings(name, "Cascading Slot Odds Config", string.Empty, changedSettings);
 
-                    await repository.UpdateAsync(config => config.Name == name, update);
-                }
-                else
-                {
                     var update = Builders<GameConfigEntity>.Update
-                       .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
-                       .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
-                       .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
-                       .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
-                       .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio);
+                        .Set(field => field.CascadingSlotsConfig.OddsByCounts, cascadingSlotsConfig.OddsByCounts)
+                        .Set(field => field.CascadingSlotsConfig.FreeSpins, cascadingSlotsConfig.FreeSpins);
 
-                    await repository.UpdateAsync(config => config.Name == name, update);
+                    var filter = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
+                    writes.Add(new UpdateOneModel<GameConfigEntity>(filter, update));
                 }
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-
-                return false;
-            }
-        }
-
-        public async Task<bool> UpdateSlotBotSettings(string name, Jackpot jackpot, double[] betLevels)
-        {
-            try
-            {
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetBotConfigChangedModel(gameEntity, jackpot, betLevels);
-                sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
-                var sortBetLevel = betLevels.OrderBy(level => level).ToArray();
-
-                var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.SlotsConfig.BetLevels, sortBetLevel)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.BotSettings, jackpot.Pools?.Minor?.BotSettings)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.BotSettings, jackpot.Pools?.Major?.BotSettings)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.BotSettings, jackpot.Pools?.Grand?.BotSettings)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Alloc, jackpot.Pools?.Minor?.PlayerSettings?.Alloc)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Alloc, jackpot.Pools?.Major?.PlayerSettings?.Alloc)
-                    .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Alloc, jackpot.Pools?.Grand?.PlayerSettings?.Alloc);
-
-                await repository.UpdateAsync(config => config.Name == name, update);
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
 
                 return true;
             }
@@ -513,20 +454,121 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig)
+        public async Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels, IEnumerable<int> otherGameIdsInGroup)
         {
             try
             {
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetSlotConfigChangedModel(gameEntity, botEnabled, slotsConfig);
-                sentryClient.CaptureChangedSettings(name, "Slot Config", string.Empty, changedSettings);
+                var gameEntities = await repository.FilterByAsync(x => (otherGameIdsInGroup != null && otherGameIdsInGroup.Contains(x.GameId)) || x.Name == name);
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
 
-                var update = Builders<GameConfigEntity>.Update
+                foreach (var gameEntity in gameEntities)
+                {
+                    var changedSettings = SettingHelper.GetJackpotChangedModel(gameEntity, jackpot);
+                    sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
+                    var filter = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
+
+                    if (jackpot.Pools != null)
+                    {
+                        var update = Builders<GameConfigEntity>.Update
+                        .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
+                        .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
+                        .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.Init, jackpot.Pools?.Minor?.Init)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Major.Init, jackpot.Pools?.Major?.Init)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.Init, jackpot.Pools?.Grand?.Init)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Contrib, jackpot.Pools?.Minor?.PlayerSettings?.Contrib)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Contrib, jackpot.Pools?.Major?.PlayerSettings?.Contrib)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Contrib, jackpot.Pools?.Grand?.PlayerSettings?.Contrib);
+
+                        writes.Add(new UpdateOneModel<GameConfigEntity>(filter, update));
+                    }
+                    else
+                    {
+                        var update = Builders<GameConfigEntity>.Update
+                           .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
+                           .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
+                           .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
+                           .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
+                           .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio);
+
+                        writes.Add(new UpdateOneModel<GameConfigEntity>(filter, update));
+                    }
+                }
+
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateSlotBotSettings(string name, Jackpot jackpot, double[] betLevels, IEnumerable<int> otherGameIdsInGroup)
+        {
+            try
+            {
+                var gameEntities = await repository.FilterByAsync(x => (otherGameIdsInGroup != null && otherGameIdsInGroup.Contains(x.GameId)) || x.Name == name);
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
+
+                foreach (var gameEntity in gameEntities)
+                {
+                    var changedSettings = SettingHelper.GetBotConfigChangedModel(gameEntity, jackpot, betLevels);
+                    sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
+                    var sortBetLevel = betLevels.OrderBy(level => level).ToArray();
+
+                    var update = Builders<GameConfigEntity>.Update
+                        .Set(field => field.SlotsConfig.BetLevels, sortBetLevel)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.BotSettings, jackpot.Pools?.Minor?.BotSettings)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Major.BotSettings, jackpot.Pools?.Major?.BotSettings)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.BotSettings, jackpot.Pools?.Grand?.BotSettings)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Minor.PlayerSettings.Alloc, jackpot.Pools?.Minor?.PlayerSettings?.Alloc)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Major.PlayerSettings.Alloc, jackpot.Pools?.Major?.PlayerSettings?.Alloc)
+                        .Set(field => field.SlotsConfig.Jackpot.Pools.Grand.PlayerSettings.Alloc, jackpot.Pools?.Grand?.PlayerSettings?.Alloc);
+
+                    var filter = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
+                    writes.Add(new UpdateOneModel<GameConfigEntity>(filter, update));
+                }
+
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig, IEnumerable<int> otherGameIdsInGroup)
+        {
+            try
+            {
+                var gameIds = new List<int>(otherGameIdsInGroup ?? new List<int>()) { };
+                var gameEntities = await repository.FilterByAsync(x => otherGameIdsInGroup.Contains(x.GameId) || x.Name == name);
+
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
+
+                foreach (var gameEntity in gameEntities)
+                {
+                    var changedSettings = SettingHelper.GetSlotConfigChangedModel(gameEntity, botEnabled, slotsConfig);
+                    sentryClient.CaptureChangedSettings(name, "Slot Config", string.Empty, changedSettings);
+                    sentryClient.CaptureChangedSettings(gameEntity.Name, "Odds", string.Empty, changedSettings);
+                    var update = Builders<GameConfigEntity>.Update
                             .Set(field => field.Botenabled, botEnabled)
                             .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
                             .Set(field => field.SlotsConfig.BigWinRatio, slotsConfig.BigWinRatio)
                             .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode);
-                await repository.UpdateAsync(config => config.Name == name, update);
+                    var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId); ;
+                    writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
+                }
+
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
 
                 return true;
             }
@@ -538,23 +580,31 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig)
+        public async Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig, IEnumerable<int> otherGameIdsInGroup)
         {
             try
             {
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetCascadingSlotConfigsChangeModel(gameEntity, botEnabled, cascadingSlotsConfig);
-                sentryClient.CaptureChangedSettings(name, "Cascading Slot Config", string.Empty, changedSettings);
+                var gameIds = new List<int>(otherGameIdsInGroup ?? new List<int>()) { };
+                var gameEntities = await repository.FilterByAsync(x => otherGameIdsInGroup.Contains(x.GameId) || x.Name == name);
 
-                var update = Builders<GameConfigEntity>.Update
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
+
+                foreach (var gameEntity in gameEntities)
+                {
+                    var changedSettings = SettingHelper.GetCascadingSlotConfigsChangeModel(gameEntity, botEnabled, cascadingSlotsConfig);
+                    sentryClient.CaptureChangedSettings(name, "Cascading Slot Config", string.Empty, changedSettings);
+                    var update = Builders<GameConfigEntity>.Update
                        .Set(field => field.Botenabled, botEnabled)
                        .Set(field => field.CascadingSlotsConfig.MultiplierBonus, cascadingSlotsConfig.MultiplierBonus)
                        .Set(field => field.CascadingSlotsConfig.BigWinRatio, cascadingSlotsConfig.BigWinRatio)
                        .Set(field => field.CascadingSlotsConfig.Mode, cascadingSlotsConfig.Mode)
                        .Set(field => field.CascadingSlotsConfig.BetMultiplier, cascadingSlotsConfig.BetMultiplier)
                        .Set(field => field.CascadingSlotsConfig.BetLevels, cascadingSlotsConfig.BetLevels);
+                    var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId); ;
+                    writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
+                }
 
-                await repository.UpdateAsync(config => config.Name == name, update);
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
 
                 return true;
             }
@@ -645,7 +695,7 @@ namespace GamesAdmin.Api.Games
             return true;
         }
 
-        public async Task<bool> UpdateSymbolWeight(string name, SymbolWeight symbolWeight)
+        public async Task<bool> UpdateSymbolWeight(string name, SymbolWeight symbolWeight, IEnumerable<int> otherGameIdsInGroup)
         {
             if (string.IsNullOrEmpty(name) || symbolWeight.Weight == null || symbolWeight.Weight.Length < 3)
             {
@@ -654,18 +704,26 @@ namespace GamesAdmin.Api.Games
 
             try
             {
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var existingSlotSymbolWeight = gameEntity.SlotsConfig.SymbolWeight ?? new Dictionary<string, int[][]>();
+                var gameIds = new List<int>(otherGameIdsInGroup ?? new List<int>()) { };
+                var gameEntities = await repository.FilterByAsync(x => gameIds.Contains(x.GameId) || x.Name == name);
 
-                sentryClient.CaptureChangedSettings(name, "Symbol Weight", string.Empty, SettingHelper.GetSymbolWeightChangedModel(existingSlotSymbolWeight, symbolWeight));
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
 
-                var keyMode = symbolWeight.Mode.ToString();
+                foreach (var gameEntity in gameEntities)
+                {
+                    var existingSlotSymbolWeight = gameEntity.SlotsConfig.SymbolWeight ?? new Dictionary<string, int[][]>();
 
-                var slotSymbolWeight = GetUpdatedSlotSymbolWeight(existingSlotSymbolWeight, keyMode, symbolWeight.Weight);
+                    sentryClient.CaptureChangedSettings(name, "Symbol Weight", string.Empty, SettingHelper.GetSymbolWeightChangedModel(existingSlotSymbolWeight, symbolWeight));
 
-                var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.SymbolWeight, slotSymbolWeight);
+                    var keyMode = symbolWeight.Mode.ToString();
 
-                await repository.UpdateAsync(config => config.Name == name, update);
+                    var slotSymbolWeight = GetUpdatedSlotSymbolWeight(existingSlotSymbolWeight, keyMode, symbolWeight.Weight);
+                    var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.SymbolWeight, slotSymbolWeight);
+                    var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId); ;
+                    writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
+                }
+
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
 
                 return true;
             }

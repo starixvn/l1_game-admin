@@ -35,7 +35,6 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         private readonly IGameGroupManagementApi gameGroupManagementApi;
         private readonly IGameSettingService gameSettingService;
 
-
         public CurrencyGroupGameHandler(ICurrencyGroupGameService currencyGroupGameService, ICurrencyGroupService currencyGroupService, IChipService chipService,
             IMapper mapper, IPartnerService partnerService, IGeneralGameSettingService generalGameSettingService, IGameGroupManagementApi gameGroupManagementApi,
             IGameSettingService gameSettingService)
@@ -101,13 +100,15 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             result.PartnerName = request.PartnerName;
             result.GroupSelectList = currencyGroups.Select(group => new SelectListItem(group.Name, group.Id)).ToList();
 
-            var gameConfigs = await gameSettingService.GetByName(request.GameName);
+            var games = await gameSettingService.GetAll();
+            var gameConfigs = games.FirstOrDefault(g => g.Info.Name == request.GameName);
             var gameGroup = await gameGroupManagementApi.GetByGameId(gameConfigs.Info.GameId);
             if (gameGroup != null)
             {
                 result.OtherGameIdsInGroup = gameGroup.GameIds.Where(x => x != gameConfigs.Info.GameId);
-                result.OtherGamesInGroup = result.OtherGameIdsInGroup.
-                    Select(x => new SelectListItem(Game.FromGameId((GameId)x).DisplayName, x.ToString()));
+                result.OtherGamesInGroup = games.Where(g => result.OtherGameIdsInGroup.Contains(g.Info.GameId)).
+                    Select(g => new SelectListItem(g.Info.DisplayName ?? Game.FromGameId((GameId)g.Info.GameId).DisplayName, g.Info
+                    .GameId.ToString()));
             }
 
             return result;

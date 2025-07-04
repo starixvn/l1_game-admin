@@ -33,7 +33,7 @@ namespace GamesAdmin.Site.Features.GameGroupManagement.Handlers
         {
             var games = await generalGameSettingService.GetAllGames();
             var gameGroups = await gameGroupManagementApi.GetAll();
-
+            
             return new CreateGameGroupViewModel
             {
                 Games = FilterGames(games, gameGroups.SelectMany(x => x.GameIds))
@@ -55,6 +55,8 @@ namespace GamesAdmin.Site.Features.GameGroupManagement.Handlers
         public async Task<GameGroupManagementViewModel> Handle(IndexPageRequet request, CancellationToken cancellationToken)
         {
             var gameGroups = await gameGroupManagementApi.GetAll();
+            var games = await generalGameSettingService.GetAllGames();
+
 
             return new GameGroupManagementViewModel
             {
@@ -62,7 +64,9 @@ namespace GamesAdmin.Site.Features.GameGroupManagement.Handlers
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    GameIds = x.GameIds
+                    GameIds = x.GameIds,
+                    DisplayGames = string.Join(", ", games.Where(g => x.GameIds.Contains(g.GameId))
+                    .Select(g => g.DisplayName ?? Game.FromGameName(g.Name).DisplayName))
                 })
             };
         }

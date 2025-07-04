@@ -38,7 +38,21 @@
 
     <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
         <input hidden asp-for="GameId" />
-
+        @if (Model.OtherGameIdsInGroup != null && Model.OtherGameIdsInGroup.Any())
+        {
+            <div class="form-group row">
+                <div class="col-3">
+                    <label class="control-label" for="">Same setting games</label>
+                </div>
+                <div class="col-4">
+                    <select hidden multiple class="form-control"
+                            asp-items="Model.OtherGamesInGroup"
+                            asp-for="OtherGameIdsInGroup">
+                    </select>
+                    <select class="form-control" id="fanexGameIds"></select>
+                </div>
+            </div>
+        }
         <div id="general">
             <div class="form-group row">
                 <div class="col-lg-6">

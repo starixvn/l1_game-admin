@@ -11,6 +11,6 @@ namespace GamesAdmin.Site.Features.GameGroupManagement.ViewModels
 
         public IEnumerable<int> GameIds { get; set; }
 
-        public string DisplayGames => string.Join(", ", GameIds.Select(x => Game.FromGameId((GameId)x).DisplayName));
+        public string DisplayGames { get; set; }
     }
 }
