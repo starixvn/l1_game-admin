@@ -1,0 +1,118 @@
+@model GamesAdmin.Site.Features.Currencies.ViewModels.CreateCurrencyWithSuggestionViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title">Add currency with suggestions</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form data-ajax="true" class="form" asp-action="CreateWithSuggestion" method="post" id="add-new-currency-with-suggestion-form"
+      data-ajax-success="currency.onCreateCurrencyWithSuggestionSuccess">
+    <div class="modal-body">
+        
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="required-field-label" asp-for="Name">Currency</label>
+                <input class="form-control" type="text" asp-for="Name">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="required-field-label" asp-for="Code"></label>
+                <select asp-items="@Model.ExchangeCodes" asp-for="Code" class="form-control"></select>
+                <span class="text-danger" asp-validation-for="Code"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="required-field-label" asp-for="Multiplier"></label>
+                <input class="form-control" type="number" asp-for="Multiplier">
+                <span class="text-danger" asp-validation-for="Multiplier"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <input type="checkbox" asp-for="Enabled" />
+                <label asp-for="Enabled" class="control-label"></label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <input type="checkbox" asp-for="IsTest" onclick="currency.onClickIsTestCurrency(event)" />
+                <label asp-for="IsTest" class="control-label">Testing Currency</label>
+            </div>
+        </div>
+
+        <div class="form-group row" style="display: @(Model.IsTest ? "block" : "none") " id="isUncountOnTotalSetting">
+            <div class="col-sm-12">
+                <input type="checkbox" asp-for="IsUncountOnTotal" />
+                <label asp-for="IsUncountOnTotal" class="control-label">Is Uncount</label>
+            </div>
+        </div>
+
+        <div class="form-group row" id="partnerSetting">
+            <div class="col-sm-12">
+                <label class="required-field-label" asp-for="PartnerId">Operator</label>
+                <select asp-items="@Model.Partners" asp-for="PartnerId" class="form-control" onchange="currency.onPartnerChange()"></select>
+                <span class="text-danger" asp-validation-for="PartnerId"></span>
+            </div>
+        </div>
+
+        <div class="form-group row" id="getFromAllOperatorsSetting">
+            <div class="col-sm-12">
+                <input type="checkbox" asp-for="GetFromAllOperators" onchange="currency.onGetFromAllOperatorsChange()"/>
+                <label asp-for="GetFromAllOperators" class="control-label">Get from all operators</label>
+            </div>
+        </div>
+
+        <!-- Suggestion Buttons -->
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <button type="button" class="btn btn-add" onclick="currency.getCurrencyGroupSuggestions()">
+                    Suggest based on existing currency group
+                </button>
+            </div>
+            <div class="col-sm-6">
+                <button type="button" class="btn btn-add" onclick="currency.getCurrencyGroupGameSuggestions()">
+                    Suggest new range
+                </button>
+            </div>
+        </div>
+
+        <!-- Currency Group Selection for New Range -->
+        <div class="form-group row" id="currencyGroupSelection" style="display: none;">
+            <div class="col-sm-8">
+                <label class="control-label">Select Currency Group</label>
+                <select id="selectedCurrencyGroupId" class="form-control">
+                    <option value="">Select a currency group...</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="control-label">Rate</label>
+                <input type="number" id="suggestedRate" class="form-control" step="0.01" min="0.01" value="1.0">
+            </div>
+        </div>
+
+        <!-- Suggestions Display -->
+        <div id="suggestionsContainer" style="display: none;">
+            <h6>Suggested Bet Limits:</h6>
+            <div id="suggestionsContent"></div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="control-label" id="result-label"></label>
+            </div>
+        </div>
+    </div>
+    <div class=" modal-footer">
+        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn-submit">Save</button>
+    </div>
+</form> 

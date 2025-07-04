@@ -36,12 +36,48 @@ namespace GamesAdmin.Site.Features.Currencies
             return PartialView("_AddNewCurrency", viewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> CreateWithSuggestion()
+        {
+            var partners = await mediator.Send(new GetPartnersForSelectionRequest());
+            var codes = await mediator.Send(new GetExchangeCodesForSelectionRequest());
+            var viewModel = new CreateCurrencyWithSuggestionViewModel
+            {
+                Partners = partners,
+                ExchangeCodes = codes
+            };
+
+            return PartialView("_AddNewCurrencyWithSuggestion", viewModel);
+        }
+
         [HttpPost, Audit]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind] CreateCurrencyViewModel model)
         {
             var result = await mediator.Send(new CreateRequest(model));
 
+            return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetExistingCurrencyGroupSuggestions([Bind] GetExistingCurrencyGroupSuggestionsRequest request)
+        {
+            var viewModel = await mediator.Send(request);
+            return PartialView("_ExistingCurrencyGroupSuggestions", viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetCurrencyGroupGameSuggestions([Bind] GetCurrencyGroupGameSuggestionsRequest request)
+        {
+            var viewModel = await mediator.Send(request);
+            return PartialView("_CurrencyGroupGameSuggestions", viewModel);
+        }
+
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> CreateWithSuggestion([Bind] CreateCurrencyWithSuggestionViewModel model)
+        {
+            var result = await mediator.Send(new CreateWithSuggestionRequest(model));
             return Json(result);
         }
 

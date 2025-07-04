@@ -1,0 +1,54 @@
+@model GamesAdmin.Site.Features.Currencies.ViewModels.CreateCurrencyWithSuggestionViewModel
+
+@if (Model.Suggestions != null && Model.Suggestions.Any())
+{
+    <div class="suggestions-content">
+        @foreach (var suggestion in Model.Suggestions)
+        {
+            <div class="suggestion-group mb-3">
+                <h6 class="text-warning">@suggestion.GroupName (Rate: @Model.SuggestedRate)</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Game</th>
+                                <th>Min Bet (Recalculated)</th>
+                                <th>Max Bet (Recalculated)</th>
+                                <th>Bet Levels (Recalculated)</th>
+                                <th>Coin Values (Recalculated)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var game in suggestion.Games)
+                            {
+                                <tr>
+                                    <td>@game.GameName</td>
+                                    <td>@game.MinBet.ToString("F2")</td>
+                                    <td>@game.MaxBet.ToString("F2")</td>
+                                    <td>
+                                        @if (game.BetLevels != null && game.BetLevels.Any())
+                                        {
+                                            <small>@string.Join(", ", game.BetLevels.Select(b => b.ToString("F2")))</small>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (game.CoinValues != null && game.CoinValues.Any())
+                                        {
+                                            <small>@string.Join(", ", game.CoinValues.Select(c => c.ToString("F2")))</small>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        No suggestions available for the selected currency group.
+    </div>
+} 
