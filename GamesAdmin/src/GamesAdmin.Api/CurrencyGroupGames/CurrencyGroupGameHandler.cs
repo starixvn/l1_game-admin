@@ -12,7 +12,8 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         IRequestHandler<GetCurrenctGroupGameRequest, CurrencyGroupGame>,
         IRequestHandler<GetAllRequest, IEnumerable<CurrencyGroupGame>>,
         IRequestHandler<GetByGroupRequest, IEnumerable<CurrencyGroupGame>>,
-        IRequestHandler<AddCurrencyGroupGamesRequest, bool>
+        IRequestHandler<AddCurrencyGroupGamesRequest, bool>,
+        IRequestHandler<GetCurrencyGroupSuggestionsRequest, CurrencyGroupSuggestionsResult>
     {
         private readonly ICurrencyGroupGameService currencyGroupGameService;
 
@@ -35,5 +36,8 @@ namespace GamesAdmin.Api.CurrencyGroupGames
 
         public Task<bool> Handle(AddCurrencyGroupGamesRequest request, CancellationToken cancellationToken)
             => this.currencyGroupGameService.AddRange(request.CurrencyGroupGames);
+
+        public Task<CurrencyGroupSuggestionsResult> Handle(GetCurrencyGroupSuggestionsRequest request, CancellationToken cancellationToken)
+            => this.currencyGroupGameService.GetSuggestions(request.Proposal);
     }
 }

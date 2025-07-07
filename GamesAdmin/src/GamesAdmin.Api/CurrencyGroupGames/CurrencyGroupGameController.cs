@@ -37,5 +37,9 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         [HttpPost("addList")]
         public Task<bool> AddList([FromBody] IEnumerable<CurrencyGroupGame> games)
             => mediator.Send(new AddCurrencyGroupGamesRequest(games));
+
+        [HttpPost("suggest")]
+        public Task<CurrencyGroupSuggestionsResult> Suggest([FromBody] CurrencyGroupProposal proposal)
+            => mediator.Send(new GetCurrencyGroupSuggestionsRequest(proposal));
     }
 }

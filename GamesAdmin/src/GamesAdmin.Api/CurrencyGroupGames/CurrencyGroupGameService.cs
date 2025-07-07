@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Api._Shared.Helpers;
+using GamesAdmin.Api.CurrencyGroupGames.Requests;
+using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -30,6 +34,8 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         Task<IEnumerable<CurrencyGroupGame>> GetByGameId(int gameId);
 
         Task<bool> AddRange(IEnumerable<CurrencyGroupGame> currencyGroupGames);
+
+        Task<CurrencyGroupSuggestionsResult> GetSuggestions(CurrencyGroupProposal proposal);
     }
 
     public class CurrencyGroupGameService : ICurrencyGroupGameService
@@ -221,6 +227,264 @@ namespace GamesAdmin.Api.CurrencyGroupGames
             }
 
             return false;
+        }
+
+        public async Task<CurrencyGroupSuggestionsResult> GetSuggestions(CurrencyGroupProposal proposal)
+        {
+            try
+            {
+                var baseCurrencyGroupGames = await GetBaseCurrencyGroupGames(proposal);
+                var candidateGroups = await GetCandidateCurrencyGroups(proposal);
+                
+                var suggestions = await ProcessCandidateGroups(candidateGroups, baseCurrencyGroupGames, proposal);
+                
+                return CreateSuggestionsResult(suggestions);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return new CurrencyGroupSuggestionsResult();
+            }
+        }
+
+        private async Task<Dictionary<string, CurrencyGroupGameEntity>> GetBaseCurrencyGroupGames(CurrencyGroupProposal proposal)
+        {
+            Expression<Func<CurrencyGroupGameEntity, bool>> filter;
+            
+            if (proposal.GetFromAllGames || proposal.GameNames?.Any() == true)
+            {
+                filter = x => x.GroupId == ObjectId.Parse(proposal.BaseCurrencyGroupId) && 
+                              (proposal.GetFromAllGames || proposal.GameNames.Contains(x.GameName));
+            }
+            else
+            {
+                filter = x => x.GroupId == ObjectId.Parse(proposal.BaseCurrencyGroupId);
+            }
+
+            var baseGames = await currencyGroupGameRepository.FilterByAsync(filter);
+            return baseGames.ToDictionary(x => x.GameName);
+        }
+
+        private async Task<ILookup<ObjectId, CurrencyGroupGameEntity>> GetCandidateCurrencyGroups(CurrencyGroupProposal proposal)
+        {
+            Expression<Func<CurrencyGroupGameEntity, bool>> filter;
+            
+            if (proposal.GetFromAllGames || proposal.GameNames?.Any() == true)
+            {
+                filter = x => proposal.GetFromAllGames || proposal.GameNames.Contains(x.GameName);
+            }
+            else
+            {
+                filter = x => true;
+            }
+
+            var candidateGames = await currencyGroupGameRepository.FilterByAsync(filter);
+            return candidateGames.ToLookup(x => x.GroupId);
+        }
+
+        private async Task<List<CurrencyGroupSuggestion>> ProcessCandidateGroups(
+            ILookup<ObjectId, CurrencyGroupGameEntity> candidateGroups,
+            Dictionary<string, CurrencyGroupGameEntity> baseCurrencyGroupGames,
+            CurrencyGroupProposal proposal)
+        {
+            var suggestions = new List<CurrencyGroupSuggestion>();
+            var baseGameNames = baseCurrencyGroupGames.Keys.ToHashSet();
+
+            foreach (var group in candidateGroups)
+            {
+                var groupGames = group.ToList();
+                var candidateGameNames = groupGames.Select(g => g.GameName).ToHashSet();
+                if (!baseGameNames.IsSubsetOf(candidateGameNames))
+                {
+                    continue;
+                }    
+                var groupId = group.Key.ToString();
+                var groupEntity = await currencyGroupRepository.FindByIdAsync(groupId);
+                
+                if (groupEntity == null)
+                {
+                    continue;
+                }    
+
+                var suggestion = CreateGroupSuggestion(groupGames, groupEntity, baseCurrencyGroupGames, proposal);
+                if (suggestion != null)
+                {
+                    suggestions.Add(suggestion);
+                }
+            }
+
+            return suggestions;
+        }
+
+        private CurrencyGroupSuggestion CreateGroupSuggestion(
+            List<CurrencyGroupGameEntity> groupGames,
+            CurrencyGroupEntity groupEntity,
+            Dictionary<string, CurrencyGroupGameEntity> baseCurrencyGroupGames,
+            CurrencyGroupProposal proposal)
+        {
+            var groupSuggestion = new CurrencyGroupSuggestion
+            {
+                GroupId = groupEntity.Id.ToString(),
+                GroupName = groupEntity.Name,
+                PartnerId = groupEntity.PartnerId,
+                Rate = proposal.Rate,
+                GameComparisons = new List<GameBetLimitComparison>()
+            };
+
+            var (Comparisons, TotalValueDifference, HasSmallerThanExpected) = ProcessGameComparisons(groupGames, baseCurrencyGroupGames, proposal);
+            
+            groupSuggestion.GameComparisons = Comparisons;
+            groupSuggestion.ValueDifference = TotalValueDifference;
+            groupSuggestion.IsSmallerThanExpected = HasSmallerThanExpected;
+
+            return groupSuggestion;
+        }
+
+        private (List<GameBetLimitComparison> Comparisons, double TotalValueDifference, bool HasSmallerThanExpected) 
+            ProcessGameComparisons(
+                List<CurrencyGroupGameEntity> groupGames,
+                Dictionary<string, CurrencyGroupGameEntity> baseCurrencyGroupGames,
+                CurrencyGroupProposal proposal)
+        {
+            var comparisons = new List<GameBetLimitComparison>();
+            double totalValueDifference = 0;
+            bool hasSmallerThanExpected = false;
+
+            foreach (var game in groupGames)
+            {
+                if (!baseCurrencyGroupGames.TryGetValue(game.GameName, out var baseGame))
+                {
+                    continue;
+                }    
+
+                var gameComparison = CreateGameBetLimitComparison(baseGame, game, proposal.Rate);
+                comparisons.Add(gameComparison);
+
+                totalValueDifference += CalculateTotalDifference(gameComparison);
+                hasSmallerThanExpected |= HasAnySmallerThanExpected(gameComparison);
+            }
+
+            return (comparisons, totalValueDifference, hasSmallerThanExpected);
+        }
+
+        private GameBetLimitComparison CreateGameBetLimitComparison(
+            CurrencyGroupGameEntity baseGame,
+            CurrencyGroupGameEntity candidateGame,
+            double rate)
+        {
+            return new GameBetLimitComparison
+            {
+                GameId = candidateGame.GameId,
+                GameName = candidateGame.GameName,
+                MinBetComparison = CreateBetLimitComparison(baseGame.MinBet, candidateGame.MinBet, rate),
+                MaxBetComparison = CreateBetLimitComparison(baseGame.MaxBet, candidateGame.MaxBet, rate),
+                MaxBetPerChoiceComparison = CreateMaxBetPerChoiceComparison(baseGame, candidateGame, rate),
+                MinCoinValueComparison = CreateMinArrayBetLimitComparison(baseGame.CoinValues, candidateGame.CoinValues, rate),
+                MaxCoinValueComparison = CreateMaxArrayBetLimitComparison(baseGame.CoinValues, candidateGame.CoinValues, rate),
+                MinBetLevelComparison = CreateMinArrayBetLimitComparison(baseGame.BetLevels, candidateGame.BetLevels, rate),
+                MaxBetLevelComparison = CreateMaxArrayBetLimitComparison(baseGame.BetLevels, candidateGame.BetLevels, rate)
+            };
+        }
+
+        private BetLimitComparison CreateMaxBetPerChoiceComparison(
+            CurrencyGroupGameEntity baseGame,
+            CurrencyGroupGameEntity candidateGame,
+            double rate)
+        {
+            var baseMaxBetPerChoice = GetMaxBetPerChoiceValue(baseGame.MaxBetPerChoices);
+            var candidateMaxBetPerChoice = GetMaxBetPerChoiceValue(candidateGame.MaxBetPerChoices);
+            
+            return CreateBetLimitComparison(baseMaxBetPerChoice, candidateMaxBetPerChoice, rate);
+        }
+
+        private double GetMaxBetPerChoiceValue(Dictionary<string, double> maxBetPerChoices)
+        {
+            return maxBetPerChoices?.Values?.Any() == true ? maxBetPerChoices.Values.Max() : 0;
+        }
+
+        private static double CalculateTotalDifference(GameBetLimitComparison comparison)
+        {
+            return Math.Abs(comparison.MinBetComparison.Difference) +
+                   Math.Abs(comparison.MaxBetComparison.Difference) +
+                   Math.Abs(comparison.MaxBetPerChoiceComparison.Difference) +
+                   Math.Abs(comparison.MinCoinValueComparison.Difference) +
+                   Math.Abs(comparison.MaxCoinValueComparison.Difference) +
+                   Math.Abs(comparison.MinBetLevelComparison.Difference) +
+                   Math.Abs(comparison.MaxBetLevelComparison.Difference);
+        }
+
+        private static bool HasAnySmallerThanExpected(GameBetLimitComparison comparison)
+        {
+            var comparisons = new[]
+            {
+                comparison.MaxBetComparison.IsSmallerThanExpected,
+                comparison.MaxBetPerChoiceComparison.IsSmallerThanExpected,
+                comparison.MaxCoinValueComparison.IsSmallerThanExpected,
+                comparison.MaxBetLevelComparison.IsSmallerThanExpected
+            };
+
+            return comparisons.Any(isSmaller => isSmaller);
+        }
+
+        private CurrencyGroupSuggestionsResult CreateSuggestionsResult(List<CurrencyGroupSuggestion> suggestions)
+        {
+            if (!suggestions.Any())
+            {
+                return new CurrencyGroupSuggestionsResult();
+            }
+
+            var bestSuggestion = suggestions.OrderBy(s => s.ValueDifference).First();
+            var bestSmallerSuggestion = suggestions
+                .Where(s => s.IsSmallerThanExpected)
+                .OrderBy(s => s.ValueDifference)
+                .FirstOrDefault();
+
+            return new CurrencyGroupSuggestionsResult
+            {
+                BestSuggestion = bestSuggestion,
+                BestSmallerSuggestion = bestSmallerSuggestion
+            };
+        }
+
+        private BetLimitComparison CreateBetLimitComparison(double baseValue, double candidateValue, double rate)
+        {
+            var expectedValue = baseValue / rate;
+            var difference = candidateValue - expectedValue;
+            var differencePercentage = Math.Abs(expectedValue) > double.Epsilon ? difference / expectedValue * 100 : 0;
+            
+            return new BetLimitComparison
+            {
+                BaseValue = baseValue,
+                CandidateValue = candidateValue,
+                ExpectedValue = expectedValue,
+                Difference = difference,
+                DifferencePercentage = differencePercentage,
+                IsSmallerThanExpected = candidateValue < expectedValue
+            };
+        }
+
+        private BetLimitComparison CreateMinArrayBetLimitComparison(double[] baseValues, double[] candidateValues, double rate)
+        {
+            if (baseValues == null || candidateValues == null || baseValues.Length == 0 || candidateValues.Length == 0)
+            {
+                return new BetLimitComparison();
+            }    
+                
+            var baseMin = baseValues.Min();
+            var candidateMin = candidateValues.Min();
+            return CreateBetLimitComparison(baseMin, candidateMin, rate);
+        }
+
+        private BetLimitComparison CreateMaxArrayBetLimitComparison(double[] baseValues, double[] candidateValues, double rate)
+        {
+            if (baseValues == null || candidateValues == null || baseValues.Length == 0 || candidateValues.Length == 0)
+            {
+                return new BetLimitComparison();
+            }    
+                
+            var baseMax = baseValues.Max();
+            var candidateMax = candidateValues.Max();
+            return CreateBetLimitComparison(baseMax, candidateMax, rate);
         }
     }
 }
