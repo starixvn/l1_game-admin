@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Core.Models;
+﻿using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Database.Entities.Currencies;
 using GamesAdmin.Database.Entities.Lobby;
@@ -42,8 +43,9 @@ namespace GamesAdmin.Api.Lobby
 
             if (HasChange(newEntity.CenterBanners, oldEntity.CenterBanners))
             {
-                var oldCenterBanners = oldEntity.CenterBanners.Select(banner => new BannerLog { DisplayTime = banner.DisplayTime, GameName = GetGameDisplayName(banner.GameId, gameSettings) });
-                var newCenterBanners = newEntity.CenterBanners.Select(banner => new BannerLog { DisplayTime = banner.DisplayTime, GameName = GetGameDisplayName(banner.GameId, gameSettings) });
+
+                var oldCenterBanners = oldEntity.CenterBanners != null ? oldEntity.CenterBanners.Select(banner => new BannerLog { DisplayTime = banner.DisplayTime, GameName = GetGameDisplayName(banner.GameId, gameSettings) }) : Enumerable.Empty<BannerLog>();
+                var newCenterBanners = newEntity.CenterBanners != null ? newEntity.CenterBanners.Select(banner => new BannerLog { DisplayTime = banner.DisplayTime, GameName = GetGameDisplayName(banner.GameId, gameSettings) }) : Enumerable.Empty<BannerLog>();
                 changedSettings.Add($"{"Center Banners"}: {JsonConvert.SerializeObject(oldCenterBanners)} -> {JsonConvert.SerializeObject(newCenterBanners)}\r\n");
             }
 
@@ -85,7 +87,7 @@ namespace GamesAdmin.Api.Lobby
                     }
                     if (HasChange(newCategory.GameSettings, oldCategory.GameSettings))
                     {
-                        var oldGameSettings = oldCategory.GameSettings.Select(gameSetting => new GameSettingLog { BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag, GameName = GetGameDisplayName(gameSetting.GameId, gameSettings)});
+                        var oldGameSettings = oldCategory.GameSettings.Select(gameSetting => new GameSettingLog { BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag, GameName = GetGameDisplayName(gameSetting.GameId, gameSettings) });
                         var newGameSettings = newCategory.GameSettings.Select(gameSetting => new GameSettingLog { BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag, GameName = GetGameDisplayName(gameSetting.GameId, gameSettings) });
                         changedCategory.Add($"{" - GameSettings"}: {JsonConvert.SerializeObject(oldGameSettings)} -> {JsonConvert.SerializeObject(newGameSettings)}");
                     }
