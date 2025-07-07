@@ -50,7 +50,7 @@ namespace GamesAdmin.Site.Features.Partners
                     addViewModel.MegaKenoUrl,
                     addViewModel.MobileDirectUrl,
                     addViewModel.TestCurrencyUrl,
-                    addViewModel.LangliveUrl,
+                    addViewModel.LivestreamingPlatformUrl,
                     addViewModel.IsDisplayPlayerCurrency,
                     addViewModel.Alias)));
 
@@ -78,7 +78,7 @@ namespace GamesAdmin.Site.Features.Partners
                    viewModel.MegaKenoUrl,
                    viewModel.MobileDirectUrl,
                    viewModel.TestCurrencyUrl,
-                   viewModel.LangliveUrl,
+                   viewModel.LivestreamingPlatformUrl,
                    viewModel.IsDisplayPlayerCurrency,
                    viewModel.Alias));
 

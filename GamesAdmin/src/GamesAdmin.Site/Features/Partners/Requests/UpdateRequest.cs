@@ -5,7 +5,7 @@ namespace GamesAdmin.Site.Features.Partners.Requests
 {
     public class UpdateRequest : IRequest<ResultBase>
     {
-        public UpdateRequest(string partnerId, string name, string secretKey, string clubVersionUrl, string mobiVersionUrl, string miniVersionUrl, string megaKenoUrl, string mobileDirectUrl, string testCurrencyUrl, string langliveUrl, bool isDisplayPlayerCurrency, string alias)
+        public UpdateRequest(string partnerId, string name, string secretKey, string clubVersionUrl, string mobiVersionUrl, string miniVersionUrl, string megaKenoUrl, string mobileDirectUrl, string testCurrencyUrl, string livestreamingPlatformUrl, bool isDisplayPlayerCurrency, string alias)
         {
             PartnerId = partnerId;
             Name = name;
@@ -16,7 +16,7 @@ namespace GamesAdmin.Site.Features.Partners.Requests
             MegaKenoUrl = megaKenoUrl;
             MobileDirectUrl = mobileDirectUrl;
             TestCurrencyUrl = testCurrencyUrl;
-            LangliveUrl = langliveUrl;
+            LivestreamingPlatformUrl = livestreamingPlatformUrl;
             IsDisplayPlayerCurrency = isDisplayPlayerCurrency;
             Alias = alias;
         }
@@ -39,7 +39,7 @@ namespace GamesAdmin.Site.Features.Partners.Requests
 
         public string TestCurrencyUrl { get; }
 
-        public string LangliveUrl { get; }
+        public string LivestreamingPlatformUrl { get; }
 
         public bool IsDisplayPlayerCurrency { get; }
 
