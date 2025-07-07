@@ -41,5 +41,10 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         [HttpPost("suggest")]
         public Task<CurrencyGroupSuggestionsResult> Suggest([FromBody] CurrencyGroupProposal proposal)
             => mediator.Send(new GetCurrencyGroupSuggestionsRequest(proposal));
+
+        [HttpPost("suggestNewRange")]
+        public Task<IEnumerable<CurrencyGroupGame>> SuggestNewRange([FromBody] CurrencyGroupProposal proposal)
+            => mediator.Send(new SuggestNewRangeRequest(proposal));
+    
     }
 }

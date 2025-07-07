@@ -11,13 +11,17 @@ using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Currencies;
+using GamesAdmin.Database.Entities.Chips;
 using Microsoft.CodeAnalysis;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Sentry;
+using Microsoft.CodeAnalysis.CSharp;
+using System.Globalization;
 
 namespace GamesAdmin.Api.CurrencyGroupGames
 {
@@ -36,6 +40,8 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         Task<bool> AddRange(IEnumerable<CurrencyGroupGame> currencyGroupGames);
 
         Task<CurrencyGroupSuggestionsResult> GetSuggestions(CurrencyGroupProposal proposal);
+
+        Task<IEnumerable<CurrencyGroupGame>> SuggestNewRange(CurrencyGroupProposal proposal);
     }
 
     public class CurrencyGroupGameService : ICurrencyGroupGameService
@@ -45,19 +51,22 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         private readonly ISentryClient sentryClient;
         private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
         private readonly IGenericRepository<GameConfigEntity> gameConfigRepository;
+        private readonly IGenericRepository<ChipEntity> chipRepository;
 
         public CurrencyGroupGameService(
             IGenericRepository<CurrencyGroupGameEntity> currencyGroupGameRepository,
             IMapper mapper,
             ISentryClient sentryClient,
             IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
-            IGenericRepository<GameConfigEntity> gameConfigRepository)
+            IGenericRepository<GameConfigEntity> gameConfigRepository,
+            IGenericRepository<ChipEntity> chipRepository)
         {
             this.currencyGroupGameRepository = currencyGroupGameRepository;
             this.mapper = mapper;
             this.sentryClient = sentryClient;
             this.currencyGroupRepository = currencyGroupRepository;
             this.gameConfigRepository = gameConfigRepository;
+            this.chipRepository = chipRepository;
         }
 
         public async Task<CurrencyGroupGame> Get(int gameId, string currencyGroupId)
@@ -119,7 +128,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
-
+                
                 return Enumerable.Empty<CurrencyGroupGame>();
             }
         });
@@ -188,7 +197,6 @@ namespace GamesAdmin.Api.CurrencyGroupGames
             {
                 var writes = new List<WriteModel<CurrencyGroupGameEntity>>();
                 var gameIds = currencyGroupGames.Select(x => x.GameId).ToList();
-                var groupIds = currencyGroupGames.Select(x => x.GroupId).Distinct().ToList();
                 var gameConfigs = (await gameConfigRepository.FilterByAsync(x => gameIds.Contains(x.GameId))).ToList();
 
                 foreach (var currencyGroupGame in currencyGroupGames)
@@ -397,7 +405,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
             return CreateBetLimitComparison(baseMaxBetPerChoice, candidateMaxBetPerChoice, rate);
         }
 
-        private double GetMaxBetPerChoiceValue(Dictionary<string, double> maxBetPerChoices)
+        private static double GetMaxBetPerChoiceValue(Dictionary<string, double> maxBetPerChoices)
         {
             return maxBetPerChoices?.Values?.Any() == true ? maxBetPerChoices.Values.Max() : 0;
         }
@@ -485,6 +493,128 @@ namespace GamesAdmin.Api.CurrencyGroupGames
             var baseMax = baseValues.Max();
             var candidateMax = candidateValues.Max();
             return CreateBetLimitComparison(baseMax, candidateMax, rate);
+        }
+
+        public async Task<IEnumerable<CurrencyGroupGame>> SuggestNewRange(CurrencyGroupProposal proposal)
+        {
+            try
+            {
+                var baseCurrencyGroupGames = await GetBaseCurrencyGroupGames(proposal);
+                var result = new List<CurrencyGroupGame>();
+                var availableChipValues = GetAvailableChipValues();
+
+                foreach (var baseGame in baseCurrencyGroupGames.Values)
+                {
+                    var adjustedGame = CreateAdjustedCurrencyGroupGame(baseGame, proposal.Rate, availableChipValues);
+                    result.Add(adjustedGame);
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return Enumerable.Empty<CurrencyGroupGame>();
+            }
+        }
+
+        private static CurrencyGroupGame CreateAdjustedCurrencyGroupGame(CurrencyGroupGameEntity baseGame, double rate, List<int> availableChipValues)
+        {
+            var adjustedCoinValues = AdjustArrayValues(baseGame.CoinValues, rate);
+            var adjustedBetLevels = AdjustArrayValues(baseGame.BetLevels, rate);
+            var adjustedChips = AdjustChips(baseGame.Chips, rate, availableChipValues);
+            
+            return new CurrencyGroupGame(
+                groupId: "",
+                gameId: baseGame.GameId,
+                gameName: baseGame.GameName,
+                enabled: false,
+                minbet: baseGame.MinBet / rate,
+                maxbet: baseGame.MaxBet / rate,
+                maxBetPerChoices: AdjustMaxBetPerChoices(baseGame.MaxBetPerChoices, rate),
+                chips: adjustedChips,
+                betLevels: adjustedBetLevels,
+                stakeLevels: baseGame.StakeLevels ?? new StakeLevel[0],
+                coinValues: adjustedCoinValues,
+                maxWinPerRound: baseGame.MaxWinPerRound / rate,
+                defaultCoinValue: adjustedCoinValues?.Length > 0 ? adjustedCoinValues.Min() : (double?)null,
+                defaultBetLevel: adjustedBetLevels?.Length > 0 ? adjustedBetLevels.Min() : (double?)null
+            );
+        }
+
+        private static string[] AdjustChips(string[] chips, double rate, List<int> availableChipValues)
+        {
+            if (chips == null)
+            {
+                return new string[0];
+            }
+
+            if (!availableChipValues.Any())
+            {
+                return chips;
+            }
+
+            return chips.Select(chipValue => 
+            {
+                if (int.TryParse(chipValue, out var value))
+                {
+                    var adjustedValue = RoundToNearestChipValue(value / rate, availableChipValues);
+                    return adjustedValue.ToString(CultureInfo.CurrentCulture);
+                }
+                return chipValue;
+            }).ToArray();
+        }
+
+        private List<int> GetAvailableChipValues()
+        {
+            try
+            {
+                var chips = chipRepository.AsQueryable().ToList();
+                return chips.Select(c => c.Value).OrderBy(v => v).ToList();
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return new List<int>();
+            }
+        }
+
+        private static double RoundToNearestChipValue(double value, List<int> availableChipValues)
+        {
+            if (!availableChipValues.Any())
+            {
+                return value;
+            }
+
+            var targetValue = (int)Math.Round(value);
+            var nearestValue = availableChipValues
+                .OrderBy(cv => Math.Abs(cv - targetValue))
+                .First();
+
+            return nearestValue;
+        }
+
+        private static Dictionary<string, double> AdjustMaxBetPerChoices(Dictionary<string, double> maxBetPerChoices, double rate)
+        {
+            if (maxBetPerChoices == null)
+            {
+                return new Dictionary<string, double>();
+            }
+
+            return maxBetPerChoices.ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value / rate
+            );
+        }
+
+        private static double[] AdjustArrayValues(double[] values, double rate)
+        {
+            if (values == null)
+            {
+                return new double[0];
+            }
+
+            return values.Select(value => value / rate).ToArray();
         }
     }
 }
