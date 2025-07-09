@@ -40,9 +40,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<string> UpdateMarginSettings(UpdateMarginSettingsRequest request);
 
-        Task<string> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
+        Task<string> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds, IEnumerable<int> otherGameIdsInGroup = null);
 
-        Task<string> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig);
+        Task<string> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig, IEnumerable<int> otherGameIdsInGroup = null);
 
         Task<bool> UpdateJackpot(UpdateJackpotRequest request);
 
@@ -172,10 +172,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<string> UpdateMarginSettings(UpdateMarginSettingsRequest request)
         => await gameApi.UpdateMarginSettings(request) ? string.Empty : UpdateFailedMessage;
 
-        public async Task<string> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
-        => await gameApi.UpdateSlotOdds(name, iconOdds) ? string.Empty : UpdateFailedMessage;
+        public async Task<string> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds, IEnumerable<int> otherGameIdsInGroup = null)
+        => await gameApi.UpdateSlotOdds(new UpdateSlotIconOddsRequest(name, iconOdds, otherGameIdsInGroup)) ? string.Empty : UpdateFailedMessage;
 
-        public async Task<string> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig)
+        public async Task<string> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig, IEnumerable<int> otherGameIdsInGroup = null)
         {
             var validateResult = cascadingSlotsConfigValidator.ValidateOdds(cascadingSlotsConfig.OddsByCounts);
             if (!string.IsNullOrWhiteSpace(validateResult))
@@ -183,7 +183,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 return validateResult;
             }
 
-            return await gameApi.UpdateCascadingSlotOdds(name, cascadingSlotsConfig) ? string.Empty : UpdateFailedMessage;
+            return await gameApi.UpdateCascadingSlotOdds(new UpdateOddsByCountsRequest(name, cascadingSlotsConfig,otherGameIdsInGroup)) ? string.Empty : UpdateFailedMessage;
         }
 
         public Task<bool> UpdateJackpot(UpdateJackpotRequest request)

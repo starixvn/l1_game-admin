@@ -510,10 +510,10 @@ namespace GamesAdmin.Site.Features.GameSettings
             switch (request.Type)
             {
                 case GameType.CascadingSlots:
-                    return gameService.UpdateCascadingSlotOdds(request.Name, request.CascadingSlotsConfig);
+                    return gameService.UpdateCascadingSlotOdds(request.Name, request.CascadingSlotsConfig, request.OtherGameIdsInGroup);
 
                 case GameType.Slots:
-                    return gameService.UpdateSlotIconOdds(request.Name, request.ClassicIcons);
+                    return gameService.UpdateSlotIconOdds(request.Name, request.ClassicIcons, request.OtherGameIdsInGroup);
 
                 default:
                     return gameService.UpdateOdds(request);
