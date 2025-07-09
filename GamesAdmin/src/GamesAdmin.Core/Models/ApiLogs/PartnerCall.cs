@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models.ApiLogs
 {
@@ -28,6 +29,26 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public decimal ValidBetAmount { get; set; }
 
         public DateTimeOffset? EndTime { get; set; }
+
+        public EndGameMetaData MetaData { get; set; }
+    }
+
+    public class EndGameMetaData
+    {
+        public List<BetDetail> BetDetails { get; set; }
+
+        public string Result { get; set; }
+    }
+
+    public class BetDetail
+    {
+        public int ChoiceId { get; set; }
+
+        public decimal ValidBetAmount { get; set; }
+
+        public decimal TotalAmount { get; set; }
+
+        public decimal TotalWin { get; set; }
     }
 
     public class PartnerEnterPortalCall : PartnerCall

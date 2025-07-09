@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GamesAdmin.Core.Models.ApiLogs;
 using GamesAdmin.Database.ApiLogs.Serializers;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -84,6 +85,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public int PromotionId { get; set; }
 
         public decimal WinningAmount { get; set; }
+
+        public EndGameMetaData MetaData { get; set; }
     }
 
     public class PartnerResultEntity : ApiLogResultEntity
