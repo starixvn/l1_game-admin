@@ -44,6 +44,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
             GameType.DynamicOdds,
             GameType.Marble,
             GameType.CrashTurnBase,
+            GameType.GuaranteedWin,
             0
         }.Contains(GameType);
 
