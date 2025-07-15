@@ -26,7 +26,7 @@ namespace GamesAdmin.Api.VoidGame
     {
         Task<bool> Void(string obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet);
 
-        Task<bool> Exist(string obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet);
+        Task<(bool, dynamic)> Exist(string obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet);
 
         Task<GameTicketRecord<HoldemPokerBetEntity>> ExistHoldemPoker(string obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet);
 
@@ -198,11 +198,11 @@ namespace GamesAdmin.Api.VoidGame
             return default;
         }
 
-        public async Task<bool> Exist(string obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet)
+        public async Task<(bool, dynamic)> Exist(string obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet)
         {
             try
             {
-                IGameTicket gameTicket;
+                IGameTicket<dynamic> gameTicket;
                 var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
                 bool isCrashGame = await generalGameSettingService.IsCrashGame((int)gameId);
                 if (isCrashGame)
@@ -284,15 +284,14 @@ namespace GamesAdmin.Api.VoidGame
                         _ => await Find<BaseBetEntity, BaseBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     };
                 }
-
-                return gameTicket?.Exist() == true;
+                return (gameTicket?.Exist() == true, gameTicket?.GetBet());
             }
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
             }
 
-            return false;
+            return (false, default);
         }
 
         public async Task<BlackjackRecord> ExistBlackjackGameTicket<BlackjackGameBet>(string obCustId, string partnerId, string siteId, long gameRoundId, bool freeBet)
@@ -770,7 +769,7 @@ namespace GamesAdmin.Api.VoidGame
             return bet;
         }
 
-        private async Task<IList<T>> FindTicketByFieldName<T>(
+        private async Task<IList<dynamic>> FindTicketByFieldName<T>(
                 IMongoCollection<T> collection,
                 string obCustId,
                 string partnerId,
@@ -789,10 +788,10 @@ namespace GamesAdmin.Api.VoidGame
             {
                 filter &= builder.Eq("FreeBet", freeBet);
             }
-            return (await collection.FindAsync(filter)).ToList();
+            return (await collection.FindAsync<dynamic>(filter)).ToList();
         }
 
-        private async Task<GameTicketRecord<One, Bet>> FindInActiveOrArchiveByFieldName<One, Bet>(
+        private async Task<GameTicketRecord<dynamic, dynamic>> FindInActiveOrArchiveByFieldName<One, Bet>(
                 GameTicketCollection collections,
                 string obCustId,
                 string partnerId,
@@ -811,10 +810,10 @@ namespace GamesAdmin.Api.VoidGame
 
             var betCollection = database.GetCollection<Bet>($"{collections.Bet}{postfix}");
             var betRecords = await FindTicketByFieldName(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, findFieldName);
-            return new GameTicketRecord<One, Bet>(oneRecord, betRecords, isArchive);
+            return new GameTicketRecord<dynamic, dynamic>(oneRecord, betRecords, isArchive);
         }
 
-        private async Task<GameTicketRecord<One, Bet>> FindByFieldName<One, Bet>(
+        private async Task<GameTicketRecord<dynamic, dynamic>> FindByFieldName<One, Bet>(
                 string obCustId,
                 string partnerId,
                 string siteId,
@@ -920,7 +919,7 @@ namespace GamesAdmin.Api.VoidGame
 
                 if (gameTickets?.BetRecords?.Any() == true)
                 {
-                    var betCollection = removedDatabase.GetCollection<Bet>($"{gameCollection.Bet}{RemovePostfix}");
+                    var betCollection = removedDatabase.GetCollection<dynamic>($"{gameCollection.Bet}{RemovePostfix}");
                     await betCollection.InsertManyAsync(gameTickets.BetRecords);
                 }
 

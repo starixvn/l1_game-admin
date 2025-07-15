@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.VoidGame.Models
 {
-    public interface IGameTicket
+    public interface IGameTicket<T>
     {
         bool Exist();
+
+        T GetBet();
     }
 
-    public class GameTicketRecord<T1, T2> : IGameTicket
+    public class GameTicketRecord<T1, T2> : IGameTicket<T1>
         where T1 : class
         where T2 : class
     {
@@ -26,9 +29,11 @@ namespace GamesAdmin.Api.VoidGame.Models
         public bool IsFromArchive { get; }
 
         public bool Exist() => OneRecord != null && BetRecords.Count > 0;
+
+        public T1 GetBet() => OneRecord;
     }
 
-    public class GameTicketRecord<T1> : IGameTicket
+    public class GameTicketRecord<T1> : IGameTicket<T1>
         where T1 : class
     {
         public GameTicketRecord(IList<T1> betRecords, bool isFromArchive)
@@ -42,9 +47,11 @@ namespace GamesAdmin.Api.VoidGame.Models
         public bool IsFromArchive { get; set; }
 
         public bool Exist() => BetRecords.Count > 0;
+
+        public T1 GetBet() => BetRecords.FirstOrDefault();
     }
 
-    public class BlackjackRecord : IGameTicket
+    public class BlackjackRecord : IGameTicket<BlackjackGameBetEntity>
     {
         public BlackjackRecord(BlackjackGameBetEntity betRecord, bool isFromArchive, List<long> handIds)
         {
@@ -64,5 +71,7 @@ namespace GamesAdmin.Api.VoidGame.Models
         public bool IsRunningTicket => BetRecord != null && !BetRecord.Paid;
 
         public bool Exist() => BetRecord != null;
+
+        public BlackjackGameBetEntity GetBet() => BetRecord;
     }
 }

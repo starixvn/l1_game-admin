@@ -10,6 +10,7 @@ using Refit;
 using Sentry;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.VoidGame
@@ -55,6 +56,11 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.ChineseBlackjack, "chinese blackjack"},
         };
 
+        private readonly Dictionary<GameId, string> gameSinglePlayer = new Dictionary<GameId, string>
+        {
+            {GameId.MiniRoulette, "mini roulette" }
+        };
+
         public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketHandler,
             IVoidRunningTicketApiFactory voidRunningTicketApiFactory, IGenericRepository<AccountInfoEntity> accountInfoRepository,
             IAppSettings appSettings)
@@ -71,7 +77,7 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var isExistTicket = await ticketHandler.Exist(request.PlayerId,
+                var (isExistTicket, ticket) = await ticketHandler.Exist(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
@@ -84,7 +90,26 @@ namespace GamesAdmin.Api.VoidGame
                 }
 
                 var requestTime = DateTimeOffset.UtcNow;
-                return await VoidGame(request);
+                var apiResult = await VoidGame(request);
+
+                if (apiResult.IsFailed())
+                {
+                    return apiResult;
+                }
+                var gameId = Enum.Parse<GameId>(request.GameTypeId.ToString());
+
+                if (gameSinglePlayer.ContainsKey(gameId) && ticket != null )
+                {
+                    var keyValuePairs = (IDictionary<string, object>)ticket;
+                    var userIndentify = keyValuePairs["uid"].ToString();
+                    var isVoid = await VoidGameSinglePlayerTicket(request.GameTypeId, userIndentify, request.GameRoundId);
+                    if (!isVoid)
+                    {
+                        return new VoidGameResult { ErrorCode = 1002, ErrorMessage = "Request void running ticket unsuccessfully." };
+                    }
+                }
+
+                return apiResult;
             }
             catch (Exception ex)
             {
@@ -272,11 +297,11 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var accountInfoEntity = await accountInfoRepository.FindOneAsync(entity => entity.UserId == userIndentify);
                 var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
 
                 if (gameRound24h.TryGetValue(gameId, out var gameName))
                 {
+                    var accountInfoEntity = await accountInfoRepository.FindOneAsync(entity => entity.UserId == userIndentify);
                     var serviceName = NamingConverter.ServiceName(gameName, appSettings.ServiceNameSeparator);
 
                     if (appSettings.Env=="DEV")
@@ -285,6 +310,37 @@ namespace GamesAdmin.Api.VoidGame
                     }
                     var voidRunningTicketApi = voidRunningTicketApiFactory.GetVoidRunningTicketApi(serviceName);
                     var result = await voidRunningTicketApi.VoidTicket(new VoidRunningTicketRequest(userIndentify, accountInfoEntity?.Name));
+                    return result;
+                }
+            }
+            catch (ApiException apiEx)
+            {
+                sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+            return true;
+        }
+
+        private async Task<bool> VoidGameSinglePlayerTicket(int gameTypeId, string userIndentify, long roundId)
+        {
+            try
+            {
+                var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
+
+                if (gameSinglePlayer.TryGetValue(gameId, out var gameName))
+                {
+                    var accountInfoEntity = await accountInfoRepository.FindOneAsync(entity => entity.UserId == userIndentify);
+                    var serviceName = NamingConverter.ServiceName(gameName, appSettings.ServiceNameSeparator);
+
+                    if (appSettings.Env == "DEV")
+                    {
+                        serviceName = NamingConverter.ServiceName(gameName, "");
+                    }
+                    var voidRunningTicketApi = voidRunningTicketApiFactory.GetVoidRunningTicketApi(serviceName);
+                    var result = await voidRunningTicketApi.VoidTicket(new VoidRunningTicketRequest(userIndentify, accountInfoEntity?.Name, roundId));
                     return result;
                 }
             }
