@@ -1,5 +1,4 @@
-﻿using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels;
+﻿using GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.CurrencyGroupGames.Requests

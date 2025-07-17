@@ -9,6 +9,7 @@
         Crash,
         DynamicOdds,
         Marble,
-        CrashTurnBase
+        CrashTurnBase,
+        GuaranteedWin
     }
 }

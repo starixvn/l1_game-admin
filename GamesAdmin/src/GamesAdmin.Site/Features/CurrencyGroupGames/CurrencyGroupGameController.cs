@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Audit.Mvc;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
@@ -51,6 +50,22 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         {
             var result = await mediator.Send(new EditRequest(mapper.Map<CurrencyGroupGame>(viewModel)));
 
+            return Json(result);
+        }
+
+        [HttpGet]
+        [Route("currencyGroupGame/GuaranteedFeature")]
+        public async Task<IActionResult> GuaranteedFeature(string groupId, int gameId)
+        {
+            return PartialView("_GuaranteedFeature", await mediator.Send(new GetGuaranteedFeatureRequest(groupId, gameId)));
+        }
+
+        [HttpPost, Audit]
+        [Route("currencyGroupGame/UpdateGuaranteedFeature")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateGuaranteedFeature(string groupId, int gameId, GuaranteedFeatureViewModel configValue)
+        {
+            var result = await mediator.Send(new UpdateGuaranteedFeatureRequest(groupId, gameId, configValue));
             return Json(result);
         }
     }

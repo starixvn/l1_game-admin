@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.CurrencyGroupGames.Requests;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Database.Entities.Lobby;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,5 +33,13 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         [HttpGet("getByGroup")]
         public Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId)
             => mediator.Send(new GetByGroupRequest(currencyGroupId));
+
+        [HttpGet("config")]
+        public Task<CurrencyGroupGameConfig> GetConfig(string currencyGroupId, int gameId, string type)
+            => mediator.Send(new GetConfigRequest(currencyGroupId, gameId, type));
+
+        [HttpPost("updateConfig")]
+        public Task<bool> UpdateConfig(string currencyGroupId, int gameId, [FromBody] object configValue, string type)
+            => mediator.Send(new UpdateConfigRequest(currencyGroupId, gameId, configValue, type));
     }
 }

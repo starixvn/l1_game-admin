@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +17,7 @@ using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Partners;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace GamesAdmin.Site.Features.CurrencyGroupGames
 {
@@ -25,6 +25,8 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         : IRequestHandler<GetOneRequest, EditViewModel>
         , IRequestHandler<EditRequest, ResultBase>
         , IRequestHandler<IndexRequest, IndexViewModel>
+        , IRequestHandler<GetGuaranteedFeatureRequest, GuaranteedFeatureViewModel>
+        , IRequestHandler<UpdateGuaranteedFeatureRequest, bool>
     {
         private readonly ICurrencyGroupGameService currencyGroupGameService;
         private readonly ICurrencyGroupService currencyGroupService;
@@ -138,5 +140,19 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
                 maxBetPerChoices != null && maxBetPerChoices.ContainsKey(choice.Value) ? maxBetPerChoices[choice.Value] : 0,
                 choice.DisplayName)).ToList();
         }
+
+        public async Task<GuaranteedFeatureViewModel> Handle(GetGuaranteedFeatureRequest request, CancellationToken cancellationToken)
+        {
+            var config = await currencyGroupGameService.GetConfig(request.GroupId, request.GameId, CurrencyGroupGameConfigType.GuaranteedFeature.Value);
+            if (config != null)
+            {
+                return JsonConvert.DeserializeObject<GuaranteedFeatureViewModel>(config.Value.ToString());
+            }
+            var result = new GuaranteedFeatureViewModel();
+            return result;
+        }
+
+        public Task<bool> Handle(UpdateGuaranteedFeatureRequest request, CancellationToken cancellationToken)
+            => currencyGroupGameService.UpdateConfig(request.GroupId, request.GameId, request.ConfigValue, CurrencyGroupGameConfigType.GuaranteedFeature.Value);
     }
 }

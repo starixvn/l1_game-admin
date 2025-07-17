@@ -11,7 +11,9 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         : IRequestHandler<UpdateCurrencyGroupGameRequest, bool>,
         IRequestHandler<GetCurrenctGroupGameRequest, CurrencyGroupGame>,
         IRequestHandler<GetAllRequest, IEnumerable<CurrencyGroupGame>>,
-        IRequestHandler<GetByGroupRequest, IEnumerable<CurrencyGroupGame>>
+        IRequestHandler<GetByGroupRequest, IEnumerable<CurrencyGroupGame>>,
+        IRequestHandler<GetConfigRequest, CurrencyGroupGameConfig>,
+        IRequestHandler<UpdateConfigRequest, bool>
     {
         private readonly ICurrencyGroupGameService currencyGroupGameService;
 
@@ -31,5 +33,11 @@ namespace GamesAdmin.Api.CurrencyGroupGames
 
         public Task<IEnumerable<CurrencyGroupGame>> Handle(GetByGroupRequest request, CancellationToken cancellationToken)
             => this.currencyGroupGameService.GetByGroup(request.CurrencyGroupId);
+
+        public Task<CurrencyGroupGameConfig> Handle(GetConfigRequest request, CancellationToken cancellationToken)
+            => this.currencyGroupGameService.GetConfig(request.CurrencyGroupId, request.GameId, request.Type);
+
+        public Task<bool> Handle(UpdateConfigRequest request, CancellationToken cancellationToken)
+            => this.currencyGroupGameService.UpdateConfig(request.GroupId, request.GameId, request.ConfigValue, request.Type);
     }
 }

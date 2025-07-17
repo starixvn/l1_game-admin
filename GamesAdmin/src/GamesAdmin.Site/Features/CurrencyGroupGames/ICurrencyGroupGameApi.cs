@@ -19,5 +19,11 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
 
         [Get("/currencyGroupGame/getByGroup")]
         Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId);
+
+        [Get("/currencyGroupGame/config")]
+        Task<CurrencyGroupGameConfig> GetConfig(string currencyGroupId, int gameId, string type);
+
+        [Post("/currencyGroupGame/updateConfig")]
+        Task<bool> UpdateConfig(string currencyGroupId, int gameId, object configValue, string type);
     }
 }

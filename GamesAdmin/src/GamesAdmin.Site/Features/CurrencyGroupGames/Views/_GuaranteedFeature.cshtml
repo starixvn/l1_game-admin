@@ -1,0 +1,192 @@
+@using GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels;
+@model GuaranteedFeatureViewModel;
+
+@{
+    Layout = null;
+}
+
+<div class="card-body">
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="GamingDays" class="control-label">Gaming Days</label>
+            <input type="number" asp-for="GamingDays" class="form-control" min="0" max="255" />
+            <span asp-validation-for="GamingDays" class="text-danger"></span>
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="TotalDays" class="control-label">Total Days</label>
+            <input type="number" asp-for="TotalDays" class="form-control" min="0" max="255" />
+            <span asp-validation-for="TotalDays" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <fieldset>
+                <legend>Guaranteed Win Configuration</legend>
+                
+                <div class="form-group">
+                    <input type="checkbox" asp-for="GuaranteedWin.Enabled" />
+                    <label asp-for="GuaranteedWin.Enabled" class="control-label">Enabled Guaranteed Win</label>
+                </div>
+                
+                <div class="form-group row">
+                    <div class="col-lg-3">
+                        <label asp-for="GuaranteedWin.Floating" class="control-label">Floating Amount (%)</label>
+                        <input type="number" asp-for="GuaranteedWin.Floating" class="form-control" min="0" max="100" />
+                        <span asp-validation-for="GuaranteedWin.Floating" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div id="guaranteed-win-thresholds">
+                        @for (var i = 0; i < Model.GuaranteedWin.ThresholdSettings.Count; i++)
+                        {
+                            <div class="form-group row threshold-setting-row">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <label class="control-label">Threshold</label>
+                                        <input type="number" asp-for="GuaranteedWin.ThresholdSettings[i].Threshold" class="form-control" />
+                                        <span asp-validation-for="GuaranteedWin.ThresholdSettings[i].Threshold" class="text-danger"></span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label class="control-label">Normal Winning (%)</label>
+                                            <input type="number" asp-for="GuaranteedWin.ThresholdSettings[i].NormalWinningPercentage" class="form-control" min="0" max="100" />
+                                            <span asp-validation-for="GuaranteedWin.ThresholdSettings[i].NormalWinningPercentage" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="checkbox" asp-for="GuaranteedWin.ThresholdSettings[i].EnabledWeakened" onchange="toggleWeakenedWinning(this)" />
+                                            <label asp-for="GuaranteedWin.ThresholdSettings[i].EnabledWeakened" class="control-label">Weakened Winning (%)</label>
+                                            <input type="number" asp-for="GuaranteedWin.ThresholdSettings[i].WeakenedWinningPercentage" class="form-control weakened-input" min="0" max="100" disabled="@(!Model.GuaranteedWin.ThresholdSettings[i].EnabledWeakened)" />
+                                            <span asp-validation-for="GuaranteedWin.ThresholdSettings[i].WeakenedWinningPercentage" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 mt-4">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeThresholdSetting(this, 'win')">
+                                        <i class="icon-cancel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" class="btn btn-add" onclick="addThresholdSetting('win')">Add Threshold Setting</button>
+                </div>
+            </fieldset>
+        </div>
+        
+        <div class="col-lg-12 mt-4">
+            <fieldset>
+                <legend>Guaranteed Loss Configuration</legend>
+                
+                <div class="form-group">
+                    <input type="checkbox" asp-for="GuaranteedLoss.Enabled" />
+                    <label asp-for="GuaranteedLoss.Enabled" class="control-label">Enabled Guaranteed Loss</label>
+                </div>
+                
+                <div class="form-group row">
+                    <div class="col-lg-6">
+                        <label asp-for="GuaranteedLoss.Floating" class="control-label">Floating Amount (%)</label>
+                        <input type="number" asp-for="GuaranteedLoss.Floating" class="form-control" min="0" max="100" />
+                        <span asp-validation-for="GuaranteedLoss.Floating" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div id="guaranteed-loss-thresholds">
+                        @for (var i = 0; i < Model.GuaranteedLoss.ThresholdSettings.Count; i++)
+                        {
+                            <div class="form-group row threshold-setting-row">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <label class="control-label">Threshold</label>
+                                        <input type="number" asp-for="GuaranteedLoss.ThresholdSettings[i].Threshold" class="form-control" />
+                                        <span asp-validation-for="GuaranteedLoss.ThresholdSettings[i].Threshold" class="text-danger"></span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label class="control-label">Normal Winning (%)</label>
+                                            <input type="number" asp-for="GuaranteedLoss.ThresholdSettings[i].NormalWinningPercentage" class="form-control" min="0" max="100" />
+                                            <span asp-validation-for="GuaranteedLoss.ThresholdSettings[i].NormalWinningPercentage" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="checkbox" asp-for="GuaranteedLoss.ThresholdSettings[i].EnabledWeakened" onchange="toggleWeakenedWinning(this)" />
+                                            <label asp-for="GuaranteedLoss.ThresholdSettings[i].EnabledWeakened" class="control-label">Weakened Winning (%)</label>
+                                            <input type="number" asp-for="GuaranteedLoss.ThresholdSettings[i].WeakenedWinningPercentage" class="form-control weakened-input" min="0" max="100" disabled="@(!Model.GuaranteedLoss.ThresholdSettings[i].EnabledWeakened)" />
+                                            <span asp-validation-for="GuaranteedLoss.ThresholdSettings[i].WeakenedWinningPercentage" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 mt-4">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeThresholdSetting(this, 'loss')">
+                                        <i class="icon-cancel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" class="btn btn-add" onclick="addThresholdSetting('loss')">Add Threshold Setting</button>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addThresholdSetting(type) {
+        const container = document.getElementById(`guaranteed-${type}-thresholds`);
+        const index = container.children.length;
+        
+        const newRow = document.createElement('div');
+        newRow.className = 'form-group row threshold-setting-row';
+        newRow.innerHTML = `
+            <div class="col-lg-10">
+                <div class="form-group">
+                    <label class="control-label">Threshold</label>
+                    <input type="number" name="Guaranteed${type.charAt(0).toUpperCase() + type.slice(1)}.ThresholdSettings[${index}].Threshold" class="form-control" />
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label class="control-label">Normal Winning (%)</label>
+                        <input type="number" name="Guaranteed${type.charAt(0).toUpperCase() + type.slice(1)}.ThresholdSettings[${index}].NormalWinningPercentage" class="form-control" min="0" max="100" />
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="checkbox" name="Guaranteed${type.charAt(0).toUpperCase() + type.slice(1)}.ThresholdSettings[${index}].EnabledWeakened" onchange="toggleWeakenedWinning(this)" />
+                        <label class="control-label">Weakened Winning (%)</label>
+                        <input type="number" name="Guaranteed${type.charAt(0).toUpperCase() + type.slice(1)}.ThresholdSettings[${index}].WeakenedWinningPercentage" class="form-control weakened-input" min="0" max="100"" disabled />
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 mt-4">
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeThresholdSetting(this, '${type}')">
+                    <i class="icon-cancel"></i>
+                </button>
+            </div>
+        `;
+        
+        container.appendChild(newRow);
+    }
+    
+    function removeThresholdSetting(button, type) {
+        const row = button.closest('.threshold-setting-row');
+        row.remove();
+        
+        // Reindex the remaining rows
+        const container = document.getElementById(`guaranteed-${type}-thresholds`);
+        const rows = container.querySelectorAll('.threshold-setting-row');
+        rows.forEach((row, index) => {
+            const inputs = row.querySelectorAll('input');
+            const guaranteedType = type.charAt(0).toUpperCase() + type.slice(1);
+            inputs[0].name = `Guaranteed${guaranteedType}.ThresholdSettings[${index}].Threshold`;
+            inputs[1].name = `Guaranteed${guaranteedType}.ThresholdSettings[${index}].NormalWinningPercentage`;
+            inputs[2].name = `Guaranteed${guaranteedType}.ThresholdSettings[${index}].EnabledWeakened`;
+            inputs[3].name = `Guaranteed${guaranteedType}.ThresholdSettings[${index}].WeakenedWinningPercentage`;
+        });
+    }
+    
+    function toggleWeakenedWinning(checkbox) {
+        const row = checkbox.closest('.threshold-setting-row');
+        const weakenedInput = row.querySelector('.weakened-input');
+        weakenedInput.disabled = !checkbox.checked;
+    }
+</script> 

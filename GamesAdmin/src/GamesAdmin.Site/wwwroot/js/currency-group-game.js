@@ -1,4 +1,90 @@
 ﻿var currencyGroupGame = (function ($) {
+    function hideAllTabs() {
+        $("#setting").hide();
+        $("#site-exclusion").hide();
+        $("#guaranteed-feature").hide();
+        $("#setting-tab-header").removeClass("active");
+        $("#site-exclusion-tab-header").removeClass("active");
+        $("#guaranteed-feature-tab-header").removeClass("active");
+    }
+
+    function showTab(tabName) {
+        $("#" + tabName).show();
+        $("#" + tabName + "-tab-header").addClass("active");
+    }
+
+    function loadGuaranteedFeature(gid) {
+        var groupId = gid ?? $("#firstGroup")[0].value;
+        var gameId = $("#GameId")[0].value;
+
+        $.ajax({
+            method: "GET",
+            url: "/currencyGroupGame/GuaranteedFeature",
+            data: {
+                gameId,
+                groupId,
+            },
+        }).done(function (content) {
+            if (content) {
+                $("#guaranteed-feature-configs").html(content);
+            }
+        });
+    }
+
+    function getThresholdSetting(selectors) {
+        const settings = [];
+        $(selectors).each(function () {
+            var $row = $(this);
+            var thresholdSetting = {
+                Threshold: parseFloat($row.find('input[type="number"][name*="Threshold"]').val()) || 0,
+                NormalWinningPercentage: parseFloat($row.find('input[type="number"][name*="NormalWinningPercentage"]').val()) || 0,
+                EnabledWeakened: $row.find('input[name*="EnabledWeakened"]').is(":checked"),
+                WeakenedWinningPercentage: parseFloat($row.find('input[type="number"][name*="WeakenedWinningPercentage"]').val()) || 0,
+            };
+            settings.push(thresholdSetting);
+        });
+        return settings;
+    }
+
+    function updateGuaranteedFeature(isContinue, modalHandlerOnUpdate) {
+        var groupId = $("#guaranteed-feature #GroupId")[0].value;
+        var gameId = $("#GameId")[0].value;
+        var configValue = {
+            GamingDays: parseInt($("#GamingDays").val()) || 0,
+            TotalDays: parseInt($("#TotalDays").val()) || 0,
+            GuaranteedWin: {
+                Enabled: $("#GuaranteedWin_Enabled").is(":checked"),
+                Floating: parseInt($("#GuaranteedWin_Floating").val()) || 0,
+                ThresholdSettings: getThresholdSetting("#guaranteed-win-thresholds .threshold-setting-row"),
+            },
+            GuaranteedLoss: {
+                Enabled: $("#GuaranteedLoss_Enabled").is(":checked"),
+                Floating: parseInt($("#GuaranteedLoss_Floating").val()) || 0,
+                ThresholdSettings: getThresholdSetting("#guaranteed-loss-thresholds .threshold-setting-row"),
+            },
+        };
+        $.ajax({
+            method: "POST",
+            url: "/currencyGroupGame/UpdateGuaranteedFeature",
+            data: {
+                groupId,
+                gameId,
+                configValue,
+            },
+        })
+            .done(function (result) {
+                if (result) {
+                    $("#currency-group-game-successMsg").show();
+                } else {
+                    $("#currency-group-game-failedMsg").show();
+                }
+                modalHandlerOnUpdate(isContinue);
+            })
+            .fail(function () {
+                $("#currency-group-game-failedMsg").show();
+            });
+    }
+
     return {
         loadConfig: function (gameName, groupId, isCopySetting, gameType) {
             var context = this;
@@ -9,13 +95,13 @@
                     gameName,
                     groupId,
                     isCopySetting,
-                    gameType
-                }
+                    gameType,
+                },
             }).done(function (content) {
                 var isDisable = false;
 
                 if (content) {
-                    $('#currency-group-game-setting').html(content);
+                    $("#currency-group-game-setting").html(content);
                     $.validator.addMethod("unique", function (value, element, params) {
                         for (const coinElement of $(".txt-coin-value", "#coin-values")) {
                             if (coinElement.value === value && coinElement !== element) {
@@ -32,16 +118,15 @@
                         }
                         return true;
                     });
-                 
-                    $.validator.unobtrusive.adapters.addBool("unique");
-                    $.validator.unobtrusive.parse('#currency-group-game-edit-form');
 
+                    $.validator.unobtrusive.adapters.addBool("unique");
+                    $.validator.unobtrusive.parse("#currency-group-game-edit-form");
                 }
                 for (var i = 0; i < 4; i++) {
-                    if ($('#coin-value-' + i).is('[disabled=disabled]') || $('#stake-level-' + i++).is('[disabled=disabled]')) {
+                    if ($("#coin-value-" + i).is("[disabled=disabled]") || $("#stake-level-" + i++).is("[disabled=disabled]")) {
                         isDisable = true;
-                        $('#GroupIdCopy').prop("disabled", true);
-                        $("#IsCopySetting").prop('checked', false);
+                        $("#GroupIdCopy").prop("disabled", true);
+                        $("#IsCopySetting").prop("checked", false);
                         break;
                     }
                 }
@@ -52,33 +137,20 @@
         },
 
         onChangeGroup: function (gameName, gameType, isCopy) {
-            const isNoneValue = $('#GroupIdCopy').val() == '';
-            const groupId = !isCopy || isNoneValue ? ('#GroupId') : ('#GroupIdCopy');
+            const isNoneValue = $("#GroupIdCopy").val() == "";
+            const groupId = !isCopy || isNoneValue ? "#GroupId" : "#GroupIdCopy";
             this.loadConfig(gameName, $(groupId)[0].value, isCopy, gameType);
         },
-
         toggleTab: function (tabName) {
-            console.log("ok");
-            $('#setting').hide();
-            $('#site-exclusion').hide();
-
-            $('#site-exclusion-tab-header').removeClass("active");
-            $('#setting-tab-header').removeClass("active");
-
-            const id = '#' + tabName;
-            const headerId = '#' + tabName + '-tab-header';
-
-            tabName == 'setting' && this.loadDefaultSetting();
-            tabName == 'site-exclusion' && this.loadSiteExclusion();
-
-
-            $(id).show();
-            $(headerId).addClass("active");
+            hideAllTabs();
+            tabName == "setting" && this.loadDefaultSetting();
+            tabName == "site-exclusion" && this.loadSiteExclusion();
+            tabName == "guaranteed-feature" && loadGuaranteedFeature();
+            showTab(tabName);
         },
-
         loadSiteExclusion: function () {
-            var gameId = $('#GameId')[0].value;
-            var partnerId = $('#PartnerId')[0].value;
+            var gameId = $("#GameId")[0].value;
+            var partnerId = $("#PartnerId")[0].value;
 
             $.ajax({
                 method: "GET",
@@ -86,18 +158,16 @@
                 data: {
                     gameId,
                     partnerId,
-                }
+                },
             }).done(function (exclusionSites) {
                 if (exclusionSites) {
-                    $('#siteExclusions').val(exclusionSites.join('; '));
+                    $("#siteExclusions").val(exclusionSites.join("; "));
                 }
             });
         },
-
         loadDefaultSetting: function () {
-            this.loadConfig($('#GameName')[0].value, $('#firstGroup')[0].value, false, $('#GameType')[0].value);
+            this.loadConfig($("#GameName")[0].value, $("#firstGroup")[0].value, false, $("#GameType")[0].value);
         },
-
         getListSelectedChips: function () {
             var chips = [];
 
@@ -107,11 +177,10 @@
 
             return chips;
         },
-
         updateSiteExclusion: function (isContinue, modalHandlerOnUpdate) {
-            var gameId = $('#GameId')[0].value;
-            var partnerId = $('#PartnerId')[0].value;
-            var exclusionSites = $('#siteExclusions').val().replace(/\s/g, '').split(';');
+            var gameId = $("#GameId")[0].value;
+            var partnerId = $("#PartnerId")[0].value;
+            var exclusionSites = $("#siteExclusions").val().replace(/\s/g, "").split(";");
 
             $.ajax({
                 method: "POST",
@@ -120,81 +189,80 @@
                     gameId,
                     partnerId,
                     exclusionSites,
-                    otherGameIdsInGroup: $("#OtherGameIdsInGroup").val()
-                }
+                    otherGameIdsInGroup: $("#OtherGameIdsInGroup").val(),
+                },
             }).done(function (result) {
                 if (result) {
-                    $('#currency-group-game-successMsg').show();
-                }
-                else {
-                    $('#currency-group-game-failedMsg').show();
+                    $("#currency-group-game-successMsg").show();
+                } else {
+                    $("#currency-group-game-failedMsg").show();
                 }
 
                 modalHandlerOnUpdate(isContinue);
             });
         },
-
         updateSetting: function (isContinue, modalHandlerOnUpdate) {
-            var $form = $('#currency-group-game-edit-form');
+            var $form = $("#currency-group-game-edit-form");
             if ($form.valid()) {
                 this.updateCoinValuesIndex();
-                var data = $('#currency-group-game-edit-form').serializeArray();
+                var data = $("#currency-group-game-edit-form").serializeArray();
 
                 var chips = this.getListSelectedChips();
 
                 for (var i = 0; i < chips.length; i++) {
                     data.push({
-                        name: ['Chips[' + i + ']'], value: chips[i]
+                        name: ["Chips[" + i + "]"],
+                        value: chips[i],
                     });
                 }
 
                 $.ajax({
                     method: "POST",
-                    url: 'currencyGroupGame/Edit',
-                    dataType: 'json',
+                    url: "currencyGroupGame/Edit",
+                    dataType: "json",
                     data,
                 }).done(function (result) {
                     if (result.success) {
-                        $('#currency-group-game-successMsg').show();
-                    }
-                    else {
-                        $('#currency-group-game-failedMsg').show();
+                        $("#currency-group-game-successMsg").show();
+                    } else {
+                        $("#currency-group-game-failedMsg").show();
                     }
 
                     modalHandlerOnUpdate(isContinue);
                 });
             }
         },
-
         modalHandlerOnUpdate: function (isContinue) {
             setTimeout(function () {
-                $('#updateBtn').prop('disabled', false);
-                $('#currency-group-game-successMsg').hide();
-                $('#currency-group-game-failedMsg').hide();
+                $("#updateBtn").prop("disabled", false);
+                $("#currency-group-game-successMsg").hide();
+                $("#currency-group-game-failedMsg").hide();
 
                 if (!isContinue) {
-                    $('#partnerSettingModal').modal('hide');
+                    $("#partnerSettingModal").modal("hide");
                     location.reload();
                 }
             }, 1000);
         },
-
         onSubmit: function (isContinue) {
             if (isContinue) {
-                $('#partnerSettingModal').on('hide.bs.modal', function (event) {
+                $("#partnerSettingModal").on("hide.bs.modal", function (event) {
                     location.reload();
                 });
             }
 
-            if ($('#setting').css('display') && $('#setting').css('display') !== 'none') {
+            if ($("#setting").css("display") && $("#setting").css("display") !== "none") {
                 this.updateSetting(isContinue, this.modalHandlerOnUpdate);
             }
 
-            if ($('#site-exclusion').css('display') && $('#site-exclusion').css('display') !== 'none') {
+            if ($("#site-exclusion").css("display") && $("#site-exclusion").css("display") !== "none") {
                 this.updateSiteExclusion(isContinue, this.modalHandlerOnUpdate);
             }
-        },
 
+            if ($("#guaranteed-feature").css("display") && $("#guaranteed-feature").css("display") !== "none") {
+                updateGuaranteedFeature(isContinue, this.modalHandlerOnUpdate);
+            }
+        },
         addCoin: function () {
             const length = $(".txt-coin-value", "#coin-values").length;
 
@@ -210,7 +278,7 @@
                                   data-val-unique="Value should be unique"
                                   />
                             <i class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="currencyGroupGame.removeCoinValue(event)"></i>
-                        </div>`).insertBefore($('.add-container'));
+                        </div>`).insertBefore($(".add-container"));
             this.reparseFormValidation();
         },
         addBetLevel: function () {
@@ -230,7 +298,7 @@
                                    oninput="currencyGroupGame.updateTotalBet(this.value,${length})" />
                             <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="currencyGroupGame.removeBetLevel(event)"></i>
                             <label class=" mt-3 ml-5 pl-5" id="total-bet-${length}"></label>
-                        </div>`).insertBefore($('.add-container'));
+                        </div>`).insertBefore($(".add-container"));
             this.reparseFormValidation();
         },
         updateTotalBet: function (value, index) {
@@ -264,11 +332,9 @@
             if (val != defaultVal) {
                 $(event.target).parent().remove();
                 this.updateBetLevelIndex();
+            } else {
+                alert("Cannot delete the default value. Set a new default first");
             }
-            else {
-                alert("Cannot delete the default value. Set a new default first")
-            }
-    
         },
         onBetLevelChange: function (event) {
             const $parent = $(event.target).parent();
@@ -293,11 +359,13 @@
             this.reparseFormValidation();
         },
         reparseFormValidation: function () {
-            var form = $("#currency-group-game-edit-form")
-                .removeData("validator")
-                .removeData("unobtrusiveValidation"); 
+            var form = $("#currency-group-game-edit-form").removeData("validator").removeData("unobtrusiveValidation");
 
             $.validator.unobtrusive.parse(form);
-        }
-    }
-}(jQuery));
+        },
+        onChangeGroupInGuaranteedFeature: function () {
+            const groupId = $("#guaranteed-feature #GroupId")[0].value;
+            loadGuaranteedFeature(groupId);
+        },
+    };
+})(jQuery);

@@ -12,6 +12,10 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         Task<ResultBase> Update(CurrencyGroupGame currencyGroupGame);
 
         Task<CurrencyGroupGame> Get(string groupId, int gameId);
+
+        Task<CurrencyGroupGameConfig> GetConfig(string groupId, int gameId, string type);
+
+        Task<bool> UpdateConfig(string groupId, int gameId, object configValue, string type);
     }
 
     public class CurrencyGroupGameService : ICurrencyGroupGameService
@@ -38,5 +42,11 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
 
         public Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId)
             => groupCurrencyGameApi.GetByGroup(currencyGroupId);
+
+        public Task<CurrencyGroupGameConfig> GetConfig(string groupId, int gameId, string type)
+            => groupCurrencyGameApi.GetConfig(groupId, gameId, type);
+
+        public Task<bool> UpdateConfig(string groupId, int gameId, object configValue, string type)
+            => groupCurrencyGameApi.UpdateConfig(groupId, gameId, configValue, type);
     }
 }

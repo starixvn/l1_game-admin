@@ -41,7 +41,7 @@ namespace GamesAdmin.Core.Models
             DefaultBetLevel = defaultBetLevel;
             OtherGameIdsInGroup = otherGameIdsInGroup ?? Enumerable.Empty<int>();
         }
-            
+
         public string GroupId { get; }
 
         public int GameId { get; set; }
