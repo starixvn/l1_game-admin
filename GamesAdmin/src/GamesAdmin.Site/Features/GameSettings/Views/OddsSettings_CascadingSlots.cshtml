@@ -22,7 +22,7 @@
         </div>
     }
     <div class="form-group row">
-        @for (var i = 0; i < Model.CascadingSlotsConfig.OddsByCounts.Count; i++)
+        @for (var i = 0; i < Model.CascadingSlotsConfig.OddsByCounts.Count - 1; i++)
         {
             <div class="col-lg-12 mb-3">
                 <fieldset>
@@ -84,14 +84,21 @@
                                     {
                                         var c = @Model.CascadingSlotsConfig.FreeSpins.InitialOdds[j];
 
-                                        <div class="col-lg-5 d-inline-block">
+                                        <div class="col-lg-3 d-inline-block">
                                             <label class="control-label">Count</label>
                                             <input type="number" asp-for="@Model.CascadingSlotsConfig.FreeSpins.InitialOdds[j].Count" class="form-control small" />
                                         </div>
-                                        <div class="col-lg-5 d-inline-block">
+                                        <div class="col-lg-4 d-inline-block">
                                             <label class="control-label">Number of Free Spins</label>
                                             <input type="number" asp-for="@Model.CascadingSlotsConfig.FreeSpins.InitialOdds[j].Odds" class="form-control small" />
                                         </div>
+                                        <div class="col-lg-3 d-inline-block">
+                                            <label class="control-label">Odds</label>
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.OddsByCounts["9"][j].Odds" class="form-control small" />
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.OddsByCounts["9"][j].To" class="form-control small" hidden/>
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.OddsByCounts["9"][j].From" class="form-control small" hidden/>
+                                        </div>
+
                                     }
                                 </fieldset>
                             </div>

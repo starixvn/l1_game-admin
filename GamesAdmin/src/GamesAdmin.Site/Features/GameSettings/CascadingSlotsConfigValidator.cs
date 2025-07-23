@@ -61,7 +61,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             => odds.From >= 0 && odds.To >= 0 && odds.Odds >= 0;
 
         private bool IsValidFromTo(OddsByCount odds)
-            => odds.From < odds.To;
+            => odds.From <= odds.To;
 
         private bool IsValidConsecutiveRange(OddsByCount odds, OddsByCount prevOdds)
             => odds.From == prevOdds.To + 1;

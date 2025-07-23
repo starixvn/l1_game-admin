@@ -30,6 +30,14 @@ namespace GamesAdmin.Core.Extensions
                         new OddsByCount(12, 30, 0)
                     });
                 }
+
+                config.OddsByCounts.Add("9", new List<OddsByCount>
+                {
+                    new OddsByCount(4,4,0),
+                    new OddsByCount(5,5,0),
+                    new OddsByCount(6,30,0),
+                });
+
             }
 
             return config;

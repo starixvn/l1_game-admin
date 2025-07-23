@@ -166,6 +166,16 @@ namespace GamesAdmin.Site.Features.GameSettings
 
                     case GameType.CascadingSlots:
                         viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.CascadingSlotsConfig);
+
+                        if (viewModel.CascadingSlotsConfig.OddsByCounts.ContainsKey("9") == false)
+                        {
+                            viewModel.CascadingSlotsConfig.OddsByCounts.Add("9", new List<OddsByCount>
+                            {
+                                new OddsByCount(4,4,0),
+                                new OddsByCount(5,5,0),
+                                new OddsByCount(6,30,0),
+                            });
+                        }
                         break;
 
                     case GameType.SlotRNG:

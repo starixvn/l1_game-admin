@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
@@ -11,6 +10,7 @@ using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database.Entities;
 using Newtonsoft.Json;
 using Refit;
+using static MongoDB.Driver.WriteConcern;
 
 namespace GamesAdmin.Api._Shared.Helpers
 {
@@ -55,18 +55,18 @@ namespace GamesAdmin.Api._Shared.Helpers
                 changedSettings.Add(setting);
             }
 
-            if (!new HashSet<double>(newConfig.CoinValues ?? new double[0]).SetEquals(oldConfig.CoinValues ?? new double[0]))
+            if (!new HashSet<double>(newConfig.CoinValues).SetEquals(oldConfig.CoinValues))
             {
                 changedSettings.Add(new SettingChangedModel("CoinValues", string.Join(", ", oldConfig.CoinValues), string.Join(", ", newConfig.CoinValues)));
             }
 
 
-            if (!new HashSet<string>(newConfig.Chips ?? new string[0]).SetEquals(oldConfig.Chips ?? new string[0]))
+            if (!new HashSet<string>(newConfig.Chips).SetEquals(oldConfig.Chips))
             {
                 changedSettings.Add(new SettingChangedModel("Chips", string.Join(", ", oldConfig.Chips), string.Join(", ", newConfig.Chips)));
             }
 
-            if (!new HashSet<double>(newConfig.BetLevels ?? new double[0]).SetEquals(oldConfig.BetLevels ?? new double[0]))
+            if (!new HashSet<double>(newConfig.BetLevels).SetEquals(oldConfig.BetLevels))
             {
                 changedSettings.Add(new SettingChangedModel("StakeLevels", string.Join(", ", oldConfig.BetLevels), string.Join(", ", newConfig.BetLevels)));
             }
@@ -272,8 +272,8 @@ namespace GamesAdmin.Api._Shared.Helpers
 
             foreach (var iconSettings in newOddsByCount)
             {
-                var oldValue = GetOddsByCountConfigString(iconSettings.Value);
-                var newValue = GetOddsByCountConfigString(oldOddsByCount[iconSettings.Key]);
+                var newValue = GetOddsByCountConfigString(iconSettings.Value);
+                var oldValue = oldOddsByCount.ContainsKey(iconSettings.Key) ? GetOddsByCountConfigString(oldOddsByCount[iconSettings.Key]) : "Empty";
                 var settingChanged = new SettingChangedModel($"Odds Icon {iconSettings.Key + 1}", oldValue, newValue);
 
                 changedSettings.Add(settingChanged);
