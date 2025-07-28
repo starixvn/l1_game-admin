@@ -53,6 +53,11 @@
                     {
                         Text = "Chinese Traditional",
                         Value = "zh-TW"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Japanese",
+                        Value = "ja-JP"
                     }
                 };
 
