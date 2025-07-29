@@ -21,6 +21,10 @@ namespace GamesAdmin.Site.Features.Notifications.Requests
 
         public string IDMessage { get; set; }
 
+        public string JAMessage { get; set; }
+
+        public string ESMessage { get; set; }
+
         public NotificationDisplayKind DisplayKind
             => Enumeration.FromValue<NotificationDisplayKind>(DisplayKindValue.ToString());
     }

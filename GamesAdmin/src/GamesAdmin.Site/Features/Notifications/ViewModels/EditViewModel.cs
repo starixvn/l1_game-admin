@@ -23,6 +23,8 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
             TWMessage = GetMessage(notification, Language.TW);
             THMessage = GetMessage(notification, Language.TH);
             IDMessage = GetMessage(notification, Language.ID);
+            JAMessage = GetMessage(notification, Language.JA);
+            ESMessage = GetMessage(notification, Language.ES);
         }
 
         public List<SelectListItem> DisplayKinds { get; }
@@ -62,6 +64,16 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         [MinLength(MinLength)]
         [MaxLength(MaxLength)]
         public string IDMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string JAMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string ESMessage { get; set; }
 
         private string GetMessage(Notification notification, string language)
         {

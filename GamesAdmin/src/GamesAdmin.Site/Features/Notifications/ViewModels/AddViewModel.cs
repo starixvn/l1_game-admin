@@ -52,5 +52,15 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         [MinLength(MinLength)]
         [MaxLength(MaxLength)]
         public string IDMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string JAMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string ESMessage { get; set; }
     }
 }

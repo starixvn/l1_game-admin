@@ -21,5 +21,9 @@ namespace GamesAdmin.Site.Features.Notifications.Requests
         public string THMessage { get; set; }
 
         public string IDMessage { get; set; }
+
+        public string JAMessage { get; set; }
+
+        public string ESMessage { get; set; }
     }
 }

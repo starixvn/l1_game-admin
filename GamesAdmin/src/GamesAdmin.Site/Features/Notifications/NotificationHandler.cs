@@ -47,6 +47,8 @@ namespace GamesAdmin.Site.Features.Notifications
             request.TWMessage = Regex.Replace(request.TWMessage, NewLinePattern, Space);
             request.THMessage = Regex.Replace(request.THMessage, NewLinePattern, Space);
             request.IDMessage = Regex.Replace(request.IDMessage, NewLinePattern, Space);
+            request.JAMessage = Regex.Replace(request.JAMessage, NewLinePattern, Space);
+            request.ESMessage = Regex.Replace(request.ESMessage, NewLinePattern, Space);
 
             var messages = new Dictionary<string, string>();
             var type = request.GetType();
@@ -83,6 +85,8 @@ namespace GamesAdmin.Site.Features.Notifications
             request.TWMessage = Regex.Replace(request.TWMessage, NewLinePattern, Space);
             request.THMessage = Regex.Replace(request.THMessage, NewLinePattern, Space);
             request.IDMessage = Regex.Replace(request.IDMessage, NewLinePattern, Space);
+            request.JAMessage = Regex.Replace(request.JAMessage, NewLinePattern, Space);
+            request.ESMessage = Regex.Replace(request.ESMessage, NewLinePattern, Space);
 
             var messages = new Dictionary<string, string>();
             var type = request.GetType();
