@@ -9,6 +9,9 @@ namespace GamesAdmin.Core.Models
     {
         public Notification()
         {
+            // Initialize dictionaries with all language keys
+            Title = new Dictionary<string, string>(Language.EmptyLanguages);
+            Messages = new Dictionary<string, string>(Language.EmptyLanguages);
         }
 
         [JsonConstructor]
@@ -23,8 +26,9 @@ namespace GamesAdmin.Core.Models
             Id = id;
             Message = message;
             DisplayKind = displayKind;
-            Messages = messages;
+            Messages = messages ?? new Dictionary<string, string>(Language.EmptyLanguages);
             GameName = gameName;
+            Title = new Dictionary<string, string>(Language.EmptyLanguages);
         }
 
         public Notification(
@@ -44,9 +48,9 @@ namespace GamesAdmin.Core.Models
             Id = id;
             Message = message;
             DisplayKind = displayKind;
-            Messages = messages;
+            Messages = messages ?? new Dictionary<string, string>(Language.EmptyLanguages);
             GameName = gameName;
-            Title = title;
+            Title = title ?? new Dictionary<string, string>(Language.EmptyLanguages);
             StartTime = startTime;
             EndTime = endTime;
             PromotionId = promotionId;

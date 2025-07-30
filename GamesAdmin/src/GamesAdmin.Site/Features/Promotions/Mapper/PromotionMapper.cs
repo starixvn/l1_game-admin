@@ -32,7 +32,8 @@ namespace GamesAdmin.Site.Features.Promotions.Mapper
 
             CreateMap<CreateAnnouncementItemViewModel, Notification>();
 
-            CreateMap<Notification, CreateAnnouncementItemViewModel>();
+            CreateMap<Notification, CreateAnnouncementItemViewModel>()
+                .AfterMap((src, dest) => dest.EnsureAllLanguageKeys());
 
             CreateMap<Notification, AnnouncementViewModel>()
                 .AfterMap<AnnouncementMappingAction>();

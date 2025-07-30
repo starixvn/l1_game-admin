@@ -12,13 +12,20 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 {
     public class CreateAnnouncementItemViewModel
     {
+        public CreateAnnouncementItemViewModel()
+        {
+            // Ensure dictionaries are properly initialized with all language keys
+            Title = new Dictionary<string, string>(Language.EmptyLanguages);
+            Messages = new Dictionary<string, string>(Language.EmptyLanguages);
+        }
+
         public string Id { get; set; }
 
         [JsonConverter(typeof(NotificationDisplayKindConverter))]
         public NotificationDisplayKind DisplayKind { get; set; }
         public bool Enabled { get; set; }
-        public Dictionary<string, string> Title { get; set; } = Language.EmptyLanguages;
-        public Dictionary<string, string> Messages { get; set; } = Language.EmptyLanguages;
+        public Dictionary<string, string> Title { get; set; }
+        public Dictionary<string, string> Messages { get; set; }
         public DateTime StartTime { get; set; } = DateTime.UtcNow;
         public DateTime EndTime { get; set; } = DateTime.UtcNow;
         public string PromotionId { get; set; }
@@ -63,6 +70,22 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
             {
                 StartTime = TimeZoneInfo.ConvertTimeFromUtc(StartTime, timeZone);
                 EndTime = TimeZoneInfo.ConvertTimeFromUtc(EndTime, timeZone);
+            }
+        }
+
+        // Ensure all language keys are present in the dictionaries
+        public void EnsureAllLanguageKeys()
+        {
+            foreach (var languageKey in Language.EmptyLanguages.Keys)
+            {
+                if (!Title.ContainsKey(languageKey))
+                {
+                    Title[languageKey] = string.Empty;
+                }
+                if (!Messages.ContainsKey(languageKey))
+                {
+                    Messages[languageKey] = string.Empty;
+                }
             }
         }
     }

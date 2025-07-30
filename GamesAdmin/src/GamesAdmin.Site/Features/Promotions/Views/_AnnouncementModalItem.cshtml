@@ -8,6 +8,7 @@
 
 @{
     var unique = string.IsNullOrEmpty(Model.Id) ? DateTime.Now.Ticks.ToString() : Model.Id;
+    var numberOfLanguage = 8;
     Model.ConvertToTimeZone(appSetting.DefaultTimeZone);
 }
 @functions{
@@ -29,8 +30,8 @@
     }
 }
 <tr class="announcement-item-@unique">
-    <td class="text-center item-index" rowspan="6">1</td>
-    <td class="text-center" rowspan="6">
+    <td class="text-center item-index" rowspan="@numberOfLanguage">1</td>
+    <td class="text-center" rowspan="@numberOfLanguage">
         <input type="text" hidden asp-for="Id" id="id-@unique" class="input-announcement-id" value="@unique" />
         <input type="text" hidden class="input-announcement-unique" value="@unique" />
         <input type="text" hidden id="happyhours-@unique" value="@NotificationDisplayKind.PromotionValue" />
@@ -53,7 +54,7 @@
             <textarea class="form-control" rows="2" asp-for="Messages[Language.EN]" id="message-@Language.EN-@unique"></textarea>
         </div>
     </td>
-    <td class="text-center" rowspan="6">
+    <td class="text-center" rowspan="@numberOfLanguage">
         <div>
             <label asp-for="StartTime">From</label>
             <input type="text" class="form-control time-picker" asp-for="StartTime" value="@Model.StartTime.ToString(DateTimeExtensions.DateTimeFormat)" id="startTime-@unique">
@@ -66,7 +67,7 @@
     </td>
     @if (Model.DisplayKind == null)
     {    
-        <td class="text-center" rowspan="6">
+        <td class="text-center" rowspan="@numberOfLanguage">
             <div class="form-group">
                 <label>Type</label>
                 <div>
@@ -88,14 +89,14 @@
     {
         @if (Model.IsHappyHoursAnnouncement)
         {          
-            <td class="text-center" rowspan="6">
+            <td class="text-center" rowspan="@numberOfLanguage">
                 <label>Type: @Model.DisplayKind</label>
                 <select asp-items="@Model.PromotionListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
             </td>
         }
         else
         {
-            <td class="text-center" rowspan="6">
+            <td class="text-center" rowspan="@numberOfLanguage">
                 <label>Type: @Model.DisplayKind</label>
                 <select asp-items="@Model.PromotionCampaignListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
             </td>
@@ -105,7 +106,7 @@
    
     @if (string.IsNullOrEmpty(Model.Id))
     {
-        <td class="text-center" rowspan="6">
+        <td class="text-center" rowspan="@numberOfLanguage">
             <button type="button" class="btn btn-danger btn-lg" onclick="promotionAnnouncement.deleteItem('@unique')">
                 Delete
             </button>
@@ -113,11 +114,11 @@
     }
 </tr>
 @{
-    RenderMessageRow(Language.VN, unique, Model.Title[Language.VN], Model.Messages[Language.VN]);
-    RenderMessageRow(Language.CN, unique, Model.Title[Language.CN], Model.Messages[Language.CN]);
-    RenderMessageRow(Language.TW, unique, Model.Title[Language.TW], Model.Messages[Language.TW]);
-    RenderMessageRow(Language.TH, unique, Model.Title[Language.TH], Model.Messages[Language.TH]);
-    RenderMessageRow(Language.ID, unique, Model.Title[Language.ID], Model.Messages[Language.ID]);
-    RenderMessageRow(Language.JA, unique, Model.Title[Language.JA], Model.Messages[Language.JA]);
-    RenderMessageRow(Language.ES, unique, Model.Title[Language.ES], Model.Messages[Language.ES]);
+    RenderMessageRow(Language.VN, unique, Model.Title.ContainsKey(Language.VN) ? Model.Title[Language.VN] : string.Empty, Model.Messages.ContainsKey(Language.VN) ? Model.Messages[Language.VN] : string.Empty);
+    RenderMessageRow(Language.CN, unique, Model.Title.ContainsKey(Language.CN) ? Model.Title[Language.CN] : string.Empty, Model.Messages.ContainsKey(Language.CN) ? Model.Messages[Language.CN] : string.Empty);
+    RenderMessageRow(Language.TW, unique, Model.Title.ContainsKey(Language.TW) ? Model.Title[Language.TW] : string.Empty, Model.Messages.ContainsKey(Language.TW) ? Model.Messages[Language.TW] : string.Empty);
+    RenderMessageRow(Language.TH, unique, Model.Title.ContainsKey(Language.TH) ? Model.Title[Language.TH] : string.Empty, Model.Messages.ContainsKey(Language.TH) ? Model.Messages[Language.TH] : string.Empty);
+    RenderMessageRow(Language.ID, unique, Model.Title.ContainsKey(Language.ID) ? Model.Title[Language.ID] : string.Empty, Model.Messages.ContainsKey(Language.ID) ? Model.Messages[Language.ID] : string.Empty);
+    RenderMessageRow(Language.JA, unique, Model.Title.ContainsKey(Language.JA) ? Model.Title[Language.JA] : string.Empty, Model.Messages.ContainsKey(Language.JA) ? Model.Messages[Language.JA] : string.Empty);
+    RenderMessageRow(Language.ES, unique, Model.Title.ContainsKey(Language.ES) ? Model.Title[Language.ES] : string.Empty, Model.Messages.ContainsKey(Language.ES) ? Model.Messages[Language.ES] : string.Empty);
 }
