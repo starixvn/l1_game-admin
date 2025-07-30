@@ -8,7 +8,7 @@
 
 @{
     var unique = string.IsNullOrEmpty(Model.Id) ? DateTime.Now.Ticks.ToString() : Model.Id;
-    var numberOfLanguage = 8;
+    var numberOfLanguage = Language.EmptyLanguages.Count;
     Model.ConvertToTimeZone(appSetting.DefaultTimeZone);
 }
 @functions{

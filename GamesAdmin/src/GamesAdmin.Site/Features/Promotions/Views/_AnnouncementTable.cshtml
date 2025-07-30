@@ -6,6 +6,7 @@
 @model IEnumerable<AnnouncementViewModel>
 @{
     var hasAdminPermission = Context.HasAdminPermission();
+    var numberOfLanguage = Language.EmptyLanguages.Count;
 }
 
 @functions{
@@ -91,8 +92,8 @@
             foreach (var item in Model)
             {
                 <tr>
-                    <td class="text-center" rowspan="6">@(index++)</td>
-                    <td class="text-center" rowspan="6">
+                    <td class="text-center" rowspan="@numberOfLanguage">@(index++)</td>
+                    <td class="text-center" rowspan="@numberOfLanguage">
                         @if (item.Enabled == true)
                         {
                             <i class="icon-check"></i>
@@ -105,11 +106,11 @@
                     <td class="text-center">@Language.EN</td>
                     <td>@item.Title[Language.EN]</td>
                     <td>@item.Messages[Language.EN]</td>
-                    <td class="text-center" rowspan="6">@Html.Raw(GetDisplayDateTime(item))</td>
-                    <td class="text-center" rowspan="6">@Html.Raw(GetDisplayPromotion(item))</td>
+                    <td class="text-center" rowspan="@numberOfLanguage">@Html.Raw(GetDisplayDateTime(item))</td>
+                    <td class="text-center" rowspan="@numberOfLanguage">@Html.Raw(GetDisplayPromotion(item))</td>
                     @if (hasAdminPermission)
                     {
-                        <td class="text-center" rowspan="6">
+                        <td class="text-center" rowspan="@numberOfLanguage">
                             <a type="button" class="btn btn-success btn-lg"
                                data-ajax="true"
                                data-ajax-mode="replace"
