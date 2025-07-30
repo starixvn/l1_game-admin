@@ -52,12 +52,14 @@
 
     public void RenderMessageRow(string language, AnnouncementViewModel viewModel, bool hasAdminPermission)
     {
+        var title = viewModel.Title.ContainsKey(language) ? viewModel.Title[language] : string.Empty;
+        var messages = viewModel.Messages.ContainsKey(language) ? viewModel.Messages[language] : string.Empty;
         <tr>
             <td style="display: none;"></td>
             <td style="display: none;"></td>
             <td class="text-center">@language</td>
-            <td>@viewModel.Title?.ContainsKey(language) ? viewModel.Title[language] : string.Empty</td>
-            <td>@viewModel.Messages?.ContainsKey(language) ? viewModel.Messages[language] : string.Empty</td>
+            <td>@title</td>
+            <td>@messages</td>
             <td style="display: none;">@Html.Raw(GetDisplayDateTime(viewModel))</td>
             <td style="display: none;">@Html.Raw(GetDisplayPromotion(viewModel))</td>
             @if (hasAdminPermission)
