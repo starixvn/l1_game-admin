@@ -324,6 +324,26 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex, isSuperAdm
                                 onChange={(e) => setCategoryName(e.target.value, "zH_TW")}
                             />
                         </div>
+                        <div className="form-group">
+                            <label className="required-field-label" htmlFor="JP">
+                                Japanese
+                            </label>
+                            <FormControl
+                                type="text"
+                                defaultValue={editedCategory.name["ja_JP"]}
+                                onChange={(e) => setCategoryName(e.target.value, "ja_JP")}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label className="required-field-label" htmlFor="ES">
+                                Spanish
+                            </label>
+                            <FormControl
+                                type="text"
+                                defaultValue={editedCategory.name["es_ES"]}
+                                onChange={(e) => setCategoryName(e.target.value, "es_ES")}
+                            />
+                        </div>
                     </div>
 
                     <div

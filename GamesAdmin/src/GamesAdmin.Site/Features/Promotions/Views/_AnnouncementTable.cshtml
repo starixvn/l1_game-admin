@@ -56,8 +56,8 @@
             <td style="display: none;"></td>
             <td style="display: none;"></td>
             <td class="text-center">@language</td>
-            <td>@viewModel.Title[language]</td>
-            <td>@viewModel.Messages[language]</td>
+            <td>@viewModel.Title?.ContainsKey(language) ? viewModel.Title[language] : string.Empty</td>
+            <td>@viewModel.Messages?.ContainsKey(language) ? viewModel.Messages[language] : string.Empty</td>
             <td style="display: none;">@Html.Raw(GetDisplayDateTime(viewModel))</td>
             <td style="display: none;">@Html.Raw(GetDisplayPromotion(viewModel))</td>
             @if (hasAdminPermission)
