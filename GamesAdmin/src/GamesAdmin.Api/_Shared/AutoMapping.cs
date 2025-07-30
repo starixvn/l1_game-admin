@@ -513,7 +513,9 @@ namespace GamesAdmin.Api._Shared
                              TH_TH = category.Name.TH_TH,
                              VI_VN = category.Name.VI_VN,
                              ZH_CN = category.Name.ZH_CN,
-                             ZH_TW = category.Name.ZH_TW
+                             ZH_TW = category.Name.ZH_TW,
+                             JA_JP = category.Name.JA_JP,
+                             ES_ES = category.Name.ES_ES
                          },
                          GameSettings = category.GameSettings.Select(gameSetting => new GameSetting { GameId = gameSetting.GameId, BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag }).ToArray(),
                      };
@@ -578,7 +580,9 @@ namespace GamesAdmin.Api._Shared
                               TH_TH = category.Name.TH_TH,
                               VI_VN = category.Name.VI_VN,
                               ZH_CN = category.Name.ZH_CN,
-                              ZH_TW = category.Name.ZH_TW
+                              ZH_TW = category.Name.ZH_TW,
+                              JA_JP = category.Name.JA_JP,
+                              ES_ES = category.Name.ES_ES
                           },
                           GameSettings = category.GameSettings.Select(gameSetting => new GameSettingEntity { GameId = gameSetting.GameId, BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag }).ToArray()
                       };

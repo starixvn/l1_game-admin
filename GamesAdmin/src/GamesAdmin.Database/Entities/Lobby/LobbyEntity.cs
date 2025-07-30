@@ -41,6 +41,12 @@ namespace GamesAdmin.Database.Entities.Lobby
 
         [BsonElement("zh-TW")]
         public string ZH_TW { get; set; }
+
+        [BsonElement("ja-JP")]
+        public string JA_JP { get; set; }
+
+        [BsonElement("es-ES")]
+        public string ES_ES { get; set; }
     }
 
     public class GameSettingEntity
