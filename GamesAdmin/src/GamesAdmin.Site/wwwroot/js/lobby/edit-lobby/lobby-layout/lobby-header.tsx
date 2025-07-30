@@ -59,7 +59,7 @@ Modal.setAppElement("#root");
 const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex, isSuperAdmin }) => {
     const lobbyConfigContext = useContext(LobbyConfigContext);
     const [editedCategory, setEditedCategory] = useState<Category>({
-        name: { eN_US: "", vI_VN: "", tH_TH: "", iD_ID: "", zH_CN: "", zH_TW: "", ja_JP: "", es_ES: "" },
+        name: { eN_US: "", vI_VN: "", tH_TH: "", iD_ID: "", zH_CN: "", zH_TW: "", jA_JP: "", eS_ES: "" },
         gameSettings: [],
     });
     const [editedNames, setEditedNames] = useState({
@@ -69,8 +69,8 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex, isSuperAdm
         iD_ID: "",
         zH_CN: "",
         zH_TW: "",
-        ja_JP: "",
-        es_ES: "",
+        jA_JP: "",
+        eS_ES: "",
     });
     const categories = lobbyConfigContext.lobbyConfig.categories;
 
@@ -96,8 +96,8 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex, isSuperAdm
                 iD_ID: "",
                 zH_CN: "",
                 zH_TW: "",
-                ja_JP: "",
-                es_ES: "",
+                jA_JP: "",
+                eS_ES: "",
             },
             gameSettings: [],
         });
@@ -145,8 +145,8 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex, isSuperAdm
                 iD_ID: "",
                 zH_CN: "",
                 zH_TW: "",
-                ja_JP: "",
-                es_ES: "",
+                jA_JP: "",
+                eS_ES: "",
             },
             gameSettings: [],
         });
@@ -330,8 +330,8 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex, isSuperAdm
                             </label>
                             <FormControl
                                 type="text"
-                                defaultValue={editedCategory.name["ja_JP"]}
-                                onChange={(e) => setCategoryName(e.target.value, "ja_JP")}
+                                defaultValue={editedCategory.name["jA_JP"]}
+                                onChange={(e) => setCategoryName(e.target.value, "jA_JP")}
                             />
                         </div>
                         <div className="form-group">
@@ -340,8 +340,8 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex, isSuperAdm
                             </label>
                             <FormControl
                                 type="text"
-                                defaultValue={editedCategory.name["es_ES"]}
-                                onChange={(e) => setCategoryName(e.target.value, "es_ES")}
+                                defaultValue={editedCategory.name["eS_ES"]}
+                                onChange={(e) => setCategoryName(e.target.value, "eS_ES")}
                             />
                         </div>
                     </div>
