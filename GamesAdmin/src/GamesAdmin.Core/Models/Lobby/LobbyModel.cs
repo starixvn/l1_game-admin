@@ -32,6 +32,10 @@
         public string ZH_CN { get; set; }
 
         public string ZH_TW { get; set; }
+
+        public string JA_JP { get; set; }
+
+        public string ES_ES { get; set; }
     }
 
     public class GameSetting

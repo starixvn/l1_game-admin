@@ -29,7 +29,9 @@
         "zh-CN": '#title-zh-CN-',
         "zh-TW": '#title-zh-TW-',
         "th-TH": '#title-th-TH-',
-        "id-ID": '#title-id-ID-'
+        "id-ID": '#title-id-ID-',
+        "ja-JP": '#title-ja-JP-',
+        "es-ES": '#title-es-ES-'
     };
     let messagesElement = {
         "en-US": '#message-en-US-',
@@ -37,7 +39,9 @@
         "zh-CN": '#message-zh-CN-',
         "zh-TW": '#message-zh-TW-',
         "th-TH": '#message-th-TH-',
-        "id-ID": '#message-id-ID-'
+        "id-ID": '#message-id-ID-',
+        "ja-JP": '#message-ja-JP-',
+        "es-ES": '#message-es-ES-'
     };
     let announcementMessage = {
         addSuccess: 'Add Successfully!',
