@@ -11,13 +11,28 @@
     <tr>
         <td rowspan="1">@(Model.RowIndex+1)</td>
         <td rowspan="1"> @await Html.PartialAsync("CascadingSlots/_Board", new GenerateBoardViewModel(tumble, Model.SymbolUrl))</td>
-        @if (Model.HasOdds)
+        @if (Model.HasOdds || Model.FreeSpins.Win > 0)
         {
             <td>
                 <img class="symbol" src="@Model.SymbolUrl-@(CascadingSlotGameConstant.FreeSpinSymbol.ToString()).png" />
             </td>
             <td>@freeSpins.Count</td>
-            <td>@freeSpins.Odds @Model.FreeSpinsText</td>
+            <td>
+                @if(Model.FreeSpins.Win > 0)
+                {
+                    @freeSpins.Win
+                }
+
+                @if(Model.HasOdds && Model.FreeSpins.Win > 0)
+                {
+                    <br />
+                }
+
+                @if(Model.HasOdds)
+                {
+                    @freeSpins.Odds @Model.FreeSpinsText
+                }
+            </td>
         }
         else
         {
