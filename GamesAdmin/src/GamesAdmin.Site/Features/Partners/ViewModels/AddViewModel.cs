@@ -31,8 +31,14 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
         [DisplayName("Mega Keno URL")]
         public string MegaKenoUrl { get; set; }
 
+        [DisplayName("Desktop Live URL")]
+        public string DesktopLiveUrl { get; set; }
+
         [DisplayName("Mobile Direct URL")]
         public string MobileDirectUrl { get; set; }
+
+        [DisplayName("Desktop Today URL")]
+        public string DesktopTodayUrl { get; set; }
 
         [Required]
         [DisplayName("Test Currency URL")]

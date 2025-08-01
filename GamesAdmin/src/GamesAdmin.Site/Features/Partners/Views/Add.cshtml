@@ -54,9 +54,21 @@
         </div>
 
         <div class="form-group">
+            <label asp-for="DesktopLiveUrl" class="control-label"></label>
+            <input type="text" asp-for="DesktopLiveUrl" class="form-control" />
+            <span asp-validation-for="DesktopLiveUrl" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
             <label asp-for="MobileDirectUrl" class="control-label"></label>
             <input type="text" asp-for="MobileDirectUrl" class="form-control" />
             <span asp-validation-for="MobileDirectUrl" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DesktopTodayUrl" class="control-label"></label>
+            <input type="text" asp-for="DesktopTodayUrl" class="form-control" />
+            <span asp-validation-for="DesktopTodayUrl" class="text-danger"></span>
         </div>
 
         <div class="form-group">

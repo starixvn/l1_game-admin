@@ -38,7 +38,7 @@ namespace GamesAdmin.Site.Features.Partners
             => await partnerService.Add(request.PartnerInfo);
 
         public async Task<ResultBase> Handle(UpdateRequest request, CancellationToken cancellationToken)
-            => await partnerService.Update(new Partner(request.PartnerId, request.Name, request.SecretKey, request.ClubVersionUrl, request.MobiVersionUrl, request.MiniVersionUrl, request.MegaKenoUrl, request.MobileDirectUrl, request.TestCurrencyUrl, request.LivestreamingPlatformUrl, request.IsDisplayPlayerCurrency, request.Alias));
+            => await partnerService.Update(new Partner(request.PartnerId, request.Name, request.SecretKey, request.ClubVersionUrl, request.MobiVersionUrl, request.MiniVersionUrl, request.MegaKenoUrl, request.DesktopLiveUrl, request.MobileDirectUrl, request.DesktopTodayUrl, request.TestCurrencyUrl, request.LivestreamingPlatformUrl, request.IsDisplayPlayerCurrency, request.Alias));
 
         public async Task<PartnerEditViewModel> Handle(GetByIdRequest request, CancellationToken cancellationToken)
             => mapper.Map<PartnerEditViewModel>(await partnerService.GetById(request.PartnerId));
