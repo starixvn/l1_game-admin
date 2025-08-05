@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Audit.Mvc;
 using AutoMapper;
+using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
@@ -301,6 +302,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                         cascadingSlotsConfig.Mode = (byte)viewModel.SlotViewModel.Mode;
                         cascadingSlotsConfig.BigWinRatio = viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue();
                         cascadingSlotsConfig.MultiplierBonus = new MultiplierBonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus);
+
                         break;
 
                     case GameType.SlotRNG:

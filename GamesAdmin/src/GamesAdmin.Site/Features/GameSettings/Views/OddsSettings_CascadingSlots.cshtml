@@ -14,8 +14,8 @@
             </div>
             <div class="col-4">
                 <select hidden multiple class="form-control"
-                        asp-items="Model.OtherGamesInGroup"
-                        asp-for="OtherGameIdsInGroup">
+                asp-items="Model.OtherGamesInGroup"
+                asp-for="OtherGameIdsInGroup">
                 </select>
                 <select class="form-control" id="fanexGameIds"></select>
             </div>
@@ -95,8 +95,8 @@
                                         <div class="col-lg-3 d-inline-block">
                                             <label class="control-label">Odds</label>
                                             <input type="number" asp-for="@Model.CascadingSlotsConfig.OddsByCounts["9"][j].Odds" class="form-control small" />
-                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.OddsByCounts["9"][j].To" class="form-control small" hidden/>
-                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.OddsByCounts["9"][j].From" class="form-control small" hidden/>
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.OddsByCounts["9"][j].From" class="form-control small" hidden />
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.OddsByCounts["9"][j].To" class="form-control small" hidden />
                                         </div>
 
                                     }

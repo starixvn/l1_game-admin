@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
@@ -181,6 +182,17 @@ namespace GamesAdmin.Site.Features.GameSettings
             if (!string.IsNullOrWhiteSpace(validateResult))
             {
                 return validateResult;
+            }
+
+
+            for (var index = 0; index < cascadingSlotsConfig.FreeSpins.InitialOdds.Count; index++)
+            {
+                var count = cascadingSlotsConfig.FreeSpins.InitialOdds[index].Count;
+                cascadingSlotsConfig.OddsByCounts[$"{CascadingSlotGameConstant.FreeSpinSymbol}"][index].From = count;
+                cascadingSlotsConfig.OddsByCounts[$"{CascadingSlotGameConstant.FreeSpinSymbol}"][index].To =
+                    index == cascadingSlotsConfig.FreeSpins.InitialOdds.Count - 1
+                    ? CascadingSlotGameConstant.NumberOfRows * CascadingSlotGameConstant.NumberOfColumns
+                    : count;
             }
 
             return await gameApi.UpdateCascadingSlotOdds(new UpdateOddsByCountsRequest(name, cascadingSlotsConfig,otherGameIdsInGroup)) ? string.Empty : UpdateFailedMessage;
