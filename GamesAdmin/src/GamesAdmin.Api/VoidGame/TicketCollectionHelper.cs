@@ -80,6 +80,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.MarbleFootball, new GameTicketCollection("marblefootball_bets", "marblefootball_betlogs") },
             { GameId.MarbleFootball2, new GameTicketCollection("marblefootball2_bets", "marblefootball2_betlogs") },
             { GameId.RnGSoccer, new GameTicketCollection("rngsoccer_bets", "rngsoccer_betlogs") },
+            { GameId.SedieMultiplayer, new GameTicketCollection("sediemultiplayer_bets", "sediemultiplayer_betlogs") },
         };
 
         public static GameTicketCollection GetCollections(int gameTypeId, GameType type = GameType.AutoRNG, string gameName = "", bool isCheckBetLog = false)

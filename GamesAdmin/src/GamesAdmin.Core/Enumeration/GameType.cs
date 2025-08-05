@@ -10,6 +10,7 @@
         DynamicOdds,
         Marble,
         CrashTurnBase,
-        GuaranteedWin
+        GuaranteedWin,
+        AutoRNGIndex
     }
 }

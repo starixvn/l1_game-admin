@@ -64,6 +64,7 @@ namespace GamesAdmin.Core.Enumeration
             {Game.Bac100Value, Enumeration.GetAll<BaccaratXBetChoice>() },
             {Game.Bac101Value, Enumeration.GetAll<BaccaratXBetChoice>() },
             {Game.SevenUpDownValue, Enumeration.GetAll<SevenUpDownBetChoice>() },
+            {Game.SedieMultiplayerValue, Enumeration.GetAll<SeDieBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>

@@ -45,6 +45,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
             GameType.Marble,
             GameType.CrashTurnBase,
             GameType.GuaranteedWin,
+            GameType.AutoRNGIndex,
             0
         }.Contains(GameType);
 
