@@ -25,6 +25,8 @@ namespace GamesAdmin.Database.Entities
 
         public string LivestreamingPlatformUrl { get; set; }
 
+        public string OriginalGamesUrl { get; set; }
+
         public bool IsDisplayPlayerCurrency { get; set; }
 
         public string Alias { get; set; }

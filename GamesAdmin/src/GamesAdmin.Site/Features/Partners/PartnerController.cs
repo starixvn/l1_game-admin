@@ -51,6 +51,7 @@ namespace GamesAdmin.Site.Features.Partners
                     addViewModel.MobileDirectUrl,
                     addViewModel.TestCurrencyUrl,
                     addViewModel.LivestreamingPlatformUrl,
+                    addViewModel.OriginalGamesUrl,
                     addViewModel.IsDisplayPlayerCurrency,
                     addViewModel.Alias)));
 
@@ -79,6 +80,7 @@ namespace GamesAdmin.Site.Features.Partners
                    viewModel.MobileDirectUrl,
                    viewModel.TestCurrencyUrl,
                    viewModel.LivestreamingPlatformUrl,
+                   viewModel.OriginalGamesUrl,
                    viewModel.IsDisplayPlayerCurrency,
                    viewModel.Alias));
 

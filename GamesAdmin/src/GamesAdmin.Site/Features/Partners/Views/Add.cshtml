@@ -72,6 +72,12 @@
         </div>
 
         <div class="form-group">
+            <label class='required-field-label' asp-for="OriginalGamesUrl" class="control-label"></label>
+            <input type="text" asp-for="OriginalGamesUrl" class="form-control" />
+            <span asp-validation-for="OriginalGamesUrl" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
             <input type="checkbox" asp-for="IsDisplayPlayerCurrency" />
             <label asp-for="IsDisplayPlayerCurrency" class="control-label"></label>
         </div>

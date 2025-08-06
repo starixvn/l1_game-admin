@@ -39,6 +39,7 @@
                 <th>Mobile Direct URL</th>
                 <th>Test Currency URL</th>
                 <th>Livestreaming Platform URL</th>
+                <th>Original Games URL</th>
                 <th>Display Player Currency</th>
                 @if (Model.EditPermission)
                 {
@@ -89,6 +90,7 @@
                         <td>@firstRowData.MobileDirectUrl</td>
                         <td>@firstRowData.TestCurrencyUrl</td>
                         <td>@firstRowData.LivestreamingPlatformUrl</td>
+                        <td>@firstRowData.OriginalGamesUrl</td>
                         <td class="text-center">
                             @if (firstRowData.IsDisplayPlayerCurrency)
                             {
@@ -145,6 +147,7 @@
                         <td>@item.MobileDirectUrl</td>
                         <td>@item.TestCurrencyUrl</td>
                         <td>@item.LivestreamingPlatformUrl</td>
+                        <td>@item.OriginalGamesUrl</td>
                         <td class="text-center">
                             @if (item.IsDisplayPlayerCurrency)
                             {

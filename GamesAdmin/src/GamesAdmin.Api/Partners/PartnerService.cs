@@ -154,6 +154,7 @@ namespace GamesAdmin.Api.Partners
                     .Set(field => field.MobileDirectUrl, partner.MobileDirectUrl)
                     .Set(field => field.TestCurrencyUrl, partner.TestCurrencyUrl)
                     .Set(field => field.LivestreamingPlatformUrl, partner.LivestreamingPlatformUrl)
+                    .Set(field => field.OriginalGamesUrl, partner.OriginalGamesUrl)
                     .Set(field => field.IsDisplayPlayerCurrency, partner.IsDisplayPlayerCurrency)
                     .Set(field => field.Alias, partner.Alias);
 
