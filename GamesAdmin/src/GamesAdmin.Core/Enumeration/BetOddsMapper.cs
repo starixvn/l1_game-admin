@@ -24,7 +24,7 @@ namespace GamesAdmin.Core.Enumeration
                     return Enumeration.GetAll<OddEvenBetChoice>();
 
                 case Game.SeDieValue:
-                case Game.SedieMultiplayerValue:
+                case Game.SeDieMultiplayerValue:
                     return Enumeration.GetAll<SeDieBetChoice>();
 
                 case Game.FishPrawnCrabValue:

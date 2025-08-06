@@ -97,6 +97,6 @@
         MarbleFootball2 = 114,
         RnGSoccer = 118,
         MiniRoulette = 134,
-        SedieMultiplayer = 148,
+        SeDieMultiplayer = 148,
     }
 }
