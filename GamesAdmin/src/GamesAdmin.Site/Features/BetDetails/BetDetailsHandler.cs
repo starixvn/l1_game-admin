@@ -58,6 +58,31 @@
                     {
                         Text = "Japanese",
                         Value = "ja-JP"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Spanish",
+                        Value = "es-ES"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Turkish",
+                        Value = "tr-TR"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Philippines",
+                        Value = "fil-PH"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Portuguese",
+                        Value = "pt-PT"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Korean",
+                        Value = "ko-KR"
                     }
                 };
 
