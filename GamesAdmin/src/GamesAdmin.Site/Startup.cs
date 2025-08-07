@@ -25,8 +25,14 @@ namespace GamesAdmin.Site
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(Startup));
-            services.AddAutoMapper(typeof(Startup));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Startup).Assembly));
+            //services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.ShouldMapMethod = (m => false);//this is solution
+                
+
+            }, typeof(Startup));
 
             var appSettings = new AppSettings(Configuration);
             var systemSettings = new SystemSettings(appSettings.SystemType);

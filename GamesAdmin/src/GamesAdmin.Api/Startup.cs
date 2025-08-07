@@ -42,8 +42,13 @@ namespace GamesAdmin.Api
             services.AddSingleton<IAppSettings>(appSettings);
             services.AddSingleton<ISystemSettings>(systemSettings);
 
-            services.AddMediatR(typeof(Startup));
-            services.AddAutoMapper(typeof(Startup));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Startup).Assembly));
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.ShouldMapMethod = (m => false);//this is solution
+
+            }, typeof(Startup));
+            //services.AddAutoMapper(typeof(Startup));
 
             services.AddDatabase(appSettings);
             services.AddRepositories();
