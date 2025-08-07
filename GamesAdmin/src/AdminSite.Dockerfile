@@ -1,9 +1,7 @@
 FROM hub.lumigame.com/base/dotnet/core/sdk:8.0-alpine-25h2 AS builder
 WORKDIR /src
 
-RUN apt-get update
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
+RUN apk update && apk add --no-cache nodejs npm
 
 COPY ./GamesAdmin/src/GamesAdmin.Core ./GamesAdmin.Core
 COPY ./GamesAdmin/src/GamesAdmin.Database ./GamesAdmin.Database
