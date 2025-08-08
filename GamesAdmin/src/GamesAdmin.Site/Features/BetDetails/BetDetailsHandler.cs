@@ -76,8 +76,8 @@
                     },
                     new SelectListItem
                     {
-                        Text = "Portuguese",
-                        Value = "pt-PT"
+                        Text = "Portuguese (Brazil)",
+                        Value = "pt-BR"
                     },
                     new SelectListItem
                     {
