@@ -59,6 +59,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             CreateMap<CascadingSlotsConfig, SlotViewModel>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.Mode))
+                .ForMember(dest => dest.Volatility, opt => opt.MapFrom(src => src.Volatility))
                 .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.MultiplierBonus.Min))
                 .ForMember(dest => dest.MaxBonus, opt => opt.MapFrom(src => src.MultiplierBonus.Max))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ToPercentage()));

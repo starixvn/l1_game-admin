@@ -300,6 +300,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     case GameType.CascadingSlots:
                         cascadingSlotsConfig = new CascadingSlotsConfig(viewModel.CascadingSlotsConfig);
                         cascadingSlotsConfig.Mode = (byte)viewModel.SlotViewModel.Mode;
+                        cascadingSlotsConfig.Volatility = viewModel.SlotViewModel.Volatility;
                         cascadingSlotsConfig.BigWinRatio = viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue();
                         cascadingSlotsConfig.MultiplierBonus = new MultiplierBonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus);
 

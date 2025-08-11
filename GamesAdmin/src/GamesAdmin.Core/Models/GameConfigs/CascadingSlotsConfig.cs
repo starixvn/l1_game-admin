@@ -22,6 +22,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
             BetMultiplier = config.BetMultiplier;
             MaxWinPerRound = config.MaxWinPerRound;
             OddsByCounts = config.OddsByCounts;
+            Volatility = config.Volatility;
         }
 
         public byte Mode { get; set; }
@@ -32,5 +33,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public double MaxWinPerRound { get; set; }
         public Dictionary<string, List<OddsByCount>> OddsByCounts { get; set; }
         public FreeSpins FreeSpins { get; set; }
+
+        public byte Volatility { get; set; }
     }
 }

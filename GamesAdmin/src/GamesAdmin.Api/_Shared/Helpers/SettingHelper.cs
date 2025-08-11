@@ -292,6 +292,7 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("Multiplier Bonus", newConfig.MultiplierBonus.ToString(), oldConfig.MultiplierBonus.ToString()),
                 new SettingChangedModel("Big Win Ratio", newConfig.BigWinRatio.ToString(), oldConfig.BigWinRatio.ToString()),
                 new SettingChangedModel("Mode", newConfig.Mode.ToString(), oldConfig.Mode.ToString()),
+                new SettingChangedModel("Volatility", newConfig.Volatility.ToString(), oldConfig.Volatility.ToString()),
                 new SettingChangedModel("Bet Multiplier", newConfig.BetMultiplier.ToString(), oldConfig.BetMultiplier.ToString()),
                 new SettingChangedModel("Bet Level", newConfig.BetLevels.ToString(), oldConfig.BetLevels.ToString()),
             };

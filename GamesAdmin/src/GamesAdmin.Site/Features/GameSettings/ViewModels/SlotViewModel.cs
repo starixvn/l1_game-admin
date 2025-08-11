@@ -33,7 +33,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public int[][] WeightsByEasyMode => GetSymbolWeight("1");
         public int[][] WeightsByMediumMode => GetSymbolWeight("2");
-        public int[][] WeightsByHardMode  => GetSymbolWeight("3");
+        public int[][] WeightsByHardMode => GetSymbolWeight("3");
 
         public Jackpot Jackpot { get; set; }
 
@@ -49,5 +49,28 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
             return Array.Empty<int[]>();
         }
+        public byte Volatility { get; set; } = 2;
+
+        private static string GetTextVolatility(byte value)
+        {
+            switch (value)
+            {
+                case 2:
+                    return "Low";
+                case 3:
+                    return "Medium";
+                case 4:
+                    return "Medium High";
+                case 5:
+                    return "High";
+                default:
+                    return "";
+            }
+        }
+        
+        public List<SelectListItem> VolatilityItems = new[] { 2, 5 }
+        .Select(x => new SelectListItem { Text = $"{GetTextVolatility((byte)x)} {x.ToString()} - Flashes", Value = x.ToString() })
+        .ToList();
+
     }
 }

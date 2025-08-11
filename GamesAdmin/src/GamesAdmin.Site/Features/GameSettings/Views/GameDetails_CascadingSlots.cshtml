@@ -95,6 +95,12 @@
                 <input type="checkbox" asp-for="BotEnabled" />
                 <label asp-for="BotEnabled" class="control-label"></label>
             </div>
+
+            <div class="form-group">
+                <label class="control-label">Volatility</label>
+                <select asp-items="@Model.SlotViewModel.VolatilityItems" asp-for="@Model.SlotViewModel.Volatility" class="form-control"></select>
+            </div>
+
         </div>
 
         <div id="botsetting" style="display:none">
