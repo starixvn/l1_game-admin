@@ -289,12 +289,12 @@ namespace GamesAdmin.Api._Shared.Helpers
             var settingChanged = new List<SettingChangedModel>
             {
                 new SettingChangedModel("Bot Enable", gameConfig.Botenabled.ToString(), newBotEnabled.ToString()),
-                new SettingChangedModel("Multiplier Bonus", newConfig.MultiplierBonus.ToString(), oldConfig.MultiplierBonus.ToString()),
-                new SettingChangedModel("Big Win Ratio", newConfig.BigWinRatio.ToString(), oldConfig.BigWinRatio.ToString()),
-                new SettingChangedModel("Mode", newConfig.Mode.ToString(), oldConfig.Mode.ToString()),
-                new SettingChangedModel("Volatility", newConfig.Volatility.ToString(), oldConfig.Volatility.ToString()),
-                new SettingChangedModel("Bet Multiplier", newConfig.BetMultiplier.ToString(), oldConfig.BetMultiplier.ToString()),
-                new SettingChangedModel("Bet Level", newConfig.BetLevels.ToString(), oldConfig.BetLevels.ToString()),
+                new SettingChangedModel("Multiplier Bonus", oldConfig.MultiplierBonus.ToString(), newConfig.MultiplierBonus.ToString()),
+                new SettingChangedModel("Big Win Ratio", oldConfig.BigWinRatio.ToString(), newConfig.BigWinRatio.ToString()),
+                new SettingChangedModel("Mode", oldConfig.Mode.ToString(), newConfig.Mode.ToString()),
+                new SettingChangedModel("Volatility", oldConfig.Volatility.ToString(), newConfig.Volatility.ToString()),
+                new SettingChangedModel("Bet Multiplier", oldConfig.BetMultiplier.ToString(), newConfig.BetMultiplier.ToString()),
+                new SettingChangedModel("Bet Level", oldConfig.BetLevels.ToString(), newConfig.BetLevels.ToString()),
             };
 
             return settingChanged;
