@@ -134,7 +134,7 @@ namespace GamesAdmin.Api._Shared.Configurations
             {
                 var servicePrefix = SystemType == Core.SystemType.SC1 ? "l1" : "l2";
 
-                return template ?? $"http://{servicePrefix}_{{0}}_service_{Env}:5000";
+                return template ?? $"http://{servicePrefix}-{{0}}-service-{Env}:5000";
             }
         }
     }
