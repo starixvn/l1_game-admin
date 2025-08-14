@@ -289,7 +289,8 @@ namespace GamesAdmin.Api._Shared.Helpers
             var settingChanged = new List<SettingChangedModel>
             {
                 new SettingChangedModel("Bot Enable", gameConfig.Botenabled.ToString(), newBotEnabled.ToString()),
-                new SettingChangedModel("Multiplier Bonus", oldConfig.MultiplierBonus.ToString(), newConfig.MultiplierBonus.ToString()),
+                new SettingChangedModel("Multiplier Bonus Min", oldConfig.MultiplierBonus.Min.ToString(), newConfig.MultiplierBonus.Min.ToString()),
+                new SettingChangedModel("Multiplier Bonus Max", oldConfig.MultiplierBonus.Max.ToString(), newConfig.MultiplierBonus.Max.ToString()),
                 new SettingChangedModel("Big Win Ratio", oldConfig.BigWinRatio.ToString(), newConfig.BigWinRatio.ToString()),
                 new SettingChangedModel("Mode", oldConfig.Mode.ToString(), newConfig.Mode.ToString()),
                 new SettingChangedModel("Volatility", oldConfig.Volatility.ToString(), newConfig.Volatility.ToString()),
