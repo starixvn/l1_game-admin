@@ -7,6 +7,7 @@ using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MediatR;
+using MongoDB.Driver;
 using Sentry;
 
 namespace GamesAdmin.Api.BuyFreeSpins.Handlers
@@ -22,15 +23,40 @@ namespace GamesAdmin.Api.BuyFreeSpins.Handlers
             try
             {
                 var gameConfig = await Repository.FindOneAsync(entity => entity.GameId == request.GameId);
-                gameConfig.CascadingSlotsConfig.Features ??= new CascadingSlotFeatures();
-                gameConfig.CascadingSlotsConfig.Features.BuyFreeSpins = new BuyFreeSpinSetting
-                {
-                    Enabled = request.Enabled,
-                    Multiplier = request.Multiplier,
-                    SiteExclusions = request.SiteExclusions
-                };
 
-                await Repository.ReplaceOneAsync(gameConfig);
+                if (gameConfig == null)
+                {
+                    return false;
+                }
+
+                if (gameConfig?.CascadingSlotsConfig?.Features != null)
+                {
+                    var update = Builders<GameConfigEntity>.Update
+                                            .Set(field => field.CascadingSlotsConfig.Features.BuyFreeSpins, new BuyFreeSpinSetting
+                                            {
+                                                Enabled = request.Enabled,
+                                                Multiplier = request.Multiplier,
+                                                SiteExclusions = request.SiteExclusions
+                                            });
+
+                    await Repository.UpdateAsync(entity => entity.GameId.Equals(request.GameId), update);
+                }
+                else 
+                {
+
+                    var update = Builders<GameConfigEntity>.Update
+                                            .Set(field => field.CascadingSlotsConfig.Features, new CascadingSlotFeatures
+                                            {
+                                                BuyFreeSpins = new BuyFreeSpinSetting
+                                                {
+                                                    Enabled = request.Enabled,
+                                                    Multiplier = request.Multiplier,
+                                                    SiteExclusions = request.SiteExclusions
+                                                }
+                                            });
+
+                    await Repository.UpdateAsync(entity => entity.GameId.Equals(request.GameId), update);
+                }
 
                 return true;
             }
