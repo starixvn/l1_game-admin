@@ -1,0 +1,35 @@
+﻿@import "../base/variables";
+@import "../components/customize-datatable";
+
+.btn-add {
+    position: relative;
+    display: inline-block;
+
+    :hover {
+        text-decoration: none;
+    }
+}
+
+.right {
+    position: absolute;
+    right: 1rem;
+}
+
+.table {
+    .btn-edit {
+        width: 4rem;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    a {
+        &:hover {
+            text-decoration: none
+        }
+    }
+}
+
+.hidden-cls {
+    display: none;
+}

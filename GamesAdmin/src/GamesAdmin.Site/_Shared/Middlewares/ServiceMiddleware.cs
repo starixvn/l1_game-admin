@@ -7,6 +7,7 @@ using GamesAdmin.Site.Features;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.BetDetails;
 using GamesAdmin.Site.Features.Bot;
+using GamesAdmin.Site.Features.BuyFreeSpins;
 using GamesAdmin.Site.Features.Chips;
 using GamesAdmin.Site.Features.ClientSites;
 using GamesAdmin.Site.Features.Currencies;
@@ -117,6 +118,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IChipApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IChipService, ChipService>();
+
+            services.AddSingleton(RestService.For<IBuyFreeSpinApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IBuyFreeSpinService, BuyFreeSpinService>();
 
             services.AddSingleton(RestService.For<IExchangeRateApi>(appSettings.ApiHost, refitSettings));
             services.AddSingleton<IExchangeRateService, ExchangeRateService>();

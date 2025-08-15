@@ -108,4 +108,5 @@ namespace GamesAdmin.Database.Entities
 
         public decimal? Win { get; set; }
     }
+
 }

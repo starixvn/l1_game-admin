@@ -1,0 +1,65 @@
+﻿@model GamesAdmin.Site.Features.BuyFreeSpins.ViewModels.CreateBuyFreeSpinViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title">Add Buy Free Spin Setting</h5>
+
+
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form data-ajax="true" class="form" asp-action="Create" method="post" id="add-free-spin-setting-form"
+      data-ajax-begin="buyFreeSpinSetting.onCreateBegin"
+      data-ajax-success="buyFreeSpinSetting.onCreateBuyFreeSpinSettingSuccess">
+    <div class="modal-body">
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label asp-for="GameId">Game</label>
+                <select asp-items="@Model.GameNames" asp-for="@Model.GameId" class="form-control"></select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-9">
+                <label asp-for="Multiplier">Buy Free Spin Cost</label>
+                <input class="form-control" type="number" asp-for="Multiplier">
+                <span class="text-danger" asp-validation-for="Multiplier"></span>
+            </div>
+            <div class="col-sm-3" style="padding-top: 3.5rem;">
+                x Total Bet
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <input type="checkbox" asp-for="Enabled">
+                <label asp-for="Enabled">Enabled</label>
+            </div>
+        </div>
+
+        <fieldset>
+            <legend>Disable Buy Feature for:</legend>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <p>Operator</p>
+                    <select asp-items="@Model.OperatorItems" class="form-control common-field" id="operator-select"></select>
+                    <br />
+                    <p>Sites Exclusions</p>
+                    <textarea rows="3" cols="50" id="siteExclusions" placeholder="Names are separated by ';'" onchange="buyFreeSpinSetting.onChangeSiteExclusions(this.value)"></textarea>
+                </div>
+
+            </div>
+        </fieldset>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="control-label" id="result-label"></label>
+            </div>
+        </div>
+    </div>
+    <div class=" modal-footer">
+        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn-submit">Save</button>
+    </div>
+</form>

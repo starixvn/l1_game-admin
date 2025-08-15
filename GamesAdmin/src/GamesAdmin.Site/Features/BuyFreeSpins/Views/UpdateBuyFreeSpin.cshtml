@@ -1,0 +1,65 @@
+﻿@model GamesAdmin.Site.Features.BuyFreeSpins.ViewModels.UpdateBuyFreeSpinViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title">Update Buy Free Spin Setting</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form data-ajax="true" class="form" asp-action="Update" method="put" id="update-free-spin-setting-form"
+      data-ajax-begin="buyFreeSpinSetting.onUpdateBegin"
+      data-ajax-success="buyFreeSpinSetting.onUpdateBuyFreeSpinSettingSuccess">
+    <div class="modal-body">
+
+        <div class="form-group">
+            <label class="control-label" for="GameId">Game</label>
+            <input id="gameNameDisplay" class="form-control" type="text" value="@Model.GameName" disabled />
+            <input type="hidden" asp-for="GameId" />
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-9">
+                <label asp-for="Multiplier">Buy Free Spin Cost</label>
+                <input class="form-control" type="number" asp-for="Multiplier">
+                <span class="text-danger" asp-validation-for="Multiplier"></span>
+            </div>
+            <div class="col-sm-3" style="padding-top: 3.5rem;">
+                x Total Bet
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <input type="checkbox" asp-for="Enabled">
+                <label asp-for="Enabled">Enabled</label>
+            </div>
+        </div>
+        <fieldset>
+            <legend>Disable Buy Feature for:</legend>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <p>Operator</p>
+                    <select id="operator-select" asp-items="@Model.OperatorItems" class="form-control common-field"></select>                    <br />
+                    <p>Sites Exclusions</p>
+                    <textarea rows="3" cols="58" id="siteExclusions" placeholder="Names are separated by ';'" onchange="buyFreeSpinSetting.onChangeSiteExclusions(this.value)"></textarea>
+                </div>
+
+            </div>
+        </fieldset>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="control-label" id="result-label"></label>
+            </div>
+        </div>
+
+    </div>
+    <div class=" modal-footer">
+        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn-submit">Save</button>
+    </div>
+</form>
+
+<script>
+    buyFreeSpinSetting.setInitialSiteExclusionsFromModel(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SiteExclusions)));
+</script>

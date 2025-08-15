@@ -42,11 +42,33 @@ namespace GamesAdmin.Database
             return (await collection.FindAsync(filterExpression)).ToEnumerable();
         }
 
+        public virtual async Task<IEnumerable<TProjected>> FilterByAsync<TProjected>(
+            Expression<Func<TDocument, bool>> filterExpression,
+            Expression<Func<TDocument, TProjected>> projectionExpression)
+        {
+            return (await collection
+                .Find(filterExpression)
+                .Project(projectionExpression)
+                .ToListAsync())
+                .AsEnumerable();
+        }
+
         public virtual TDocument FindOne(Expression<Func<TDocument, bool>> filterExpression)
         => collection.Find(filterExpression).FirstOrDefault();
 
         public virtual Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression)
         => collection.Find(filterExpression).FirstOrDefaultAsync();
+
+        public virtual async Task<TProjected> FindOneAsync<TProjected>(
+            Expression<Func<TDocument, bool>> filterExpression,
+            Expression<Func<TDocument, TProjected>> projectionExpression)
+        {
+            var result = await collection
+                .Find(filterExpression)
+                .Project(projectionExpression)
+                .FirstOrDefaultAsync();
+            return result;
+        }
 
         public virtual TDocument FindById(string id)
         {

@@ -365,5 +365,20 @@
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/crash-turn-game-report.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/buy-free-spin-setting.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/buy-free-spin-setting.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/buy-free-spin-setting.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/buy-free-spin-setting.css"
+    ]
   }
 ]

@@ -21,9 +21,17 @@ namespace GamesAdmin.Database
         Task<IEnumerable<TDocument>> FilterByAsync(
            Expression<Func<TDocument, bool>> filterExpression);
 
+        Task<IEnumerable<TProjected>> FilterByAsync<TProjected>(
+            Expression<Func<TDocument, bool>> filterExpression,
+            Expression<Func<TDocument, TProjected>> projectionExpression);
+
         TDocument FindOne(Expression<Func<TDocument, bool>> filterExpression);
 
         Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression);
+
+        Task<TProjected> FindOneAsync<TProjected>(
+            Expression<Func<TDocument, bool>> filterExpression,
+            Expression<Func<TDocument, TProjected>> projectionExpression);
 
         TDocument FindById(string id);
 

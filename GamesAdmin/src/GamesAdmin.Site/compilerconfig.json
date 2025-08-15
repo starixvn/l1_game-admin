@@ -98,5 +98,9 @@
   {
     "outputFile": "wwwroot/js/game-status.es5.js",
     "inputFile": "wwwroot/js/game-status.js"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/buy-free-spin-setting.css",
+    "inputFile": "wwwroot/scss/pages/buy-free-spin-setting.scss"
   }
 ]

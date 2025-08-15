@@ -82,4 +82,20 @@ namespace GamesAdmin.Database.Entities
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Win { get; set; }
     }
+
+    public class CascadingSlotBuyFreeSpinSiteExclusionEntity
+    {
+        public string OperatorId { get; set; }
+
+        public string[] Sites { get; set; }
+    }
+
+    public class CascadingSlotBuyFreeSpinSettingEntity
+    {
+        public bool Enabled { get; set; }
+
+        public int Multiplier { get; set; }
+
+        public IEnumerable<CascadingSlotBuyFreeSpinSiteExclusionEntity> SiteExclusions { get; set; }
+    }
 }

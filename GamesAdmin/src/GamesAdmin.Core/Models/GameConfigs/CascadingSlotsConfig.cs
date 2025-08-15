@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GamesAdmin.Core.Models.GameConfigs;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models.GameConfigs
 {
@@ -35,5 +36,31 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public FreeSpins FreeSpins { get; set; }
 
         public byte Volatility { get; set; }
+        public CascadingSlotFeatures Features { get; set; }
+    }
+
+    public class CascadingSlotFeatures
+    {
+        public BuyFreeSpinSetting BuyFreeSpins { get; set; }
+    }
+
+    public class BuyFreeSpinSetting
+    {
+        public BuyFreeSpinSetting()
+        {
+        }
+        public bool Enabled { get; set; }
+
+        public int Multiplier { get; set; }
+
+        public BuyFreeSpinSiteExclusion[] SiteExclusions { get; set; }
+
+    }
+
+    public class BuyFreeSpinSiteExclusion
+    {
+        public string OperatorId { get; set; }
+
+        public string[] Sites { get; set; }
     }
 }
