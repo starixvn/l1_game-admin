@@ -16,10 +16,6 @@ namespace GamesAdmin.Site.Features.BuyFreeSpins.Handlers
         }
 
         public async Task<IEnumerable<BuyFreeSpinSetting>> Handle(GetAllBuyFreeSpinsRequest request, CancellationToken cancellationToken)
-        {
-            var a= await Api.GetAll();
-            return a;
-        }
-            
+        => await Api.GetAll();
     }
 }

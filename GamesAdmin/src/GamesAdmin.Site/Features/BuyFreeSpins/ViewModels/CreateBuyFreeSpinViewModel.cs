@@ -24,7 +24,7 @@ namespace GamesAdmin.Site.Features.BuyFreeSpins.ViewModels
         public bool Enabled { get; set; }
 
         [Required]
-        [Range(1, 1000, ErrorMessage = "Please enter a number between 1 and 1,000.")]
+        [Range(1, 1000, ErrorMessage = "Number range [1..1000]")]
         public int Multiplier { get; set; }
 
         public BuyFreeSpinSiteExclusion[] SiteExclusions { get; set; }

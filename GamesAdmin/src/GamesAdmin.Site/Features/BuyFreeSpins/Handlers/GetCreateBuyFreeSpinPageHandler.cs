@@ -24,8 +24,9 @@ namespace GamesAdmin.Site.Features.BuyFreeSpins.Handlers
         public async Task<CreateBuyFreeSpinViewModel> Handle(GetCreateBuyFreeSpinPageRequest request, CancellationToken cancellationToken)
         {
             var allSlotGames = (await generalGameSettingService.GetAllGames()).Where(game => game.Type == GameType.CascadingSlots);
+            var existingBuyFreeSpins = await Api.GetAll();
             var operatorIds = (await partnerService.GetAll()).Select(partner => partner.PartnerId);
-            return new CreateBuyFreeSpinViewModel(allSlotGames, operatorIds);
+            return new CreateBuyFreeSpinViewModel(allSlotGames.Where(game => !existingBuyFreeSpins.Any(buyFreeSpin => buyFreeSpin.GameId == game.GameId)), operatorIds);
         }
     }
 }
