@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using GamesAdmin.Api.BuyFreeSpins.Requests;
-using GamesAdmin.Core.Models.GameConfigs;
-using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.BuyFreeSpins.Mappers
 {

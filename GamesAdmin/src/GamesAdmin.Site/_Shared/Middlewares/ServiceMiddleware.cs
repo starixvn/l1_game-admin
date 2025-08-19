@@ -120,7 +120,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IChipService, ChipService>();
 
             services.AddSingleton(RestService.For<IBuyFreeSpinApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<IBuyFreeSpinService, BuyFreeSpinService>();
 
             services.AddSingleton(RestService.For<IExchangeRateApi>(appSettings.ApiHost, refitSettings));
             services.AddSingleton<IExchangeRateService, ExchangeRateService>();

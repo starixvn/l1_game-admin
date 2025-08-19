@@ -4,6 +4,7 @@
 
 @section Styles {
     <link href="~/css/buy-free-spin-setting.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/data-tables/datatables.min.css" rel="stylesheet" />
 }
 
 @{
@@ -13,27 +14,24 @@
 }
 
 
+@if (hasEditPermission)
+{
+    <div class="list-actions">
+        <form id="bf-search-form" class="form form-inline">
 
-<div class="list-actions">
-    <form id="bf-search-form" class="form form-inline">
-        <input id="bf-search-input" class="form-control" type="text" placeholder="Search by game name..." />
-        <button type="submit" class="btn btn-submit">Search</button>
-
-        @if (hasEditPermission)
-        {
             <input type="button" onclick="buyFreeSpinSetting.showEnableDisable(true)" value="ENABLE"
-                class="btn-add btn-enable" />
+                   class="btn-add btn-enable" />
             <input type="button" onclick="buyFreeSpinSetting.showEnableDisable(false)" value="DISABLE"
-                class="btn-gray btn-enable" />
+                   class="btn-gray btn-enable" />
 
             <a class="btn-add right" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#modal .modal-content"
-                data-ajax-success="buyFreeSpinSetting.openAddBuyFreeSpinSettingForm" asp-action="Create">
+               data-ajax-success="buyFreeSpinSetting.openAddBuyFreeSpinSettingForm" asp-action="Create">
                 Add Buy Free Spin Setting
             </a>
-        }
 
-    </form>
-</div>
+        </form>
+    </div>
+}
 
 <p class="control-label" id="result-label"></p>
 
@@ -76,9 +74,9 @@
                         {
                             <td class="text-center">
                                 <a class="btn-edit" data-ajax="true" data-ajax-mode="replace"
-                                    data-ajax-update="#modal .modal-content"
-                                    data-ajax-success="buyFreeSpinSetting.openUpdateBuyFreeSpinSettingForm"
-                                    asp-route-gameId="@item.GameId" asp-action="Update">
+                                   data-ajax-update="#modal .modal-content"
+                                   data-ajax-success="buyFreeSpinSetting.openUpdateBuyFreeSpinSettingForm"
+                                   asp-route-gameId="@item.GameId" asp-action="Update">
                                     <i class="icon-edit"></i>
                                 </a>
                             </td>
@@ -97,7 +95,7 @@
     </div>
 </div>
 <div class="modal fade enable-disable-modal" id="enableDisableModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -123,7 +121,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn-gray" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-submit" id="confirmBtn"
-                    onclick="buyFreeSpinSetting.submitEnableDisable()">
+                        onclick="buyFreeSpinSetting.submitEnableDisable()">
                     OK
                 </button>
             </div>
@@ -131,7 +129,7 @@
     </div>
 </div>
 <div class="modal fade game-modal" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">

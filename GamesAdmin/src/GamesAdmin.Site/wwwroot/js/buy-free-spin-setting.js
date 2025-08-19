@@ -216,6 +216,14 @@
     return {
         init: function () {
             $(document).on("change", "#select-all-buy-free-spins", toggleAllBuyFreeSpinCheckboxes);
+
+            if ($("#buy-free-spins-setting-table")) {
+                $("#buy-free-spins-setting-table").DataTable({
+                    "ordering": false,
+                    "paging": false,
+                    "info": false,
+                });
+            }
         },
         openAddBuyFreeSpinSettingForm: openModal(addFreeSpinSettingForm),
         openUpdateBuyFreeSpinSettingForm: openModal(updateFreeSpinSettingForm),
