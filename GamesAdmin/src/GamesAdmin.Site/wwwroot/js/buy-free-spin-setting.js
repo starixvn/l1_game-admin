@@ -292,7 +292,7 @@
 
             const checkedGames = this.getCheckedGames();
             if (checkedGames.message.length > 0) {
-                const message = `Are you sure you want to ${label.toLocaleUpperCase()} the following games<br /><ul>${
+                const message = `Are you sure you want to ${label.toLocaleUpperCase()} Buy Free Spins for the following games<br /><ul>${
                     checkedGames.message
                 }</ul>`;
                 modal.find("#enableDisableContent").html(message);

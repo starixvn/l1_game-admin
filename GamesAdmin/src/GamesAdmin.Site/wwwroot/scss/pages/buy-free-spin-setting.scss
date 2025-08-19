@@ -33,3 +33,13 @@
 .hidden-cls {
     display: none;
 }
+
+#enableDisableContent {
+    ul {
+        margin-top: 1rem;
+    }
+
+    ul > li {
+        list-style: disc;
+    }
+}
