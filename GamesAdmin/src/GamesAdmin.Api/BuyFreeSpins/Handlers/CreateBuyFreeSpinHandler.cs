@@ -29,8 +29,13 @@ namespace GamesAdmin.Api.BuyFreeSpins.Handlers
                     return false;
                 }
 
-                if (gameConfig?.CascadingSlotsConfig?.Features != null)
+                if (gameConfig?.CascadingSlotsConfig?.Features?.BuyFreeSpins != null)                    
                 {
+                    return false;
+                }
+
+                if (gameConfig?.CascadingSlotsConfig?.Features != null)
+                {                    
                     var update = Builders<GameConfigEntity>.Update
                                             .Set(field => field.CascadingSlotsConfig.Features.BuyFreeSpins, new BuyFreeSpinSetting
                                             {

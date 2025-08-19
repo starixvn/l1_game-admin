@@ -1,15 +1,16 @@
 ﻿var buyFreeSpinSetting = (function ($) {
     const $modal = $("#modal");
-    const $siteExclusions = $("#siteExclusions");
+    const siteExclusions = "#siteExclusions";
     const addFreeSpinSettingForm = "#add-free-spin-setting-form";
     const updateFreeSpinSettingForm = "#update-free-spin-setting-form";
+    const operatorSelect = "#operator-select";
 
     let buyFreeSpinSiteExclusions = [];
     function onUpsert(data) {
         if (data.success) {
             location.reload();
         }
-        const label = $("#result-label");
+        const label = $("#result-label-form");
 
         label.removeClass();
         label.addClass(`text-${data.success ? "message" : "danger"}`);
@@ -23,29 +24,29 @@
 
             const isAddNew = formId.startsWith("#add");
 
-            initOnChangeOperatorSelect();
             if (isAddNew) {
+                buyFreeSpinSiteExclusions = [];
                 console.log("add new");
             } else {
                 console.log("update");
             }
+            initOnChangeOperatorSelect();
+
         };
     }
 
     function initOnChangeOperatorSelect() {
-        const $operatorSelect = $("#operator-select");
-
-        $operatorSelect.change(function () {
-            const operatorId = $operatorSelect.val();
+        $(operatorSelect).change(function () {
+            const operatorId = $(operatorSelect).val();
             const entry = buyFreeSpinSiteExclusions.find((x) => x.operatorId === operatorId);
-            $siteExclusions.val(entry ? entry.siteExclusions : "");
+            $(siteExclusions).val(entry ? entry.siteExclusions : "");
             // Keep hidden inputs updated when operator changes
             syncHiddenSiteExclusionInputs();
         });
     }
 
     function onChangeSiteExclusions(value) {
-        const operatorId = $("#operator-select").val();
+        const operatorId = $(operatorSelect).val();
         if (!operatorId) {
             return;
         }
@@ -89,6 +90,11 @@
                     return;
                 }
 
+                // Set the value of $(siteExclusions) to reflect the current sites for this operator
+                if (operatorId === $(operatorSelect).val()) {
+                    $(siteExclusions).val(entry.siteExclusions);
+                }
+
                 // Explicit index to aid ASP.NET Core model binder
                 $("<input/>", {
                     type: "hidden",
@@ -124,13 +130,12 @@
             return { operatorId: operatorId, siteExclusions: (sites || []).join(";") };
         });
 
-        const $operatorSelect = $("#operator-select");
-        if ($operatorSelect.length && $siteExclusions.length) {
-            const operatorId = $operatorSelect.val();
+        if ($(operatorSelect).length && $(siteExclusions).length) {
+            const operatorId = $(operatorSelect).val();
             const entry = buyFreeSpinSiteExclusions.find(function (x) {
                 return x.operatorId === operatorId;
             });
-            $siteExclusions.val(entry ? entry.siteExclusions : "");
+            $(siteExclusions).val(entry ? entry.siteExclusions : "");
         }
 
         syncHiddenSiteExclusionInputs();
@@ -139,7 +144,7 @@
     function onCreateBegin() {
         try {
             // Ensure the current textarea value is captured for the selected operator
-            const currentExclusions = $("#siteExclusions").val();
+            const currentExclusions = $(siteExclusions).val();
             onChangeSiteExclusions(currentExclusions);
 
             // Ensure hidden inputs are in the DOM
@@ -164,7 +169,6 @@
                     onUpsert({ success: false, error: "Create request failed" });
                 },
             });
-
         } catch (e) {
             console.error("onCreateBegin error", e);
         }
@@ -173,7 +177,7 @@
 
     function onUpdateBegin() {
         try {
-            const currentExclusions = $("#siteExclusions").val();
+            const currentExclusions = $(siteExclusions).val();
             onChangeSiteExclusions(currentExclusions);
 
             // Ensure hidden inputs are in the DOM
@@ -198,7 +202,6 @@
                     onUpsert({ success: false, error: "Update request failed" });
                 },
             });
-
         } catch (e) {
             console.error("onUpdateBegin error", e);
         }
@@ -281,8 +284,9 @@
 
             const checkedGames = this.getCheckedGames();
             if (checkedGames.message.length > 0) {
-                const message =
-                    `Are you sure you want to ${label.toLocaleUpperCase()} the following games<br /><ul>${checkedGames.message}</ul>`;
+                const message = `Are you sure you want to ${label.toLocaleUpperCase()} the following games<br /><ul>${
+                    checkedGames.message
+                }</ul>`;
                 modal.find("#enableDisableContent").html(message);
                 modal.find("#enableDisableFlag").val(enabled);
                 modal.modal("show");
