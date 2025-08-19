@@ -2,7 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.BuyFreeSpins.Requests;
+using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -29,35 +31,36 @@ namespace GamesAdmin.Api.BuyFreeSpins.Handlers
                     return false;
                 }
 
-                if (gameConfig?.CascadingSlotsConfig?.Features?.BuyFreeSpins != null)                    
+                if (gameConfig?.CascadingSlotsConfig?.Features?.BuyFreeSpins != null)
                 {
                     return false;
                 }
 
+                var oldConfig = gameConfig.CascadingSlotsConfig.Features?.BuyFreeSpins ?? new BuyFreeSpinSetting();
+
+                var newConfig = new BuyFreeSpinSetting
+                {
+                    Enabled = request.Enabled,
+                    Multiplier = request.Multiplier,
+                    SiteExclusions = request.SiteExclusions
+                };
+
+                var settingChanged = SettingHelper.GetCascadingSlotBuyFreeSpinConfigsChangeModel(oldConfig, newConfig);
+                Sentry.CaptureChangedSettings(gameConfig.Name, "Buy Free Spin", "Add new", settingChanged);
                 if (gameConfig?.CascadingSlotsConfig?.Features != null)
-                {                    
+                {
                     var update = Builders<GameConfigEntity>.Update
-                                            .Set(field => field.CascadingSlotsConfig.Features.BuyFreeSpins, new BuyFreeSpinSetting
-                                            {
-                                                Enabled = request.Enabled,
-                                                Multiplier = request.Multiplier,
-                                                SiteExclusions = request.SiteExclusions
-                                            });
+                                            .Set(field => field.CascadingSlotsConfig.Features.BuyFreeSpins, newConfig);
 
                     await Repository.UpdateAsync(entity => entity.GameId.Equals(request.GameId), update);
                 }
-                else 
+                else
                 {
 
                     var update = Builders<GameConfigEntity>.Update
                                             .Set(field => field.CascadingSlotsConfig.Features, new CascadingSlotFeatures
                                             {
-                                                BuyFreeSpins = new BuyFreeSpinSetting
-                                                {
-                                                    Enabled = request.Enabled,
-                                                    Multiplier = request.Multiplier,
-                                                    SiteExclusions = request.SiteExclusions
-                                                }
+                                                BuyFreeSpins = newConfig
                                             });
 
                     await Repository.UpdateAsync(entity => entity.GameId.Equals(request.GameId), update);

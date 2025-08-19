@@ -2,7 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.BuyFreeSpins.Requests;
+using GamesAdmin.Api.SentryClient;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MediatR;
@@ -21,6 +24,20 @@ namespace GamesAdmin.Api.BuyFreeSpins.Handlers
         {
             try
             {
+                var gameConfig = await Repository.FindOneAsync(entity => entity.GameId == request.GameId);
+
+                var oldConfig = gameConfig.CascadingSlotsConfig.Features.BuyFreeSpins;
+                var newConfig = new BuyFreeSpinSetting
+                {
+                    Enabled = request.Enabled,
+                    Multiplier = request.Multiplier,
+                    SiteExclusions = request.SiteExclusions
+                };
+
+                var settingChanged = SettingHelper.GetCascadingSlotBuyFreeSpinConfigsChangeModel(oldConfig, newConfig);
+                Sentry.CaptureChangedSettings(gameConfig.Name, "Buy Free Spin", "Update", settingChanged);
+
+
                 var update = Builders<GameConfigEntity>.Update
                     .Set(field => field.CascadingSlotsConfig.Features.BuyFreeSpins.Enabled, request.Enabled)
                     .Set(field => field.CascadingSlotsConfig.Features.BuyFreeSpins.Multiplier, request.Multiplier)

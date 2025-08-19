@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
@@ -297,6 +298,49 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("Bet Multiplier", oldConfig.BetMultiplier.ToString(), newConfig.BetMultiplier.ToString()),
                 new SettingChangedModel("Bet Level", oldConfig.BetLevels.ToString(), newConfig.BetLevels.ToString()),
             };
+
+            return settingChanged;
+        }
+
+        public static List<SettingChangedModel> GetCascadingSlotBuyFreeSpinConfigsChangeModel(BuyFreeSpinSetting oldConfig, BuyFreeSpinSetting newConfig)
+        {
+            var settingChanged = new List<SettingChangedModel>
+            {
+                new SettingChangedModel("Enable", oldConfig.Enabled.ToString(), newConfig.Enabled.ToString()),
+                new SettingChangedModel("Multiplier", oldConfig.Multiplier.ToString(), newConfig.Multiplier.ToString())
+            };
+
+            var oldExclusions = oldConfig.SiteExclusions ?? Array.Empty<BuyFreeSpinSiteExclusion>();
+            var newExclusions = newConfig.SiteExclusions ?? Array.Empty<BuyFreeSpinSiteExclusion>();
+
+            foreach (var newExclusion in newExclusions)
+            {
+                var oldExclusion = oldExclusions.FirstOrDefault(x => x.OperatorId == newExclusion.OperatorId);
+                var oldSites = oldExclusion?.Sites ?? Array.Empty<string>();
+                var newSites = newExclusion.Sites ?? Array.Empty<string>();
+
+                if (!oldSites.SequenceEqual(newSites))
+                {
+                    settingChanged.Add(new SettingChangedModel(
+                        $"SiteExclusions - {newExclusion.OperatorId}",
+                        string.Join(", ", oldSites),
+                        string.Join(", ", newSites)
+                    ));
+                }
+            }
+
+            for (int i = 0; i < oldExclusions.Length; i++)
+            {
+                BuyFreeSpinSiteExclusion oldExclusion = oldExclusions[i];
+                if (!newExclusions.Any(x => x.OperatorId == oldExclusion.OperatorId))
+                {
+                    settingChanged.Add(new SettingChangedModel(
+                        $"SiteExclusions - {oldExclusion.OperatorId}",
+                        string.Join(", ", oldExclusion.Sites ?? Array.Empty<string>()),
+                        "Removed"
+                    ));
+                }
+            }
 
             return settingChanged;
         }
