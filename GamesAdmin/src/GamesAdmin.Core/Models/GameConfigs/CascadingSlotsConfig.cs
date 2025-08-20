@@ -1,5 +1,4 @@
-﻿using GamesAdmin.Core.Models.GameConfigs;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models.GameConfigs
 {

@@ -402,6 +402,7 @@ namespace GamesAdmin.Core.Models
         public double BetMultiplier { get; set; }
 
         public bool FreeSpin { get; set; }
+
         public bool BuyFreeSpin { get; set; }
 
         public string Result { get; set; }

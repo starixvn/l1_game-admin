@@ -1,6 +1,5 @@
 ﻿using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
-using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
