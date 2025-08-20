@@ -9,8 +9,8 @@
     </button>
 </div>
 <form data-ajax="true" class="form" asp-action="Create" method="post" id="add-free-spin-setting-form"
-      data-ajax-begin="buyFreeSpinSetting.onCreateBegin"
-      data-ajax-success="buyFreeSpinSetting.onCreateBuyFreeSpinSettingSuccess">
+    data-ajax-begin="buyFreeSpinSetting.onCreateBegin"
+    data-ajax-success="buyFreeSpinSetting.onCreateBuyFreeSpinSettingSuccess">
     <div class="modal-body">
 
         <div class="form-group row">
@@ -43,20 +43,26 @@
             <div class="form-group row">
                 <div class="col-sm-12">
                     <p>Operator</p>
-                    <select asp-items="@Model.OperatorItems" class="form-control common-field" id="operator-select"></select>
+                    <select asp-items="@Model.OperatorItems" class="form-control common-field"
+                        id="operator-select"></select>
                     <br />
                     <p>Site Exclusions</p>
-                    <textarea rows="3" cols="50" id="siteExclusions" placeholder="Names are separated by ';'" onchange="buyFreeSpinSetting.onChangeSiteExclusions(this.value)"></textarea>
+                    <textarea rows="3" cols="50" id="siteExclusions" placeholder="Names are separated by ';'"
+                        onchange="buyFreeSpinSetting.onChangeSiteExclusions(this.value)"></textarea>
                 </div>
 
             </div>
         </fieldset>
 
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <p class="control-label" id="result-label-form"></p>
-            </div>
+        <div class="message-success hidden-cls" id="updateMsgSuccess">
+            <i class="icon-check"></i><span>
+                Added successfully
+            </span>
         </div>
+        <div class="message-error hidden-cls" id="updateMsgFailed">
+            <i class="icon-cancel"></i><span id="result-label-form"></span>
+        </div>
+
     </div>
     <div class=" modal-footer">
         <button type="button" class="btn-gray" data-dismiss="modal">Close</button>

@@ -85,6 +85,9 @@
 .btn-add :hover {
   text-decoration: none;
 }
+.btn-add.btn-enable {
+  margin-right: 1rem;
+}
 
 .right {
   position: absolute;

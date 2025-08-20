@@ -4,17 +4,22 @@
     const addFreeSpinSettingForm = "#add-free-spin-setting-form";
     const updateFreeSpinSettingForm = "#update-free-spin-setting-form";
     const operatorSelect = "#operator-select";
-
+    const resultLabelForm = "#result-label-form";
+    const updateMsgSuccess = "#updateMsgSuccess";
+    const updateMsgFailed = "#updateMsgFailed";
     let buyFreeSpinSiteExclusions = [];
     function onUpsert(data) {
         if (data.success) {
-            location.reload();
+            $(updateMsgSuccess).show();
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
+        } else {
+            $(updateMsgFailed).show();
+            $(resultLabelForm).removeClass();
+            $(resultLabelForm).addClass(`text-${data.success ? "message" : "danger"}`);
+            $(resultLabelForm).text(data.error);
         }
-        const label = $("#result-label-form");
-
-        label.removeClass();
-        label.addClass(`text-${data.success ? "message" : "danger"}`);
-        label.text(data.error);
     }
 
     function openModal(formId) {
@@ -31,7 +36,6 @@
                 console.log("update");
             }
             initOnChangeOperatorSelect();
-
         };
     }
 
@@ -95,19 +99,20 @@
                     $(siteExclusions).val(entry.siteExclusions);
                 }
 
+                const classGeneratedSiteExclusion = "generated-site-exclusion";
                 // Explicit index to aid ASP.NET Core model binder
                 $("<input/>", {
                     type: "hidden",
                     name: "SiteExclusions.Index",
                     value: idx,
-                    class: "generated-site-exclusion",
+                    class: classGeneratedSiteExclusion,
                 }).appendTo($form);
 
                 $("<input/>", {
                     type: "hidden",
                     name: `SiteExclusions[${idx}].OperatorId`,
                     value: operatorId,
-                    class: "generated-site-exclusion",
+                    class: classGeneratedSiteExclusion,
                 }).appendTo($form);
 
                 sitesArray.forEach(function (site, j) {
@@ -115,7 +120,7 @@
                         type: "hidden",
                         name: `SiteExclusions[${idx}].Sites[${j}]`,
                         value: site,
-                        class: "generated-site-exclusion",
+                        class: classGeneratedSiteExclusion,
                     }).appendTo($form);
                 });
             });
@@ -142,6 +147,9 @@
     }
 
     function onCreateBegin() {
+        if (!confirm("Are you sure you want to save all changes?")) {
+            return false;
+        }
         try {
             // Ensure the current textarea value is captured for the selected operator
             const currentExclusions = $(siteExclusions).val();
@@ -176,6 +184,9 @@
     }
 
     function onUpdateBegin() {
+        if (!confirm("Are you sure you want to save all changes?")) {
+            return false;
+        }
         try {
             const currentExclusions = $(siteExclusions).val();
             onChangeSiteExclusions(currentExclusions);
@@ -219,9 +230,9 @@
 
             if ($("#buy-free-spins-setting-table")) {
                 $("#buy-free-spins-setting-table").DataTable({
-                    "ordering": false,
-                    "paging": false,
-                    "info": false,
+                    ordering: false,
+                    paging: false,
+                    info: false,
                 });
             }
         },
@@ -314,15 +325,15 @@
                 data: { gameIds: checkedGames.gameIds, isEnabled: enabled === "true" },
             }).done(function (updated) {
                 if (updated) {
-                    modal.find("#updateMsgSuccess").show();
+                    $(updateMsgSuccess).show();
                 } else {
-                    modal.find("#updateMsgFailed").show();
+                    $(updateMsgFailed).show();
                 }
 
                 setTimeout(function () {
                     modal.find("#confirmBtn").prop("disabled", false);
-                    modal.find("#updateMsgSuccess").hide();
-                    modal.find("#updateMsgFailed").hide();
+                    $(updateMsgSuccess).hide();
+                    $(updateMsgFailed).hide();
                     modal.modal("hide");
                     location.reload();
                 }, 1000);
