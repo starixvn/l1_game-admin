@@ -27,6 +27,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal TotalTumbleWin { get; set; }
 
         public bool FreeSpin { get; set; }
+        public bool BuyFreeSpin { get; set; }
 
         public string Result { get; set; }
 

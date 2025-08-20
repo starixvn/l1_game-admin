@@ -13,6 +13,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public CascadingSlotRecordViewModel Round { get; set; }
 
         public string FreeSpinsLabel => Round.FreeSpin ? "Free Spins" : string.Empty;
+        public string BuyFreeSpinsLabel => Round.BuyFreeSpin? "Buy Free Spins" : string.Empty;
 
         public string DisplayBetWin => HtmlHelpers.formatNumber(Round.BetWin);
 

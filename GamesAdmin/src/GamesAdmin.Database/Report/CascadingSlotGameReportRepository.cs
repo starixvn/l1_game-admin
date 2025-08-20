@@ -70,10 +70,11 @@ namespace GamesAdmin.Database
                     {
                         Time = bet.Time,
                         Username = betUser.Local.MemberName ?? betUser.Local.Username,
-                        Nickname = bet.Name,    
+                        Nickname = bet.Name,
                         Betwin = bet.Betwin,
                         TotalAmount = bet.TotalAmount,
                         FreeSpin = bet.FreeSpin,
+                        BuyFreeSpin = bet.BuyFreeSpin,
                         Number = bet.Number,
                         UserId = bet.Uid,
                         Paid = bet.Paid,
