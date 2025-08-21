@@ -4,6 +4,7 @@ using Refit;
 using Sentry;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using User = GamesAdmin.Core.Models.User;
 
 namespace GamesAdmin.Site.Features.Users
 {
