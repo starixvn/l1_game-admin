@@ -206,7 +206,7 @@ namespace GamesAdmin.Api.GameServers
 
             if (!string.IsNullOrWhiteSpace(title))
             {
-                sentryClient.CaptureMessage(title, Sentry.Protocol.SentryLevel.Error);
+                sentryClient.CaptureMessage(title, SentryLevel.Error);
             }
 
             sentryClient.CaptureException(ex);
