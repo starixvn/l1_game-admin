@@ -16,6 +16,7 @@ using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Database.Entities.Promotion;
 using GamesAdmin.Core.Enumeration;
 using System.Linq.Expressions;
+using GamesAdmin.Core;
 
 namespace GamesAdmin.Api.Promotions
 {
@@ -23,7 +24,7 @@ namespace GamesAdmin.Api.Promotions
     public interface IAwardGameApi
     {
         [Post("/Player/Award")]
-        Task<AwardApiResult> Award([Body] AwardWinningPlayer request);
+        Task<AwardApiResult> Award([Body] AwardRequest request);
     }
 
     public interface IAwardService
@@ -31,6 +32,25 @@ namespace GamesAdmin.Api.Promotions
         Task<bool> AwardTournament(AwardTournamentRequest request);
 
         Task<bool> AwardTestCurrency(AwardTestCurrencyRequest request);
+    }
+
+    public class AwardRequest
+    {
+        public string OperatorId { get; set; }
+
+        public string PlayerId { get; set; }
+
+        public string SiteId { get; set; }
+
+        public int GameTypeId { get; set; }
+
+        public decimal Amount { get; set; }
+
+        public string PromotionId { get; set; }
+
+        public string Currency { get; set; }
+
+        public byte AwardType { get; set; }
     }
 
     public class AwardService : IAwardService
@@ -62,7 +82,18 @@ namespace GamesAdmin.Api.Promotions
         {
             try
             {
-                var apiResult = await awardGameApi.Award(awardWinningPlayer);
+                var apiResult = await awardGameApi.Award(new AwardRequest
+                {
+                    OperatorId = awardWinningPlayer.OperatorId,
+                    PlayerId = awardWinningPlayer.PlayerId,
+                    PromotionId = awardWinningPlayer.PromotionId.ToString(),
+                    Currency = awardWinningPlayer.Currency,
+                    Amount = awardWinningPlayer.Amount,
+                    GameTypeId = awardWinningPlayer.GameTypeId,
+                    SiteId = awardWinningPlayer.SiteId, 
+                    AwardType  = AwardTypes.Tournament,
+                });
+
                 if (apiResult.Result.IsSuccessful())
                 {
                     sentryClient.CaptureMessage($"Award Winning Player: {Newtonsoft.Json.JsonConvert.SerializeObject(awardWinningPlayer)}", SentryLevel.Fatal);
