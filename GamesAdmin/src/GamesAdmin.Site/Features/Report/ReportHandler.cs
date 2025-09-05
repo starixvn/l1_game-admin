@@ -916,7 +916,9 @@ namespace GamesAdmin.Site.Features.Report
                 {
                     if (!normalGameNames.Contains(configGame.Name) &&
                         configGame.Type != GameType.Slots &&
-                        configGame.Type != GameType.CascadingSlots)
+                        configGame.Type != GameType.CascadingSlots &&
+                        configGame.Type != GameType.Crash &&
+                        configGame.Type != GameType.CrashTurnBase)
                     {
                         additionalGames.Add(new SelectListItem(
                             configGame.DisplayName ?? configGame.Name,

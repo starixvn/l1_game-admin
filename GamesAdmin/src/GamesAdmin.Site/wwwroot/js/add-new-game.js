@@ -349,6 +349,12 @@ $(document).ready(function () {
 
         if (selectedType === GAME_TYPE_AUTO_RNG_INDEX) {
             isValid = validateChoicesForAutoRNG();
+
+            // ✅ Also validate separate odds section if "Use different odds" is checked
+            var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
+            if (isUseDifferentOdds) {
+                isValid = validateOddsSection() && isValid;
+            }
         }
 
         return isValid;
@@ -358,6 +364,7 @@ $(document).ready(function () {
         var isValid = true;
         var choiceRows = $(".choice-row");
         var hasValidChoices = false;
+        var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
 
         choiceRows.each(function () {
             var row = $(this);
@@ -365,12 +372,21 @@ $(document).ready(function () {
             var name = row.find(".choice-name").val().trim();
             var odds = row.find(".choice-odds").val();
 
-            if (key && name && odds) {
-                hasValidChoices = true;
+            // ✅ Check if we have valid choices based on checkbox state
+            if (isUseDifferentOdds) {
+                // When "Use different odds" is checked, only validate Key and Name
+                if (key && name) {
+                    hasValidChoices = true;
+                }
+            } else {
+                // When "Use different odds" is NOT checked, validate Key, Name, and Odds
+                if (key && name && odds) {
+                    hasValidChoices = true;
+                }
             }
 
             row.find(".field-validation-error").text("");
-            isValid = validateChoiceRow(row, key, name, odds) && isValid;
+            isValid = validateChoiceRow(row, key, name, odds, isUseDifferentOdds) && isValid;
         });
 
         if (!hasValidChoices) {
@@ -383,7 +399,7 @@ $(document).ready(function () {
         return isValid;
     }
 
-    function validateChoiceRow(row, key, name, odds) {
+    function validateChoiceRow(row, key, name, odds, isUseDifferentOdds) {
         var isValid = true;
 
         if (!key) {
@@ -394,9 +410,13 @@ $(document).ready(function () {
             row.find("[data-valmsg-for*='.Name']").text("Name is required");
             isValid = false;
         }
-        if (!odds || parseFloat(odds) < 0.01) {
-            row.find("[data-valmsg-for*='.Odds']").text("Odds must be at least 0.01");
-            isValid = false;
+
+        // ✅ Only validate odds if "Use different odds" is NOT checked
+        if (!isUseDifferentOdds) {
+            if (!odds || parseFloat(odds) < 0.01) {
+                row.find("[data-valmsg-for*='.Odds']").text("Odds must be at least 0.01");
+                isValid = false;
+            }
         }
 
         return isValid;
@@ -406,6 +426,63 @@ $(document).ready(function () {
         if ($("#choices-validation-error").length === 0) {
             $(SELECTORS.CHOICES_SECTION).append(
                 `<div id="choices-validation-error" class="text-danger">${MESSAGES.CHOICES_VALIDATION_ERROR}</div>`
+            );
+        }
+    }
+
+    // ✅ Function to validate the separate odds section when "Use different odds" is checked
+    function validateOddsSection() {
+        var isValid = true;
+        var oddsRows = $(".odds-row");
+        var hasValidOdds = false;
+
+        oddsRows.each(function () {
+            var row = $(this);
+            var key = row.find(".odds-key").val().trim();
+            var name = row.find(".odds-name").val().trim();
+            var value = row.find(".odds-value").val();
+
+            if (key && name && value) {
+                hasValidOdds = true;
+            }
+
+            // Validate each odds row
+            if (!key) {
+                row.find(".odds-key").addClass("is-invalid");
+                isValid = false;
+            } else {
+                row.find(".odds-key").removeClass("is-invalid");
+            }
+
+            if (!name) {
+                row.find(".odds-name").addClass("is-invalid");
+                isValid = false;
+            } else {
+                row.find(".odds-name").removeClass("is-invalid");
+            }
+
+            if (!value || parseFloat(value) < 0.01) {
+                row.find(".odds-value").addClass("is-invalid");
+                isValid = false;
+            } else {
+                row.find(".odds-value").removeClass("is-invalid");
+            }
+        });
+
+        if (!hasValidOdds) {
+            showOddsValidationError();
+            isValid = false;
+        } else {
+            $("#odds-validation-error").remove();
+        }
+
+        return isValid;
+    }
+
+    function showOddsValidationError() {
+        if ($("#odds-validation-error").length === 0) {
+            $(SELECTORS.ODDS_SECTION).append(
+                `<div id="odds-validation-error" class="text-danger">At least one odds configuration must be provided when using different odds.</div>`
             );
         }
     }
