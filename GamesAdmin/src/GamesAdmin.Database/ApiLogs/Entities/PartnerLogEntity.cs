@@ -82,7 +82,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
 
         public string SiteName { get; set; }
 
-        public int PromotionId { get; set; }
+        public int? PromotionId { get; set; }
 
         public decimal WinningAmount { get; set; }
 
