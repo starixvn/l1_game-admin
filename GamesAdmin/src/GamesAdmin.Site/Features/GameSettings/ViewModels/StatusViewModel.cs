@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Currencies;
@@ -26,7 +27,47 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public IList<CurrencyGroupModel> CurrencyGroups { get; }
 
         public IList<CurrencyGroupGame> CurrencyGroupGames { get; }
+
+        public string GetCurrencyGroupOfferGame(GameConfig gameConfig, string operatorId)
+        {
+            var offeredGroups = new List<string>();
+            var currencyGroups = CurrencyGroups.Where(group => group.PartnerId == operatorId);
+            var currencyGroupGames = CurrencyGroupGames?.Where(groupGame => groupGame.GameId == gameConfig.GameId);
+
+            foreach (var currencyGroup in currencyGroups)
+            {
+                var setting = currencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == currencyGroup.Id);
+                if (setting != null && setting.Enabled)
+                {
+                    var groupInfo = $"<b>{currencyGroup.Name}</b>";
+
+                    switch (gameConfig.Info.Type)
+                    {
+                        case GameType.CascadingSlots:
+                            var minBetLevel = gameConfig.CascadingSlotsConfig.BetLevels.Min();
+                            var maxBetLevel = gameConfig.CascadingSlotsConfig.BetLevels.Max();
+                            var minCoin = setting.CoinValues.Min();
+                            var maxCoin = setting.CoinValues.Max();
+
+                            groupInfo += ": " + string.Join(" - ", new double[] { gameConfig.CascadingSlotsConfig.BetMultiplier * minCoin * minBetLevel, gameConfig.CascadingSlotsConfig.BetMultiplier * maxCoin * maxBetLevel });
+                            break;
+                        case GameType.Slots:
+                            groupInfo += ": " + (setting.StakeLevels.Length > 0 ? string.Join(" - ", setting.StakeLevels.Select(stake => stake.Stake).ToArray()) : string.Join(" - ", setting.BetLevels));
+                            break;
+                        default:
+                            groupInfo += ": " + string.Join(" - ", new double[] { setting.MinBet, setting.MaxBet });
+                            break;
+                    }
+
+
+                    offeredGroups.Add(groupInfo);
+                }
+            }
+
+            return string.Join("<br/>", offeredGroups);
+        }
     }
+
 
     public class StatusItemViewModel
     {

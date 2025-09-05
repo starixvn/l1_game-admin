@@ -31,7 +31,7 @@ namespace GamesAdmin.Api.Report
 
         public async Task<BetReportBase> Get(BetReportFilter filter)
         {
-            if (cloudSettings?.ShouldCallCloudService((int)filter.Game) == true)
+            if (cloudSettings?.ShouldCallCloudService(filter.Game) == true)
             {
                 var header = await IdentityServerManager.GetAuthorizationHeader();
                 var report = await reportApi.GetBetReport<BandarQiuQiuBetReport>(filter, header);
@@ -46,7 +46,7 @@ namespace GamesAdmin.Api.Report
                     RoundResult = mapper.Map<BandarQiuQiuRoundResult>(result.Item1),
                     Records = result.Item2.Select(x => mapper.Map<BandarQiuQiuBetRecord>(x))
                 };
-                if (!cloudSettings.IsCloudGame((int)filter.Game))
+                if (!cloudSettings.IsCloudGame(filter.Game))
                 {
                     report.Records = await GetBetRecordsWithUserInfo(report.Records, filter.Username, filter.ExcludeBot);
                 }
@@ -56,7 +56,7 @@ namespace GamesAdmin.Api.Report
 
         public async Task<BetHistory> Get(BetHistoryFilter filter)
         {
-            if (cloudSettings?.ShouldCallCloudService((int)filter.Game) == true)
+            if (cloudSettings?.ShouldCallCloudService(filter.Game) == true)
             {
                 return await GetBetHistoryOnCloud<BandarQiuQiuBetHistory>(filter);
             }
@@ -71,7 +71,7 @@ namespace GamesAdmin.Api.Report
                     Odds = result.Item3,
                     CurrencyName = result.Item2.FirstOrDefault()?.Currency ?? string.Empty
                 };
-                if (!cloudSettings.IsCloudGame((int)filter.Game))
+                if (!cloudSettings.IsCloudGame(filter.Game))
                 {
                     betHistory.FractionalOddsFormat = await currencyGroupService.IsFractionalOddsFormat(filter.PartnerId, betHistory.CurrencyName);
                 }

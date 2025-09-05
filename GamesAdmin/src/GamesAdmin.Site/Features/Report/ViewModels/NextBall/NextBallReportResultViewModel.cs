@@ -7,7 +7,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class NextBallReportResultViewModel : ReportResultViewModel
     {
-        public GameId Game { get; set; }
+        public int Game { get; set; }
         public long DrawId { get; set; }
         public NextBallRound RoundResult { get; set; }
 

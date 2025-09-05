@@ -52,7 +52,7 @@ namespace GamesAdmin.Site.Features.Report
                     return betViewModel;
                 }),
                 Odds = result.Odds,
-                GameName = Game.FromGameId(filter.Game).Value
+                GameName = Game.FromGameId((GameId)filter.Game).Value
             };
         }
     }

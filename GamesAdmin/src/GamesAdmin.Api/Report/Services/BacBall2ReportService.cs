@@ -52,7 +52,7 @@ namespace GamesAdmin.Api.Report
                 Odds = result.Item3,
                 CurrencyName = result.Item2.FirstOrDefault()?.Currency ?? string.Empty
             };
-            if (!cloudSettings.IsCloudGame((int)filter.Game))
+            if (!cloudSettings.IsCloudGame(filter.Game))
             {
                 betHistory.FractionalOddsFormat = await currencyGroupService.IsFractionalOddsFormat(filter.PartnerId, betHistory.CurrencyName);
             }

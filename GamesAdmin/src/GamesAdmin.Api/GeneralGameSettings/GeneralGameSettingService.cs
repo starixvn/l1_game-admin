@@ -33,12 +33,14 @@ namespace GamesAdmin.Api.GeneralGameSettings
         private readonly IGenericRepository<GameConfigEntity> repository;
         private readonly IServiceProvider serviceProvider;
         private readonly IAppSettings appSettings;
+        private readonly Dictionary<int, string> gameNameCache;
 
         public GeneralGameSettingService(IGenericRepository<GameConfigEntity> repository, IServiceProvider serviceProvider, IAppSettings appSettings)
         {
             this.repository = repository;
             this.serviceProvider = serviceProvider;
             this.appSettings = appSettings;
+            this.gameNameCache = new Dictionary<int, string>();
         }
 
         public async Task<IEnumerable<GeneralGameSetting>> GetAll()
@@ -57,16 +59,30 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
         public async Task<string> GetGameName(int gameId)
         {
+            // Check cache first
+            if (gameNameCache.TryGetValue(gameId, out string cachedName))
+            {
+                return cachedName;
+            }
+
+            string gameName;
             if (Enum.IsDefined(typeof(GameId), gameId))
             {
-                return Game.FromGameId((GameId)gameId).Value;
+                gameName = Game.FromGameId((GameId)gameId).Value;
             }
             else
             {
                 var gameInfo = await GetGameConfigDirectOnKbtDatabase(gameId);
-
-                return gameInfo?.Name;
+                gameName = gameInfo?.Name;
             }
+
+            // Cache the result (including null values to avoid repeated database calls)
+            if (gameName != null)
+            {
+                gameNameCache[gameId] = gameName;
+            }
+
+            return gameName;
         }
 
         public async Task<int> GetGameId(string name)

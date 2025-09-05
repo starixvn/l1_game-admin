@@ -1,0 +1,933 @@
+---
+alwaysApply: true
+---
+
+# GamesAdmin Project - Cursor Rules
+
+You are a senior .NET backend developer and an expert in C#, ASP.NET Core, and MongoDB
+
+## Project Overview
+
+This is a **GamesAdmin** project - a comprehensive gaming administration system built with **ASP.NET Core** using **Clean Architecture** principles. The solution consists of multiple projects with clear separation of concerns.
+
+## Architecture & Project Structure
+
+### Solution Structure
+
+- **GamesAdmin.Api** - Web API project for backend services
+- **GamesAdmin.Site** - MVC web application for admin interface
+- **GamesAdmin.Core** - Core domain models, enumerations, and business logic
+- **GamesAdmin.Database** - Data access layer with MongoDB entities and repositories
+- **Tests/** - Unit test projects
+
+### Key Architectural Patterns
+
+- **CQRS with MediatR** - Commands and queries separation using MediatR pattern
+- **Clean Architecture** - Clear separation between Core, Infrastructure, and Application layers
+- **Feature-Based Organization** - Code organized by features rather than technical layers
+- **Repository Pattern** - Generic repository pattern for data access
+- **Dependency Injection** - Extensive use of DI container for loose coupling
+
+## Coding Standards & Conventions
+
+### C# Naming Conventions
+
+- **PascalCase** for public properties, methods, classes
+- **camelCase** for private fields (NO underscore prefix)
+- **PascalCase** for interfaces with "I" prefix
+- **UPPER_CASE** for constants
+- **PascalCase** for enums and enum values
+- **PascalCase** for namespaces (e.g., `GamesAdmin.Site.Features.Report`)
+
+### SOLID Principles
+
+#### Single Responsibility Principle (SRP)
+
+- Each class should have only one reason to change
+- Controllers handle HTTP requests only
+- Handlers process business logic only
+- Services handle specific domain operations
+- Repositories handle data access only
+
+#### Open/Closed Principle (OCP)
+
+- Use interfaces for extensibility
+- Implement factory patterns for service resolution
+- Use strategy pattern for different game types
+- Extend functionality through inheritance and composition
+
+#### Liskov Substitution Principle (LSP)
+
+- Derived classes must be substitutable for their base classes
+- All report services implement `IGameReportService`
+- All entities inherit from `MiniGameBaseEntity`
+- All view models follow consistent patterns
+
+#### Interface Segregation Principle (ISP)
+
+- Create focused, specific interfaces
+- Use `IRequest<T>` and `IRequestHandler<TRequest, TResponse>` from MediatR
+- Separate read and write operations where appropriate
+- Avoid fat interfaces with too many responsibilities
+
+#### Dependency Inversion Principle (DIP)
+
+- Depend on abstractions, not concretions
+- Use dependency injection throughout the application
+- Inject interfaces, not concrete classes
+- Use factory patterns for complex object creation
+
+### Code Organization Patterns
+
+#### Feature-Based Structure
+
+```
+Features/
+├── FeatureName/
+│   ├── FeatureController.cs
+│   ├── FeatureHandler.cs
+│   ├── FeatureService.cs
+│   ├── Requests/
+│   │   ├── GetFeatureRequest.cs
+│   │   └── CreateFeatureRequest.cs
+│   ├── ViewModels/
+│   │   ├── FeatureViewModel.cs
+│   │   └── FeatureResultViewModel.cs
+│   ├── Views/
+│   │   ├── Index.cshtml
+│   │   └── _PartialView.cshtml
+│   └── Mappers/
+│       └── FeatureMapper.cs
+```
+
+#### Service Layer Patterns
+
+```csharp
+// Service interface
+public interface IFeatureService
+{
+    Task<FeatureResult> ProcessAsync(FeatureRequest request);
+}
+
+// Service implementation
+public class FeatureService : IFeatureService
+{
+    private readonly IRepository<Entity> repository;
+    private readonly IMapper mapper;
+
+    public FeatureService(IRepository<Entity> repository, IMapper mapper)
+    {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
+
+    public async Task<FeatureResult> ProcessAsync(FeatureRequest request)
+    {
+        // Implementation
+    }
+}
+```
+
+### Request/Response Pattern
+
+- **Requests** should implement `IRequest<TResponse>` from MediatR
+- **Handlers** should implement `IRequestHandler<TRequest, TResponse>`
+- **ViewModels** should be suffixed with `ViewModel`
+- **Filters** should be suffixed with `Filter`
+- **Requests** should be suffixed with `Request`
+- **Results** should be suffixed with `Result` or `ResultViewModel`
+
+### Constructor Patterns
+
+```csharp
+// Preferred: Constructor injection with readonly fields
+public class FeatureService
+{
+    private readonly IRepository<Entity> repository;
+    private readonly IMapper mapper;
+
+    public FeatureService(IRepository<Entity> repository, IMapper mapper)
+    {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
+}
+```
+
+### Method Patterns
+
+```csharp
+// Async methods should return Task or Task<T>
+public async Task<Result> ProcessAsync(Request request)
+{
+    // Implementation
+}
+
+// Use meaningful method names
+public async Task<GameReportResult> GetGameReportAsync(GameReportRequest request)
+{
+    // Implementation
+}
+```
+
+### Property Patterns
+
+```csharp
+// Use auto-properties for simple cases
+public string Name { get; set; }
+
+// Use expression-bodied properties for simple calculations
+public decimal TotalAmount => BetAmount * Rate;
+
+// Use private setters for immutable properties
+public DateTime CreatedAt { get; private set; }
+```
+
+## Technology Stack
+
+### Backend
+
+- **ASP.NET Core** - Web framework
+- **MediatR** - CQRS implementation
+- **AutoMapper** - Object-to-object mapping
+- **MongoDB** - Primary database
+- **Sentry** - Error tracking and monitoring
+
+### Frontend
+
+- **ASP.NET Core MVC** with Razor views
+- **jQuery** - Client-side JavaScript
+- **Bootstrap** - CSS framework
+- **SCSS** - CSS preprocessing
+
+### Authentication & Authorization
+
+- **ASP.NET Core Identity** - Authentication system
+- **JWT Bearer tokens** - API authentication
+- **Cookie-based authentication** - Web application
+
+## Database Patterns
+
+### Entity Conventions
+
+- All entities inherit from `MiniGameBaseEntity`
+- Use `[BsonCollection("collection_name")]` attribute for MongoDB collections
+- Use `[BsonElement("field_name")]` for field mapping
+- Implement `IDocument` interface for generic repository support
+
+### Repository Pattern
+
+```csharp
+// Generic repository usage
+private readonly IGenericRepository<GameConfigEntity> repository;
+
+// Query examples
+var entities = await repository.AsQueryable().Where(x => x.Enabled).ToListAsync();
+var entity = await repository.GetByIdAsync(id);
+```
+
+## Game System Specific Rules
+
+### Report System
+
+- All report filters extend `BetReportFilter`
+- Use `ReportServiceFactory` for service resolution
+- Support USD conversion with `ConvertToUSD` flag
+
+## Frontend Patterns
+
+### JavaScript Conventions
+
+- Use jQuery for DOM manipulation
+- Implement client-side validation for forms
+- Use AJAX for asynchronous operations
+- Handle game type-specific UI logic (e.g., AutoRNGIndex special cases)
+
+### Validation Rules
+
+- **AutoRNGIndex games** (type 10) require custom name validation
+- Other game types use predefined name selections
+- Always validate required fields before form submission
+
+### View Model Patterns
+
+```csharp
+public class FeatureViewModel
+{
+    public bool ConvertToUSD { get; set; }
+    public ReportSeletionsViewModel Selections { get; set; }
+}
+```
+
+## Configuration & Settings
+
+### Environment-Specific Configs
+
+- **appsettings.json** - Base configuration
+- **appsettings.{Environment}.json** - Environment overrides
+- Support for: Debug, Dev, LOCAL, SIT, UAT, PROD environments
+
+### Dependency Injection Registration
+
+```csharp
+// Service registration pattern
+services.AddMediatR(typeof(Startup));
+services.AddAutoMapper(typeof(Startup));
+services.AddSingleton<IAppSettings>(appSettings);
+services.AddServices(appSettings);
+```
+
+## Error Handling & Logging
+
+### Exception Handling
+
+- Use Sentry for error tracking
+- Implement proper exception handling in handlers
+- Return appropriate HTTP status codes from API controllers
+- Log important business operations
+
+### Validation
+
+- Use Data Annotations for model validation
+- Implement custom validation attributes when needed
+- Handle both server-side and client-side validation
+
+## Testing Guidelines
+
+### Unit Test Structure
+
+- Organize tests by feature/component
+- Use descriptive test method names
+- Mock external dependencies
+- Test both happy path and edge cases
+
+### Test Project Naming
+
+- `{ProjectName}.UnitTests` for unit test projects
+- Mirror the source project structure in test projects
+
+## Performance & Caching
+
+### Caching Strategies
+
+- Use in-memory caching for frequently accessed data
+- Cache game configurations and settings
+- Consider cache invalidation strategies
+
+### Database Optimization
+
+- Use projection for large queries
+- Implement pagination for list operations
+- Index frequently queried fields
+- Use async/await for all database operations
+
+## Security Considerations
+
+### Authentication & Authorization
+
+- All controllers should have `[Authorize]` attribute unless specifically public
+- Validate user permissions for sensitive operations
+- Implement proper CORS policies for API endpoints
+- Use secure connection strings and API keys
+
+### Input Validation
+
+- Validate all user inputs
+- Sanitize data before database operations
+- Use parameterized queries to prevent injection attacks
+- Implement rate limiting for API endpoints
+
+## Development Workflow
+
+### Code Quality
+
+#### SOLID Principles Implementation
+
+- **Single Responsibility**: Each class has one clear purpose
+- **Open/Closed**: Extend through interfaces and inheritance, not modification
+- **Liskov Substitution**: Derived classes are fully substitutable for base classes
+- **Interface Segregation**: Create focused, specific interfaces
+- **Dependency Inversion**: Depend on abstractions, not concrete implementations
+
+#### Code Quality Standards
+
+- Write clean, readable code with meaningful names
+- Use async/await consistently for all I/O operations
+- Implement proper error handling and logging
+- Use expression-bodied members for simple operations
+- Prefer composition over inheritance
+- Keep methods small and focused (ideally under 20 lines)
+- Use meaningful variable and method names
+- Avoid deep nesting (max 3 levels)
+- Use early returns to reduce complexity
+- Implement proper null checking and validation
+
+#### Error Handling Patterns
+
+```csharp
+// Use try-catch for expected exceptions
+try
+{
+    var result = await service.ProcessAsync(request);
+    return result;
+}
+catch (ValidationException ex)
+{
+    // Handle validation errors
+    return BadRequest(ex.Message);
+}
+catch (Exception ex)
+{
+    // Log unexpected errors
+    logger.LogError(ex, "Unexpected error processing request");
+    return StatusCode(500, "Internal server error");
+}
+```
+
+#### Validation Patterns
+
+```csharp
+// Use data annotations for model validation
+public class CreateGameRequest
+{
+    [Required]
+    [StringLength(100)]
+    public string Name { get; set; }
+
+    [Range(1, 100)]
+    public int GameType { get; set; }
+}
+
+// Use fluent validation for complex rules
+public class GameValidator : AbstractValidator<CreateGameRequest>
+{
+    public GameValidator()
+    {
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required");
+        RuleFor(x => x.GameType).GreaterThan(0).WithMessage("Invalid game type");
+    }
+}
+```
+
+### Git Conventions
+
+- Use feature branches for development
+- Write descriptive commit messages
+- Keep commits focused and atomic
+- Review code before merging
+
+## API Design Guidelines
+
+### RESTful Principles
+
+- Use appropriate HTTP verbs (GET, POST, PUT, DELETE)
+- Return consistent response formats
+- Use proper HTTP status codes
+- Implement proper error responses
+
+### Request/Response Models
+
+- Use separate models for requests and responses
+- Implement proper validation on request models
+- Use consistent naming conventions
+- Document API endpoints properly
+
+## Monitoring & Observability
+
+### Logging
+
+- Use structured logging
+- Log important business events
+- Include correlation IDs for request tracking
+- Monitor application performance
+
+### Health Checks
+
+- Implement health check endpoints
+- Monitor database connectivity
+- Check external service dependencies
+- Set up alerting for critical issues
+
+## Deployment & Configuration
+
+### Environment Management
+
+- Use configuration transforms for different environments
+- Manage secrets securely
+- Implement proper CI/CD pipelines
+- Monitor deployment health
+
+Remember to:
+
+1. Implement proper caching for frequently accessed data
+2. Follow the established CQRS pattern with MediatR
+3. Maintain clear separation between API and Site projects
+4. Use the existing feature-based folder structure
+5. Implement proper error handling and logging
+6. Write unit tests for new functionality
+7. Follow the established naming conventions
+
+# GamesAdmin Project - Cursor Rules
+
+You are a senior .NET backend developer and an expert in C#, ASP.NET Core, and MongoDB
+
+## Project Overview
+
+This is a **GamesAdmin** project - a comprehensive gaming administration system built with **ASP.NET Core** using **Clean Architecture** principles. The solution consists of multiple projects with clear separation of concerns.
+
+## Architecture & Project Structure
+
+### Solution Structure
+
+- **GamesAdmin.Api** - Web API project for backend services
+- **GamesAdmin.Site** - MVC web application for admin interface
+- **GamesAdmin.Core** - Core domain models, enumerations, and business logic
+- **GamesAdmin.Database** - Data access layer with MongoDB entities and repositories
+- **Tests/** - Unit test projects
+
+### Key Architectural Patterns
+
+- **CQRS with MediatR** - Commands and queries separation using MediatR pattern
+- **Clean Architecture** - Clear separation between Core, Infrastructure, and Application layers
+- **Feature-Based Organization** - Code organized by features rather than technical layers
+- **Repository Pattern** - Generic repository pattern for data access
+- **Dependency Injection** - Extensive use of DI container for loose coupling
+
+## Coding Standards & Conventions
+
+### C# Naming Conventions
+
+- **PascalCase** for public properties, methods, classes
+- **camelCase** for private fields (NO underscore prefix)
+- **PascalCase** for interfaces with "I" prefix
+- **UPPER_CASE** for constants
+- **PascalCase** for enums and enum values
+- **PascalCase** for namespaces (e.g., `GamesAdmin.Site.Features.Report`)
+
+### SOLID Principles
+
+#### Single Responsibility Principle (SRP)
+
+- Each class should have only one reason to change
+- Controllers handle HTTP requests only
+- Handlers process business logic only
+- Services handle specific domain operations
+- Repositories handle data access only
+
+#### Open/Closed Principle (OCP)
+
+- Use interfaces for extensibility
+- Implement factory patterns for service resolution
+- Use strategy pattern for different game types
+- Extend functionality through inheritance and composition
+
+#### Liskov Substitution Principle (LSP)
+
+- Derived classes must be substitutable for their base classes
+- All report services implement `IGameReportService`
+- All entities inherit from `MiniGameBaseEntity`
+- All view models follow consistent patterns
+
+#### Interface Segregation Principle (ISP)
+
+- Create focused, specific interfaces
+- Use `IRequest<T>` and `IRequestHandler<TRequest, TResponse>` from MediatR
+- Separate read and write operations where appropriate
+- Avoid fat interfaces with too many responsibilities
+
+#### Dependency Inversion Principle (DIP)
+
+- Depend on abstractions, not concretions
+- Use dependency injection throughout the application
+- Inject interfaces, not concrete classes
+- Use factory patterns for complex object creation
+
+### Code Organization Patterns
+
+#### Feature-Based Structure
+
+```
+Features/
+├── FeatureName/
+│   ├── FeatureController.cs
+│   ├── FeatureHandler.cs
+│   ├── FeatureService.cs
+│   ├── Requests/
+│   │   ├── GetFeatureRequest.cs
+│   │   └── CreateFeatureRequest.cs
+│   ├── ViewModels/
+│   │   ├── FeatureViewModel.cs
+│   │   └── FeatureResultViewModel.cs
+│   ├── Views/
+│   │   ├── Index.cshtml
+│   │   └── _PartialView.cshtml
+│   └── Mappers/
+│       └── FeatureMapper.cs
+```
+
+#### Service Layer Patterns
+
+```csharp
+// Service interface
+public interface IFeatureService
+{
+    Task<FeatureResult> ProcessAsync(FeatureRequest request);
+}
+
+// Service implementation
+public class FeatureService : IFeatureService
+{
+    private readonly IRepository<Entity> repository;
+    private readonly IMapper mapper;
+
+    public FeatureService(IRepository<Entity> repository, IMapper mapper)
+    {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
+
+    public async Task<FeatureResult> ProcessAsync(FeatureRequest request)
+    {
+        // Implementation
+    }
+}
+```
+
+### Request/Response Pattern
+
+- **Requests** should implement `IRequest<TResponse>` from MediatR
+- **Handlers** should implement `IRequestHandler<TRequest, TResponse>`
+- **ViewModels** should be suffixed with `ViewModel`
+- **Filters** should be suffixed with `Filter`
+- **Requests** should be suffixed with `Request`
+- **Results** should be suffixed with `Result` or `ResultViewModel`
+
+### Constructor Patterns
+
+```csharp
+// Preferred: Constructor injection with readonly fields
+public class FeatureService
+{
+    private readonly IRepository<Entity> repository;
+    private readonly IMapper mapper;
+
+    public FeatureService(IRepository<Entity> repository, IMapper mapper)
+    {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
+}
+```
+
+### Method Patterns
+
+```csharp
+// Async methods should return Task or Task<T>
+public async Task<Result> ProcessAsync(Request request)
+{
+    // Implementation
+}
+
+// Use meaningful method names
+public async Task<GameReportResult> GetGameReportAsync(GameReportRequest request)
+{
+    // Implementation
+}
+```
+
+### Property Patterns
+
+```csharp
+// Use auto-properties for simple cases
+public string Name { get; set; }
+
+// Use expression-bodied properties for simple calculations
+public decimal TotalAmount => BetAmount * Rate;
+
+// Use private setters for immutable properties
+public DateTime CreatedAt { get; private set; }
+```
+
+## Technology Stack
+
+### Backend
+
+- **ASP.NET Core** - Web framework
+- **MediatR** - CQRS implementation
+- **AutoMapper** - Object-to-object mapping
+- **MongoDB** - Primary database
+- **Sentry** - Error tracking and monitoring
+
+### Frontend
+
+- **ASP.NET Core MVC** with Razor views
+- **jQuery** - Client-side JavaScript
+- **Bootstrap** - CSS framework
+- **SCSS** - CSS preprocessing
+
+### Authentication & Authorization
+
+- **ASP.NET Core Identity** - Authentication system
+- **JWT Bearer tokens** - API authentication
+- **Cookie-based authentication** - Web application
+
+## Database Patterns
+
+### Entity Conventions
+
+- All entities inherit from `MiniGameBaseEntity`
+- Use `[BsonCollection("collection_name")]` attribute for MongoDB collections
+- Use `[BsonElement("field_name")]` for field mapping
+- Implement `IDocument` interface for generic repository support
+
+### Repository Pattern
+
+```csharp
+// Generic repository usage
+private readonly IGenericRepository<GameConfigEntity> repository;
+
+// Query examples
+var entities = await repository.AsQueryable().Where(x => x.Enabled).ToListAsync();
+var entity = await repository.GetByIdAsync(id);
+```
+
+## Game System Specific Rules
+
+### Report System
+
+- All report filters extend `BetReportFilter`
+- Use `ReportServiceFactory` for service resolution
+- Support USD conversion with `ConvertToUSD` flag
+
+## Frontend Patterns
+
+### JavaScript Conventions
+
+- Use jQuery for DOM manipulation
+- Implement client-side validation for forms
+- Use AJAX for asynchronous operations
+- Handle game type-specific UI logic (e.g., AutoRNGIndex special cases)
+
+### Validation Rules
+
+- **AutoRNGIndex games** (type 10) require custom name validation
+- Other game types use predefined name selections
+- Always validate required fields before form submission
+
+### View Model Patterns
+
+```csharp
+public class FeatureViewModel
+{
+    public bool ConvertToUSD { get; set; }
+    public ReportSeletionsViewModel Selections { get; set; }
+}
+```
+
+## Configuration & Settings
+
+### Environment-Specific Configs
+
+- **appsettings.json** - Base configuration
+- **appsettings.{Environment}.json** - Environment overrides
+- Support for: Debug, Dev, LOCAL, SIT, UAT, PROD environments
+
+### Dependency Injection Registration
+
+```csharp
+// Service registration pattern
+services.AddMediatR(typeof(Startup));
+services.AddAutoMapper(typeof(Startup));
+services.AddSingleton<IAppSettings>(appSettings);
+services.AddServices(appSettings);
+```
+
+## Error Handling & Logging
+
+### Exception Handling
+
+- Use Sentry for error tracking
+- Implement proper exception handling in handlers
+- Return appropriate HTTP status codes from API controllers
+- Log important business operations
+
+### Validation
+
+- Use Data Annotations for model validation
+- Implement custom validation attributes when needed
+- Handle both server-side and client-side validation
+
+## Testing Guidelines
+
+### Unit Test Structure
+
+- Organize tests by feature/component
+- Use descriptive test method names
+- Mock external dependencies
+- Test both happy path and edge cases
+
+### Test Project Naming
+
+- `{ProjectName}.UnitTests` for unit test projects
+- Mirror the source project structure in test projects
+
+## Performance & Caching
+
+### Caching Strategies
+
+- Use in-memory caching for frequently accessed data
+- Cache game configurations and settings
+- Consider cache invalidation strategies
+
+### Database Optimization
+
+- Use projection for large queries
+- Implement pagination for list operations
+- Index frequently queried fields
+- Use async/await for all database operations
+
+## Security Considerations
+
+### Authentication & Authorization
+
+- All controllers should have `[Authorize]` attribute unless specifically public
+- Validate user permissions for sensitive operations
+- Implement proper CORS policies for API endpoints
+- Use secure connection strings and API keys
+
+### Input Validation
+
+- Validate all user inputs
+- Sanitize data before database operations
+- Use parameterized queries to prevent injection attacks
+- Implement rate limiting for API endpoints
+
+## Development Workflow
+
+### Code Quality
+
+#### SOLID Principles Implementation
+
+- **Single Responsibility**: Each class has one clear purpose
+- **Open/Closed**: Extend through interfaces and inheritance, not modification
+- **Liskov Substitution**: Derived classes are fully substitutable for base classes
+- **Interface Segregation**: Create focused, specific interfaces
+- **Dependency Inversion**: Depend on abstractions, not concrete implementations
+
+#### Code Quality Standards
+
+- Write clean, readable code with meaningful names
+- Use async/await consistently for all I/O operations
+- Implement proper error handling and logging
+- Use expression-bodied members for simple operations
+- Prefer composition over inheritance
+- Keep methods small and focused (ideally under 20 lines)
+- Use meaningful variable and method names
+- Avoid deep nesting (max 3 levels)
+- Use early returns to reduce complexity
+- Implement proper null checking and validation
+
+#### Error Handling Patterns
+
+```csharp
+// Use try-catch for expected exceptions
+try
+{
+    var result = await service.ProcessAsync(request);
+    return result;
+}
+catch (ValidationException ex)
+{
+    // Handle validation errors
+    return BadRequest(ex.Message);
+}
+catch (Exception ex)
+{
+    // Log unexpected errors
+    logger.LogError(ex, "Unexpected error processing request");
+    return StatusCode(500, "Internal server error");
+}
+```
+
+#### Validation Patterns
+
+```csharp
+// Use data annotations for model validation
+public class CreateGameRequest
+{
+    [Required]
+    [StringLength(100)]
+    public string Name { get; set; }
+
+    [Range(1, 100)]
+    public int GameType { get; set; }
+}
+
+// Use fluent validation for complex rules
+public class GameValidator : AbstractValidator<CreateGameRequest>
+{
+    public GameValidator()
+    {
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required");
+        RuleFor(x => x.GameType).GreaterThan(0).WithMessage("Invalid game type");
+    }
+}
+```
+
+### Git Conventions
+
+- Use feature branches for development
+- Write descriptive commit messages
+- Keep commits focused and atomic
+- Review code before merging
+
+## API Design Guidelines
+
+### RESTful Principles
+
+- Use appropriate HTTP verbs (GET, POST, PUT, DELETE)
+- Return consistent response formats
+- Use proper HTTP status codes
+- Implement proper error responses
+
+### Request/Response Models
+
+- Use separate models for requests and responses
+- Implement proper validation on request models
+- Use consistent naming conventions
+- Document API endpoints properly
+
+## Monitoring & Observability
+
+### Logging
+
+- Use structured logging
+- Log important business events
+- Include correlation IDs for request tracking
+- Monitor application performance
+
+### Health Checks
+
+- Implement health check endpoints
+- Monitor database connectivity
+- Check external service dependencies
+- Set up alerting for critical issues
+
+## Deployment & Configuration
+
+### Environment Management
+
+- Use configuration transforms for different environments
+- Manage secrets securely
+- Implement proper CI/CD pipelines
+- Monitor deployment health
+
+Remember to:
+
+1. Implement proper caching for frequently accessed data
+2. Follow the established CQRS pattern with MediatR
+3. Maintain clear separation between API and Site projects
+4. Use the existing feature-based folder structure
+5. Implement proper error handling and logging
+6. Write unit tests for new functionality
+7. Follow the established naming conventions

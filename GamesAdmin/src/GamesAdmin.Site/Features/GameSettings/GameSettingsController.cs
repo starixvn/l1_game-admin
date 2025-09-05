@@ -41,7 +41,10 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpGet]
         public async Task<IActionResult> CreateNewGame()
-       => View(await mediator.Send(new CreateNewGameRequest()));
+        {
+            var viewModel = await mediator.Send(new CreateNewGameRequest());
+            return View(viewModel);
+        }
 
         [HttpGet]
         [Route("games")]
@@ -60,19 +63,65 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddGameSettings([Bind] AddViewModel addViewModel)
+        public async Task<IActionResult> AddGameSettings(AddViewModel addViewModel)
         {
-            var request = new CreateRequest(
-                mapper.Map<GameInfo>(addViewModel),
-                mapper.Map<EnableSetting>(addViewModel),
-                mapper.Map<BotSetting>(addViewModel),
-                mapper.Map<BetLimit>(addViewModel),
-                mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotInfo(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon),
-                mapper.Map<CascadingSlotsConfig>(addViewModel).GenerateDefaultCascadingSlotsConfig(addViewModel.NumberOfIcons),
-                mapper.Map<SlotRNGConfig>(addViewModel));
-            await mediator.Send(request);
+            try
+            {
+                var request = new CreateRequest(
+                    mapper.Map<GameInfo>(addViewModel),
+                    mapper.Map<EnableSetting>(addViewModel),
+                    mapper.Map<BotSetting>(addViewModel),
+                    mapper.Map<BetLimit>(addViewModel),
+                    mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotInfo(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon),
+                    mapper.Map<CascadingSlotsConfig>(addViewModel).GenerateDefaultCascadingSlotsConfig(addViewModel.NumberOfIcons),
+                    mapper.Map<SlotRNGConfig>(addViewModel),
+                    mapper.Map<Dictionary<string, double>>(addViewModel),
+                    mapper.Map<Dictionary<string, string>>(addViewModel),
+                    mapper.Map<List<Choice>>(addViewModel.Choices));
 
-            return RedirectToAction(nameof(Index));
+                var result = await mediator.Send(request);
+
+                if (!result.Success)
+                {
+                    return await ReturnToFormWithErrors(addViewModel, result);
+                }
+
+                // Success - redirect to index
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                var errorResult = GameCreationResult.CreateError(
+                    GameCreationErrorCodes.UnknownError,
+                    ex.Message);
+                return await ReturnToFormWithErrors(addViewModel, errorResult);
+            }
+        }
+
+        private async Task<IActionResult> ReturnToFormWithErrors(AddViewModel addViewModel, GameCreationResult result)
+        {
+            addViewModel.SetErrorProperties(result);
+            AddModelStateErrors(result);
+
+            var viewModel = await mediator.Send(new CreateNewGameRequest());
+            viewModel.AddViewModel.CopyUserInputFrom(addViewModel);
+            viewModel.AddViewModel.UpdateDropdownSelections();
+
+            return View("CreateNewGame", viewModel);
+        }
+
+        private void AddModelStateErrors(GameCreationResult result)
+        {
+            switch (result.ErrorCode)
+            {
+                case GameCreationErrorCodes.DuplicateGameId:
+                    ModelState.AddModelError("GameId", result.ErrorMessage);
+                    break;
+                case GameCreationErrorCodes.DuplicateGameName:
+                    ModelState.AddModelError("Name", result.ErrorMessage);
+                    break;
+            }
         }
 
         [HttpPost, Audit]

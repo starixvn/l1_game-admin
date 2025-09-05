@@ -5,7 +5,7 @@ namespace GamesAdmin.Core.Models.BetReport
 {
     public class HoldemPokerBetHistoryFilter
     {
-        public GameId GameId { get; set; }
+        public int GameId { get; set; }
 
         public int RoundId { get; set; }
 

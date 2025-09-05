@@ -16,7 +16,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             IEnumerable<KenoRecordViewModel> betTickets,
             TimeZoneInfo timeZoneInfo)
         {
-            Game = game;
+            Game = (int)game;
             RoundId = roundId;
             RoundResult = new KenoResultViewModel(
                 roundResult?.Results,
@@ -27,7 +27,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             TimeZoneInfo = timeZoneInfo;
         }
 
-        public GameId Game { get; }
+        public int Game { get; }
 
         public long RoundId { get; }
 

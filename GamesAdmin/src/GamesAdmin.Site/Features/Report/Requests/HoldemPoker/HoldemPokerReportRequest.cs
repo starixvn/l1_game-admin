@@ -8,9 +8,9 @@ namespace GamesAdmin.Site.Features.Report.Requests
     {
         public HoldemPokerReportRequest(GameId gameId)
         {
-            GameId = gameId;
+            GameId = (int)gameId;
         }
 
-        public GameId GameId { get; }
+        public int GameId { get; }
     }
 }

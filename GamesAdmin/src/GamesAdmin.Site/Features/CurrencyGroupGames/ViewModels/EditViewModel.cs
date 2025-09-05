@@ -39,6 +39,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
         public bool DisplayMinMaxBet => new HashSet<GameType>
         {
             GameType.AutoRNG,
+            GameType.AutoRNGIndex,
             GameType.SlotRNG,
             GameType.Crash,
             GameType.DynamicOdds,

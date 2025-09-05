@@ -33,7 +33,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         [DisplayName("Exclude UUS")]
         public bool ExcludeUUS { get; set; }
 
-        public GameId Game { get; set; }
+        public int Game { get; set; }
 
         public ReportSeletionsViewModel Selections { get; set; }
 

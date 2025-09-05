@@ -6,7 +6,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class KenoPowerReportResultViewModel : ReportResultViewModel
     {
-        public GameId Game { get; set; }
+        public int Game { get; set; }
 
         public KenoPowerRoundResultViewModel RoundResult { get; set; }
 

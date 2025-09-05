@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using GamesAdmin.Api.GameSettings;
 using GamesAdmin.Api.GameSettings.Requests;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
 
 namespace GamesAdmin.Api.Games
 {
     public class GameSettingsHandler
         : IRequestHandler<GetAllRequest, IEnumerable<GameConfig>>
-        , IRequestHandler<CreateRequest, bool>
+        , IRequestHandler<CreateRequest, GameCreationResult>
         , IRequestHandler<GetByNameRequest, GameConfig>
         , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
@@ -43,7 +44,7 @@ namespace GamesAdmin.Api.Games
         public Task<IEnumerable<GameConfig>> Handle(GetAllRequest request, CancellationToken cancellationToken)
          => gameService.Get();
 
-        public async Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
+        public async Task<GameCreationResult> Handle(CreateRequest request, CancellationToken cancellationToken)
         {
             var createResult = await gameService.Create(request.Game);
 

@@ -30,10 +30,24 @@ namespace GamesAdmin.Api.Report
         private readonly ICurrencyService currencyService;
         private readonly ICurrencyGroupService currencyGroupService;
 
-        private readonly Dictionary<GameId, Type> repositories = new Dictionary<GameId, Type>
+        private readonly Dictionary<int, Type> repositories = new Dictionary<int, Type>
         {
-            { GameId.CasinoHoldemPoker,  typeof(HoldemPokerReportRepository<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerBetEntity, CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetHistoryEntity>) },
-            { GameId.TexasHoldemPoker,  typeof(HoldemPokerReportRepository<TexasHoldemPokerRoundEntity, TexasHoldemPokerBetEntity, TexasHoldemPokerBetReportEntity, TexasHoldemPokerBetHistoryEntity>) }
+            { 
+                (int)GameId.CasinoHoldemPoker,  
+                typeof(HoldemPokerReportRepository<
+                    CasinoHoldemPokerRoundEntity, 
+                    CasinoHoldemPokerBetEntity, 
+                    CasinoHoldemPokerBetReportEntity, 
+                    CasinoHoldemPokerBetHistoryEntity>) 
+            },
+            { 
+                (int)GameId.TexasHoldemPoker,  
+                typeof(HoldemPokerReportRepository<
+                    TexasHoldemPokerRoundEntity, 
+                    TexasHoldemPokerBetEntity, 
+                    TexasHoldemPokerBetReportEntity, 
+                    TexasHoldemPokerBetHistoryEntity>) 
+            }
         };
 
         public HoldemPokerReportService(IServiceProvider serviceProvider,

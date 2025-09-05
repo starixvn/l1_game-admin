@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Games;
+using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features._Shared;
@@ -62,7 +64,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             result.GameId = gameId;
             result.GroupId = request.GroupId;
             result.AllChips = chipConfigs.OrderBy(chip => chip.Value).ToList();
-            result.MaxBetChoiceSetting = GenerateMaxBetPerChoices(request.GameName, currencyGroupGame?.MaxBetPerChoices);
+            result.MaxBetChoiceSetting = await GenerateMaxBetPerChoices(request.GameName, currencyGroupGame?.MaxBetPerChoices);
             result.CopySettingGame = request.IsCopySetting;
 
             if (currencyGroupGame?.BetLevels == null)
@@ -116,7 +118,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             return result;
         }
 
-        private static List<GameSettings.ViewModels.MaxBetChoiceViewModel> GenerateMaxBetPerChoices(string gameName, Dictionary<string, double> maxBetPerChoices)
+        private async Task<List<GameSettings.ViewModels.MaxBetChoiceViewModel>> GenerateMaxBetPerChoices(string gameName, Dictionary<string, double> maxBetPerChoices)
         {
             var betChoicesSettings = GamesSettings.GetGamesSettings().GetGameFromName(gameName)?.BetChoices;
             var displayBetChoices = GamesSettings.GetGamesSettings().GetGameFromName(gameName)?.DisplayBetChoices;
@@ -128,9 +130,26 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
                 maxBetPerChoices != null && maxBetPerChoices.ContainsKey(choice) ? maxBetPerChoices[choice] : 0,
                 displayBetChoices?[choice] ?? choice.ToTitleCase())).ToList();
             }
-            if (string.IsNullOrWhiteSpace(gameName) || !Game.ContainsGame(gameName))
+
+
+            // Check if this is a custom AutoRNGIndex game (not in predefined games)
+
+            if (string.IsNullOrWhiteSpace(gameName))
             {
+                // For custom AutoRNGIndex games, return empty list since they don't have predefined bet choices
                 return new List<GameSettings.ViewModels.MaxBetChoiceViewModel>();
+            }
+
+            var gameConfig = await gameSettingService.GetByName(gameName);
+
+            // If BetChoiceMapper doesn't contain the game, try to build bet choices from odds from database
+            if (gameConfig?.Info?.Type == GameType.AutoRNGIndex)
+            {
+                var gameChoices = GenerateMaxBetChoicesFromDatabaseOdds(gameName, maxBetPerChoices, gameConfig);
+                if (gameChoices.Any())
+                {
+                    return gameChoices;
+                }
             }
 
             var betChoices = BetChoiceMapper.Map(Game.FromGameName(gameName));
@@ -139,6 +158,27 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
                 choice.Value,
                 maxBetPerChoices != null && maxBetPerChoices.ContainsKey(choice.Value) ? maxBetPerChoices[choice.Value] : 0,
                 choice.DisplayName)).ToList();
+        }
+
+        private List<GameSettings.ViewModels.MaxBetChoiceViewModel> GenerateMaxBetChoicesFromDatabaseOdds(string gameName, Dictionary<string, double> maxBetPerChoices, GameConfig gameConfig)
+        {
+            // Use the Choices field from gameConfig instead of Odds and OddsDisplayNames
+            var choices = gameConfig?.Choices;
+
+            if (choices?.Any() == true)
+            {
+                return choices.Select(choice => CreateMaxBetChoiceViewModelFromChoice(choice, maxBetPerChoices)).ToList();
+            }
+
+            return new List<GameSettings.ViewModels.MaxBetChoiceViewModel>();
+        }
+
+        private GameSettings.ViewModels.MaxBetChoiceViewModel CreateMaxBetChoiceViewModelFromChoice(Choice choice, Dictionary<string, double> maxBetPerChoices)
+        {
+            var maxBetValue = maxBetPerChoices != null && maxBetPerChoices.ContainsKey(choice.Key) ? maxBetPerChoices[choice.Key] : 0;
+            var displayName = !string.IsNullOrWhiteSpace(choice.Name) ? choice.Name : choice.Key.ToTitleCase();
+
+            return new GameSettings.ViewModels.MaxBetChoiceViewModel(choice.Key, maxBetValue, displayName);
         }
 
         public async Task<GuaranteedFeatureViewModel> Handle(GetGuaranteedFeatureRequest request, CancellationToken cancellationToken)

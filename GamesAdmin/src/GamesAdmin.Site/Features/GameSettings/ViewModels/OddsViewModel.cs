@@ -15,7 +15,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string Name { get; set; }
 
-        public string DisplayName { get; }
+        public string DisplayName { get; set; }
 
         [Required]
         [Range(0.1, int.MaxValue)]

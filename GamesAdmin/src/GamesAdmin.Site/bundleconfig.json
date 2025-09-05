@@ -1,9 +1,7 @@
 [
   {
     "outputFileName": "wwwroot/js/site.min.js",
-    "inputFiles": [
-      "wwwroot/js/site.js"
-    ]
+    "inputFiles": [ "wwwroot/js/site.js" ]
   },
   {
     "outputFileName": "wwwroot/js/game-status.min.js",
@@ -12,7 +10,8 @@
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/lib/fanex.multiSelect/fanex.multiSelect.js",
       "wwwroot/js/game-constants.js",
-      "wwwroot/js/game-status.js"
+      "wwwroot/js/game-status.js",
+      "wwwroot/js/add-new-game.js"
     ]
   },
   {
@@ -27,41 +26,27 @@
   },
   {
     "outputFileName": "wwwroot/css/report.min.css",
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/scss/pages/reports.min.css"
-    ]
+    "inputFiles": [ "wwwroot/lib/data-tables/datatables.min.css", "wwwroot/scss/pages/reports.min.css" ]
   },
   {
     "outputFileName": "wwwroot/css/big-small-reports.min.css",
-    "inputFiles": [
-      "wwwroot/scss/pages/reports.css"
-    ]
+    "inputFiles": [ "wwwroot/scss/pages/reports.css" ]
   },
   {
     "outputFileName": "wwwroot/css/adjust-bot.min.css",
-    "inputFiles": [
-      "wwwroot/scss/pages/adjust-bot.css"
-    ]
+    "inputFiles": [ "wwwroot/scss/pages/adjust-bot.css" ]
   },
   {
     "outputFileName": "wwwroot/css/notification.min.css",
-    "inputFiles": [
-      "wwwroot/scss/pages/notification.css"
-    ]
+    "inputFiles": [ "wwwroot/scss/pages/notification.css" ]
   },
   {
     "outputFileName": "wwwroot/css/notification.min.css",
-    "inputFiles": [
-      "wwwroot/scss/pages/notification.css"
-    ]
+    "inputFiles": [ "wwwroot/scss/pages/notification.css" ]
   },
   {
     "outputFileName": "wwwroot/css/vietlottkeno.min.css",
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/scss/pages/vietlottkeno.css"
-    ]
+    "inputFiles": [ "wwwroot/lib/data-tables/datatables.min.css", "wwwroot/scss/pages/vietlottkeno.css" ]
   },
   {
     "outputFileName": "wwwroot/css/game-management.min.css",
@@ -73,11 +58,7 @@
   },
   {
     "outputFileName": "wwwroot/css/partner.min.css",
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/scss/pages/adjust-bot.css",
-      "wwwroot/scss/pages/partner.css"
-    ]
+    "inputFiles": [ "wwwroot/lib/data-tables/datatables.min.css", "wwwroot/scss/pages/adjust-bot.css", "wwwroot/scss/pages/partner.css" ]
   },
   {
     "outputFileName": "wwwroot/js/online-users.min.js",
@@ -90,9 +71,7 @@
   },
   {
     "outputFileName": "wwwroot/js/Notification.min.js",
-    "inputFiles": [
-      "wwwroot/js/Notification.js"
-    ]
+    "inputFiles": [ "wwwroot/js/Notification.js" ]
   },
   {
     "outputFileName": "wwwroot/js/vietlott-keno.min.js",
@@ -104,15 +83,11 @@
   },
   {
     "outputFileName": "wwwroot/js/report.min.js",
-    "inputFiles": [
-      "wwwroot/js/report.js"
-    ]
+    "inputFiles": [ "wwwroot/js/report.js" ]
   },
   {
     "outputFileName": "wwwroot/js/voidgame.min.js",
-    "inputFiles": [
-      "wwwroot/js/voidgame.js"
-    ]
+    "inputFiles": [ "wwwroot/js/voidgame.js" ]
   },
   {
     "outputFileName": "wwwroot/js/partner.min.js",
@@ -133,16 +108,11 @@
   },
   {
     "outputFileName": "wwwroot/js/currency-group-game.min.js",
-    "inputFiles": [
-      "wwwroot/js/currency-group-game.js"
-    ]
+    "inputFiles": [ "wwwroot/js/currency-group-game.js" ]
   },
   {
     "outputFileName": "wwwroot/css/currency.min.css",
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/scss/pages/currency.css"
-    ]
+    "inputFiles": [ "wwwroot/lib/data-tables/datatables.min.css", "wwwroot/scss/pages/currency.css" ]
   },
   {
     "outputFileName": "wwwroot/js/currency-group.min.js",
@@ -155,10 +125,7 @@
   },
   {
     "outputFileName": "wwwroot/css/currency-group.min.css",
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/scss/pages/currency-group.css"
-    ]
+    "inputFiles": [ "wwwroot/lib/data-tables/datatables.min.css", "wwwroot/scss/pages/currency-group.css" ]
   },
   {
     "outputFileName": "wwwroot/js/chip.min.js",
@@ -171,11 +138,7 @@
   },
   {
     "outputFileName": "wwwroot/css/chip.min.css",
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/lib/spectrum/spectrum.css",
-      "wwwroot/scss/pages/chip.css"
-    ]
+    "inputFiles": [ "wwwroot/lib/data-tables/datatables.min.css", "wwwroot/lib/spectrum/spectrum.css", "wwwroot/scss/pages/chip.css" ]
   },
   {
     "outputFileName": "wwwroot/js/exchange-rate.min.js",
@@ -187,10 +150,7 @@
   },
   {
     "outputFileName": "wwwroot/css/exchange-rate.min.css",
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/scss/pages/exchange-rate.css"
-    ]
+    "inputFiles": [ "wwwroot/lib/data-tables/datatables.min.css", "wwwroot/scss/pages/exchange-rate.css" ]
   },
   {
     "outputFileName": "wwwroot/js/api-log.min.js",
@@ -202,10 +162,7 @@
   },
   {
     "outputFileName": "wwwroot/css/api-log.min.css",
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/scss/pages/api-log.css"
-    ]
+    "inputFiles": [ "wwwroot/lib/data-tables/datatables.min.css", "wwwroot/scss/pages/api-log.css" ]
   },
   {
     "outputFileName": "wwwroot/js/holdem-poker-report.min.js",
@@ -217,9 +174,7 @@
   },
   {
     "outputFileName": "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
-    ]
+    "inputFiles": [ "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" ]
   },
   {
     "outputFileName": "wwwroot/js/blackjack-report.min.js",
@@ -255,21 +210,15 @@
   },
   {
     "outputFileName": "wwwroot/css/big-small-reports.min.css",
-    "inputFiles": [
-      "wwwroot/scss/pages/reports.min.css"
-    ]
+    "inputFiles": [ "wwwroot/scss/pages/reports.min.css" ]
   },
   {
     "outputFileName": "wwwroot/js/bet-details.min.js",
-    "inputFiles": [
-      "wwwroot/js/bet-details.js"
-    ]
+    "inputFiles": [ "wwwroot/js/bet-details.js" ]
   },
   {
     "outputFileName": "wwwroot/js/daily-summary.min.js",
-    "inputFiles": [
-      "wwwroot/js/daily-summary.js"
-    ]
+    "inputFiles": [ "wwwroot/js/daily-summary.js" ]
   },
   {
     "outputFileName": "wwwroot/js/promotion.min.js",
@@ -292,34 +241,23 @@
   },
   {
     "outputFileName": "wwwroot/css/promotion-announcement.min.css",
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/scss/pages/promotion-announcement.min.css"
-    ]
+    "inputFiles": [ "wwwroot/lib/data-tables/datatables.min.css", "wwwroot/scss/pages/promotion-announcement.min.css" ]
   },
   {
     "outputFileName": "wwwroot/css/lobby-management.min.css",
-    "inputFiles": [
-      "wwwroot/scss/pages/lobby-management.min.css"
-    ]
+    "inputFiles": [ "wwwroot/scss/pages/lobby-management.min.css" ]
   },
   {
     "outputFileName": "wwwroot/js/domain.min.js",
-    "inputFiles": [
-      "wwwroot/js/domain.js"
-    ]
+    "inputFiles": [ "wwwroot/js/domain.js" ]
   },
   {
     "outputFileName": "wwwroot/js/add-slot-game.min.js",
-    "inputFiles": [
-      "wwwroot/js/add-slot-game.js"
-    ]
+    "inputFiles": [ "wwwroot/js/add-slot-game.js" ]
   },
   {
     "outputFileName": "wwwroot/js/game-monitor.min.js",
-    "inputFiles": [
-      "wwwroot/js/game-monitor.js"
-    ]
+    "inputFiles": [ "wwwroot/js/game-monitor.js" ]
   },
   {
     "outputFileName": "wwwroot/js/promotion-leaderboard.min.js",
@@ -331,10 +269,7 @@
   },
   {
     "outputFileName": "wwwroot/css/promotion-leaderboard.min.css",
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/scss/pages/promotion-leaderboard.min.css"
-    ]
+    "inputFiles": [ "wwwroot/lib/data-tables/datatables.min.css", "wwwroot/scss/pages/promotion-leaderboard.min.css" ]
   },
   {
     "outputFileName": "wwwroot/js/game-group-management.min.js",
@@ -347,16 +282,11 @@
   },
   {
     "outputFileName": "wwwroot/css/game-group-management.min.css",
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/scss/pages/game-group-management.min.css"
-    ]
+    "inputFiles": [ "wwwroot/lib/data-tables/datatables.min.css", "wwwroot/scss/pages/game-group-management.min.css" ]
   },
   {
     "outputFileName": "wwwroot/js/internal-account.min.js",
-    "inputFiles": [
-      "wwwroot/js/internal-account.js"
-    ]
+    "inputFiles": [ "wwwroot/js/internal-account.js" ]
   },
   {
     "outputFileName": "wwwroot/js/crash-turn-game-report.min.js",
@@ -380,5 +310,8 @@
       "wwwroot/lib/data-tables/datatables.min.css",
       "wwwroot/scss/pages/buy-free-spin-setting.css"
     ]
+  },{
+    "outputFileName": "wwwroot/js/add-new-game.min.js",
+    "inputFiles": [ "wwwroot/js/add-new-game.js" ]
   }
 ]

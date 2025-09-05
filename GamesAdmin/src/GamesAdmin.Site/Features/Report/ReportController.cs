@@ -31,7 +31,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(GameId game)
+        public async Task<IActionResult> Index(int game)
         {
             var viewModel = await GetReportViewModel();
             viewModel.Game = game;
@@ -551,9 +551,9 @@ namespace GamesAdmin.Site.Features.Report
 
         private async Task<ReportViewModel> GetReportViewModel()
         {
-            var selections = await mediator.Send(new GetSelectionsRequest());
-            var games = Game.GetNormalGames().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
-            return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
+            var viewModel = await mediator.Send(new GetReportViewModelRequest());
+            viewModel.Selections = await mediator.Send(new GetSelectionsRequest());
+            return viewModel;
         }
 
         [HttpGet]

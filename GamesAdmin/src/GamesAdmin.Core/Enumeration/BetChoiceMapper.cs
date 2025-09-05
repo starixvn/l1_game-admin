@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GamesAdmin.Core.Enumeration.BetChoices;
 
 namespace GamesAdmin.Core.Enumeration
@@ -83,14 +84,21 @@ namespace GamesAdmin.Core.Enumeration
 
         public static IEnumerable<Enumeration> Map(Game gameType)
         {
-            var game = ConvertGameTypeValue(gameType);
-
-            if (gameBetChoices.ContainsKey(game))
+            try
             {
-                return gameBetChoices[game];
-            }
+                var game = ConvertGameTypeValue(gameType);
 
-            return default;
+                if (gameBetChoices.ContainsKey(game))
+                {
+                    return gameBetChoices[game];
+                }
+
+                return Enumerable.Empty<Enumeration>();
+            }
+            catch
+            {
+                return Enumerable.Empty<Enumeration>();
+            }
         }
 
         public static string ConvertGameTypeValue(Game gameType)

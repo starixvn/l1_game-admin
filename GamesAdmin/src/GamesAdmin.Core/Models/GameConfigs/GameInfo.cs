@@ -7,7 +7,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public GameInfo(
             string name,
             bool enableFreeBet,
-            GameType type = GameType.AutoRNG,
+            GameType type = GameType.AutoRNGIndex,
             byte randomMode = 1,
             string displayName = "",
             int gameId = 0,

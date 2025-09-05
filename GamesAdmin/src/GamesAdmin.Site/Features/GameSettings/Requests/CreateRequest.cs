@@ -1,9 +1,10 @@
 ﻿using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
-    public class CreateRequest : IRequest<bool>
+    public class CreateRequest : IRequest<GameCreationResult>
     {
         public CreateRequest(
             GameInfo gameInfo,
@@ -12,7 +13,10 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             BetLimit betLimit,
             SlotsConfig slotsConfig,
             CascadingSlotsConfig cascadingSlotsConfig,
-            SlotRNGConfig slotRNGConfig)
+            SlotRNGConfig slotRNGConfig,
+            Dictionary<string, double> odds = null,
+            Dictionary<string, string> oddsDisplayNames = null,
+            List<Choice> choices = null)
         {
             GameInfo = gameInfo;
             EnableSetting = enableSetting;
@@ -21,6 +25,9 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             SlotConfigs = slotsConfig;
             CascadingSlotsConfig = cascadingSlotsConfig;
             SlotRNGConfig = slotRNGConfig;
+            Odds = odds ?? new Dictionary<string, double>();
+            OddsDisplayNames = oddsDisplayNames ?? new Dictionary<string, string>();
+            Choices = choices ?? new List<Choice>();
         }
 
         public GameInfo GameInfo { get; }
@@ -36,5 +43,13 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public CascadingSlotsConfig CascadingSlotsConfig { get; }
 
         public SlotRNGConfig SlotRNGConfig { get; }
+
+        public Dictionary<string, double> Odds { get; }
+
+        public Dictionary<string, string> OddsDisplayNames { get; }
+
+        public List<Choice> Choices { get; }
+
+
     }
 }

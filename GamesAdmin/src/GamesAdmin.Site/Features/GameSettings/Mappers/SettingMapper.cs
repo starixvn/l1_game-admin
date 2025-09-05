@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -10,6 +11,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 {
     public class SettingMapper : Profile
     {
+        [SuppressMessage("SonarQube", "S107", Justification = "AutoMapper constructor requires all mappings to be configured")]
         public SettingMapper()
         {
             CreateMap<GameConfig, EditViewModel>()
@@ -27,10 +29,10 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.SmartBotEnabled, opt => opt.MapFrom(src => src.BotSetting.SmartBotEnabled))
                 .ForMember(dest => dest.SmartBotGroupRatio, opt => opt.MapFrom(src => src.BotSetting.SmartBotGroupRatio.ToPercentage()))
                 .ForMember(dest => dest.ApplyMultiplier, opt => opt.MapFrom(src => src.Info.ApplyMultiplier))
-				.ForMember(dest => dest.HaveTournament, opt => opt.MapFrom(src => src.Info.HaveTournament))
-				.ForMember(dest => dest.HaveVideoStream, opt => opt.MapFrom(src => src.Info.HaveVideoStream))
+                .ForMember(dest => dest.HaveTournament, opt => opt.MapFrom(src => src.Info.HaveTournament))
+                .ForMember(dest => dest.HaveVideoStream, opt => opt.MapFrom(src => src.Info.HaveVideoStream))
                 .ForMember(dest => dest.UseMargin, opt => opt.MapFrom(src => src.Info.UseMargin))
-				.ForMember(dest => dest.GameId, opt => opt.MapFrom(src => src.Info.GameId));
+                .ForMember(dest => dest.GameId, opt => opt.MapFrom(src => src.Info.GameId));
 
             CreateMap<GameConfig, PayoutViewModel>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type == 0 ? GameType.AutoRNG : src.Info.Type))
@@ -89,11 +91,88 @@ namespace GamesAdmin.Site.Features.GameSettings
             CreateMap<AddViewModel, SlotRNGConfig>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode));
 
-            CreateMap<AddViewModel, GameInfo>();
+            CreateMap<AddViewModel, GameInfo>()
+                .ForMember(dest => dest.GameId, opt => opt.MapFrom(src => src.GameId ?? 0));
             CreateMap<AddViewModel, EnableSetting>();
             CreateMap<AddViewModel, BotSetting>();
             CreateMap<AddViewModel, BetLimit>();
             CreateMap<AddViewModel, Bonus>();
+
+            // Map ChoiceViewModel to Choice
+            CreateMap<ChoiceViewModel, Choice>()
+                .ForMember(dest => dest.Key, opt => opt.MapFrom(src => src.Key))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Odds, opt => opt.MapFrom(src => src.Odds));
+
+            // Map Choice to ChoiceViewModel
+            CreateMap<Choice, ChoiceViewModel>()
+                .ForMember(dest => dest.Key, opt => opt.MapFrom(src => src.Key))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Odds, opt => opt.MapFrom(src => src.Odds));
+
+            // Map choices from AddViewModel to odds dictionary
+            CreateMap<AddViewModel, Dictionary<string, double>>()
+                .ConvertUsing((src, dest, context) =>
+                {
+                    var oddsDict = new Dictionary<string, double>();
+
+                    if (src.UseOddsDifferentWithChoice && src.OddsKeys != null && src.OddsValues != null)
+                    {
+                        // Use separate odds arrays
+                        for (int i = 0; i < src.OddsKeys.Length && i < src.OddsValues.Length; i++)
+                        {
+                            if (!string.IsNullOrWhiteSpace(src.OddsKeys[i]) && src.OddsValues[i] > 0)
+                            {
+                                oddsDict[src.OddsKeys[i]] = src.OddsValues[i];
+                            }
+                        }
+                    }
+                    else if (src.Choices != null)
+                    {
+                        // Use odds from choices
+                        foreach (var choice in src.Choices)
+                        {
+                            if (!string.IsNullOrWhiteSpace(choice.Key) && choice.Odds > 0)
+                            {
+                                oddsDict[choice.Key] = choice.Odds;
+                            }
+                        }
+                    }
+
+                    return oddsDict;
+                });
+
+            // Map choices from AddViewModel to odds display names dictionary
+            CreateMap<AddViewModel, Dictionary<string, string>>()
+                .ConvertUsing((src, dest, context) =>
+                {
+                    var displayNamesDict = new Dictionary<string, string>();
+
+                    if (src.UseOddsDifferentWithChoice && src.OddsKeys != null && src.OddsDisplayNames != null)
+                    {
+                        // Use separate odds display names arrays
+                        for (int i = 0; i < src.OddsKeys.Length && i < src.OddsDisplayNames.Length; i++)
+                        {
+                            if (!string.IsNullOrWhiteSpace(src.OddsKeys[i]) && !string.IsNullOrWhiteSpace(src.OddsDisplayNames[i]))
+                            {
+                                displayNamesDict[src.OddsKeys[i]] = src.OddsDisplayNames[i];
+                            }
+                        }
+                    }
+                    else if (src.Choices != null)
+                    {
+                        // Use display names from choices
+                        foreach (var choice in src.Choices)
+                        {
+                            if (!string.IsNullOrWhiteSpace(choice.Key) && !string.IsNullOrWhiteSpace(choice.Name))
+                            {
+                                displayNamesDict[choice.Key] = choice.Name;
+                            }
+                        }
+                    }
+
+                    return displayNamesDict;
+                });
         }
 
         private static List<StakeLevel> ConvertStakeLevels(double[] stakes, double[] jackpots, double[] botRatios)

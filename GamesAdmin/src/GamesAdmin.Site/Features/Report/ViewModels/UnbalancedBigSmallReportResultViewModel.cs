@@ -5,7 +5,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class UnbalancedBigSmallReportResultViewModel : ReportResultViewModel
     {
-        public GameId Game { get; set; }
+        public int Game { get; set; }
 
         public UnbalancedBigSmallRoundResultViewModel RoundResult { get; set; }
 

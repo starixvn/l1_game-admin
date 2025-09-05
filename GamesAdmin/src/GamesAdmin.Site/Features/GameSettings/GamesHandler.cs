@@ -27,7 +27,7 @@ namespace GamesAdmin.Site.Features.GameSettings
     public class GamesHandler
         : IRequestHandler<EditRequest, EditViewModel>
         , IRequestHandler<UpdateRequest, bool>
-        , IRequestHandler<CreateRequest, bool>
+        , IRequestHandler<CreateRequest, GameCreationResult>
         , IRequestHandler<IsExistRequest, bool>
         , IRequestHandler<UpdateBotRatioRequest, bool>
         , IRequestHandler<GetStatusRequest, StatusViewModel>
@@ -91,7 +91,13 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<IEnumerable<SelectListItem>> Handle(GetGamesByTypeRequest request, CancellationToken cancellationToken)
         {
-            var allSlotGames = (await generalGameSettingService.GetAllGames()).Where(game => game.Type == request.Type);
+            var allGames = await generalGameSettingService.GetAllGames();
+            if (allGames == null)
+            {
+                return Enumerable.Empty<SelectListItem>();
+            }
+
+            var allSlotGames = allGames.Where(game => game.Type == request.Type);
             var types = allSlotGames.Select(game => new SelectListItem($"{game.DisplayName}{""}", game.GameId.ToString()));
             return types;
         }
@@ -113,7 +119,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
             var addViewModel = new AddViewModel(names, types, difficultyItems);
 
-            var allSlotGames = (await generalGameSettingService.GetAllGames()).Where(game => game.Type == GameType.Slots);
+            var allGames = await generalGameSettingService.GetAllGames();
+            var allSlotGames = allGames?.Where(game => game.Type == GameType.Slots) ?? Enumerable.Empty<GamesAdmin.Core.Models.GeneralGameSetting>();
             var addSlotGameViewModel = new AddSlotGameViewModel(allSlotGames, types);
 
             return new CreateNewGameViewModel(addViewModel, addSlotGameViewModel);
@@ -154,74 +161,126 @@ namespace GamesAdmin.Site.Features.GameSettings
                         .Select(g => new SelectListItem(g.Info.DisplayName ?? Game.FromGameName(g.Info.Name).DisplayName, g.Info.GameId.ToString()));
                 }
 
-                switch (game.Info.Type)
-                {
-                    case GameType.Slots:
-                        viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.SlotsConfig);
-                        viewModel.PayoutViewModel.IconOdds = GenerateIconOdds(game.SlotsConfig.Icons);
-                        viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig.Jackpot);
-                        viewModel.JackpotViewModel.StakeLevels = game.SlotsConfig.StakeLevels;
-                        viewModel.SystemType = systemSettings.System;
-                        break;
-
-                    case GameType.CascadingSlots:
-                        viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.CascadingSlotsConfig);
-
-                        if (viewModel.CascadingSlotsConfig.OddsByCounts.ContainsKey("9") == false)
-                        {
-                            viewModel.CascadingSlotsConfig.OddsByCounts.Add("9", new List<OddsByCount>
-                            {
-                                new OddsByCount(4,4,0),
-                                new OddsByCount(5,5,0),
-                                new OddsByCount(6,30,0),
-                            });
-                        }
-                        break;
-
-                    case GameType.SlotRNG:
-                        viewModel.SlotViewModel = new SlotViewModel();
-                        viewModel.Type = GameType.SlotRNG;
-                        viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(GetBetChoices(game.Info.Name), game.BetLimit);
-                        viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
-                        break;
-
-                    case GameType.CrashTurnBase:
-                    case GameType.Crash:
-                        viewModel.SlotViewModel = new SlotViewModel();
-                        viewModel.Type = GameType.Crash;
-                        break;
-
-                    case GameType.DynamicOdds:
-                        viewModel.Type = GameType.DynamicOdds;
-                        viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(GetBetChoices(game.Info.Name), game.BetLimit);
-                        viewModel.PayoutViewModel.MarginSettings = GenerateMarginSettings(game.Info.Name, game.Margin);
-                        break;
-
-                    case GameType.Marble:
-                        viewModel.Type = GameType.Marble;
-                        viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(GetBetChoices(game.Info.Name), game.BetLimit);
-                        if (game.Info.UseMargin == true)
-                        {
-                            viewModel.PayoutViewModel.DisplayMargins = gamesSettings.GetGameFromName(game.Info.Name)?.DisplayOdds;
-                            viewModel.PayoutViewModel.MarginSettings = GenerateMarginSettings(game.Info.Name, game.Margin);
-                        }
-                        else
-                        {
-                            viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
-                        }
-                        break;
-
-                    default:
-                        viewModel.Type = GameType.AutoRNG;
-                        var choices = GetBetChoices(game.Info.Name);
-                        viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
-                        viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
-                        break;
-                }
+                ConfigureViewModelByGameType(viewModel, game);
                 viewModel.DetailsView = GetDetailsView(viewModel.Type);
             }
 
             return viewModel;
+        }
+
+        private void ConfigureViewModelByGameType(EditViewModel viewModel, GameConfig game)
+        {
+            switch (game.Info.Type)
+            {
+                case GameType.Slots:
+                    ConfigureSlotsGame(viewModel, game);
+                    break;
+
+                case GameType.CascadingSlots:
+                    ConfigureCascadingSlotsGame(viewModel, game);
+                    break;
+
+                case GameType.SlotRNG:
+                    ConfigureSlotRNGGame(viewModel, game);
+                    break;
+
+                case GameType.CrashTurnBase:
+                case GameType.Crash:
+                    ConfigureCrashGame(viewModel);
+                    break;
+
+                case GameType.DynamicOdds:
+                    ConfigureDynamicOddsGame(viewModel, game);
+                    break;
+
+                case GameType.Marble:
+                    ConfigureMarbleGame(viewModel, game);
+                    break;
+
+                case GameType.AutoRNGIndex:
+                    ConfigureAutoRNGIndexGame(viewModel, game);
+                    break;
+
+                default:
+                    ConfigureDefaultGame(viewModel, game);
+                    break;
+            }
+        }
+
+        private void ConfigureSlotsGame(EditViewModel viewModel, GameConfig game)
+        {
+            viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.SlotsConfig);
+            viewModel.PayoutViewModel.IconOdds = GenerateIconOdds(game.SlotsConfig.Icons);
+            viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig.Jackpot);
+            viewModel.JackpotViewModel.StakeLevels = game.SlotsConfig.StakeLevels;
+            viewModel.SystemType = systemSettings.System;
+        }
+
+        private void ConfigureCascadingSlotsGame(EditViewModel viewModel, GameConfig game)
+        {
+            viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.CascadingSlotsConfig);
+
+            if (viewModel.CascadingSlotsConfig.OddsByCounts.ContainsKey("9") == false)
+            {
+                viewModel.CascadingSlotsConfig.OddsByCounts.Add("9", new List<OddsByCount>
+                {
+                    new OddsByCount(4,4,0),
+                    new OddsByCount(5,5,0),
+                    new OddsByCount(6,30,0),
+                });
+            }
+        }
+
+        private void ConfigureSlotRNGGame(EditViewModel viewModel, GameConfig game)
+        {
+            viewModel.SlotViewModel = new SlotViewModel();
+            viewModel.Type = GameType.SlotRNG;
+            viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(GetBetChoices(game.Info.Name), game.BetLimit);
+            viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
+        }
+
+        private static void ConfigureCrashGame(EditViewModel viewModel)
+        {
+            viewModel.SlotViewModel = new SlotViewModel();
+            viewModel.Type = GameType.Crash;
+        }
+
+        private void ConfigureDynamicOddsGame(EditViewModel viewModel, GameConfig game)
+        {
+            viewModel.Type = GameType.DynamicOdds;
+            viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(GetBetChoices(game.Info.Name), game.BetLimit);
+            viewModel.PayoutViewModel.MarginSettings = GenerateMarginSettings(game.Info.Name, game.Margin);
+        }
+
+        private void ConfigureMarbleGame(EditViewModel viewModel, GameConfig game)
+        {
+            viewModel.Type = GameType.Marble;
+            viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(GetBetChoices(game.Info.Name), game.BetLimit);
+            if (game.Info.UseMargin == true)
+            {
+                viewModel.PayoutViewModel.DisplayMargins = gamesSettings.GetGameFromName(game.Info.Name)?.DisplayOdds;
+                viewModel.PayoutViewModel.MarginSettings = GenerateMarginSettings(game.Info.Name, game.Margin);
+            }
+            else
+            {
+                viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
+            }
+        }
+
+        private void ConfigureAutoRNGIndexGame(EditViewModel viewModel, GameConfig game)
+        {
+            viewModel.Type = GameType.AutoRNGIndex;
+            var autoRngChoices = GetBetChoices(game.Info.Name, game.Odds, game.OddsDisplayNames);
+            viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(autoRngChoices, game.BetLimit);
+            viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds, game.OddsDisplayNames);
+        }
+
+        private void ConfigureDefaultGame(EditViewModel viewModel, GameConfig game)
+        {
+            viewModel.Type = GameType.AutoRNG;
+            var choices = GetBetChoices(game.Info.Name);
+            viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
+            viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
         }
 
         public async Task<IEnumerable<OddsViewModel>> Handle(GetOddsByGameRequest request, CancellationToken cancellationToken)
@@ -254,6 +313,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 case GameType.Crash:
                 case GameType.DynamicOdds:
                 case GameType.Marble:
+                case GameType.AutoRNGIndex:
                     name += "RNG";
                     break;
 
@@ -297,12 +357,31 @@ namespace GamesAdmin.Site.Features.GameSettings
                 choice.DisplayName.ToTitleCase())).ToList();
         }
 
-        private List<OddsViewModel> GenerateOdds(string name, Dictionary<string, double> oddsSettings)
+        private List<OddsViewModel> GenerateOdds(string name, Dictionary<string, double> oddsSettings, Dictionary<string, string> oddsDisplayNames = null)
         {
             var items = new List<OddsViewModel>();
 
             if (string.IsNullOrWhiteSpace(name))
             {
+                return items;
+            }
+
+            // Check if this is a custom AutoRNGIndex game (not in predefined games)
+            var isCustomGame = !Game.ContainsGame(name);
+
+            if (isCustomGame)
+            {
+                // For custom AutoRNGIndex games, use only the odds stored in the database
+                if (oddsSettings?.Any() == true)
+                {
+                    foreach (var odds in oddsSettings)
+                    {
+                        var displayName = oddsDisplayNames?.ContainsKey(odds.Key) == true
+                            ? oddsDisplayNames[odds.Key]
+                            : odds.Key.ToTitleCase();
+                        items.Add(new OddsViewModel(odds.Key, odds.Value, displayName));
+                    }
+                }
                 return items;
             }
 
@@ -316,6 +395,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     var odds = oddsSettings.ContainsKey(odd.Value) ? oddsSettings[odd.Value] : 0;
                     items.Add(new OddsViewModel(odd.Value, odds, odd.DisplayName));
                 }
+
             }
 
             var betOdds2 = gamesSettings.GetGameFromName(name)?.Odds;
@@ -344,7 +424,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 icon.Value)).ToList();
         }
 
-        private IEnumerable<Enumeration> GetBetChoices(string name)
+        private IEnumerable<Enumeration> GetBetChoices(string name, Dictionary<string, double> oddsSettings = null, Dictionary<string, string> oddsDisplayNames = null)
         {
             var betChoices = gamesSettings.GetGameFromName(name)?.BetChoices;
             var displayBetChoices = gamesSettings.GetGameFromName(name)?.DisplayBetChoices;
@@ -358,8 +438,23 @@ namespace GamesAdmin.Site.Features.GameSettings
                 }
                 return items;
             }
+
+            // Check if this is a custom AutoRNGIndex game (not in predefined games)
             if (string.IsNullOrWhiteSpace(name) || !Game.ContainsGame(name))
             {
+                // For custom AutoRNGIndex games, create bet choices from odds settings
+                if (oddsSettings?.Any() == true)
+                {
+                    var items = new List<BaseBetChoice>();
+                    foreach (var odds in oddsSettings)
+                    {
+                        var displayName = oddsDisplayNames?.ContainsKey(odds.Key) == true
+                            ? oddsDisplayNames[odds.Key]
+                            : odds.Key.ToTitleCase();
+                        items.Add(new BaseBetChoice(odds.Key, displayName));
+                    }
+                    return items;
+                }
                 return default;
             }
 
@@ -415,18 +510,24 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
         }
 
-        public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
+        public Task<GameCreationResult> Handle(CreateRequest request, CancellationToken cancellationToken)
         {
             var gameConfig = new GameConfig(
                 string.Empty,
-                new Dictionary<string, double>(),
+                request.Odds,
                 request.GameInfo,
                 request.EnableSetting,
                 request.BotSettings,
                 request.BetLimit,
                 request.GameInfo.Type == GameType.Slots ? request.SlotConfigs : null,
                 request.GameInfo.Type == GameType.CascadingSlots ? request.CascadingSlotsConfig : null,
-                request.GameInfo.Type == GameType.SlotRNG ? request.SlotRNGConfig : null);
+                request.GameInfo.Type == GameType.SlotRNG ? request.SlotRNGConfig : null,
+                null, // CrashConfig
+                null, // OddsMultipliersConfig
+                null, // TournamentConfig
+                null, // VideoStreamConfig
+                request.OddsDisplayNames,
+                request.Choices);
 
             return gameService.Add(gameConfig);
         }

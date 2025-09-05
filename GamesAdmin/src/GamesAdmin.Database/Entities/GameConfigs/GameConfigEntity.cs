@@ -41,6 +41,13 @@ namespace GamesAdmin.Database.Entities
 
         public Dictionary<string, double> Odds { get; set; }
 
+        public Dictionary<string, string> OddsDisplayNames { get; set; }
+
+        [BsonElement("choices")]
+        public List<Choice> Choices { get; set; }
+
+
+
         public int DelayStartTime { get; set; }
 
         public bool EnableFreeBet { get; set; }
@@ -71,14 +78,14 @@ namespace GamesAdmin.Database.Entities
 
         public bool ApplyMultiplier { get; set; }
 
-		public TournamentConfig TournamentConfig { get; set; }
+        public TournamentConfig TournamentConfig { get; set; }
 
-		public VideoStreamConfig VideoStreamConfig { get; set; }
+        public VideoStreamConfig VideoStreamConfig { get; set; }
 
-		public bool HaveTournament { get; set; }
+        public bool HaveTournament { get; set; }
 
-		public bool HaveVideoStream { get; set; }
+        public bool HaveVideoStream { get; set; }
 
         public bool UseMargin { get; set; }
-	}
+    }
 }

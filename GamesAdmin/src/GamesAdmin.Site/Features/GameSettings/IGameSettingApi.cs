@@ -15,7 +15,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<IList<GameConfig>> GetAll();
 
         [Post("/game_settings/")]
-        Task<bool> Add([Body] GameConfig game);
+        Task<GameCreationResult> Add([Body] GameConfig game);
 
         [Get("/game_settings/{name}")]
         Task<GameConfig> GetByName(string name);

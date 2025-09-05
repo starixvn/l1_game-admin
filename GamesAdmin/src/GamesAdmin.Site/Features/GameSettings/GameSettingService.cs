@@ -15,7 +15,7 @@ namespace GamesAdmin.Site.Features.GameSettings
     {
         Task<IList<GameConfig>> GetAll();
 
-        Task<bool> Add(GameConfig game);
+        Task<GameCreationResult> Add(GameConfig game);
 
         Task<GameConfig> GetByName(string name);
 
@@ -97,7 +97,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.generalGameSettingService = generalGameSettingService;
         }
 
-        public async Task<bool> Add(GameConfig game)
+        public async Task<GameCreationResult> Add(GameConfig game)
         => await gameApi.Add(game);
 
         public async Task<IList<GameConfig>> GetAll()

@@ -69,7 +69,7 @@
                         </td>
 
                         <td>
-                           
+                            @Html.Raw(Model.GetCurrencyGroupOfferGame(Model.GameList[index].GameConfig, firstPartner?.PartnerId))
                         </td>
 
                         <td class="text-center">
@@ -112,7 +112,7 @@
                             <td style="display: none"></td>
                             <td>@Model.Partners[j].Name</td>
                             <td>
-                              
+                                @Html.Raw(Model.GetCurrencyGroupOfferGame(Model.GameList[index].GameConfig, Model.Partners[j].PartnerId))
                             </td>
                             <td class="text-center">
                                 <button class="btn-edit" onclick='gameStatus.showPartnerSetting("@Model.Partners[j].PartnerId", "@Model.Partners[j].Name", "@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "@((int)Model.GameList[index].GameConfig.Info.Type)")'><i class="icon-edit"></i></button>

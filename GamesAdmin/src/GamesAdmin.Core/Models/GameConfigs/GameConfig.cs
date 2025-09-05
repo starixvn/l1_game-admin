@@ -20,7 +20,9 @@ namespace GamesAdmin.Core.Models
             CrashConfig crashConfig = null,
             OddsMultipliersConfig oddsMultipliers = null,
             TournamentConfig tournamentConfig = null,
-            VideoStreamConfig videoStreamConfig = null)
+            VideoStreamConfig videoStreamConfig = null,
+            Dictionary<string, string> oddsDisplayNames = null,
+            List<Choice> choices = null)
         {
             Id = id;
             Odds = odds;
@@ -35,11 +37,19 @@ namespace GamesAdmin.Core.Models
             OddsMultipliers = oddsMultipliers;
             TournamentConfig = tournamentConfig;
             VideoStreamConfig = videoStreamConfig;
+            OddsDisplayNames = oddsDisplayNames ?? new Dictionary<string, string>();
+            Choices = choices ?? new List<Choice>();
         }
 
         public string Id { get; }
 
         public Dictionary<string, double> Odds { get; }
+
+        public Dictionary<string, string> OddsDisplayNames { get; }
+
+        public List<Choice> Choices { get; }
+
+
 
         public GameInfo Info { get; set; }
 
@@ -64,5 +74,9 @@ namespace GamesAdmin.Core.Models
         public VideoStreamConfig VideoStreamConfig { get; set; }
 
         public IEnumerable<Dictionary<string, double>> Margin { get; set; }
+
+        public int GameId { get; set; }
+
+        public string Name { get; set; }
     }
 }

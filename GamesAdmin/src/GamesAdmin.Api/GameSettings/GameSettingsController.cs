@@ -31,11 +31,13 @@ namespace GamesAdmin.Api.Games
         }
 
         [HttpPost]
-        public async Task<bool> Create(GameConfig game)
+        public async Task<GameCreationResult> Create(GameConfig game)
         {
             if (string.IsNullOrWhiteSpace(game.Info.Name))
             {
-                return false;
+                return GameCreationResult.CreateError(
+                    GameCreationErrorCodes.InvalidGameData,
+                    "Game name is required.");
             }
 
             return await mediator.Send(new CreateRequest(game));

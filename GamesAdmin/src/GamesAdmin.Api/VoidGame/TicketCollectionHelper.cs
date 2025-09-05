@@ -93,6 +93,13 @@ namespace GamesAdmin.Api.VoidGame
 
             if (!string.IsNullOrWhiteSpace(gameName))
             {
+                // Special handling for AutoRNGIndex game type
+                if (type == GameType.AutoRNGIndex)
+                {
+                    var autoRngIndexBetCollection = $"{gameName.ToLowerInvariant()}_bets";
+                    var autoRngIndexBetLogCollection = $"{gameName.ToLowerInvariant()}_betlogs";
+                    return new GameTicketCollection(autoRngIndexBetCollection, autoRngIndexBetLogCollection);
+                }
 
                 var betCollection = type switch
                 {

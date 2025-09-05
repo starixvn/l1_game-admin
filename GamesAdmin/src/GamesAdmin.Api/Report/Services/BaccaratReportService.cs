@@ -17,11 +17,11 @@ namespace GamesAdmin.Api.Report
     {
         private readonly IServiceProvider serviceProvider;
         private readonly IMapper mapper;
-        private readonly Dictionary<GameId, Type> repositories = new Dictionary<GameId, Type>
+        private readonly Dictionary<int, Type> repositories = new Dictionary<int, Type>
         {
-            { GameId.Baccarat,  typeof(BaccaratReportRepository<BaccaratRoundEntity, BaccaratBetEntity>) },
-            { GameId.VipBaccarat,  typeof(BaccaratReportRepository<VipBaccaratRoundEntity, VipBaccaratBetEntity>) },
-            { GameId.BlockchainBaccarat,  typeof(BaccaratReportRepository<BlockchainBaccaratRoundEntity, BlockchainBaccaratBetEntity>) }
+            { (int)GameId.Baccarat,  typeof(BaccaratReportRepository<BaccaratRoundEntity, BaccaratBetEntity>) },
+            { (int)GameId.VipBaccarat,  typeof(BaccaratReportRepository<VipBaccaratRoundEntity, VipBaccaratBetEntity>) },
+            { (int)GameId.BlockchainBaccarat,  typeof(BaccaratReportRepository<BlockchainBaccaratRoundEntity, BlockchainBaccaratBetEntity>) }
         };
 
         public BaccaratReportService(IServiceProvider serviceProvider, IMapper mapper)

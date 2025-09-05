@@ -2,7 +2,9 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features._Shared;
+using GamesAdmin.Site.Features.GameSettings.Attributes;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
@@ -22,6 +24,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             GameTypes = gameTypes;
             ModeItems = difficultyItems;
             Mode = GameMode.Medium;
+            Type = GameType.AutoRNGIndex; // Set default type to AutoRNG
             Stakes = new double[] { 0, 0, 0 };
             Jackpots = new double[] { 0, 0, 0 };
 
@@ -29,10 +32,14 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         }
 
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required]
         public string DisplayName { get; set; }
+
+        [DisplayName("Game ID")]
+        [GameIdRequired]
+        public int? GameId { get; set; }
 
         public List<SelectListItem> GameNames { get; set; }
 
@@ -106,13 +113,78 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Apply Multiplier")]
         public bool ApplyMultiplier { get; set; }
 
-		[DisplayName("Have Tournament")]
-		public bool HaveTournament { get; set; }
+        [DisplayName("Have Tournament")]
+        public bool HaveTournament { get; set; }
 
-		[DisplayName("Have Video Stream")]
-		public bool HaveVideoStream { get; set; }
+        [DisplayName("Have Video Stream")]
+        public bool HaveVideoStream { get; set; }
 
         [DisplayName("Use Margin")]
         public bool UseMargin { get; set; }
-	}
+
+        // Choice-related properties for manual input
+        public List<ChoiceViewModel> Choices { get; set; } = new List<ChoiceViewModel>();
+
+        // Odds settings properties
+        public bool UseOddsDifferentWithChoice { get; set; }
+
+        // For separate odds configuration form binding
+
+        public string[] OddsKeys { get; set; } = new string[0];
+        public string[] OddsDisplayNames { get; set; } = new string[0];
+        public double[] OddsValues { get; set; } = new double[0];
+
+        // Error handling properties
+        public bool HasError { get; set; }
+        public string ErrorMessage { get; set; }
+        public string ErrorCode { get; set; }
+
+        public void SetErrorProperties(GameCreationResult result)
+        {
+            HasError = true;
+            ErrorMessage = result.ErrorMessage ?? "Failed to create the game. Please check your input and try again.";
+            ErrorCode = result.ErrorCode;
+        }
+
+        public void CopyUserInputFrom(AddViewModel source)
+        {
+            // Copy basic user input
+            Name = source.Name;
+            DisplayName = source.DisplayName;
+            GameId = source.GameId;
+            Type = source.Type;
+            Enabled = source.Enabled;
+            DelayStartTime = source.DelayStartTime;
+            MaxBet = source.MaxBet;
+            MinBet = source.MinBet;
+            BotEnabled = source.BotEnabled;
+            
+            // Copy error information
+            HasError = source.HasError;
+            ErrorMessage = source.ErrorMessage;
+            ErrorCode = source.ErrorCode;
+        }
+
+        public void UpdateDropdownSelections()
+        {
+            // Set selected name in dropdown
+            if (!string.IsNullOrEmpty(Name) && GameNames != null)
+            {
+                foreach (var item in GameNames)
+                {
+                    item.Selected = item.Value == Name;
+                }
+            }
+            
+            // Set selected type in dropdown
+            if (GameTypes != null)
+            {
+                var typeValue = ((int)Type).ToString();
+                foreach (var item in GameTypes)
+                {
+                    item.Selected = item.Value == typeValue;
+                }
+            }
+        }
+    }
 }

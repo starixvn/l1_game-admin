@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
@@ -22,7 +23,7 @@ namespace GamesAdmin.Site.Features.Report
             var partners = await partnerService.GetAll();
 
             return new KenoReportViewModel(
-                filter.Game,
+                (GameId)filter.Game,
                 result.RoundResult?.Number ?? 0,
                 result.RoundResult,
                  result.Records.Select(x =>

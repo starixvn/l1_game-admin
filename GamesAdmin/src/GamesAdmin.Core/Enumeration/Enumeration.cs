@@ -41,7 +41,7 @@ namespace GamesAdmin.Core.Enumeration
                 var matchingItem = Parse<T, string>(value, "value", item => item.Value == value);
                 return matchingItem != null;
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
@@ -128,12 +128,6 @@ namespace GamesAdmin.Core.Enumeration
         protected static T Parse<T, K>(K value, string description, Func<T, bool> predicate) where T : Enumeration, new()
         {
             var matchingItem = GetAll<T>().FirstOrDefault(predicate);
-
-            if (matchingItem == null)
-            {
-                var message = string.Format("'{0}' is not a valid {1} in {2}", value, description, typeof(T));
-                throw new ArgumentOutOfRangeException(message);
-            }
 
             return matchingItem;
         }

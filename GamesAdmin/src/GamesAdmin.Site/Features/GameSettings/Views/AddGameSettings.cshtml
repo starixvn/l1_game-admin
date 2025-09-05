@@ -1,4 +1,5 @@
 ﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Core.Enumeration;
 @model AddViewModel;
 
 @{
@@ -9,15 +10,37 @@
     <form class="card-body form" asp-action="AddGameSettings" asp-controller="GameSettings" method="post">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        @if (Model.HasError)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error:</strong> @Model.ErrorMessage
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
 
-        <div class="form-group">
+        <div class="form-group" id="game-name-container">
             <label asp-for="Name" class="control-label"></label>
-            <select asp-items="@Model.GameNames" asp-for="Name" class="form-control"></select>
+            <input type="text" name="NameTextbox" class="form-control" id="name-textbox" placeholder="Enter game name" style="@(Model.Type == GameType.AutoRNGIndex ? "" : "display:none;")" required onblur="validateNameField()" />
+            <select name="NameSelect" asp-items="@Model.GameNames" class="form-control" id="name-select" style="@(Model.Type == GameType.AutoRNGIndex ? "display:none;" : "")" required onchange="validateNameField()"></select>
+            <input type="hidden" asp-for="Name" id="name-hidden" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+            <div id="name-validation-error" class="text-danger" style="display:none;">This field is required.</div>
+            <small class="form-text text-muted" id="name-helper-text">@(Model.Type == GameType.AutoRNGIndex ? "The game name should be provided by Dev" : "Select from predefined game names")</small>
         </div>
 
         <div class="form-group">
-            <label asp-for="DisplayName" class="control-label"></label>
-            <input type="text" asp-for="DisplayName" class="form-control" />
+            <label asp-for="DisplayName" class="control-label" ></label>
+            <input type="text" asp-for="DisplayName" class="form-control" placeholder="Enter Game Display Name"/>
+        </div>
+
+        <div class="form-group" id="game-id-container" style="@(Model.Type == GameType.AutoRNGIndex ? "" : "display:none;")">
+            <label asp-for="GameId" class="control-label"></label>
+            <input type="number" asp-for="GameId" class="form-control" id="game-id-input" placeholder="Enter game ID" min="1" required onblur="validateGameIdField()" />
+            <span asp-validation-for="GameId" class="text-danger"></span>
+            <div id="game-id-validation-error" class="text-danger" style="display:none;">Game ID is required and must be a positive number.</div>
         </div>
 
         <div class="form-group row">
@@ -56,6 +79,89 @@
             <input type="checkbox" asp-for="ApplyMultiplier" />
             <label asp-for="ApplyMultiplier" class="control-label"></label>
         </div>
+
+        <!-- Manual Choice Input Section -->
+        <fieldset id="choices-section">
+            <legend>Choice Configuration</legend>
+            <div class="form-group">
+                <small class="form-text text-muted">Configure choices for different bet options. Add multiple key-value pairs for choice configuration.</small>
+            </div>
+            
+            <div class="form-group">
+                <input type="checkbox" id="use-different-odds" name="UseOddsDifferentWithChoice" />
+                <label for="use-different-odds">Use different Odds setting with choices</label>
+                <small class="form-text text-muted">Check this if you want to configure odds separately from choices. (Eg: Fish Prawn Crab Game)</small>
+            </div>
+            
+            <div id="choices-container">
+                <div class="form-group row choice-row">
+                    <div class="col-lg-4">
+                        <label class="control-label">Key</label>
+                        <input type="text" name="Choices[0].Key" class="form-control choice-key" placeholder="e.g., high, low, red, black" required />
+                        <span class="text-danger field-validation-error" data-valmsg-for="Choices[0].Key" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="control-label">Name</label>
+                        <input type="text" name="Choices[0].Name" class="form-control choice-name" placeholder="e.g., High Bet, Low Bet, Red, Black" required />
+                        <span class="text-danger field-validation-error" data-valmsg-for="Choices[0].Name" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="col-lg-3 odds-column">
+                        <label class="control-label">Odds</label>
+                        <input type="number" name="Choices[0].Odds" class="form-control choice-odds" step="0.01" min="0.01" placeholder="e.g., 2.0, 1.5" required />
+                        <span class="text-danger field-validation-error" data-valmsg-for="Choices[0].Odds" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="col-lg-1">
+                        <label class="control-label">&nbsp;</label>
+                        <button type="button" class="btn btn-danger btn-sm remove-choice-row" style="display:none;">
+                            <i class="fa fa-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <button type="button" class="btn btn-success btn-sm" id="add-choice-row">
+                    <i class="fa fa-plus"></i> Add Choice Row
+                </button>
+            </div>
+        </fieldset>
+
+        <!-- Separate Odds Configuration Section -->
+        <fieldset id="odds-section" style="display:none;">
+            <legend>Odds Configuration</legend>
+            <div class="form-group">
+                <small class="form-text text-muted">Configure odds settings separately from choices. Add multiple key-value pairs for odds configuration.</small>
+            </div>
+            
+            <div id="odds-container">
+                <div class="form-group row odds-row">
+                    <div class="col-lg-4">
+                        <label class="control-label">Key</label>
+                        <input type="text" name="OddsKeys[0]" class="form-control odds-key" placeholder="e.g., high, low, red, black" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="control-label">Name</label>
+                        <input type="text" name="OddsDisplayNames[0]" class="form-control odds-name" placeholder="e.g., High Bet, Low Bet, Red, Black" />
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="control-label">Odds</label>
+                        <input type="number" name="OddsValues[0]" class="form-control odds-value" step="0.01" min="0.1" placeholder="e.g., 2.0, 1.5" />
+                    </div>
+                    <div class="col-lg-1">
+                        <label class="control-label">&nbsp;</label>
+                        <button type="button" class="btn btn-danger btn-sm remove-odds-row" style="display:none;">
+                            <i class="fa fa-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <button type="button" class="btn btn-success btn-sm" id="add-odds-row">
+                    <i class="fa fa-plus"></i> Add Odds Row
+                </button>
+            </div>
+        </fieldset>
 
         <div id="tournament-config" class="form-group" style="display:none;">
             <input id="have-tournament" type="checkbox" asp-for="HaveTournament" />
@@ -265,7 +371,3 @@
         </div>
     </form>
 </div>
-
-@section Scripts{
-    <script src="~/js/game-status.min.js" asp-append-version="true"></script>
-}

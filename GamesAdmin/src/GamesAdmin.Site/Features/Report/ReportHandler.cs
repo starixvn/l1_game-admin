@@ -5,6 +5,7 @@ using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
 using GamesAdmin.Site.Features.ExchangeRates;
@@ -53,7 +54,8 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetCascadingSlotBetHistoryRequest, CascadingSlotBetHistoryViewModel>,
         IRequestHandler<GetCrashGameReportRequest, CrashGameReportResultViewModel>,
         IRequestHandler<GetCrashTurnGameReportRequest, CrashTurnGameReportResultViewModel>,
-        IRequestHandler<GetChineseBlackjackReportRequest, BlackjackGameReportResultViewModel>
+        IRequestHandler<GetChineseBlackjackReportRequest, BlackjackGameReportResultViewModel>,
+        IRequestHandler<GetReportViewModelRequest, ReportViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -65,6 +67,7 @@ namespace GamesAdmin.Site.Features.Report
         private readonly ISystemSettings systemSettings;
         private readonly ResourceSiteConfiguration resourceSiteConfig;
         private readonly ICurrencyGroupGameService currencyGroupGameService;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
         public ReportHandler(
             IReportService reportService,
@@ -76,7 +79,8 @@ namespace GamesAdmin.Site.Features.Report
             IReportServiceFactory reportServiceFactory,
             ISystemSettings systemSettings,
             IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig,
-            ICurrencyGroupGameService currencyGroupGameService)
+            ICurrencyGroupGameService currencyGroupGameService,
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
@@ -88,6 +92,7 @@ namespace GamesAdmin.Site.Features.Report
             this.systemSettings = systemSettings;
             this.resourceSiteConfig = resourceSiteConfig.Value;
             this.currencyGroupGameService = currencyGroupGameService;
+            this.generalGameSettingService = generalGameSettingService;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -612,7 +617,7 @@ namespace GamesAdmin.Site.Features.Report
 
             result.BaseCurrency = systemSettings.BaseCurrency;
             result.BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier;
-            result.GameName = Game.FromGameId(request.Filter.Game).Value;
+            result.GameName = Game.FromGameId((GameId)request.Filter.Game).Value;
 
             return result;
         }
@@ -672,7 +677,7 @@ namespace GamesAdmin.Site.Features.Report
                 Currencies = await currencyService.GetCurrenciesForSelection(model => string.IsNullOrEmpty(model.GroupId) && model.Enabled)
             };
 
-            return new HoldemPokerReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections, Game = Game.FromGameId(request.GameId) };
+            return new HoldemPokerReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections, Game = Game.FromGameId((GameId)request.GameId) };
         }
 
         public async Task<HoldemPokerReportResultViewModel> Handle(GetHoldemPokerReportRequest request, CancellationToken cancellationToken)
@@ -689,7 +694,7 @@ namespace GamesAdmin.Site.Features.Report
                 return recordViewModel;
             });
 
-            return new HoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, request.Filter.GameId, records, systemSettings.BaseCurrencyMultiplier);
+            return new HoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, (GameId)request.Filter.GameId, records, systemSettings.BaseCurrencyMultiplier);
         }
 
         public async Task<HoldemPokerBetHistoryViewModel> Handle(GetHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
@@ -892,6 +897,42 @@ namespace GamesAdmin.Site.Features.Report
                     CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1
                 }),
             };
+        }
+
+        public async Task<ReportViewModel> Handle(GetReportViewModelRequest request, CancellationToken cancellationToken)
+        {
+            // Get normal games from enum
+            var normalGames = Game.GetNormalGames().ToList();
+            var normalGameNames = normalGames.Select(x => x.Value).ToHashSet();
+
+            // Get all games from game config
+            var configGames = await generalGameSettingService.GetAllGames();
+            var additionalGames = new List<SelectListItem>();
+
+            if (configGames != null)
+            {
+                // Add games that are not in normal games list and exclude slot/cascading slot games
+                foreach (var configGame in configGames)
+                {
+                    if (!normalGameNames.Contains(configGame.Name) &&
+                        configGame.Type != GameType.Slots &&
+                        configGame.Type != GameType.CascadingSlots)
+                    {
+                        additionalGames.Add(new SelectListItem(
+                            configGame.DisplayName ?? configGame.Name,
+                            configGame.GameId.ToString()
+                        ));
+                    }
+                }
+            }
+
+            // Combine normal games with additional games from config
+            var allGames = normalGames.Select(x => new SelectListItem(x.DisplayName, ((int)x.GameId).ToString()))
+                .Concat(additionalGames)
+                .OrderBy(x => x.Text) // Sort by display name
+                .ToList();
+
+            return new ReportViewModel { ExcludeUUS = true, Games = allGames };
         }
     }
 }

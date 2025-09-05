@@ -22,7 +22,7 @@ namespace GamesAdmin.Api.Games
     {
         Task<IEnumerable<GameConfig>> Get();
 
-        Task<bool> Create(GameConfig game);
+        Task<GameCreationResult> Create(GameConfig game);
 
         Task<GameConfig> GetByName(string name);
 
@@ -59,6 +59,10 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdateSymbolWeight(string name, SymbolWeight symbolWeight, IEnumerable<int> otherGameIdsInGroup);
 
         Task<bool> UpdateCrashConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, CrashConfig crashConfig);
+
+        Task<bool> IsGameIdExists(int gameId);
+
+        Task<bool> IsGameNameExists(string gameName);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -106,11 +110,18 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> Create(GameConfig game)
+        public async Task<GameCreationResult> Create(GameConfig game)
         {
             try
             {
                 var gameId = GetGameId(game.Info);
+
+                // Validate GameId and GameName for all game types
+                var validationResult = await ValidateGameForCreation(game.Info, gameId);
+                if (!validationResult.Success)
+                {
+                    return validationResult;
+                }
 
                 var entity = new GameConfigEntity
                 {
@@ -125,6 +136,9 @@ namespace GamesAdmin.Api.Games
                     Botenabled = game.BotSetting.BotEnabled,
                     BotMaxBet = game.BotSetting.BotMaxBet,
                     HoursMaxBot = game.BotSetting.HoursMaxBot,
+                    Odds = game.Odds,
+                    OddsDisplayNames = game.OddsDisplayNames,
+                    Choices = game.Choices,
                     SlotsConfig = game.SlotsConfig,
                     CascadingSlotsConfig = game.CascadingSlotsConfig,
                     SlotRNGConfig = game.SlotRNGConfig,
@@ -173,20 +187,53 @@ namespace GamesAdmin.Api.Games
             {
                 sentryClient.CaptureException(ex);
 
-                return false;
+                return GameCreationResult.CreateError(
+                    GameCreationErrorCodes.DatabaseError,
+                    "An error occurred while saving the game to the database. Please try again.");
             }
 
-            return true;
+            return GameCreationResult.CreateSuccess();
         }
 
         private int GetGameId(GameInfo gameInfo)
         {
-            if (gameInfo.Type == GameType.Slots || gameInfo.Type == GameType.Crash || gameInfo.Type == GameType.CrashTurnBase)
+            if (gameInfo.Type == GameType.Slots || gameInfo.Type == GameType.Crash || gameInfo.Type == GameType.CrashTurnBase || gameInfo.Type == GameType.AutoRNGIndex)
             {
                 return gameInfo.GameId;
             }
 
             return (int)Core.Enumeration.Game.FromGameName(gameInfo.Name).GameId;
+        }
+
+        private async Task<GameCreationResult> ValidateGameForCreation(GameInfo gameInfo, int gameId)
+        {
+            // Check for duplicate GameId
+            var gameIdExists = await IsGameIdExists(gameId);
+            if (gameIdExists)
+            {
+                // Capture the duplicate GameId attempt as an exception
+                var duplicateGameIdException = new InvalidOperationException($"Game with GameId {gameId} already exists. Cannot create duplicate game: {gameInfo.Name}");
+                sentryClient.CaptureException(duplicateGameIdException);
+                
+                return GameCreationResult.CreateError(
+                    GameCreationErrorCodes.DuplicateGameId,
+                    $"Game ID {gameId} already exists. Please choose a different Game ID.");
+            }
+
+            // Check for duplicate game name
+            var gameNameExists = await IsGameNameExists(gameInfo.Name);
+            if (gameNameExists)
+            {
+                // Capture the duplicate game name attempt as an exception
+                var duplicateGameNameException = new InvalidOperationException($"Game with name '{gameInfo.Name}' already exists. Cannot create duplicate game.");
+                sentryClient.CaptureException(duplicateGameNameException);
+                
+                return GameCreationResult.CreateError(
+                    GameCreationErrorCodes.DuplicateGameName,
+                    $"Game name '{gameInfo.Name}' already exists. Please choose a different game name.");
+            }
+
+            return GameCreationResult.CreateSuccess();
         }
 
         public async Task<GameConfig> GetByName(string name)
@@ -776,6 +823,38 @@ namespace GamesAdmin.Api.Games
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
             return true;
+        }
+
+        public async Task<bool> IsGameIdExists(int gameId)
+        {
+            try
+            {
+                var existingGame = await Task.Run(() => repository.AsQueryable()
+                    .FirstOrDefault(g => g.GameId == gameId));
+                
+                return existingGame != null;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return false;
+            }
+        }
+
+        public async Task<bool> IsGameNameExists(string gameName)
+        {
+            try
+            {
+                var existingGame = await Task.Run(() => repository.AsQueryable()
+                    .FirstOrDefault(g => g.Name == gameName));
+                
+                return existingGame != null;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return false;
+            }
         }
     }
 }
