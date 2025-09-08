@@ -56,18 +56,18 @@ namespace GamesAdmin.Api._Shared.Helpers
                 changedSettings.Add(setting);
             }
 
-            if (!new HashSet<double>(newConfig.CoinValues).SetEquals(oldConfig.CoinValues))
+            if (!new HashSet<double>(newConfig.CoinValues ?? new double[0]).SetEquals(oldConfig.CoinValues ?? new double[0]))
             {
                 changedSettings.Add(new SettingChangedModel("CoinValues", string.Join(", ", oldConfig.CoinValues), string.Join(", ", newConfig.CoinValues)));
             }
 
 
-            if (!new HashSet<string>(newConfig.Chips).SetEquals(oldConfig.Chips))
+            if (!new HashSet<string>(newConfig.Chips ?? new string[0]).SetEquals(oldConfig.Chips ?? new string[0]))
             {
                 changedSettings.Add(new SettingChangedModel("Chips", string.Join(", ", oldConfig.Chips), string.Join(", ", newConfig.Chips)));
             }
 
-            if (!new HashSet<double>(newConfig.BetLevels).SetEquals(oldConfig.BetLevels))
+            if (!new HashSet<double>(newConfig.BetLevels ?? new double[0]).SetEquals(oldConfig.BetLevels ?? new double[0]))
             {
                 changedSettings.Add(new SettingChangedModel("StakeLevels", string.Join(", ", oldConfig.BetLevels), string.Join(", ", newConfig.BetLevels)));
             }
