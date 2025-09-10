@@ -193,5 +193,13 @@
     "BetChoices": [ "home", "away", "draw" ],
     "Odds": [ "home", "away", "draw"  ],
     "OfferedSystem": [ "SC1", "VG2" ]
+  },
+  {
+    "GameId": 156,
+    "GameName": "soccerpingoal",
+    "DisplayName": "Soccer PinGoal",
+    "BetChoices": [ "red", "blue", "draw"],
+    "Odds": [ "red", "blue", "draw"],
+    "OfferedSystem": [ "SC1", "VG2" ]
   }
 ]
