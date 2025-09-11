@@ -41,13 +41,13 @@ namespace GamesAdmin.Core.Models
             Choices = choices ?? new List<Choice>();
         }
 
-        public string Id { get; }
+        public string Id { get; set; }
 
-        public Dictionary<string, double> Odds { get; }
+        public Dictionary<string, double> Odds { get; set; }
 
-        public Dictionary<string, string> OddsDisplayNames { get; }
+        public Dictionary<string, string> OddsDisplayNames { get; set; }
 
-        public List<Choice> Choices { get; }
+        public List<Choice> Choices { get; set; }
 
 
 
@@ -79,4 +79,5 @@ namespace GamesAdmin.Core.Models
 
         public string Name { get; set; }
     }
+
 }

@@ -1,0 +1,100 @@
+/* Currency Operations Page Styles */
+
+/* Base layout and container styles */
+.container-fluid {
+    padding: 20px;
+}
+
+/* Page-level scroll control */
+body {
+    overflow-x: hidden;
+}
+
+/* Table styles */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+.table th {
+    text-align: center;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Column specific styles */
+.select-column,
+.operator-id,
+.operator-name {
+    text-align: center;
+}
+
+.select-column {
+    width: 50px;
+}
+
+.operator-id {
+    width: 100px;
+}
+
+.operator-name {
+    width: 200px;
+}
+
+/* Operator group styling */
+.operator-group {
+    background-color: #f8f9fa;
+}
+
+/* Currency JSON display */
+.currency-json {
+    font-family: monospace;
+    white-space: pre;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    max-height: 400px;
+    overflow-y: auto;
+    font-size: 0.9em;
+    width: 100%;
+}
+
+/* Button styles */
+.export-button {
+    margin-bottom: 1rem;
+}
+
+/* Import result styles */
+.import-result-success {
+    color: #28a745;
+}
+
+.import-result-error {
+    color: #dc3545;
+}
+
+.import-result-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.import-result-icon {
+    font-size: 1.2em;
+    min-width: 20px;
+}
+
+/* Modal styles */
+.modal-title {
+    font-weight: 500;
+}
+
+.import-result-line strong {
+    font-weight: 500;
+}

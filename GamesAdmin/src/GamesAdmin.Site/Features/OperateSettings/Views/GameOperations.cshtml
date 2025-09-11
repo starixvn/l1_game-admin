@@ -1,0 +1,140 @@
+﻿@using GamesAdmin.Site.Features.OperateSettings.ViewModels
+@using GamesAdmin.Site.Features._Shared
+@model GameSettingOperationViewModel
+@{
+    ViewData["Title"] = "Operate Settings";
+    Layout = "../_Shared/_BodyLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/scss/pages/game-operations.css" asp-append-version="true" />
+}
+
+<div class="container-fluid">
+    
+    <div class="mb-3">
+        @if (Context.HasAdminPermission())
+        {
+            <button class="btn btn-add" onclick="exportSelectedGameConfigs()">Export Selected Games</button>
+            <button class="btn btn-submit" onclick="importGameConfigs()">Import Games</button>
+            <input type="file"
+                   id="importFileInput"
+                   accept=".json"
+                   class="hidden-file-input"
+                   onchange="handleFileImport(this)">
+        }
+    </div>
+
+    <div class="mb-3">
+        <input type="text" 
+               id="gameNameFilter" 
+               class="form-control" 
+               placeholder="Search by game name..."
+               onkeyup="filterGames()">
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered w-100">
+            <thead>
+                <tr>
+                    <th class="text-center align-top checkbox-column">
+                        <input type="checkbox" 
+                               id="selectAllGames" 
+                               onclick="toggleAllGames()"
+                               class="form-check-input">
+                    </th>
+                    <th class="text-center align-top sortable" onclick="sortTable(1)">
+                        Id<span class="sort-icon"></span>
+                    </th>
+                    <th class="text-center align-top sortable" onclick="sortTable(2)">
+                        Game Name<span class="sort-icon"></span>
+                    </th>
+                    <th>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Settings</span>
+                            <div class="btn-group btn-group-sm" role="group" title="Toggle visibility of game settings details">
+                                <button id="expandAllSettings" class="btn btn-outline-primary btn-sm" title="Expand all game settings">
+                                    <i class="icon-expand-more"></i><span>Expand All</span>
+                                </button>
+                                <button id="collapseAllSettings" class="btn btn-outline-primary btn-sm" title="Collapse all game settings">
+                                    <i class="icon-expand-less"></i><span>Collapse All</span>
+                                </button>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="gamesTableBody">
+                @foreach (var game in Model.GameConfigs)
+                {
+                    <tr>
+                        <td class="text-center align-top checkbox-column">
+                            <input type="checkbox" 
+                                   class="form-check-input game-checkbox" 
+                                   value="@game.GameId">
+                        </td>
+                        <td class="text-center align-top">@game.GameId</td>
+                        <td class="text-center align-top">@game.Name</td>
+                        <td class="game-settings-cell">
+                            <div class="game-settings-summary" data-game-id="@game.GameId">
+                                <div class="game-info-header">
+                                    <div class="game-info-title">
+                                        <span class="game-title-text">@(!string.IsNullOrEmpty(game.Info.DisplayName) ? game.Info.DisplayName : game.Info.Name)</span>
+                                        <span class="game-info-badge">ID: @game.GameId</span>
+                                    </div>
+                                    <i class="icon-expand-more toggle-icon"></i>
+                                </div>
+                                <div class="game-info-details">
+                                    <span>Name: @game.Name</span>
+                                    <span> | Type: <span class="game-type-badge">@(game.Info.Type == 0 ? "AutoRNG" : game.Info.Type.ToString())</span></span>
+                                    <span> | Enabled: <span class="enabled-status @(game.EnableSetting?.Enabled == true ? "enabled" : "disabled")">@(game.EnableSetting?.Enabled == true ? "✓" : "✗")</span></span>
+                                    @if (game.BetLimit != null)
+                                    {
+                                        <span> | Bet Range: @(game.BetLimit.MinBet) - @(game.BetLimit.MaxBet)</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="game-settings-details" data-game-id="@game.GameId">
+                                <pre class="mb-0 settings-pre">@Model.BuildSetting(game)</pre>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="importConfirmModal" tabindex="-1" aria-labelledby="importConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importConfirmModalLabel">Confirm Import Game Settings</h5>
+                <button type="button" class="btn-close close" data-dismiss="modal" onclick="closeImportModal()" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Please select the games you want to import:</p>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="selectAllImportGames" onclick="toggleAllImportGames()">
+                        <label class="form-check-label" for="selectAllImportGames">Select All</label>
+                    </div>
+                </div>
+                <div id="importGamesList" class="list-group">
+                    <!-- Games will be populated here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeImportModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitImport()">Import Selected</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/game-operations.js" asp-append-version="true"></script>
+}

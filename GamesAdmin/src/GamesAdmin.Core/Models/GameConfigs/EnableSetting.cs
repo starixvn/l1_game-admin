@@ -12,7 +12,7 @@
             DelayStartTime = delayStartTime;
         }
 
-        public bool Enabled { get; }
+        public bool Enabled { get; set; }
 
         public string DisabledMessage { get; }
 

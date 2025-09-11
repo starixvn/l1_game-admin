@@ -43,6 +43,17 @@ namespace GamesAdmin.Api.Games
             return await mediator.Send(new CreateRequest(game));
         }
 
+        [HttpPost("import")]
+        public async Task<bool> Import(GameConfig game)
+        {
+            if (string.IsNullOrWhiteSpace(game.Info.Name) && game.Info.GameId > 0)
+            {
+                return false;
+            }
+
+            return await mediator.Send(new ImportRequest(game));
+        }
+
         [HttpPost("clone_slot_game")]
         public Task<string> ClonelotGame(int gameId, int fromGameId, string displayName, byte gameType)
             => mediator.Send(new CloneNewSlotGameRequest(gameId, fromGameId, displayName, gameType));

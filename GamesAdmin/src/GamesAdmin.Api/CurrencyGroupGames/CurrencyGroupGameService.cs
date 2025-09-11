@@ -134,16 +134,22 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                 var gameConfigs = (await gameConfigRepository.FilterByAsync(x => gameIds.Contains(x.GameId))).ToList();
 
                 var writes = new List<WriteModel<CurrencyGroupGameEntity>>();
+                const string settingName = "Partner's game setting";
 
                 foreach (var gameId in gameIds)
                 {
                     var groupGameConfig = currencyGroupGames.FirstOrDefault(x => x.GameId == gameId);
 
+
                     if (groupGameConfig != null)
                     {
                         var group = await currencyGroupRepository.FindByIdAsync(groupGameConfig.GroupId.ToString());
                         var changedSettings = SettingHelper.GetCurrencyGroupGameChangedModel(groupGameConfig, currencyGroupGame);
-                        await chatBotService.NotifyAdminUpdatedSettings(groupGameConfig.GameName, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
+                        await chatBotService.NotifyAdminUpdatedSettings(groupGameConfig.GameName, settingName, $" ({group.PartnerId} - {group.Name})", changedSettings);
+                    }
+                    else
+                    {
+                        await chatBotService.NotifyAdminAddSettings("ADD", settingName, currencyGroupGame);
                     }
 
                     var gameConfig = gameConfigs.FirstOrDefault(x => x.GameId == gameId);

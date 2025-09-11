@@ -42,7 +42,7 @@ namespace GamesAdmin.Core.Models
             OtherGameIdsInGroup = otherGameIdsInGroup ?? Enumerable.Empty<int>();
         }
 
-        public string GroupId { get; }
+        public string GroupId { get; private set; }
 
         public int GameId { get; set; }
 
@@ -69,5 +69,10 @@ namespace GamesAdmin.Core.Models
         public double MaxWinPerRound { get; }
 
         public IEnumerable<int> OtherGameIdsInGroup { get; }
+
+        public void SetGroupId(string groupId)
+        {
+            GroupId = groupId;
+        }
     }
 }

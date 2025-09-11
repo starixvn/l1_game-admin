@@ -1,0 +1,60 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewData["Title"] = "Import/Export Settings";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/scss/pages/operate-settings.css" asp-append-version="true" />
+}
+
+<div class="container-fluid px-4">
+    <div class="row mt-4">
+        <div class="col-12">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" id="operateSettingsTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="game-operations-tab" type="button" 
+                            onclick="switchTab('game-operations')">
+                        Game
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="currency-operations-tab" type="button" 
+                            onclick="switchTab('currency-operations')">
+                        Currency
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="currency-group-game-tab" type="button" 
+                            onclick="switchTab('currency-group-game')">
+                        Currency Group Game
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content" id="operateSettingsContent">
+                <div class="tab-pane fade show active" id="game-operations" role="tabpanel">
+                    <iframe id="gameOperationsFrame" 
+                            src="@Url.Action("GameOperations", "OperateSettings")"
+                            data-url="@Url.Action("GameOperations", "OperateSettings")"></iframe>
+                </div>
+                <div class="tab-pane fade" id="currency-operations" role="tabpanel">
+                    <iframe id="currencyOperationsFrame" 
+                            data-url="@Url.Action("CurrencyOperations", "OperateSettings")"></iframe>
+                </div>
+                <div class="tab-pane fade" id="currency-group-game" role="tabpanel">
+                    <iframe id="currencyGroupGameFrame" 
+                            data-url="@Url.Action("CurrencyGroupGameOperations", "OperateSettings")"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/operate-settings.js" asp-append-version="true"></script>
+}

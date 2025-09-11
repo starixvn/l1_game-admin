@@ -4,6 +4,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class OddsViewModel
     {
+        private const double MINIMUM_ODDS_VALUE = 0.01;
+
         public OddsViewModel() { }
 
         public OddsViewModel(string name, double odds, string displayName)
@@ -18,7 +20,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string DisplayName { get; set; }
 
         [Required]
-        [Range(0.1, int.MaxValue)]
+        [Range(MINIMUM_ODDS_VALUE, int.MaxValue)]
         public double Odds { get; set; }
     }
 }

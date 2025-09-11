@@ -13,6 +13,8 @@ namespace GamesAdmin.Api.Currencies.Mappers
             CreateMap<CreateCurrencyModel, CurrencyEntity>()
                 .ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => ObjectId.Parse(src.GroupId)));
             CreateMap<CurrencyModel, UpdateCurrencyModel>();
+            CreateMap<CurrencyModel, CurrencyEntity>();
+            CreateMap<CurrencyModel, CreateCurrencyModel>();
             CreateMap<CurrencyEntity, CurrencyModel>()
                 .ConstructUsing(entity => new CurrencyModel(
                     entity.Id.ToString(),

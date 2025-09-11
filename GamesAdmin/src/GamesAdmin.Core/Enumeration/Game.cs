@@ -225,6 +225,9 @@ namespace GamesAdmin.Core.Enumeration
 
         public static Game FromGameName(string gameName)
         {
+            var gameNameError = $"Game_Name_{gameName}_Not_Found";
+            var gameError = new Game(gameNameError, gameNameError);
+
             try
             {
 
@@ -234,12 +237,19 @@ namespace GamesAdmin.Core.Enumeration
                     GameId gameId = (GameId)gameSettings.GameId;
                     return new Game(gameSettings.GameName, gameSettings.DisplayName, gameId);
                 }
-                return Parse<Game, string>(gameName, "game value", item => item.Value == gameName);
+                var parseGameName = Parse<Game, string>(gameName, "game value", item => item.Value == gameName);
+
+                if(parseGameName == null)
+                {
+                    return gameError;
+                }
+
+                return parseGameName;
             }
             catch
             {
-                var gameNameError = $"Game_Name_{gameName}_Not_Found";
-                return new Game(gameNameError, gameNameError);
+               
+                return gameError;
             }
         }
 

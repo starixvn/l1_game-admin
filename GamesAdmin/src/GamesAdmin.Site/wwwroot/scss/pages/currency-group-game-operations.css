@@ -1,0 +1,194 @@
+/* Currency Group Game Operations Page Styles */
+
+/* Base layout and container styles */
+.container-fluid {
+    padding: 20px;
+}
+
+/* Page-level scroll control */
+body {
+    overflow-x: hidden;
+}
+
+/* Modal styles */
+.modal-full {
+    min-width: 90%;
+    margin: 0 auto; /* Center horizontally */
+}
+
+.modal-full .modal-content {
+    min-height: 90vh;
+}
+
+.modal-body {
+    max-height: calc(98vh - 180px);
+    overflow-y: auto;
+}
+
+/* Add styles for centering the modal */
+.modal-dialog.modal-full {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 60px); /* Account for some padding */
+    margin: 30px auto; /* Add some top/bottom margin */
+}
+
+/* Collapse/Expand styles */
+.game-setting-cell {
+    position: relative;
+}
+
+.game-setting-summary {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.game-setting-summary:hover {
+    background-color: #e9ecef;
+}
+
+.game-setting-summary .summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.game-setting-summary .summary-info {
+    font-size: 14px;
+    color: #495057;
+}
+
+.game-setting-summary .toggle-icon {
+    font-size: 16px;
+    color: #6c757d;
+    transition: transform 0.2s;
+}
+
+.game-setting-summary.expanded .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.game-setting-summary.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.game-setting-summary.loading .toggle-icon {
+    animation: spin 1s linear infinite;
+}
+
+.game-setting-details {
+    display: none;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 5px;
+}
+
+.game-setting-details.show {
+    display: block;
+}
+
+.game-setting-details pre {
+    margin: 0;
+    font-size: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Game count badge */
+.game-count-badge {
+    background-color: #007bff;
+    color: white;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+/* Button group styles */
+.btn-group .btn {
+    margin-right: 5px;
+}
+
+.btn-group .btn:last-child {
+    margin-right: 0;
+}
+
+/* Header button styles */
+th .btn-group .btn {
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 3px;
+    min-width: 60px;
+    white-space: nowrap;
+}
+
+th .btn-group .btn:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+th .btn-group .btn i {
+    margin-right: 4px;
+}
+
+th .btn-group .btn span {
+    font-size: 11px;
+}
+
+/* Fallback for when icons don't render */
+th .btn-group .btn i:empty {
+    display: none;
+}
+
+th .btn-group .btn i:empty + span {
+    margin-left: 0;
+}
+
+th .d-flex {
+    width: 100%;
+}
+
+th .btn-group {
+    margin-left: 10px;
+}
+
+/* Table styles */
+.table td {
+    vertical-align: top;
+}
+
+/* Export modal game item styles */
+.game-item-summary:hover {
+    background-color: #e9ecef !important;
+}
+
+.game-item-summary .toggle-icon {
+    transition: transform 0.2s;
+}
+
+.game-item-summary.expanded .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.game-item-details pre {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+/* Animation keyframes */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

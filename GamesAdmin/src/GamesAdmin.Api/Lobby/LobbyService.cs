@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Api.RoundWatcher;
+using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
@@ -43,6 +45,7 @@ namespace GamesAdmin.Api.Lobby
         private readonly IGenericRepository<LobbyEntity> lobbyRepository;
         private readonly IGenericRepository<DirectLobbyEntity> directLobbyRepository;
         private readonly ISentryClient sentryClient;
+        private readonly IChatBotService chatBotService;
         private readonly IMapper mapper;
         private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
         private readonly IGeneralGameSettingService generalGameSettingService;
@@ -51,6 +54,7 @@ namespace GamesAdmin.Api.Lobby
         public LobbyService(IGenericRepository<LobbyEntity> lobbyRepository,
             IGenericRepository<DirectLobbyEntity> directLobbyRepository,
             ISentryClient sentryClient,
+            IChatBotService chatBotService,
             IMapper mapper,
             IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
             IGeneralGameSettingService generalGameSettingService,
@@ -59,6 +63,7 @@ namespace GamesAdmin.Api.Lobby
             this.lobbyRepository = lobbyRepository;
             this.directLobbyRepository = directLobbyRepository;
             this.sentryClient = sentryClient;
+            this.chatBotService = chatBotService;
             this.mapper = mapper;
             this.currencyGroupRepository = currencyGroupRepository;
             this.generalGameSettingService = generalGameSettingService;
@@ -75,15 +80,19 @@ namespace GamesAdmin.Api.Lobby
 
                 if (existingLobbyEntity == null)
                 {
-                    sentryClient.CaptureMessage(string.Format("Added Lobby \"{0}\"", lobbyModel.Name), SentryLevel.Error);
                     await lobbyRepository.InsertOneAsync(lobbyEntity);
+                    await chatBotService.NotifyAdminAddSettings("Added", "Lobby", lobbyModel);
                 }
                 else
                 {
                     var currencyGroups = (await currencyGroupRepository.FilterByAsync(entity => true)).ToList();
                     var gameSettings = await generalGameSettingService.GetAll();
-                    var log = LobbyLog.BuildChangedLog(existingLobbyEntity, lobbyEntity, currencyGroups, gameSettings.ToList());        
-                    sentryClient.CaptureMessage(string.Format("Updated Lobby \"{0}\": \n\n{1}", lobbyModel.Name, log), SentryLevel.Error);
+                    var log = LobbyLog.BuildChangedLog(existingLobbyEntity, lobbyEntity, currencyGroups, gameSettings.ToList());
+                    var changedSettings = new List<SettingChangedModel>
+                    {
+                        new SettingChangedModel("Lobby Changes", "", log)
+                    };
+                    await chatBotService.NotifyAdminUpdatedSettings(lobbyModel.Name, "Lobby", "Configuration updated", changedSettings);
                     var update = Builders<LobbyEntity>.Update
                         .Set(field => field.Name, lobbyEntity.Name)
                         .Set(field => field.CurrencyGroupIds, lobbyEntity.CurrencyGroupIds)

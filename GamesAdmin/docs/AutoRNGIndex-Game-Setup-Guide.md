@@ -1,14 +1,77 @@
-# RNG Round Based Game Setup Guide
+# AutoRNGIndex Game Setup Guide
 
 ## Overview
 
-This guide provides step-by-step instructions for administrators to add new RNG Round Based games to the GamesAdmin system. RNG Round Based games (type: AutoRNGIndex) are custom games that require manual configuration and have unique validation requirements.
+This comprehensive guide covers everything you need to know about AutoRNGIndex games - custom games that can be created directly through the admin interface without needing developers to deploy new code. This revolutionary feature allows administrators to add games instantly when needed.
+
+## Table of Contents
+
+- [What Are AutoRNGIndex Games?](#what-are-autorgnindex-games)
+- [Key Features and Benefits](#key-features-and-benefits)
+- [Prerequisites](#prerequisites)
+- [Step-by-Step Setup Process](#step-by-step-setup-process)
+- [Working with Developers](#working-with-developers)
+- [Common Issues and Solutions](#common-issues-and-solutions)
+- [Best Practices](#best-practices)
+- [Troubleshooting](#troubleshooting)
+
+## What Are AutoRNGIndex Games?
+
+AutoRNGIndex games are custom RNG Round Based games that require manual configuration and have unique validation requirements. Unlike regular games that use predefined names, these games allow you to create your own game names and configurations.
+
+### Key Features and Benefits
+
+- **Self-Service Game Creation**: Add new games instantly without waiting for development cycles
+- **Custom Game Names**: Create your own game names (unlike regular games with predefined names)
+- **Unique Game ID**: Each game gets a special number that no other game uses
+- **Choice Options**: Set up different betting options for players
+- **Immediate Availability**: Games are available right after creation
+- **No Code Deployment**: No need for developers to deploy new code to the admin site
 
 ## Prerequisites
 
 - Admin access to the GamesAdmin system
 - Understanding of game configuration parameters
 - Access to the Game Settings management interface
+- Coordination with development team for service setup
+
+## Getting Started
+
+### For New Users
+
+#### 1. Accessing the System
+
+- Get your login credentials from your system administrator
+- Open your web browser and go to the GamesAdmin website
+- Log in using your username and password
+- Navigate to **Game Settings** → **Create New Game**
+
+#### 2. Basic Tasks You'll Learn
+
+- **Creating Custom Games**: Learn to add new AutoRNGIndex games
+- **Configuring Settings**: Set up betting limits, odds, and game rules
+- **Working with Developers**: Coordinate service setup and naming
+- **Troubleshooting**: Handle common issues and validation errors
+
+#### 3. Advanced Features
+
+- **Choice Configuration**: Set up complex betting options
+- **Service Integration**: Coordinate with developers for proper setup
+- **Validation Handling**: Understand and resolve validation errors
+
+### For Current Users
+
+#### New Features You Should Know About
+
+- **AutoRNGIndex Game Creation**: Add new games instantly without waiting for code deployment
+- **Self-Service Capabilities**: No more dependency on development cycles
+- **Custom Configuration**: Full control over game names and settings
+
+#### How to Use New Features
+
+- **Coordinate with Developers**: Work closely with your development team for service setup
+- **Follow Naming Rules**: Use exact names as specified by developers
+- **Test Thoroughly**: Test new games completely before making them live
 
 ## RNG Round Based Game Characteristics
 
@@ -314,21 +377,3 @@ When creating a new RNG Round Based game service, follow these steps:
 5. **Environment Prefixes**: `l1` (SC1), `gn` (GN), `l2` (VG2)
 
 **⚠️ Warning**: If Display Name doesn't match service name, the system cannot connect to your service!
-
-## Post-Creation Management
-
-### Monitoring
-
-- New games appear in the Game Management interface
-- Monitor game status and performance
-- Check for any configuration issues
-
-### Modifications
-
-- Most settings can be modified after creation
-- **Game ID cannot be changed** once created
-- Use the Edit functionality for updates
-
----
-
-**Note**: This guide is based on the current system implementation. Always verify with the latest system documentation and test in a development environment before creating production games.

@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Currencies.Requests;
+using GamesAdmin.Api.SentryClient;
+using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
 using MediatR;
@@ -12,9 +16,12 @@ namespace GamesAdmin.Api.Currencies.Handlers
 {
     public class CreateHandler : Handler, IRequestHandler<CreateRequest, bool>
     {
-        public CreateHandler(ISentryClient sentryClient, IMapper mapper, IGenericRepository<CurrencyEntity> repository)
+        private readonly IChatBotService chatBotService;
+
+        public CreateHandler(ISentryClient sentryClient, IMapper mapper, IGenericRepository<CurrencyEntity> repository, IChatBotService chatBotService)
             : base(mapper, repository, sentryClient)
         {
+            this.chatBotService = chatBotService;
         }
 
         public async Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
@@ -33,6 +40,8 @@ namespace GamesAdmin.Api.Currencies.Handlers
                     entity.Name = entity.Name.ToUpper();
 
                     await Repository.InsertOneAsync(entity);
+
+                    NotifyCurrencyCreated(request);
                 }
             }
             catch (Exception exception)
@@ -43,6 +52,23 @@ namespace GamesAdmin.Api.Currencies.Handlers
             }
 
             return true;
+        }
+
+        private void NotifyCurrencyCreated(CreateRequest request)
+        {
+            try
+            {
+                // Send notification asynchronously to avoid blocking
+                _ = Task.Run(() => chatBotService.NotifyAdminAddSettings(
+                    "ADD",
+                    "Currency",
+                    request.Model));
+            }
+            catch (Exception ex)
+            {
+                // Log the exception but don't throw to avoid breaking the main flow
+                Sentry.CaptureException(ex);
+            }
         }
     }
 }

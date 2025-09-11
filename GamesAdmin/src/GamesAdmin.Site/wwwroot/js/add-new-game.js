@@ -490,6 +490,7 @@ $(document).ready(function () {
     // Add form validation before submission
     $("form").on("submit", function (e) {
         trimChoiceInputs();
+        trimOddsInputs();
 
         if (!validateNameField() || !validateGameIdField() || !validateChoicesConfiguration()) {
             e.preventDefault();
@@ -500,6 +501,12 @@ $(document).ready(function () {
 
     function trimChoiceInputs() {
         $(".choice-key, .choice-name").each(function () {
+            $(this).val($(this).val().trim());
+        });
+    }
+
+    function trimOddsInputs() {
+        $(".odds-key, .odds-name").each(function () {
             $(this).val($(this).val().trim());
         });
     }

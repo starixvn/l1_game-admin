@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api._Shared.Helpers;
@@ -19,8 +20,8 @@ namespace GamesAdmin.Api.ChatBot
 {
     public interface IChatBotApi
     {
-        [Post("/forwardwithtoken")]
-        Task<ChatBotResult> ForwardMessage(string token, string conversationId, string message);
+        [Post("/forwardwithtoken?token={token}")]
+        Task<ChatBotResult> ForwardMessage(string token, [Body(BodySerializationMethod.UrlEncoded)] Dictionary<string, string> formData);
     }
 
     public interface IChatBotService
@@ -43,6 +44,8 @@ namespace GamesAdmin.Api.ChatBot
 
 
         Task<ChatBotResult> NotifyAdminUpdatedSettings(string gameName, string settingName, string additionalDetails, List<SettingChangedModel> settings);
+
+        Task<ChatBotResult> NotifyAdminAddSettings(string action, string settingName, object setting);
     }
 
     public class ChatBotService : IChatBotService
@@ -52,7 +55,7 @@ namespace GamesAdmin.Api.ChatBot
         private const string MessagePromotion = "**Status: **{0}\r\n**Boosted Odds**: {1}\r\n**Type**: {2}\r\n**From**: {3}\r\n**To**: {4}";
         private const string MessageAddPromotionTournament = "Added new Promotion: **{0}**:\r\n{1}";
         private const string MessageEdiPromotionTournament = "Edit Promotion: **{0}**:\r\n{1}";
-        
+
         private const int CacheExpireInMinutes = 60 * 24;
 
         private readonly IAppSettings appSettings;
@@ -60,7 +63,25 @@ namespace GamesAdmin.Api.ChatBot
         private readonly IGenericRepository<ExchangeRateEntity> exchangeRateRepository;
         private readonly ICacheManager cache;
 
-        private const string MessageChangedSetting = "CHANGE {0}: {1} has new {2}!!!{3} Details: {4}";
+        private const string MessageChangedSetting = "[{0}] CHANGE {1} ({2}):\r\n{3} has new {4}!!!\r\n{5} \r\nDetails: {6}";
+        private const string MessageAddedSetting = "[{0}] {1} {2} ({3})\r\nDetails: {4}";
+
+        private const string FormDataMessageKey = "Message";
+        private const string FormDataConversationIdKey = "ConversationId";
+
+        private static Dictionary<string, string> BuildFormData(string message, string conversationId)
+        {
+            return new Dictionary<string, string>
+            {
+                { FormDataMessageKey, message },
+                { FormDataConversationIdKey, conversationId }
+            };
+        }
+
+        private static string GetCurrentTimestamp()
+        {
+            return DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC");
+        }
 
         public ChatBotService(
             IAppSettings appSettings,
@@ -89,14 +110,16 @@ namespace GamesAdmin.Api.ChatBot
         public async Task<ChatBotResult> NotifyCreatePromotion(PromotionModel promotion)
         {
             var message = GetMessagePromotion(MessageAddPromotion, promotion);
-            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, appSettings.ChatBotApiSettings.ConversationIds.Promotion, message));
+            var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.Promotion);
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
             return await Task.FromResult(new ChatBotResult());
         }
 
         public async Task<ChatBotResult> NotifyUpdatePromotion(PromotionModel promotion)
         {
             var message = GetMessagePromotion(MessageUpdatePromotion, promotion);
-            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, appSettings.ChatBotApiSettings.ConversationIds.Promotion, message));
+            var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.Promotion);
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
             return await Task.FromResult(new ChatBotResult());
         }
 
@@ -125,9 +148,8 @@ namespace GamesAdmin.Api.ChatBot
 
             var messageListFailers = failers.Any() ? "\r\n**The request fails**: " + string.Join(", ", failers.Select(e => $"{e.PlayerName}/{e.PlayerId}")) : string.Empty;
 
-            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token,
-                appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament,
-                message + messageListFailers));
+            var formData = BuildFormData(message + messageListFailers, appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament);
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
             return await Task.FromResult(new ChatBotResult());
         }
 
@@ -166,19 +188,17 @@ namespace GamesAdmin.Api.ChatBot
         }
         public async Task<ChatBotResult> NotifyCreatePromotionTournament(PromotionConfigModel promotion, string type)
         {
-            var message = GetMessagePromotionTournament(MessageAddPromotionTournament, promotion, type);         
-            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token,
-               appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament,
-               message));
+            var message = GetMessagePromotionTournament(MessageAddPromotionTournament, promotion, type);
+            var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament);
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
             return await Task.FromResult(new ChatBotResult());
         }
 
         public async Task<ChatBotResult> NotifyUpdatePromotionTournament(PromotionConfigModel promotion, string type)
         {
             var message = GetMessagePromotionTournament(MessageEdiPromotionTournament, promotion, type);
-            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token,
-               appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament,
-               message));
+            var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament);
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
             return await Task.FromResult(new ChatBotResult());
         }
 
@@ -199,16 +219,46 @@ namespace GamesAdmin.Api.ChatBot
 
             var message = string.Format(
                 MessageChangedSetting,
+                appSettings.Env,
                 settingName.ToUpperInvariant(),
+                GetCurrentTimestamp(),
                 gameName,
                 settingName,
                 additionalDetails,
                 string.Join(";\r\n", changedSettings));
 
-            _ = Task.Run(() => chatBotApi.ForwardMessage(
-                appSettings.ChatBotApiSettings.Token,
-                appSettings.ChatBotApiSettings.ConversationIds.AdminNotifications,
-                message));
+            var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.AdminNotifications);
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
+
+            return await Task.FromResult(new ChatBotResult());
+        }
+
+        public async Task<ChatBotResult> NotifyAdminAddSettings(
+            string action,
+            string settingName,
+            object setting)
+        {
+            if (setting == null)
+            {
+                return await Task.FromResult(new ChatBotResult());
+            }
+
+            var serializedSetting = Newtonsoft.Json.JsonConvert.SerializeObject(setting, Newtonsoft.Json.Formatting.Indented, new Newtonsoft.Json.JsonSerializerSettings
+            {
+                NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
+                MaxDepth = 1,
+            });
+
+            var message = string.Format(
+                MessageAddedSetting,
+                appSettings.Env,
+                action.ToUpperInvariant(),
+                settingName.ToUpperInvariant(),
+                GetCurrentTimestamp(),
+                serializedSetting);
+
+            var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.AdminNotifications);
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
 
             return await Task.FromResult(new ChatBotResult());
         }

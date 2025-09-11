@@ -545,7 +545,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             var currencyGroups = await currencyGroupService.GetAll();
             var currencyGroupGames = await currencyGroupGameService.GetAll();
 
-            return gameConfigs?.Any() == true
+            var statusViewModel = gameConfigs?.Any() == true
                 ? new StatusViewModel(
                     gameConfigs.Select(game => new StatusItemViewModel(game))
                         .OrderBy(game => game.DisplayName)
@@ -554,6 +554,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     currencyGroups.Where(group => group.Enabled).ToList(),
                     currencyGroupGames.ToList())
                 : new StatusViewModel(new List<StatusItemViewModel>());
+
+            return statusViewModel;
         }
 
         public async Task<bool> Handle(UpdateMultipleGameStatusRequest request, CancellationToken cancellationToken)

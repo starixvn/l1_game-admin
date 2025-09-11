@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
@@ -46,6 +47,7 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("Enabled", oldConfig.Enabled.ToString(), newConfig.Enabled.ToString()),
                 new SettingChangedModel("MinBet", oldConfig.MinBet.ToString(), newConfig.MinBet.ToString()),
                 new SettingChangedModel("MaxBet", oldConfig.MaxBet.ToString(), newConfig.MaxBet.ToString()),
+                new SettingChangedModel("MaxWinPerRound", oldConfig.MaxWinPerRound.ToString(), newConfig.MaxWinPerRound.ToString()),
             };
 
             foreach (var c in newConfig.MaxBetPerChoices)
@@ -168,25 +170,102 @@ namespace GamesAdmin.Api._Shared.Helpers
         public static List<SettingChangedModel> GetJackpotChangedModel(
             GameConfigEntity oldConfig, Jackpot jackpot)
         {
-            var changedSettings = new List<SettingChangedModel>
+            var changedSettings = new List<SettingChangedModel>();
+
+            var oldJackpot = oldConfig.SlotsConfig.Jackpot;
+
+            // Compare basic properties
+            AddIfChanged(changedSettings, "Jackpot.Enabled", oldJackpot.Enabled.ToString(), jackpot.Enabled.ToString());
+            AddIfChanged(changedSettings, "Jackpot.ExcludeTestCurrency", oldJackpot.ExcludeTestCurrency.ToString(), jackpot.ExcludeTestCurrency.ToString());
+            AddIfChanged(changedSettings, "Jackpot.WinningRatio", oldJackpot.WinningRatio.ToString(CultureInfo.InvariantCulture), jackpot.WinningRatio.ToString(CultureInfo.InvariantCulture));
+
+            // Compare jackpot pools if they exist
+            if (oldJackpot.Pools != null && jackpot.Pools != null)
             {
-                new SettingChangedModel("ExcludeTestCurrency", oldConfig.SlotsConfig.Jackpot.ExcludeTestCurrency.ToString(), jackpot.ExcludeTestCurrency.ToString()),
-                new SettingChangedModel("Pool", oldConfig.SlotsConfig.Jackpot.Pools?.ToString(), jackpot.Pools?.ToString()),
-                new SettingChangedModel("BotContributionRatio", oldConfig.SlotsConfig.Jackpot.BotContributionRatio.ToString(), jackpot.BotContributionRatio.ToString()),
-                new SettingChangedModel("PlayerContributionRatio", oldConfig.SlotsConfig.Jackpot.PlayerContributionRatio.ToString(), jackpot.PlayerContributionRatio.ToString()),
-            };
+                ComparePoolSettings(changedSettings, "Minor", oldJackpot.Pools.Minor, jackpot.Pools.Minor);
+                ComparePoolSettings(changedSettings, "Major", oldJackpot.Pools.Major, jackpot.Pools.Major);
+                ComparePoolSettings(changedSettings, "Grand", oldJackpot.Pools.Grand, jackpot.Pools.Grand);
+            }
+
+            // If no specific changes were found, add a generic change entry
+            if (!changedSettings.Any())
+            {
+                changedSettings.Add(new SettingChangedModel("Jackpot", "No specific changes detected", "Configuration updated"));
+            }
 
             return changedSettings;
+        }
+
+        private static void AddIfChanged(List<SettingChangedModel> changedSettings, string propertyName, string oldValue, string newValue)
+        {
+            if (oldValue != newValue)
+            {
+                changedSettings.Add(new SettingChangedModel(propertyName, oldValue, newValue));
+            }
+        }
+
+        private static void ComparePoolSettings(List<SettingChangedModel> changedSettings, string poolName, Pool oldPool, Pool newPool)
+        {
+            if (oldPool == null && newPool == null)
+            {
+                return;
+            }
+
+            string basePath = $"Jackpot.Pools.{poolName}";
+
+            // Compare Init value
+            AddIfChanged(changedSettings, $"{basePath}.Init",
+                oldPool?.Init.ToString(CultureInfo.InvariantCulture) ?? "null",
+                newPool?.Init.ToString(CultureInfo.InvariantCulture) ?? "null");
+
+            // Compare Player Settings
+            AddIfChanged(changedSettings, $"{basePath}.PlayerSettings.Contrib",
+                oldPool?.PlayerSettings?.Contrib.ToString(CultureInfo.InvariantCulture) ?? "null",
+                newPool?.PlayerSettings?.Contrib.ToString(CultureInfo.InvariantCulture) ?? "null");
+
+            AddIfChanged(changedSettings, $"{basePath}.PlayerSettings.Alloc",
+                oldPool?.PlayerSettings?.Alloc.ToString(CultureInfo.InvariantCulture) ?? "null",
+                newPool?.PlayerSettings?.Alloc.ToString(CultureInfo.InvariantCulture) ?? "null");
+
+            // Compare Bot Settings
+            AddIfChanged(changedSettings, $"{basePath}.BotSettings.Contrib",
+                oldPool?.BotSettings?.Contrib.ToString(CultureInfo.InvariantCulture) ?? "null",
+                newPool?.BotSettings?.Contrib.ToString(CultureInfo.InvariantCulture) ?? "null");
+
+            AddIfChanged(changedSettings, $"{basePath}.BotSettings.Alloc",
+                oldPool?.BotSettings?.Alloc.ToString(CultureInfo.InvariantCulture) ?? "null",
+                newPool?.BotSettings?.Alloc.ToString(CultureInfo.InvariantCulture) ?? "null");
         }
 
         public static List<SettingChangedModel> GetBotConfigChangedModel(
             GameConfigEntity oldConfig, Jackpot jackpot, double[] betLevels)
         {
-            var changedSettings = new List<SettingChangedModel>
+            if (oldConfig?.SlotsConfig?.Jackpot == null || jackpot == null || betLevels == null)
             {
-                new SettingChangedModel("BetLevels", oldConfig.SlotsConfig.BetLevels.ToString(), betLevels.ToString()),
-                new SettingChangedModel("Pool", oldConfig.SlotsConfig.Jackpot.Pools?.ToString(), jackpot.Pools?.ToString())
-            };
+                return new List<SettingChangedModel>();
+            }
+
+            var changedSettings = new List<SettingChangedModel>();
+
+            // Compare bet levels
+            var oldBetLevels = oldConfig.SlotsConfig.BetLevels ?? Array.Empty<double>();
+            if (!oldBetLevels.SequenceEqual(betLevels))
+            {
+                changedSettings.Add(new SettingChangedModel(
+                    "BetLevels",
+                    string.Join(",", oldBetLevels),
+                    string.Join(",", betLevels)));
+            }
+
+            // Compare jackpot pools (if jackpot configuration changed)
+            var oldJackpot = oldConfig.SlotsConfig.Jackpot;
+            if (oldJackpot.Pools != null && jackpot.Pools != null)
+            {
+                // Compare each pool type
+                ComparePoolSettings(changedSettings, "Minor", oldJackpot.Pools.Minor, jackpot.Pools.Minor);
+                ComparePoolSettings(changedSettings, "Major", oldJackpot.Pools.Major, jackpot.Pools.Major);
+                ComparePoolSettings(changedSettings, "Grand", oldJackpot.Pools.Grand, jackpot.Pools.Grand);
+            }
 
             return changedSettings;
         }
@@ -197,7 +276,7 @@ namespace GamesAdmin.Api._Shared.Helpers
 
             foreach (var n in newConfig)
             {
-                var oldText = oldConfig == null ? string.Empty : oldConfig[n.Key].ToString();
+                var oldText = oldConfig != null && oldConfig.ContainsKey(n.Key) ? oldConfig[n.Key].ToString() : string.Empty;
                 var setting = new SettingChangedModel(n.Key, oldText, n.Value.ToString());
                 changedSettings.Add(setting);
             }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Api.Currencies;
 using GamesAdmin.Api.CurrencyGroups.Requests;
+using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
 using MediatR;

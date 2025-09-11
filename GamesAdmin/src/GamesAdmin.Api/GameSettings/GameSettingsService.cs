@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -7,6 +8,7 @@ using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
+using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
@@ -23,6 +25,8 @@ namespace GamesAdmin.Api.Games
         Task<IEnumerable<GameConfig>> Get();
 
         Task<GameCreationResult> Create(GameConfig game);
+
+        Task<bool> ImportGame(GameConfig game);
 
         Task<GameConfig> GetByName(string name);
 
@@ -182,6 +186,8 @@ namespace GamesAdmin.Api.Games
 
                 var messages = new Dictionary<string, string> { [Language.DefaultLanguageValue] = game.EnableSetting.DisabledMessage };
                 await notificationService.AddDisableMessage(game.Info.Name, messages);
+                // Notify about new game creation
+                await NotifyNewGameCreated(game.Info?.Name, entity);
             }
             catch (Exception ex)
             {
@@ -195,9 +201,84 @@ namespace GamesAdmin.Api.Games
             return GameCreationResult.CreateSuccess();
         }
 
+        public async Task<bool> ImportGame(GameConfig gameConfig)
+        {
+            try
+            {
+                // Validate game configuration before import
+                var gameId = GetGameId(gameConfig.Info);
+                var validationResult = await ValidateGameForCreation(gameConfig.Info, gameId);
+                if (!validationResult.Success)
+                {
+                    // Log validation failure for import
+                    var validationException = new InvalidOperationException($"Game import validation failed: {validationResult.ErrorMessage}");
+                    sentryClient.CaptureException(validationException);
+                    return false;
+                }
+
+                var entity = new GameConfigEntity
+                {
+                    Name = gameConfig.Info?.Name,
+                    Type = (byte)(gameConfig.Info?.Type ?? 0),
+                    EnableFreeBet = gameConfig.Info?.EnableFreeBet ?? false,
+                    Enabled = gameConfig.EnableSetting?.Enabled ?? false,
+                    DelayStartTime = gameConfig.EnableSetting?.DelayStartTime ?? 0,
+                    DisabledMessage = gameConfig.EnableSetting?.DisabledMessage,
+                    Maxbet = gameConfig.BetLimit?.MaxBet ?? 0,
+                    Minbet = gameConfig.BetLimit?.MinBet ?? 0,
+                    Botenabled = gameConfig.BotSetting?.BotEnabled ?? false,
+                    BotMaxBet = gameConfig.BotSetting?.BotMaxBet ?? 0,
+                    HoursMaxBot = gameConfig.BotSetting?.HoursMaxBot,
+                    Odds = gameConfig.Odds,
+                    OddsDisplayNames = gameConfig.OddsDisplayNames,
+                    Choices = gameConfig.Choices,
+                    SlotsConfig = gameConfig.SlotsConfig,
+                    CascadingSlotsConfig = gameConfig.CascadingSlotsConfig,
+                    SlotRNGConfig = gameConfig.SlotRNGConfig,
+                    SiteExclusions = gameConfig.Info?.SiteExclusions,
+                    Time = DateTime.Now,
+                    GameId = gameId,
+                    DisplayName = gameConfig.Info?.DisplayName,
+                    CrashConfig = gameConfig.CrashConfig,
+                    ApplyMultiplier = gameConfig.Info?.ApplyMultiplier ?? false,
+                    HaveTournament = gameConfig.Info?.HaveTournament ?? false,
+                    HaveVideoStream = gameConfig.Info?.HaveVideoStream ?? false,
+                    UseMargin = gameConfig.Info?.UseMargin ?? false,
+                    RandomMode = gameConfig.Info?.RandomMode ?? 1,
+                    Margin = gameConfig.Margin,
+                    MaxWinPerRound = gameConfig.Info?.MaxWinPerRound ?? 0,
+                    MaxBetChoices = gameConfig.BetLimit?.MaxBetChoices,
+                    OddsMultipliers = gameConfig.OddsMultipliers,
+                    TournamentConfig = gameConfig.TournamentConfig,
+                    VideoStreamConfig = gameConfig.VideoStreamConfig
+                };
+
+                await repository.InsertOneAsync(entity);
+
+                var messages = new Dictionary<string, string> { [Language.DefaultLanguageValue] = gameConfig.EnableSetting?.DisabledMessage };
+                await notificationService.AddDisableMessage(gameConfig.Info?.Name, messages);
+
+                // Notify about new game creation
+                await NotifyNewGameCreated(gameConfig.Info?.Name, entity);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        [SuppressMessage("SonarQube", "S1067", Justification = "Expressions should not be too complex")]
         private int GetGameId(GameInfo gameInfo)
         {
-            if (gameInfo.Type == GameType.Slots || gameInfo.Type == GameType.Crash || gameInfo.Type == GameType.CrashTurnBase || gameInfo.Type == GameType.AutoRNGIndex)
+            if (gameInfo.Type == GameType.Slots
+                || gameInfo.Type == GameType.Crash
+                || gameInfo.Type == GameType.CrashTurnBase
+                || gameInfo.Type == GameType.AutoRNGIndex
+                || gameInfo.Type == GameType.CascadingSlots)
             {
                 return gameInfo.GameId;
             }
@@ -214,7 +295,7 @@ namespace GamesAdmin.Api.Games
                 // Capture the duplicate GameId attempt as an exception
                 var duplicateGameIdException = new InvalidOperationException($"Game with GameId {gameId} already exists. Cannot create duplicate game: {gameInfo.Name}");
                 sentryClient.CaptureException(duplicateGameIdException);
-                
+
                 return GameCreationResult.CreateError(
                     GameCreationErrorCodes.DuplicateGameId,
                     $"Game ID {gameId} already exists. Please choose a different Game ID.");
@@ -227,7 +308,7 @@ namespace GamesAdmin.Api.Games
                 // Capture the duplicate game name attempt as an exception
                 var duplicateGameNameException = new InvalidOperationException($"Game with name '{gameInfo.Name}' already exists. Cannot create duplicate game.");
                 sentryClient.CaptureException(duplicateGameNameException);
-                
+
                 return GameCreationResult.CreateError(
                     GameCreationErrorCodes.DuplicateGameName,
                     $"Game name '{gameInfo.Name}' already exists. Please choose a different game name.");
@@ -415,7 +496,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetBotRatiosChangedModel(gameEntity.HoursMaxBot.Any() ? gameEntity.HoursMaxBot : new double[24], ratios);
-                    await chatBotService.NotifyAdminUpdatedSettings(name, "Bot Ratios", " (GMT-4)", changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Bot Ratios", " (GMT-4)", changedSettings);
                     var update = Builders<GameConfigEntity>.Update.Set(field => field.HoursMaxBot, ratios);
                     var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId); ;
                     writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
@@ -448,7 +529,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetIconsChangedModel(gameEntity.SlotsConfig.Icons, iconOdds);
-                    await chatBotService.NotifyAdminUpdatedSettings(name, "Odds", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Odds", string.Empty, changedSettings);
 
                     var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.Icons, iconOdds);
 
@@ -483,7 +564,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetCascadingSlotOddsChangedModel(gameEntity.CascadingSlotsConfig, cascadingSlotsConfig);
-                    await chatBotService.NotifyAdminUpdatedSettings(name, "Cascading Slot Odds Config", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Cascading Slot Odds Config", string.Empty, changedSettings);
 
                     var update = Builders<GameConfigEntity>.Update
                         .Set(field => field.CascadingSlotsConfig.OddsByCounts, cascadingSlotsConfig.OddsByCounts)
@@ -515,7 +596,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetJackpotChangedModel(gameEntity, jackpot);
-                    await chatBotService.NotifyAdminUpdatedSettings(name, "Jackpot", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Jackpot", string.Empty, changedSettings);
                     var filter = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
 
                     if (jackpot.Pools != null)
@@ -568,7 +649,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetBotConfigChangedModel(gameEntity, jackpot, betLevels);
-                    await chatBotService.NotifyAdminUpdatedSettings(name, "Jackpot", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Jackpot", string.Empty, changedSettings);
                     var sortBetLevel = betLevels.OrderBy(level => level).ToArray();
 
                     var update = Builders<GameConfigEntity>.Update
@@ -608,8 +689,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetSlotConfigChangedModel(gameEntity, botEnabled, slotsConfig);
-                    await chatBotService.NotifyAdminUpdatedSettings(name, "Slot Config", string.Empty, changedSettings);
-                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Odds", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Slot Config", string.Empty, changedSettings);
                     var update = Builders<GameConfigEntity>.Update
                             .Set(field => field.Botenabled, botEnabled)
                             .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
@@ -643,7 +723,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetCascadingSlotConfigsChangeModel(gameEntity, botEnabled, cascadingSlotsConfig);
-                    await chatBotService.NotifyAdminUpdatedSettings(name, "Cascading Slot Config", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Cascading Slot Config", string.Empty, changedSettings);
                     var update = Builders<GameConfigEntity>.Update
                        .Set(field => field.Botenabled, botEnabled)
                        .Set(field => field.CascadingSlotsConfig.MultiplierBonus, cascadingSlotsConfig.MultiplierBonus)
@@ -678,7 +758,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetGeneralConfigChangedModel(gameEntity, gameInfo, botSetting, enableSetting, oddsMultipliers, tournamentConfig, videoStreamConfig);
-                    await chatBotService.NotifyAdminUpdatedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "General Config", string.Empty, changedSettings);
 
                     var update = Builders<GameConfigEntity>.Update
                         .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
@@ -765,7 +845,7 @@ namespace GamesAdmin.Api.Games
                 {
                     var existingSlotSymbolWeight = gameEntity.SlotsConfig.SymbolWeight ?? new Dictionary<string, int[][]>();
 
-                    await chatBotService.NotifyAdminUpdatedSettings(name, "Symbol Weight", string.Empty, SettingHelper.GetSymbolWeightChangedModel(existingSlotSymbolWeight, symbolWeight));
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Symbol Weight", string.Empty, SettingHelper.GetSymbolWeightChangedModel(existingSlotSymbolWeight, symbolWeight));
 
                     var keyMode = symbolWeight.Mode.ToString();
 
@@ -831,7 +911,7 @@ namespace GamesAdmin.Api.Games
             {
                 var existingGame = await Task.Run(() => repository.AsQueryable()
                     .FirstOrDefault(g => g.GameId == gameId));
-                
+
                 return existingGame != null;
             }
             catch (Exception ex)
@@ -847,13 +927,35 @@ namespace GamesAdmin.Api.Games
             {
                 var existingGame = await Task.Run(() => repository.AsQueryable()
                     .FirstOrDefault(g => g.Name == gameName));
-                
+
                 return existingGame != null;
             }
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Notifies administrators about a new game creation via ChatBot service
+        /// </summary>
+        /// <param name="gameName">The name of the newly created game</param>
+        /// <param name="gameEntity">The game entity that was created</param>
+        private async Task NotifyNewGameCreated(string gameName, GameConfigEntity gameEntity)
+        {
+            try
+            {
+                // Send notification asynchronously to avoid blocking
+                await chatBotService.NotifyAdminAddSettings(
+                    "ADD",
+                    $"Game {gameName}",
+                    gameEntity);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception but don't throw to avoid breaking the main flow
+                sentryClient.CaptureException(ex);
             }
         }
     }

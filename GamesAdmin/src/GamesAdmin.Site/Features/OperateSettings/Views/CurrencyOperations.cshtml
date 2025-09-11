@@ -1,0 +1,78 @@
+﻿@using GamesAdmin.Site.Features.OperateSettings.ViewModels
+@using GamesAdmin.Site.Features._Shared
+@model CurrencySettingViewModel
+
+@{
+    ViewData["Title"] = "Currency Settings";
+    Layout = "../_Shared/_BodyLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/scss/pages/currency-operations.css" asp-append-version="true" />
+}
+
+<div class="container-fluid">
+   
+    @if (Context.HasAdminPermission())
+    {
+        <button id="exportSelected" class="btn btn-add export-button">
+            Export Selected Operator Currencies
+        </button>
+        <button id="importCurrencies" class="btn btn-submit export-button">
+            Import Currencies
+        </button>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="select-column">
+                            <input type="checkbox" id="selectAll" />
+                        </th>
+                        <th class="operator-id">Operator Id</th>
+                        <th class="operator-name">Operator Name</th>
+                        <th>Currencies</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var operatorCurrencies in Model.OperatorCurrencies)
+                    {
+                        <tr class="operator-group">
+                            <td>
+                                <input type="checkbox" class="operator-checkbox" 
+                                       data-operator="@operatorCurrencies.Operator.PartnerId" />
+                            </td>
+                            <td class="operator-id">@operatorCurrencies.Operator.PartnerId</td>
+                            <td class="operator-name">@operatorCurrencies.Operator.Name</td>
+                            <td><pre class="currency-json">@operatorCurrencies.BuildCurrencyJson()</pre></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add this after the card div -->
+    <div class="modal fade" id="importResultModal" tabindex="-1" role="dialog" aria-labelledby="importResultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importResultModalLabel">Import Results</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeImportModal()"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div id="importResultMessage"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeImportModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/currency-operations.js" asp-append-version="true"></script>
+}

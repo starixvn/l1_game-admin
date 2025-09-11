@@ -47,7 +47,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
         {
             var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
 
-            return gameEntities.Select(game =>
+            var gameSettings = gameEntities.Select(game =>
             {
                 var gameId = game.GameId > 0 ? game.GameId : (int)Game.FromGameName(game.Name).GameId;
                 var displayName = !string.IsNullOrEmpty(game.DisplayName) ? game.DisplayName : Game.FromGameName(game.Name).DisplayName;
@@ -55,6 +55,8 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
                 return new GeneralGameSetting(gameId, game.Name, displayName, (GameType)game.Type, isEnabledJackpot);
             });
+
+            return gameSettings;
         }
 
         public async Task<string> GetGameName(int gameId)
