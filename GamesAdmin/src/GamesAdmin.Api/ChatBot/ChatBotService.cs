@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ChatBot.Results;
+using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
@@ -39,6 +40,9 @@ namespace GamesAdmin.Api.ChatBot
         Task<ChatBotResult> NotifyUpdatePromotionTournament(PromotionConfigModel promotion, string type);
 
         ExchangeRateEntity GetExchangeRate();
+
+
+        Task<ChatBotResult> NotifyAdminUpdatedSettings(string gameName, string settingName, string additionalDetails, List<SettingChangedModel> settings);
     }
 
     public class ChatBotService : IChatBotService
@@ -55,6 +59,8 @@ namespace GamesAdmin.Api.ChatBot
         private readonly IChatBotApi chatBotApi;
         private readonly IGenericRepository<ExchangeRateEntity> exchangeRateRepository;
         private readonly ICacheManager cache;
+
+        private const string MessageChangedSetting = "CHANGE {0}: {1} has new {2}!!!{3} Details: {4}";
 
         public ChatBotService(
             IAppSettings appSettings,
@@ -173,6 +179,37 @@ namespace GamesAdmin.Api.ChatBot
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token,
                appSettings.ChatBotApiSettings.ConversationIds.PromotionTournament,
                message));
+            return await Task.FromResult(new ChatBotResult());
+        }
+
+        public async Task<ChatBotResult> NotifyAdminUpdatedSettings(
+            string gameName,
+            string settingName,
+            string additionalDetails,
+            List<SettingChangedModel> settings)
+        {
+            var changedSettings = settings
+                .Where(setting => setting.OldValue != setting.NewValue)
+                .Select(setting => $"{setting.Name}: {setting.OldValue} -> {setting.NewValue}");
+
+            if (!changedSettings.Any())
+            {
+                return await Task.FromResult(new ChatBotResult());
+            }
+
+            var message = string.Format(
+                MessageChangedSetting,
+                settingName.ToUpperInvariant(),
+                gameName,
+                settingName,
+                additionalDetails,
+                string.Join(";\r\n", changedSettings));
+
+            _ = Task.Run(() => chatBotApi.ForwardMessage(
+                appSettings.ChatBotApiSettings.Token,
+                appSettings.ChatBotApiSettings.ConversationIds.AdminNotifications,
+                message));
+
             return await Task.FromResult(new ChatBotResult());
         }
     }

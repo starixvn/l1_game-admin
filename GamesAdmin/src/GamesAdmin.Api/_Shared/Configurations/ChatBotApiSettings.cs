@@ -18,5 +18,6 @@
     {
         public string Promotion { get; set; }
         public string PromotionTournament { get; set; }
+        public string AdminNotifications { get; set; }
     }
 }

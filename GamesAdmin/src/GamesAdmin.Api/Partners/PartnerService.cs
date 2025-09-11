@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Api.PartnerRemote;
 using GamesAdmin.Api.SentryClient;
@@ -44,6 +45,7 @@ namespace GamesAdmin.Api.Partners
         private readonly IGenericRepository<PartnerConfigEntity> partnerConfigRepository;
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
+        private readonly IChatBotService chatBotService;
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly IAppSettings appSettings;
         private readonly IServiceProvider serviceProvider;
@@ -53,6 +55,7 @@ namespace GamesAdmin.Api.Partners
             IMapper mapper,
             IGenericRepository<PartnerEntity> partnerRepository,
             IGenericRepository<PartnerConfigEntity> partnerConfigRepository,
+            IChatBotService chatBotService,
             IGeneralGameSettingService generalGameSettingService,
             IAppSettings appSettings,
             IServiceProvider serviceProvider)
@@ -61,6 +64,7 @@ namespace GamesAdmin.Api.Partners
             this.partnerRepository = partnerRepository;
             this.mapper = mapper;
             this.partnerConfigRepository = partnerConfigRepository;
+            this.chatBotService = chatBotService;
             this.generalGameSettingService = generalGameSettingService;
             this.appSettings = appSettings;
             this.serviceProvider = serviceProvider;
@@ -234,13 +238,13 @@ namespace GamesAdmin.Api.Partners
                     {
                         var key = id.ToString();
 
-                        sentryClient.CaptureChangedSetting(
+                        await chatBotService.NotifyAdminUpdatedSettings(
                             gameSettings,
                             "Site Exclusion",
                             string.Empty,
-                            new SettingChangedModel(
+                            new List<SettingChangedModel> { new SettingChangedModel(
                                 string.Join(", ", oldConfig.Value.ContainsKey(key) ? oldConfig.Value[key] : Enumerable.Empty<string>()),
-                                string.Join(", ", exclusionSites)));
+                                string.Join(", ", exclusionSites)) });
                         oldConfig.Value[key] = exclusionSites.ToList();
                     }
                  

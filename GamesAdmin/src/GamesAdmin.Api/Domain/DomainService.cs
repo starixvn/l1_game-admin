@@ -1,6 +1,7 @@
 ﻿namespace GamesAdmin.Api
 {
     using AutoMapper;
+    using GamesAdmin.Api.ChatBot;
     using GamesAdmin.Api.Domain.Requests;
     using GamesAdmin.Api.SentryClient;
     using GamesAdmin.Core.Models;
@@ -10,6 +11,7 @@
     using MongoDB.Driver;
     using Sentry;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -28,12 +30,15 @@
 
         private readonly ISentryClient sentryClient;
 
+        private readonly IChatBotService chatBotService;
+
         public DomainService(IGenericRepository<DomainEntity> domainRepository,
-           IMapper mapper, ISentryClient sentryClient)
+           IMapper mapper, ISentryClient sentryClient, IChatBotService chatBotService)
         {
             this.domainRepository = domainRepository;
             this.mapper = mapper;
             this.sentryClient = sentryClient;
+            this.chatBotService = chatBotService;
         }
 
         public async Task<DomainModel> Get()
@@ -66,7 +71,7 @@
                 else
                 {
                     var changedSetting = new SettingChangedModel($"Domains", existingDomainEntity.Value, model.Value);
-                    sentryClient.CaptureChangedSetting(string.Empty, "Domain's Setting ", string.Empty, changedSetting);
+                    await chatBotService.NotifyAdminUpdatedSettings(string.Empty, "Domain's Setting ", string.Empty, new List<SettingChangedModel> { changedSetting });
                     var update = Builders<DomainEntity>.Update
                                 .Set(field => field.Value, model.Value);
                     await domainRepository.UpdateAsync(entity => entity.Id.Equals(ObjectId.Parse(model.Id)), update );

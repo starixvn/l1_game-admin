@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Api.BuyFreeSpins.Requests;
 using GamesAdmin.Api.BuyFreeSpins.ViewModels;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MediatR;
@@ -14,7 +15,7 @@ namespace GamesAdmin.Api.BuyFreeSpins.Handlers
 {
     public class GetAllBuyFreeSpinsHandler : BuyFreeSpinHandler, IRequestHandler<GetAllBuyFreeSpinsRequest, IEnumerable<BuyFreeSpinSettingViewModel>>
     {
-        public GetAllBuyFreeSpinsHandler(IMapper mapper, IGenericRepository<GameConfigEntity> repository, ISentryClient sentry) : base(mapper, repository, sentry)
+        public GetAllBuyFreeSpinsHandler(IMapper mapper, IGenericRepository<GameConfigEntity> repository, ISentryClient sentry, IChatBotService chatBotService) : base(mapper, repository, sentry, chatBotService)
         {
         }
 

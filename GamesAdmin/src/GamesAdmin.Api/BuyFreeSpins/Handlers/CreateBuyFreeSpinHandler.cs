@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.BuyFreeSpins.Requests;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
@@ -16,7 +17,7 @@ namespace GamesAdmin.Api.BuyFreeSpins.Handlers
 {
     public class CreateBuyFreeSpinHandler : BuyFreeSpinHandler, IRequestHandler<CreateBuyFreeSpinRequest, bool>
     {
-        public CreateBuyFreeSpinHandler(IMapper mapper, IGenericRepository<GameConfigEntity> repository, ISentryClient sentry) : base(mapper, repository, sentry)
+        public CreateBuyFreeSpinHandler(IMapper mapper, IGenericRepository<GameConfigEntity> repository, ISentryClient sentry, IChatBotService chatBotService) : base(mapper, repository, sentry, chatBotService)
         {
         }
 
@@ -46,7 +47,7 @@ namespace GamesAdmin.Api.BuyFreeSpins.Handlers
                 };
 
                 var settingChanged = SettingHelper.GetCascadingSlotBuyFreeSpinConfigsChangeModel(oldConfig, newConfig);
-                Sentry.CaptureChangedSettings(gameConfig.Name, "Buy Free Spin", "Add new", settingChanged);
+                await ChatBotService.NotifyAdminUpdatedSettings(gameConfig.Name, "Buy Free Spin", "Add new", settingChanged);
                 if (gameConfig?.CascadingSlotsConfig?.Features != null)
                 {
                     var update = Builders<GameConfigEntity>.Update

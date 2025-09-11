@@ -4,7 +4,6 @@ using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.Promotions.Requests;
-using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database;
@@ -249,7 +248,7 @@ namespace GamesAdmin.Api.Promotions
             var oldModel = await UpdateOperatorAndCurrencyGroupName(oldConfig);
             var updatedModel = await UpdateOperatorAndCurrencyGroupName(model);
             var changedSettings = SettingHelper.GetPromotionTournamentChangeModel(oldModel, updatedModel, type);
-            sentryClient.CaptureChangedSettings("Promotion Tournament", "Configs", string.Empty, changedSettings);
+            await chatBotService.NotifyAdminUpdatedSettings("Promotion Tournament", "Configs", string.Empty, changedSettings);
 
             UpdateDefinition<PromotionConfigEntity> update;
 

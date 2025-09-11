@@ -1,18 +1,19 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Api.BuyFreeSpins.Requests;
 using GamesAdmin.Api.BuyFreeSpins.ViewModels;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MediatR;
 using Sentry;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.BuyFreeSpins.Handlers
 {
     public class GetBuyFreeSpinByGameIdHandler : BuyFreeSpinHandler, IRequestHandler<GetBuyFreeSpinByGameIdRequest, BuyFreeSpinSettingViewModel>
     {
-        public GetBuyFreeSpinByGameIdHandler(IMapper mapper, IGenericRepository<GameConfigEntity> repository, ISentryClient sentry) : base(mapper, repository, sentry)
+        public GetBuyFreeSpinByGameIdHandler(IMapper mapper, IGenericRepository<GameConfigEntity> repository, ISentryClient sentry, IChatBotService chatBotService) : base(mapper, repository, sentry, chatBotService)
         {
         }
 

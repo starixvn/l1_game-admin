@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Api._Shared.Helpers;
-using GamesAdmin.Api.SentryClient;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -39,6 +39,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         private readonly IGenericRepository<CurrencyGroupGameEntity> currencyGroupGameRepository;
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
+        private readonly IChatBotService chatBotService;
         private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
         private readonly IGenericRepository<GameConfigEntity> gameConfigRepository;
         private readonly IGenericRepository<CurrencyGroupGameConfigEntity> currencyGroupGameConfigRepository;
@@ -47,6 +48,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
             IGenericRepository<CurrencyGroupGameEntity> currencyGroupGameRepository,
             IMapper mapper,
             ISentryClient sentryClient,
+            IChatBotService chatBotService,
             IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
             IGenericRepository<GameConfigEntity> gameConfigRepository,
             IGenericRepository<CurrencyGroupGameConfigEntity> currencyGroupGameConfigRepository)
@@ -54,6 +56,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
             this.currencyGroupGameRepository = currencyGroupGameRepository;
             this.mapper = mapper;
             this.sentryClient = sentryClient;
+            this.chatBotService = chatBotService;
             this.currencyGroupRepository = currencyGroupRepository;
             this.gameConfigRepository = gameConfigRepository;
             this.currencyGroupGameConfigRepository = currencyGroupGameConfigRepository;
@@ -140,7 +143,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                     {
                         var group = await currencyGroupRepository.FindByIdAsync(groupGameConfig.GroupId.ToString());
                         var changedSettings = SettingHelper.GetCurrencyGroupGameChangedModel(groupGameConfig, currencyGroupGame);
-                        sentryClient.CaptureChangedSettings(groupGameConfig.GameName, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
+                        await chatBotService.NotifyAdminUpdatedSettings(groupGameConfig.GameName, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
                     }
 
                     var gameConfig = gameConfigs.FirstOrDefault(x => x.GameId == gameId);

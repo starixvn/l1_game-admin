@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Api._Shared.Helpers;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
-using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
@@ -69,6 +69,8 @@ namespace GamesAdmin.Api.Games
 
         private readonly ISentryClient sentryClient;
 
+        private readonly IChatBotService chatBotService;
+
         private readonly IGenericRepository<GameConfigEntity> repository;
 
         private readonly INotificationService notificationService;
@@ -76,12 +78,14 @@ namespace GamesAdmin.Api.Games
         public GameSettingsService(
             IMapper mapper,
             ISentryClient sentryClient,
+            IChatBotService chatBotService,
             IGenericRepository<GameConfigEntity> repository,
             INotificationService notificationService
             )
         {
             this.repository = repository;
             this.sentryClient = sentryClient;
+            this.chatBotService = chatBotService;
             this.mapper = mapper;
             this.notificationService = notificationService;
         }
@@ -266,7 +270,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetBetLimitChangedModel(gameEntity, betLimit);
-                    sentryClient.CaptureChangedSettings(gameEntity.Name, "Bot Setting", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Bot Setting", string.Empty, changedSettings);
 
                     var update = Builders<GameConfigEntity>.Update
                         .Set(field => field.Minbet, betLimit.MinBet)
@@ -304,7 +308,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetOddsChangedModel(gameEntity.Odds, odds);
-                    sentryClient.CaptureChangedSettings(gameEntity.Name, "Odds", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Odds", string.Empty, changedSettings);
                     var update = Builders<GameConfigEntity>.Update.Set(field => field.Odds, odds);
                     var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId); ;
                     writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
@@ -333,7 +337,7 @@ namespace GamesAdmin.Api.Games
                 var sortedMarginSettings = marginSettings.OrderBy(setting => setting["max"]);
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
                 var changedSettings = SettingHelper.GetMarginSettingsChangedModel(gameEntity.Margin, sortedMarginSettings);
-                sentryClient.CaptureChangedSettings(name, "Margin", string.Empty, changedSettings);
+                await chatBotService.NotifyAdminUpdatedSettings(name, "Margin", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update.Set(field => field.Margin, sortedMarginSettings);
                 await repository.UpdateAsync(config => config.Name == name, update);
@@ -364,7 +368,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetBotRatiosChangedModel(gameEntity.HoursMaxBot.Any() ? gameEntity.HoursMaxBot : new double[24], ratios);
-                    sentryClient.CaptureChangedSettings(name, "Bot Ratios", " (GMT-4)", changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(name, "Bot Ratios", " (GMT-4)", changedSettings);
                     var update = Builders<GameConfigEntity>.Update.Set(field => field.HoursMaxBot, ratios);
                     var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId); ;
                     writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
@@ -397,7 +401,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetIconsChangedModel(gameEntity.SlotsConfig.Icons, iconOdds);
-                    sentryClient.CaptureChangedSettings(name, "Odds", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(name, "Odds", string.Empty, changedSettings);
 
                     var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.Icons, iconOdds);
 
@@ -432,7 +436,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetCascadingSlotOddsChangedModel(gameEntity.CascadingSlotsConfig, cascadingSlotsConfig);
-                    sentryClient.CaptureChangedSettings(name, "Cascading Slot Odds Config", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(name, "Cascading Slot Odds Config", string.Empty, changedSettings);
 
                     var update = Builders<GameConfigEntity>.Update
                         .Set(field => field.CascadingSlotsConfig.OddsByCounts, cascadingSlotsConfig.OddsByCounts)
@@ -464,7 +468,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetJackpotChangedModel(gameEntity, jackpot);
-                    sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(name, "Jackpot", string.Empty, changedSettings);
                     var filter = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
 
                     if (jackpot.Pools != null)
@@ -517,7 +521,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetBotConfigChangedModel(gameEntity, jackpot, betLevels);
-                    sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(name, "Jackpot", string.Empty, changedSettings);
                     var sortBetLevel = betLevels.OrderBy(level => level).ToArray();
 
                     var update = Builders<GameConfigEntity>.Update
@@ -557,8 +561,8 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetSlotConfigChangedModel(gameEntity, botEnabled, slotsConfig);
-                    sentryClient.CaptureChangedSettings(name, "Slot Config", string.Empty, changedSettings);
-                    sentryClient.CaptureChangedSettings(gameEntity.Name, "Odds", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(name, "Slot Config", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Odds", string.Empty, changedSettings);
                     var update = Builders<GameConfigEntity>.Update
                             .Set(field => field.Botenabled, botEnabled)
                             .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
@@ -592,7 +596,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetCascadingSlotConfigsChangeModel(gameEntity, botEnabled, cascadingSlotsConfig);
-                    sentryClient.CaptureChangedSettings(name, "Cascading Slot Config", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(name, "Cascading Slot Config", string.Empty, changedSettings);
                     var update = Builders<GameConfigEntity>.Update
                        .Set(field => field.Botenabled, botEnabled)
                        .Set(field => field.CascadingSlotsConfig.MultiplierBonus, cascadingSlotsConfig.MultiplierBonus)
@@ -627,7 +631,7 @@ namespace GamesAdmin.Api.Games
                 foreach (var gameEntity in gameEntities)
                 {
                     var changedSettings = SettingHelper.GetGeneralConfigChangedModel(gameEntity, gameInfo, botSetting, enableSetting, oddsMultipliers, tournamentConfig, videoStreamConfig);
-                    sentryClient.CaptureChangedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
 
                     var update = Builders<GameConfigEntity>.Update
                         .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
@@ -677,7 +681,7 @@ namespace GamesAdmin.Api.Games
         {
             var gameEntity = await repository.FindOneAsync(entity => entity.Name == gameInfo.Name);
             var changedSettings = SettingHelper.GetSlotRNGConfigsChangeModel(gameEntity, gameInfo, botSetting, enableSetting, slotRNGConfig);
-            sentryClient.CaptureChangedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
+            await chatBotService.NotifyAdminUpdatedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
 
             var update = Builders<GameConfigEntity>.Update
                 .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
@@ -714,7 +718,7 @@ namespace GamesAdmin.Api.Games
                 {
                     var existingSlotSymbolWeight = gameEntity.SlotsConfig.SymbolWeight ?? new Dictionary<string, int[][]>();
 
-                    sentryClient.CaptureChangedSettings(name, "Symbol Weight", string.Empty, SettingHelper.GetSymbolWeightChangedModel(existingSlotSymbolWeight, symbolWeight));
+                    await chatBotService.NotifyAdminUpdatedSettings(name, "Symbol Weight", string.Empty, SettingHelper.GetSymbolWeightChangedModel(existingSlotSymbolWeight, symbolWeight));
 
                     var keyMode = symbolWeight.Mode.ToString();
 
@@ -754,7 +758,7 @@ namespace GamesAdmin.Api.Games
         {
             var gameEntity = await repository.FindOneAsync(entity => entity.Name == gameInfo.Name);
             var changedSettings = SettingHelper.GetCrashConfigChangeModel(gameEntity, gameInfo, botSetting, enableSetting, crashConfig);
-            sentryClient.CaptureChangedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
+            await chatBotService.NotifyAdminUpdatedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
 
             var update = Builders<GameConfigEntity>.Update
                 .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
