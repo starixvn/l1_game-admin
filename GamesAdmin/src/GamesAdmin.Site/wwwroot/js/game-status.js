@@ -502,7 +502,8 @@
                 data: {
                     gameName,
                     mode,
-                    weights
+                    weights,
+                    otherGameIdsInGroup: $("#OtherGameIdsInGroup").val()
                 },
             }).done(function (result) {
                 if (result) {

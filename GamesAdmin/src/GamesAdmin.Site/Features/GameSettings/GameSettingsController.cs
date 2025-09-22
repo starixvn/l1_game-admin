@@ -297,7 +297,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                await mediator.Send(new UpdateJackpotRequest(viewModel.Name, mapper.Map<Jackpot>(viewModel.JackpotViewModel), viewModel.JackpotViewModel.StakeLevels));
+                await mediator.Send(new UpdateJackpotRequest(viewModel.Name, mapper.Map<Jackpot>(viewModel.JackpotViewModel), viewModel.JackpotViewModel.StakeLevels, viewModel.OtherGameIdsInGroup));
 
                 return Json(true);
             }
@@ -315,7 +315,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                await mediator.Send(new UpdateSlotBotConfigRequest(viewModel.Name, mapper.Map<Jackpot>(viewModel.JackpotViewModel), viewModel.SlotsConfig.BetLevels));
+                await mediator.Send(new UpdateSlotBotConfigRequest(viewModel.Name, mapper.Map<Jackpot>(viewModel.JackpotViewModel), viewModel.SlotsConfig.BetLevels, viewModel.OtherGameIdsInGroup));
 
                 return Json(true);
             }
@@ -423,14 +423,15 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost, Audit]
         [Route("/symbolweight/update")]
-        public async Task<IActionResult> UpdateSymbolWeight(string gameName, byte mode, int[][] weights)
+        public async Task<IActionResult> UpdateSymbolWeight(string gameName, byte mode, int[][] weights, IEnumerable<int> otherGameIdsInGroup)
         {
             try
             {
                 await mediator.Send(new UpdateSymbolWeightByModeRequest(
                     gameName,
                     mode,
-                    weights));
+                    weights,
+                    otherGameIdsInGroup));
 
                 return Json(true);
             }

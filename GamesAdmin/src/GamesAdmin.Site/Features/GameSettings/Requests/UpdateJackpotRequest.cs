@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Core.Models.GameConfigs;
+﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
@@ -8,12 +9,14 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public UpdateSlotBotConfigRequest(
             string name,
             Jackpot jackpot,
-            double[] betLevels
+            double[] betLevels,
+            IEnumerable<int> otherGameIdsInGroup
            )
         {
             Name = name;
             Jackpot = jackpot;
             BetLevels = betLevels;
+            OtherGameIdsInGroup = otherGameIdsInGroup;
         }
 
         public string Name { get; set; }
@@ -21,5 +24,8 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public Jackpot Jackpot { get; set; }
 
         public double[] BetLevels { get; set;}
+
+
+        public IEnumerable<int> OtherGameIdsInGroup { get; }
     }
 }

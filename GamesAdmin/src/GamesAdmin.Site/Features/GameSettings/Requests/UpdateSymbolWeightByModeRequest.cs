@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Collections.Generic;
+using MediatR;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
@@ -7,11 +8,13 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public UpdateSymbolWeightByModeRequest(
             string name,
             byte mode,
-            int[][] weights)
+            int[][] weights,
+            IEnumerable<int> otherGameIdsInGroup)
         {
             Name = name;
             Mode = mode;
             Weights = weights;
+            OtherGameIdsInGroup = otherGameIdsInGroup;
         }
 
         public string Name { get; set; }
@@ -19,5 +22,7 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public byte Mode { get; set; }
 
         public int[][] Weights { get; set; }
+
+        public IEnumerable<int> OtherGameIdsInGroup { get; set; }
     }
 }

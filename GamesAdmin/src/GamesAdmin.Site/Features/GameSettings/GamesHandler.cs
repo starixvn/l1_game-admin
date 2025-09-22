@@ -655,7 +655,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var updateSymbolWeightRequest = new UpdateSymbolWeightRequest(
                     request.Name,
-                    new SymbolWeight(request.Mode, request.Weights));
+                    new SymbolWeight(request.Mode, request.Weights),
+                    request.OtherGameIdsInGroup);
             return gameService.UpdateSymbolWeight(updateSymbolWeightRequest);
         }
 
