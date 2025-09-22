@@ -6,7 +6,7 @@ namespace GamesAdmin.Site.Features.Report
 {
     public interface IRemoteReportApi
     {
-        [Get("/RoundHistory/GetAccessUrl")]
+        [Post("/RoundHistory/GetAccessUrl")]
         Task<string> GetAccessUrl([Body] BetReportFilter model);
     }
 }
