@@ -16,7 +16,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.ViewModels
 
         public string ObCustId { get; set; }
 
-        public int GameRoundId { get; set; }
+        public long GameRoundId { get; set; }
 
         public int GameTypeId { get; set; }
 

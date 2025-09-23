@@ -19,7 +19,7 @@
             new SelectListItem { Text = "Dark", Value = "dark" },
         };
 
-        public int RoundId { get; set; }
+        public long RoundId { get; set; }
 
         public string PlayerId { get; set; }
 

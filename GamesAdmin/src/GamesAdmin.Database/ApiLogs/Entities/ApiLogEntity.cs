@@ -28,7 +28,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         [BsonElement("_t")]
         public virtual string RequestType { get; set; }
 
-        public int GameRoundId { get; set; }
+        public long GameRoundId { get; set; }
 
         public int? GameTypeId { get; set; }
 

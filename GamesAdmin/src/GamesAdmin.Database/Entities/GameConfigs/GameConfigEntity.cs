@@ -25,7 +25,7 @@ namespace GamesAdmin.Database.Entities
         public double Maxbet { get; set; }
 
         [BsonElement("disabledround")]
-        public int? DisabledRound { get; set; }
+        public long? DisabledRound { get; set; }
 
         [BsonElement("bot_maxbet")]
         public double BotMaxBet { get; set; }
