@@ -107,6 +107,11 @@ namespace GamesAdmin.Site.Features.OperateSettings
         {
             try
             {
+                if(gameConfigImport.GameId <= 0 || gameConfigImport.Info?.GameId <= 0)
+                {
+                    return false;
+                }    
+
                 // Convert GameConfigImport to GameConfig for the import service
                 // Disable the game by default when importing if EnableSetting exists
                 if (gameConfigImport.EnableSetting != null)
@@ -114,29 +119,8 @@ namespace GamesAdmin.Site.Features.OperateSettings
                     gameConfigImport.EnableSetting.Enabled = false; // Disable the game by default when importing
                 }
 
-                var gameConfig = new GameConfig(
-                    gameConfigImport.Id,
-                    gameConfigImport.Odds,
-                    gameConfigImport.Info,
-                    gameConfigImport.EnableSetting,
-                    gameConfigImport.BotSetting,
-                    gameConfigImport.BetLimit,
-                    gameConfigImport.SlotsConfig,
-                    gameConfigImport.CascadingSlotsConfig,
-                    gameConfigImport.SlotRNGConfig,
-                    gameConfigImport.CrashConfig,
-                    gameConfigImport.OddsMultipliers,
-                    gameConfigImport.TournamentConfig,
-                    gameConfigImport.VideoStreamConfig,
-                    gameConfigImport.OddsDisplayNames,
-                    gameConfigImport.Choices)
-                {
-                    Margin = gameConfigImport.Margin,
-                    GameId = gameConfigImport.GameId,
-                    Name = gameConfigImport.Name,
-                };
 
-                return await gameSettingService.Import(gameConfig);
+                return await gameSettingService.Import(gameConfigImport);
             }
             catch (Exception ex)
             {
