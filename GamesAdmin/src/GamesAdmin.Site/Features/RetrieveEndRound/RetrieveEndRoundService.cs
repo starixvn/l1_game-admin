@@ -15,22 +15,15 @@
     public class RetrieveEndRoundService : IRetrieveEndRoundService
     {
         private readonly IRetrieveEndRoundApi retrieveEndRoundApi;
-        private readonly IPartnerPlayerIdConverter playerIdConverter;
 
-        public RetrieveEndRoundService(IRetrieveEndRoundApi retrieveEndRoundApi, IPartnerPlayerIdConverter playerIdConverter)
+        public RetrieveEndRoundService(IRetrieveEndRoundApi retrieveEndRoundApi)
         {
             this.retrieveEndRoundApi = retrieveEndRoundApi;
-            this.playerIdConverter = playerIdConverter;
         }
 
         public async Task<string> GetRetrieveEndRoundAsync(BetDetailsViewModel model)
         {
-            var convertedPlayerId = playerIdConverter.ConvertPlayerId(model.OperatorId, model.PlayerId);
-
-            var request = new BetHistoryApiRequest(model)
-            {
-                PlayerId = convertedPlayerId
-            };
+            var request = new BetHistoryApiRequest(model);
             var accessKey = HmacHelpers.CreateAccessKey(request.Auth.OperatorSecret, request);
             var result = await retrieveEndRoundApi.RetrieveEndRound(request, accessKey);
 
