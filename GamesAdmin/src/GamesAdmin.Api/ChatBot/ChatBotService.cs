@@ -227,8 +227,11 @@ namespace GamesAdmin.Api.ChatBot
                 additionalDetails,
                 string.Join(";\r\n", changedSettings));
 
-            var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.AdminNotifications);
-            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
+            if (!string.IsNullOrWhiteSpace(appSettings.ChatBotApiSettings?.ConversationIds?.AdminNotifications))
+            {
+                var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.AdminNotifications);
+                _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
+            }
 
             return await Task.FromResult(new ChatBotResult());
         }
@@ -257,8 +260,11 @@ namespace GamesAdmin.Api.ChatBot
                 GetCurrentTimestamp(),
                 serializedSetting);
 
-            var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.AdminNotifications);
-            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
+            if (!string.IsNullOrWhiteSpace(appSettings.ChatBotApiSettings?.ConversationIds?.AdminNotifications))
+            {
+                var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.AdminNotifications);
+                _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
+            }
 
             return await Task.FromResult(new ChatBotResult());
         }

@@ -222,7 +222,6 @@ namespace GamesAdmin.Api.Partners
             {
                 var configType = PartnerConfigType.SiteExclusion.Value;
                 var oldConfig = await GetConfig(partnerId, configType);
-                var gameSettings = await generalGameSettingService.GetGameName(gameId);
                 var gameIds = new List<int>(otherGameIdsInGroup) { gameId };
 
                 if (oldConfig == null)
@@ -237,9 +236,10 @@ namespace GamesAdmin.Api.Partners
                     foreach(var id in gameIds)
                     {
                         var key = id.ToString();
+                        var gameName = await generalGameSettingService.GetGameName(id);
 
                         await chatBotService.NotifyAdminUpdatedSettings(
-                            gameSettings,
+                            gameName,
                             "Site Exclusion",
                             string.Empty,
                             new List<SettingChangedModel> { new SettingChangedModel(
