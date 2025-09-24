@@ -14,21 +14,14 @@
     public class BetDetailsService : IBetDetailsService
     {
         private readonly IBetDetailsApi betDetailsApi;
-        private readonly IPartnerPlayerIdConverter playerIdConverter;
-        public BetDetailsService(IBetDetailsApi betDetailsApi, IPartnerPlayerIdConverter playerIdConverter)
+        public BetDetailsService(IBetDetailsApi betDetailsApi)
         {
             this.betDetailsApi = betDetailsApi;
-            this.playerIdConverter = playerIdConverter;
         }
 
         public async Task<string> GetAccessUrlAsync(BetDetailsViewModel model)
         {
-            var convertedPlayerId = playerIdConverter.ConvertPlayerId(model.OperatorId, model.PlayerId);
-
-            var request = new BetDetailsAccessUrlApiRequest(model)
-            {
-                PlayerId = convertedPlayerId
-            };
+            var request = new BetDetailsAccessUrlApiRequest(model);
 
             if (model.UseHmacHash)
             {

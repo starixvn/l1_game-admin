@@ -141,7 +141,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IInternalTestAccountApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IInternalTestAccountService, InternalTestAccountService>();
-            services.AddScoped<IPartnerPlayerIdConverter, PartnerPlayerIdConverter>();
 
             services.AddSingleton(RestService.For<IPlayerInfoApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IPlayerInfoService, PlayerInfoService>();

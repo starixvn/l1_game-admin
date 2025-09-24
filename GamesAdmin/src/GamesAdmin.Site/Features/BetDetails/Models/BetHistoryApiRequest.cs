@@ -27,7 +27,7 @@ namespace GamesAdmin.Site.Features.BetDetails.Models
 
         public long GameRoundId { get; set; }
 
-        public object PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public bool FreeBet { get; set; }
 
