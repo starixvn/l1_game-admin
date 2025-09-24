@@ -1,7 +1,6 @@
 ﻿using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using GamesAdmin.Database.ApiLogs.Serializers;
 
 namespace GamesAdmin.Database.ApiLogs.Entities
 {
@@ -19,8 +18,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         [BsonElement("__archive")]
         public ApiLogArchiveEntity Archive { get; set; }
 
-        [BsonSerializer(typeof(PlayerIdSerializer))]
-        public dynamic PlayerId { get; set; }
+        public string PlayerId { get; set; }
     }
 
     public abstract class ApiLogRequestEntity
@@ -32,8 +30,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
 
         public int? GameTypeId { get; set; }
 
-        [BsonSerializer(typeof(PlayerIdSerializer))]
-        public object PlayerId { get; set; }
+        public string PlayerId { get; set; }
     }
 
     public abstract class ApiLogResultEntity

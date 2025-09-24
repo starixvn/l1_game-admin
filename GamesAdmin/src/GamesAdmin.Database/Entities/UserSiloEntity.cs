@@ -13,7 +13,7 @@
 
         public string OperatorId { get; set; }
 
-        public object PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public string PlayerName { get; set; }
 

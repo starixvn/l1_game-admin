@@ -29,7 +29,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
     public class MemberFailedSignInRequest : MemberSignInRequest, IApiLogRequest
     {
 
-        public object PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public long? GameRoundId { get; set; }
 
@@ -54,7 +54,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         public string ErrorDescription { get; set; }
 
-        public object PlayerId { get; set; }
+        public string PlayerId { get; set; }
     }
 
     public class PublicUserInfo

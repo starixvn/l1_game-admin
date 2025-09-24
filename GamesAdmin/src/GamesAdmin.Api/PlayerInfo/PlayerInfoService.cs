@@ -38,7 +38,7 @@
                 }
 
                 var userEntities = await userSiloRepository.FilterByAsync(x =>
-                    (!hasPlayerId || (x.PlayerId != null && x.PlayerId.ToString().Contains(playerIdTrimmed))) &&
+                    (!hasPlayerId || (x.PlayerId != null && x.PlayerId.Contains(playerIdTrimmed))) &&
                     (!hasName || (
                         (x.NickName != null && x.NickName.ToLower() == nameTrimmed) ||
                         (x.PlayerName != null && x.PlayerName.ToLower() == nameTrimmed)
@@ -47,7 +47,7 @@
 
                 return userEntities.Select(entity => new PlayerInfoModel
                 {
-                    PlayerId = entity.PlayerId?.ToString() ?? "",
+                    PlayerId = entity.PlayerId ?? "",
                     PlayerName = entity.PlayerName,
                     NickName = entity.NickName,
                     Currency = entity.Currency,

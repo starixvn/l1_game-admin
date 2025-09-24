@@ -10,7 +10,7 @@
 
         string ErrorDescription { get; }
 
-        object PlayerId { get; }
+        string PlayerId { get; }
     }
 
     public class PartnerResult : IPartnerResult
@@ -25,7 +25,7 @@
 
         public string ObCustId { get; set; }
 
-        public object PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public string ResultType { get; set; }
     }

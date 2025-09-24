@@ -37,7 +37,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
     public class OWFailedSignInCall : OWSignInCall, IApiLogRequest
     {
-        public object PlayerId { get; set; }
+        public string PlayerId { get; set; }
         public long? GameRoundId { get; set; }
         public int? GameTypeId { get; set; }
         public string RequestType { get; set; }
@@ -59,6 +59,6 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         public string ObCustId { get; set; }
 
-        public object PlayerId { get; set; }
+        public string PlayerId { get; set; }
     }
 }
