@@ -617,6 +617,7 @@ namespace GamesAdmin.Site.Features.Report
 
             result.BaseCurrency = systemSettings.BaseCurrency;
             result.BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier;
+            
             result.GameName = Game.FromGameId((GameId)request.Filter.Game).Value;
 
             return result;

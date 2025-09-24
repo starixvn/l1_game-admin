@@ -9,4 +9,12 @@ namespace GamesAdmin.Core.Models.BetReport
         public string UserId { get; set; }
         public string PartnerId { get; set; }
     }
+
+    public class BetHistoryFilterForHardCodeGame
+    {
+        public GameId Game { get; set; }
+        public long RoundId { get; set; }
+        public string UserId { get; set; }
+        public string PartnerId { get; set; }
+    }
 }
