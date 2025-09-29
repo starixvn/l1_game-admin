@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.GameGroupManagement
 {
-    [Authorize(Roles = "admin")]
     public class GameGroupManagementController : Controller
     {
         private readonly IMediator mediator;
@@ -21,16 +20,17 @@ namespace GamesAdmin.Site.Features.GameGroupManagement
 
         [HttpGet]
         public async Task<IActionResult> Index() => View(await mediator.Send(new IndexPageRequet()));
-        [HttpGet]
+
+        [Authorize(Roles = "admin"), HttpGet]
         public async Task<IActionResult> Create() => PartialView("_Create", await mediator.Send(new CreatePageRequest()));
 
-        [HttpPost, Audit]
+        [Authorize(Roles = "admin"), HttpPost, Audit]
         public async Task<IActionResult> Create([Bind] CreateGameGroupViewModel model) => Ok(await mediator.Send(new CreateRequest(model)));
 
-        [HttpGet]
+        [Authorize(Roles = "admin"), HttpGet]
         public async Task<IActionResult> Update([FromQuery] string groupId) => PartialView("_Update", await mediator.Send(new UpdatePageRequest(groupId)));
 
-        [HttpPost, Audit]
+        [Authorize(Roles = "admin"), HttpPost, Audit]
         public async Task<IActionResult> Update([Bind] UpdateGameGroupViewModel model) => Ok(await mediator.Send(new UpdateRequest(model)));
     }
 }
