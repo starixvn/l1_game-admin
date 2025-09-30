@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using AutoMapper;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ChatBot;
@@ -67,6 +68,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> IsGameIdExists(int gameId);
 
         Task<bool> IsGameNameExists(string gameName);
+
+        Task<bool> UpdatePlinkoConfig(string name, PlinkoConfig plinkoConfig);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -155,6 +158,7 @@ namespace GamesAdmin.Api.Games
                     HaveTournament = game.Info.HaveTournament,
                     HaveVideoStream = game.Info.HaveVideoStream,
                     UseMargin = game.Info.UseMargin,
+                    PlinkoConfig = game.PlinkoConfig
                 };
 
                 if (game.Info.ApplyMultiplier)
@@ -186,7 +190,7 @@ namespace GamesAdmin.Api.Games
 
                 var messages = new Dictionary<string, string> { [Language.DefaultLanguageValue] = game.EnableSetting.DisabledMessage };
                 await notificationService.AddDisableMessage(game.Info.Name, messages);
-                // Notify about new game creation
+                //Notify about new game creation
                 await NotifyNewGameCreated(game.Info?.Name, entity);
             }
             catch (Exception ex)
@@ -278,7 +282,8 @@ namespace GamesAdmin.Api.Games
                 || gameInfo.Type == GameType.Crash
                 || gameInfo.Type == GameType.CrashTurnBase
                 || gameInfo.Type == GameType.AutoRNGIndex
-                || gameInfo.Type == GameType.CascadingSlots)
+                || gameInfo.Type == GameType.CascadingSlots
+                || gameInfo.Type == GameType.Plinko)
             {
                 return gameInfo.GameId;
             }
@@ -906,6 +911,42 @@ namespace GamesAdmin.Api.Games
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
             return true;
+        }
+
+        public async Task<bool> UpdatePlinkoConfig(string name, PlinkoConfig plinkoConfig)
+        {
+            try
+            {
+                if (plinkoConfig.Odds?.Count == 0)
+                {
+                    throw new InvalidOperationException($"Odds of game {name} are empty.");
+                }
+
+                var gameEntities = await repository.FilterByAsync(x => x.Name == name);
+                var writes = new List<UpdateOneModel<GameConfigEntity>>();
+
+                foreach (var gameEntity in gameEntities)
+                {
+                    var changedSettings = SettingHelper.GetPlinkoConfigChangedModel(gameEntity.PlinkoConfig, plinkoConfig);
+                    await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Plinko Odds Config", string.Empty, changedSettings);
+
+                    var update = Builders<GameConfigEntity>.Update
+                        .Set(field => field.PlinkoConfig.Odds, plinkoConfig.Odds);
+
+                    var filter = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
+                    writes.Add(new UpdateOneModel<GameConfigEntity>(filter, update));
+                }
+
+                await repository.Collection().BulkWriteAsync(writes, new BulkWriteOptions { IsOrdered = false });
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
         }
 
         public async Task<bool> IsGameIdExists(int gameId)

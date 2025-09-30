@@ -87,5 +87,7 @@ namespace GamesAdmin.Database.Entities
         public bool HaveVideoStream { get; set; }
 
         public bool UseMargin { get; set; }
+
+        public PlinkoConfig PlinkoConfig { get; set; }
     }
 }

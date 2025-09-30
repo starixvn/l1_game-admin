@@ -561,9 +561,15 @@
         updateOdds: function () {
             $('#update-odds-msg').hide();
 
+            let requestUrl = "/odds/update";
+
+            if ($('#plinkoConfig').css('display')) {
+                requestUrl = "/plinko-config/update";
+            }
+
             $.ajax({
                 method: "POST",
-                url: "/odds/update",
+                url: requestUrl,
                 dataType: 'json',
                 data: $('#gameForm').serialize(),
             }).done(function (result) {
@@ -788,11 +794,7 @@
             $('#adjustweight-tab-header').removeClass("active");
             $('#slotBotSetting-tab-header').removeClass("active");
 
-            const id = '#' + name;
-            const headerId = '#' + name + '-tab-header';
-
-            $(id).show();
-            $(headerId).addClass("active");
+            this.showTab(name);
 
             if (name === "adjustweight") {
                 this.showSymbolWeight();
@@ -838,11 +840,7 @@
             $('#addnew-tab-header').removeClass("active");
             $('#clonegame-tab-header').removeClass("active");
 
-            const id = '#' + tabName;
-            const headerId = '#' + tabName + '-tab-header';
-
-            $(id).show();
-            $(headerId).addClass("active");
+            this.showTab(tabName);
         },
 
         toggleMode: function () {
@@ -1200,12 +1198,248 @@
                 // Clear the JSON input
                 $("#video-stream-json").val("");
             }
-        }
+        },
+
+        togglePlinkoSettingTabs: function(tabName) {
+            // Hide all tab content
+            $('#low').hide();
+            $('#medium').hide();
+            $('#high').hide();
+
+            // Remove active class from all tab headers
+            $('#low-tab-header').removeClass('active');
+            $('#medium-tab-header').removeClass('active');
+            $('#high-tab-header').removeClass('active');
+
+            // Show selected tab content
+            this.showTab(tabName);
+        },
+
+        showTab(tabName) {
+            $(`#${tabName}`).show();
+            $(`#${tabName}-tab-header`).addClass("active");
+        },
+
+        toggleMirrorValues(riskLevel) {
+            const checkbox = $(`#mirror${riskLevel.charAt(0).toUpperCase() + riskLevel.slice(1)}`);
+            const tabContent = $(`#${riskLevel}`);
+
+            // Get all input fields in the current tab
+            const inputs = tabContent.find('input[type="number"]');
+
+            inputs.each((index, input) => {
+                // Remove any existing mirror event listener
+                if (input.mirrorHandler) {
+                    $(input).off('input', input.mirrorHandler);
+                }
+
+                if (checkbox.is(':checked')) {
+                    // Create new event handler
+                    input.mirrorHandler = function () {
+                        if (!this.isMirroring) {
+                            this.isMirroring = true;
+                            gameStatus.mirrorValue(this, riskLevel);
+                            this.isMirroring = false;
+                        }
+                    };
+                    // Add event listener for mirror functionality
+                    $(input).on('input', input.mirrorHandler);
+                }
+            });
+        },
+
+        mirrorValue(inputElement, riskLevel) {
+            const $rowContainer = $(inputElement).closest('fieldset');
+            if ($rowContainer.length === 0) {
+                return;
+            }
+
+            const rowInputs = $rowContainer.find('input[type="number"]').toArray();
+            const currentIndex = rowInputs.indexOf(inputElement);
+
+
+            if (currentIndex === -1) {
+                return;
+            }
+
+            const mirrorIndex = rowInputs.length - 1 - currentIndex;
+
+
+            if (currentIndex === mirrorIndex) {
+                return;
+            }
+
+            const mirrorInput = rowInputs[mirrorIndex];
+            if (mirrorInput) {
+                const value = $(inputElement).val();
+                if (!isNaN(value)) {
+                    mirrorInput.isMirroring = true;
+                    $(mirrorInput).val(value);
+                    mirrorInput.isMirroring = false;
+                    
+                    // Update RTP for the mirrored input
+                    this.updateEstimatedRTP(mirrorInput);
+                }
+            }
+        },
+
+        binomial(n, k) {
+            if (k > n) 
+            {
+                return 0;
+            }
+
+            let result = 1;
+            for (let i = 0; i < k; i++) {
+                result *= (n - i) / (i + 1);
+            }
+            return result;
+        },
+    
+         calculateProbability(n, k) {
+            const binom = this.binomial(n, k);
+            const totalPossibilities = Math.pow(2, n);
+            return binom / totalPossibilities;
+        },
+    
+         getPlinkoProbabilities(n) {
+            const probabilities = [];
+            for (let k = 0; k <= n; k++) {
+                probabilities.push(this.calculateProbability(n, k));
+            }
+            return probabilities;
+        },
+    
+        calculateEstimatedRTP(n, multipliers) {
+            const probabilities = this.getPlinkoProbabilities(n);
+    
+            if (multipliers.length !== probabilities.length) {
+                throw new Error("Số lượng hệ số thưởng (multipliers) phải bằng n + 1");
+            }
+    
+            // RTP = Σ(P(i) × M(i))
+            const rtp = probabilities.reduce((acc, p, i) => acc + p * multipliers[i], 0);
+    
+            return rtp * 100; // % RTP
+        },
+    
+         updateEstimatedRTP(inputElement) {
+            const $rowContainer = $(inputElement).closest('fieldset');
+            if ($rowContainer.length === 0) 
+            {
+                return;
+            }
+    
+            const multiplierInputs = $rowContainer.find('input[type="number"]:not(.estimated-rtp)');
+            
+            if (multiplierInputs.length === 0) 
+            {
+                return;
+            }
+    
+            const legend = $rowContainer.find('legend');
+            const rowNumber = parseInt(legend.text().replace('Row ', ''));
+            
+            const tabContainer = $rowContainer.closest('.tab-content');
+            let riskLevel = 'low';
+            if (tabContainer.attr('id') === 'medium') {
+                riskLevel = 'medium';
+            } else if (tabContainer.attr('id') === 'high') {
+                riskLevel = 'high';
+            }
+            
+            const rtpElementId = `rtp-${riskLevel}-${rowNumber}`;
+            const $rtpInput = $(`#${rtpElementId}`);
+            
+            if ($rtpInput.length === 0) 
+            {
+                return;
+            }
+            
+            // Extract multiplier values
+            const multipliers = multiplierInputs.map(function() {
+                const value = $(this).val();
+                return isNaN(value) ? 0 : value;
+            }).get();
+    
+            try {
+                // Calculate RTP
+                const rtp = this.calculateEstimatedRTP(rowNumber, multipliers);
                 
+                // Update the RTP display
+                $rtpInput.text(rtp.toFixed(2));
+                
+                // Update average RTP for the current risk level
+                this.updateAverageRTP(riskLevel);
+            } catch (error) {
+                console.error('Error calculating RTP:', error);
+                $rtpInput.text('0.00');
+            }
+        },
+    
+        updateAverageRTP(riskLevel) {
+            // Calculate average RTP for rows 8 to 16
+            const startRow = 8;
+            const endRow = 16;
+            const numberOfRows = endRow - startRow + 1; // 9 rows total
+            
+            let sumOfRTPs = 0;
+            let validRows = 0;
+            
+            for (let row = startRow; row <= endRow; row++) {
+                const rtpElementId = `rtp-${riskLevel}-${row}`;
+                const $rtpElement = $(`#${rtpElementId}`);
+                
+                if ($rtpElement.length > 0) {
+                    const rtpValue = parseFloat($rtpElement.text());
+                    if (!isNaN(rtpValue)) {
+                        sumOfRTPs += rtpValue;
+                        validRows++;
+                    }
+                }
+            }
+            
+            // Calculate average: (1 / number of rows) * sum of all Row RTPs
+            const averageRTP = validRows > 0 ? (1 / numberOfRows) * sumOfRTPs : 0;
+            
+            // Update the average RTP display
+            const $averageElement = $(`#average-rtp-${riskLevel}`);
+            if ($averageElement.length > 0) {
+                $averageElement.text(averageRTP.toFixed(2));
+            }
+        },
+    
+        // Initialize RTP calculation for Plinko
+        initializePlinkoRTP() {
+            const self = this;
+            const allInputs = 'input[type="number"]:not(.estimated-rtp)';
+            
+            // Remove existing event listeners to avoid duplicates
+            $(allInputs).off('input.plinko-rtp');
+            
+            // Add event listener to all multiplier inputs
+            $(allInputs).on('input.plinko-rtp', function() {
+                self.updateEstimatedRTP(this);
+            });
+
+            // Calculate initial RTP for all rows
+            const allRows = $('fieldset');
+            allRows.each(function() {
+                const firstInput = $(this).find(allInputs).first();
+                if (firstInput.length > 0) {
+                    self.updateEstimatedRTP(firstInput[0]);
+                }
+            });
+
+            // Calculate initial average RTP for all risk levels
+            self.updateAverageRTP('low');
+            self.updateAverageRTP('medium');
+            self.updateAverageRTP('high');
+        },
     }
 }(jQuery));
 
-$(document).ready(function () {
+$(document).ready(function () {     
     if ($("#status-tbl")) {
         $("#status-tbl").DataTable({
             "ordering": false,
@@ -1233,6 +1467,13 @@ $(document).ready(function () {
 
     $("#gameModal").on("hidden.bs.modal", function () {
         $("#gamedetails").empty();
+    });
+
+    $("#gameModal").on("shown.bs.modal", function () {
+        // Re-initialize Plinko RTP calculation when modal is shown
+        if ($("#plinkoConfig").length > 0) {
+            gameStatus.initializePlinkoRTP();
+        }
     });
 
     $("#partnerSettingModal").on("hidden.bs.modal", function () {

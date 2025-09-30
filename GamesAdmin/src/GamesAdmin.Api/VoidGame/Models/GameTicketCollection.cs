@@ -8,8 +8,15 @@
             Bet = bet;
         }
 
+        public GameTicketCollection(string round)
+        {
+            Round = round;
+        }
+
         public string One { get; }
 
         public string Bet { get; }
+
+        public string Round { get; }
     }
 }

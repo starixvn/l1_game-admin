@@ -100,5 +100,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Post("/status_checker/check")]
         Task<StatusGameResult> CheckServiceStatus(CheckServiceStatusRequest request);
+
+        [Post("/game_settings/update_plinko_config")]
+        Task<bool> UpdatePlinkoConfig([Body] UpdatePlinkoConfigRequest request);
     }
 }

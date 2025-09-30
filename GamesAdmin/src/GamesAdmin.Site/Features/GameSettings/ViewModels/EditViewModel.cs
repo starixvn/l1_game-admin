@@ -106,6 +106,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public IEnumerable<int> OtherGameIdsInGroup { get; set; }
         public IEnumerable<SelectListItem> OtherGamesInGroup { get; set; }
+
+        public PlinkoConfig PlinkoConfig { get; set; }
     }
 
     public class BotRatioItemViewModel
