@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Api.VoidGame.Requests;
 using GamesAdmin.Core.Enumeration;
@@ -47,6 +48,8 @@ namespace GamesAdmin.Api.VoidGame
 
         private readonly IAppSettings appSettings;
 
+        private readonly IChatBotService chatBotService;
+
         private readonly Dictionary<GameId, string> gameRound24h = new Dictionary<GameId, string>
         {
             { GameId.Blackjack, "blackjack"},
@@ -63,7 +66,7 @@ namespace GamesAdmin.Api.VoidGame
 
         public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketHandler,
             IVoidRunningTicketApiFactory voidRunningTicketApiFactory, IGenericRepository<AccountInfoEntity> accountInfoRepository,
-            IAppSettings appSettings)
+            IAppSettings appSettings, IChatBotService chatBotService)
         {
             this.sentryClient = sentryClient;
             this.voidGameApi = voidGameApi;
@@ -71,6 +74,7 @@ namespace GamesAdmin.Api.VoidGame
             this.voidRunningTicketApiFactory = voidRunningTicketApiFactory;
             this.accountInfoRepository = accountInfoRepository;
             this.appSettings = appSettings;
+            this.chatBotService = chatBotService;
         }
 
         public async Task<VoidGameResult> VoidGameTicket(VoidTicketRequest request)
@@ -98,7 +102,7 @@ namespace GamesAdmin.Api.VoidGame
                 }
                 var gameId = Enum.Parse<GameId>(request.GameTypeId.ToString());
 
-                if (gameSinglePlayer.ContainsKey(gameId) && ticket != null )
+                if (gameSinglePlayer.ContainsKey(gameId) && ticket != null)
                 {
                     var keyValuePairs = (IDictionary<string, object>)ticket;
                     var userIndentify = keyValuePairs["uid"].ToString();
@@ -257,8 +261,13 @@ namespace GamesAdmin.Api.VoidGame
 
                 if (apiResult.Result.IsSuccessful())
                 {
-                    var sentryLevel = request.CallApi ? Sentry.Protocol.SentryLevel.Fatal : Sentry.Protocol.SentryLevel.Warning;
-                    sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.PlayerId}", sentryLevel);
+                    // Notify via ChatBot instead of Sentry
+                    var notificationData = new
+                    {
+                        Request = request,
+                        ApiResult = apiResult.Result
+                    };
+                    _ = Task.Run(() => chatBotService.NotifyAdminAction("VOID GAME TICKET", notificationData));
 
                     var moved = await ticketHandler.Void(
                         request.PlayerId,
@@ -304,7 +313,7 @@ namespace GamesAdmin.Api.VoidGame
                     var accountInfoEntity = await accountInfoRepository.FindOneAsync(entity => entity.UserId == userIndentify);
                     var serviceName = NamingConverter.ServiceName(gameName, appSettings.ServiceNameSeparator);
 
-                    if (appSettings.Env=="DEV")
+                    if (appSettings.Env == "DEV")
                     {
                         serviceName = NamingConverter.ServiceName(gameName, "");
                     }

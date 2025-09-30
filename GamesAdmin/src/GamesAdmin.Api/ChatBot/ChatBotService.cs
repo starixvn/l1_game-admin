@@ -46,6 +46,8 @@ namespace GamesAdmin.Api.ChatBot
         Task<ChatBotResult> NotifyAdminUpdatedSettings(string gameName, string settingName, string additionalDetails, List<SettingChangedModel> settings);
 
         Task<ChatBotResult> NotifyAdminAddSettings(string action, string settingName, object setting);
+
+        Task<ChatBotResult> NotifyAdminAction(string actionName, object details);
     }
 
     public class ChatBotService : IChatBotService
@@ -65,6 +67,7 @@ namespace GamesAdmin.Api.ChatBot
 
         private const string MessageChangedSetting = "[{0}] CHANGE {1} ({2}):\r\n{3} has new {4}!!!\r\n{5} \r\nDetails: {6}";
         private const string MessageAddedSetting = "[{0}] {1} {2} ({3})\r\nDetails: {4}";
+        private const string MessageAdminAction = "[{0}] {1} ({2}):\r\nDetails: {3}";
 
         private const string FormDataMessageKey = "Message";
         private const string FormDataConversationIdKey = "ConversationId";
@@ -81,6 +84,15 @@ namespace GamesAdmin.Api.ChatBot
         private static string GetCurrentTimestamp()
         {
             return DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC");
+        }
+
+        private void SendNotification(string message)
+        {
+            if (!string.IsNullOrWhiteSpace(appSettings.ChatBotApiSettings?.ConversationIds?.AdminNotifications))
+            {
+                var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.AdminNotifications);
+                _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
+            }
         }
 
         public ChatBotService(
@@ -227,11 +239,7 @@ namespace GamesAdmin.Api.ChatBot
                 additionalDetails,
                 string.Join(";\r\n", changedSettings));
 
-            if (!string.IsNullOrWhiteSpace(appSettings.ChatBotApiSettings?.ConversationIds?.AdminNotifications))
-            {
-                var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.AdminNotifications);
-                _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
-            }
+            SendNotification(message);
 
             return await Task.FromResult(new ChatBotResult());
         }
@@ -260,11 +268,29 @@ namespace GamesAdmin.Api.ChatBot
                 GetCurrentTimestamp(),
                 serializedSetting);
 
-            if (!string.IsNullOrWhiteSpace(appSettings.ChatBotApiSettings?.ConversationIds?.AdminNotifications))
-            {
-                var formData = BuildFormData(message, appSettings.ChatBotApiSettings.ConversationIds.AdminNotifications);
-                _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, formData));
-            }
+            SendNotification(message);
+
+            return await Task.FromResult(new ChatBotResult());
+        }
+
+        public async Task<ChatBotResult> NotifyAdminAction(string actionName, object details)
+        {
+            var serializedDetails = details == null
+                ? string.Empty
+                : Newtonsoft.Json.JsonConvert.SerializeObject(details, Newtonsoft.Json.Formatting.Indented, new Newtonsoft.Json.JsonSerializerSettings
+                {
+                    NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
+                    MaxDepth = 3,
+                });
+
+            var message = string.Format(
+                MessageAdminAction,
+                appSettings.Env,
+                actionName.ToUpperInvariant(),
+                GetCurrentTimestamp(),
+                serializedDetails);
+
+            SendNotification(message);
 
             return await Task.FromResult(new ChatBotResult());
         }

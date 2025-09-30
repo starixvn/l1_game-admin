@@ -1,5 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.VoidGame;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Api.VoidGame.Requests;
@@ -32,6 +33,8 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
 
         private readonly Mock<IGenericRepository<AccountInfoEntity>> accountInfoRepository;
 
+        private readonly IChatBotService chatBotService;
+
         public VoidGameServiceTests()
         {
             sentryClient = Substitute.For<ISentryClient>();
@@ -39,7 +42,8 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
             ticketHandler = Substitute.For<ITicketHandler>();
             voidRunningTicketApiFactory = new Mock<IVoidRunningTicketApiFactory>();
             accountInfoRepository = new Mock<IGenericRepository<AccountInfoEntity>>();
-            voidGameService = new VoidGameService(sentryClient, voidGameApi, ticketHandler, voidRunningTicketApiFactory.Object, accountInfoRepository.Object, Substitute.For<IAppSettings>());
+            chatBotService = Substitute.For<IChatBotService>();
+            voidGameService = new VoidGameService(sentryClient, voidGameApi, ticketHandler, voidRunningTicketApiFactory.Object, accountInfoRepository.Object, Substitute.For<IAppSettings>(), chatBotService);
         }
 
         [Theory, AutoData]
