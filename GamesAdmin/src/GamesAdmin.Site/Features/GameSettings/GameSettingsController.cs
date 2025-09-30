@@ -292,6 +292,26 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         [HttpPost, Audit]
+        [Route("/plinko-config/update")]
+        public async Task<IActionResult> UpdatePlinkoConfig([Bind] EditViewModel viewModel)
+        {
+            try
+            {
+                var updateResult = await mediator.Send(new UpdatePlinkoConfigRequest(
+                      viewModel.Name,
+                      viewModel.PlinkoConfig));
+
+                return Json(updateResult);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost, Audit]
         [Route("/jackpot/update")]
         public async Task<IActionResult> UpdateJackpot([Bind] EditViewModel viewModel)
         {

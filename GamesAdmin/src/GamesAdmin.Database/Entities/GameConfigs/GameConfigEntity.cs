@@ -89,5 +89,6 @@ namespace GamesAdmin.Database.Entities
         public bool UseMargin { get; set; }
 
         public bool EnablePromotionRTP { get; set; }
+        public PlinkoConfig PlinkoConfig { get; set; }
     }
 }

@@ -474,6 +474,43 @@ namespace GamesAdmin.Api._Shared.Helpers
             return changedSettings;
         }
 
+        public static List<SettingChangedModel> GetPlinkoConfigChangedModel(PlinkoConfig oldConfig, PlinkoConfig newConfig)
+        {
+            var changedSettings = new List<SettingChangedModel>();
+            var oldOdds = oldConfig.Odds;
+            var newOdds = newConfig.Odds;
+
+            // Compare each risk level
+            foreach (var newRiskLevel in newOdds)
+            {
+                var riskLevel = newRiskLevel.Key;
+                var newRiskOdds = newRiskLevel.Value;
+                var oldRiskOdds = oldOdds[riskLevel];
+
+                // Compare each row count within the risk level
+                foreach (var newRowCount in newRiskOdds)
+                {
+                    var rowCount = newRowCount.Key;
+                    var newRowOdds = newRowCount.Value;
+                    var oldRowOdds = oldRiskOdds[rowCount];
+
+                    // Compare the odds arrays
+                    if (!oldRowOdds.SequenceEqual(newRowOdds))
+                    {
+                        var oldValue = oldRowOdds.Length > 0 ? string.Join(", ", oldRowOdds) : "Empty";
+                        var newValue = newRowOdds.Length > 0 ? string.Join(", ", newRowOdds) : "Empty";
+                        
+                        changedSettings.Add(new SettingChangedModel(
+                            $"Game Mode {riskLevel} - Row {rowCount}",
+                            oldValue,
+                            newValue));
+                    }
+                }
+            }
+
+            return changedSettings;
+        }
+
         private static string GetOddsByCountConfigString(IList<OddsByCount> oddsByCount)
         {
             string configString = "";

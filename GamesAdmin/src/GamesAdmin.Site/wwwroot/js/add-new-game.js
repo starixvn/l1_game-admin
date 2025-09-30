@@ -25,9 +25,9 @@ $(document).ready(function () {
     // Function to toggle Name field based on GameType
     function toggleNameField() {
         var selectedType = parseInt($(SELECTORS.TYPE).val());
-        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
+        var isNewGame = selectedType >= 10;
 
-        if (isAutoRNGIndex) {
+        if (isNewGame) {
             showAutoRNGIndexFields();
         } else {
             showPredefinedGameFields();
@@ -36,16 +36,23 @@ $(document).ready(function () {
     }
 
     function showAutoRNGIndexFields() {
+        var selectedType = parseInt($(SELECTORS.TYPE).val());
+        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
+
         $(SELECTORS.NAME_TEXTBOX).show();
-        $(SELECTORS.NAME_SELECT).hide();
+        $(SELECTORS.NAME_SELECT).hide().prop("disabled", true);
         $(SELECTORS.NAME_HELPER_TEXT).text(MESSAGES.AUTO_RNG_HELPER);
         $(SELECTORS.GAME_ID_CONTAINER).show();
-        $(SELECTORS.CHOICES_SECTION).show();
+        if (isAutoRNGIndex) {
+            $(SELECTORS.CHOICES_SECTION).show();
+        } else {
+            $(SELECTORS.CHOICES_SECTION).hide();
+        }
         $(SELECTORS.NAME_TEXTBOX).val("");
     }
 
     function showPredefinedGameFields() {
-        $(SELECTORS.NAME_TEXTBOX).hide();
+        $(SELECTORS.NAME_TEXTBOX).hide().prop("disabled", true);
         $(SELECTORS.NAME_SELECT).show();
         $(SELECTORS.NAME_HELPER_TEXT).text(MESSAGES.PREDEFINED_HELPER);
         $(SELECTORS.GAME_ID_CONTAINER).hide();
@@ -59,12 +66,14 @@ $(document).ready(function () {
     // Function to update the hidden field with the current visible field's value
     function updateHiddenField() {
         var selectedType = parseInt($(SELECTORS.TYPE).val());
-        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
+        var isNewGame = selectedType >= GAME_TYPE_AUTO_RNG_INDEX;
 
-        if (isAutoRNGIndex) {
+        if (isNewGame) {
             $(SELECTORS.NAME_HIDDEN).val($(SELECTORS.NAME_TEXTBOX).val());
+            $(SELECTORS.NAME_TEXTBOX).prop("disabled", false);
         } else {
             $(SELECTORS.NAME_HIDDEN).val($(SELECTORS.NAME_SELECT).val());
+            $(SELECTORS.NAME_SELECT).prop("disabled", false);
         }
     }
 

@@ -1,0 +1,13 @@
+﻿@using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@model EditViewModel
+
+<div class="form-group flex flex-column">
+    <div asp-for="MaxWinPerRound" class="control-label max-win-per-round-label">
+        Max Payout Per Round
+    </div>
+    <label>
+        <input asp-for="MaxWinPerRound" type="number" class="form-control max-win-per-round" />
+        x Max Bet
+    </label>
+</div>

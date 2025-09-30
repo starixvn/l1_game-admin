@@ -74,6 +74,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<StatusGameResult> CheckServiceStatus(CheckServiceStatusRequest request);
 
         Task<RtpResult> GetSlotRtp(GetSlotRtpRequest request);
+
+        Task<string> UpdatePlinkoConfig(UpdatePlinkoConfigRequest request);
     }
 
     public class GameSettingService : IGameSettingService
@@ -244,5 +246,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<RtpResult> GetSlotRtp(GetSlotRtpRequest request)
         => gameApi.GetSlotRtp(request);
+
+        public async Task<string> UpdatePlinkoConfig(UpdatePlinkoConfigRequest request)
+        => await gameApi.UpdatePlinkoConfig(request) ? string.Empty : UpdateFailedMessage;
     }
 }

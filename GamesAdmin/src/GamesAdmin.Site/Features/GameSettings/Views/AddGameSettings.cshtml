@@ -23,12 +23,12 @@
 
         <div class="form-group" id="game-name-container">
             <label asp-for="Name" class="control-label"></label>
-            <input type="text" name="NameTextbox" class="form-control" id="name-textbox" placeholder="Enter game name" style="@(Model.Type == GameType.AutoRNGIndex ? "" : "display:none;")" required onblur="validateNameField()" />
-            <select name="NameSelect" asp-items="@Model.GameNames" class="form-control" id="name-select" style="@(Model.Type == GameType.AutoRNGIndex ? "display:none;" : "")" required onchange="validateNameField()"></select>
+            <input type="text" name="NameTextbox" class="form-control" id="name-textbox" placeholder="Enter game name" required onblur="validateNameField()" />
+            <select name="NameSelect" asp-items="@Model.GameNames" class="form-control" id="name-select" required onchange="validateNameField()"></select>
             <input type="hidden" asp-for="Name" id="name-hidden" />
             <span asp-validation-for="Name" class="text-danger"></span>
             <div id="name-validation-error" class="text-danger" style="display:none;">This field is required.</div>
-            <small class="form-text text-muted" id="name-helper-text">@(Model.Type == GameType.AutoRNGIndex ? "The game name should be provided by Dev" : "Select from predefined game names")</small>
+            <small class="form-text text-muted" id="name-helper-text"></small>
         </div>
 
         <div class="form-group">
@@ -36,7 +36,7 @@
             <input type="text" asp-for="DisplayName" class="form-control" placeholder="Enter Game Display Name"/>
         </div>
 
-        <div class="form-group" id="game-id-container" style="@(Model.Type == GameType.AutoRNGIndex ? "" : "display:none;")">
+        <div class="form-group" id="game-id-container">
             <label asp-for="GameId" class="control-label"></label>
             <input type="number" asp-for="GameId" class="form-control" id="game-id-input" placeholder="Enter game ID" min="1" required onblur="validateGameIdField()" />
             <span asp-validation-for="GameId" class="text-danger"></span>
@@ -188,6 +188,7 @@
         <div class="form-group">
             <label asp-for="Type" class="control-label"></label>
             <select asp-items="@Model.GameTypes" asp-for="Type" onchange="gameStatus.toggleGameTypeConfig();" class="form-control"></select>
+            <input type="hidden" id="initial-game-type" value="@((int)Model.Type)" />
         </div>
 
         <div id="slots-config" class="slots-game" style="display:none;">

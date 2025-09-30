@@ -3,6 +3,7 @@
 @using GamesAdmin.Site._Shared.Configurations
 @inject IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig
 @model EditViewModel;
+@inject Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine ViewEngine
 
 @{
     Layout = null;
@@ -18,13 +19,17 @@
     <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
     <div class="message-error hidden-cls" id="update-odds-msg"></div>
 
-    <form class="card-body form" id="gameForm">
+    <form class="form" id="gameForm">
         <input asp-for="Name" type="hidden" class="form-control" />
         <input asp-for="Type" type="hidden" class="form-control" />
         <div id="oddSetting">
             @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.CascadingSlots)
             {
                 <partial name="OddsSettings_CascadingSlots" model="Model" />
+            }
+            else if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Plinko)
+            {
+                <partial name="OddsSettings_Plinko" model="Model" />
             }
             else
             {  
@@ -139,7 +144,7 @@
                             }
                         </fieldset>
                     }
-                }
+                }        
             }
         </div>
     </form>

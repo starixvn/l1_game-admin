@@ -101,6 +101,12 @@ namespace GamesAdmin.Api.VoidGame
                     return new GameTicketCollection(autoRngIndexBetCollection, autoRngIndexBetLogCollection);
                 }
 
+                if(type == GameType.Plinko)
+                {
+                    var plinkoRoundCollection = $"{gameName.ToLowerInvariant()}_rounds";
+                    return new GameTicketCollection(plinkoRoundCollection);
+                }
+
                 var betCollection = type switch
                 {
                     GameType.CrashTurnBase => NamingConverter.RoundCollection(gameName),

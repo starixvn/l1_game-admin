@@ -32,6 +32,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateCrashConfigRequest, bool>
         , IRequestHandler<UpdateBotSlotSettingsRequest, bool>
         , IRequestHandler<ImportRequest, bool>
+        , IRequestHandler<UpdatePlinkoConfigRequest, bool>
     {
         private readonly IGameSettingsService gameService;
         private readonly ICloneSettingService slotSettingService;
@@ -111,5 +112,8 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(ImportRequest request, CancellationToken cancellationToken)
             => gameService.ImportGame(request.Game);
+
+        public Task<bool> Handle(UpdatePlinkoConfigRequest request, CancellationToken cancellationToken)
+        => gameService.UpdatePlinkoConfig(request.Name, request.PlinkoConfig);
     }
 }

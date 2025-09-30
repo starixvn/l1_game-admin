@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.GeneralGameSettings;
@@ -8,11 +9,13 @@ using GamesAdmin.Api.VoidGame.BacBall1;
 using GamesAdmin.Api.VoidGame.BacBall2;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Baccarat;
 using GamesAdmin.Database.Entities.Keno;
 using GamesAdmin.Database.Entities.KenoProMax;
+using GamesAdmin.Database.Entities.Plinko;
 using GamesAdmin.Database.Entities.RnGSoccer;
 using GamesAdmin.Database.Entities.SeDie3;
 using MongoDB.Bson;
@@ -88,6 +91,13 @@ namespace GamesAdmin.Api.VoidGame
                 var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
                 var isCrashGame = await generalGameSettingService.IsCrashGame((int)gameId);
                 var gameType = await generalGameSettingService.GetGameType((int)gameId);
+                bool isPlinko = await generalGameSettingService.IsPlinkoGame((int)gameId);
+               
+
+                if (isPlinko)
+                {
+                    return await MovePlinkoGameRound<BasePlinkoRoundEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId);
+                }
 
                 return isCrashGame
                        ?
@@ -205,10 +215,16 @@ namespace GamesAdmin.Api.VoidGame
                 IGameTicket<dynamic> gameTicket;
                 var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
                 bool isCrashGame = await generalGameSettingService.IsCrashGame((int)gameId);
+                bool isPlinko = await generalGameSettingService.IsPlinkoGame((int)gameId);
+
                 if (isCrashGame)
                 {
                     var gameType = await generalGameSettingService.GetGameType((int)gameId);
                     gameTicket = await Find<CrashGameBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, (GameType)gameType);
+                }
+                else if (isPlinko)
+                {
+                    gameTicket = await FindRound<BasePlinkoRoundEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId);
                 }
                 else
                 {
@@ -484,6 +500,48 @@ namespace GamesAdmin.Api.VoidGame
             return hasTicket ? default : new GameTicketRecord<dynamic, dynamic>(oneRecord, betRecords, isArchive);
         }
 
+        private async Task<RoundRecord<dynamic>> FindRound<Round>(
+                string obCustId,
+                string partnerId,
+                string siteId,
+                long gameRoundId,
+                int gameTypeId)
+            where Round : BasePlinkoRoundEntity
+        {
+
+            var gameCollection = await GetGameTicketCollection(gameTypeId);
+
+            var gameTickets = await FindInActiveOrArchiveRound<Round>(gameCollection, obCustId, partnerId, siteId, gameRoundId);
+
+            if (gameTickets == default)
+            {
+                gameTickets = await FindInActiveOrArchiveRound<Round>(gameCollection, obCustId, partnerId, siteId, gameRoundId, true);
+            }
+
+            return gameTickets;
+        }
+
+        private async Task<RoundRecord<dynamic>> FindInActiveOrArchiveRound<Round>(
+                GameTicketCollection collections,
+                string obCustId,
+                string partnerId,
+                string siteId,
+                long gameRoundId,
+                bool isArchive = false)
+            where Round : BasePlinkoRoundEntity
+        {
+            var database = isArchive ? archiveDatabase : activeDatabase;
+            var postfix = isArchive ? ArchivePostfix : string.Empty;
+       
+            var roundCollection = database.GetCollection<Round>($"{collections.Round}{postfix}");
+            var roundRecords = (await FindRoundTicket(roundCollection, obCustId, partnerId, siteId, gameRoundId));
+
+            var hasTicket = roundRecords == null;
+
+            return hasTicket ? default : new RoundRecord<dynamic>(roundRecords, isArchive);
+        }
+
+
         private async Task<GameTicketRecord<dynamic>> FindInActiveOrArchive<Bet>(
                 GameTicketCollection collections,
                 string obCustId,
@@ -725,6 +783,40 @@ namespace GamesAdmin.Api.VoidGame
             where BlackjackGameRound : BlackjackGameRoundEntity
         => await MoveRound<BlackjackGameRound>(roundId);
 
+        public async Task<bool> MovePlinkoGameRound<Round>(string obCustId, string partnerId, string siteId, long roundId, int gameTypeId)
+            where Round : BasePlinkoRoundEntity
+        {
+            var gameCollection = await GetGameTicketCollection(gameTypeId);
+
+            try
+            {
+                var ticket = await FindRound<Round>(obCustId, partnerId, siteId, roundId, gameTypeId);
+                if (ticket.RoundRecords != null)
+                {
+                    var roundCollection = removedDatabase.GetCollection<dynamic>($"{gameCollection.Round}{RemovePostfix}");
+                    await roundCollection.InsertOneAsync(ticket.RoundRecords.FirstOrDefault());
+
+                    var database = ticket.IsFromArchive ? archiveDatabase : activeDatabase;
+                    var postfix = ticket.IsFromArchive ? ArchivePostfix : string.Empty;
+                    var collection = database.GetCollection<Round>($"{gameCollection.Round}{postfix}");
+
+                    var result = await collection
+                    .DeleteOneAsync(record => record.PlayerId == obCustId
+                                        && record.SiteId == siteId
+                                        && record.OperatorId == partnerId
+                                        && (record.Number == roundId));
+
+                    return result.DeletedCount > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return false;
+        }
+
         public async Task<List<long>> FindAllTicketBlackjack<BlackjackGameBet>(long? roundId, bool isArchive)
             where BlackjackGameBet : BlackjackGameBetEntity
         {
@@ -933,6 +1025,24 @@ namespace GamesAdmin.Api.VoidGame
             }
 
             return false;
+        }
+
+        private static async Task<IList<dynamic>> FindRoundTicket<Round>(
+                IMongoCollection<Round> collection,
+                string obCustId,
+                string partnerId,
+                string siteId,
+                long gameRoundId)
+            where Round : BasePlinkoRoundEntity
+        {
+            var builder = Builders<Round>.Filter;
+
+            var filter = builder.Eq(x => x.PlayerId, obCustId)
+                & builder.Eq(x => x.OperatorId, partnerId)
+                & builder.Eq(x => x.SiteId, siteId)
+                & builder.Eq(x => x.Number, gameRoundId);
+
+            return (await collection.FindAsync<dynamic>(filter)).ToList();
         }
     }
 }

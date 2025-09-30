@@ -13,5 +13,6 @@
         GuaranteedWin,
         AutoRNGIndex,
         CascadingClusterSlots = 12
+        Plinko
     }
 }

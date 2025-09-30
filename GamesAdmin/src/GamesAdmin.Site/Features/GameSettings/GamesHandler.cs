@@ -51,6 +51,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetSlotRtpRequest, RtpResult>
         , IRequestHandler<CheckServiceStatusRequest, StatusGameResult>
         , IRequestHandler<UpdateSlotBotConfigRequest, bool>
+        , IRequestHandler<UpdatePlinkoConfigRequest, string>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -152,6 +153,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.OddsMultipliers = game.OddsMultipliers;
                 viewModel.TournamentConfig = game.TournamentConfig;
                 viewModel.VideoStreamConfig = game.VideoStreamConfig;
+                viewModel.PlinkoConfig = game.PlinkoConfig;
 
                 var gameGroup = await gameGroupManagementApi.GetByGameId(game.Info.GameId);
                 if (gameGroup != null)
@@ -199,6 +201,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
                 case GameType.AutoRNGIndex:
                     ConfigureAutoRNGIndexGame(viewModel, game);
+                    break;
+                case GameType.Plinko:
+                    ConfigurePlinkoGame(viewModel, game);
                     break;
 
                 default:
@@ -270,6 +275,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         private void ConfigureAutoRNGIndexGame(EditViewModel viewModel, GameConfig game)
         {
             viewModel.Type = GameType.AutoRNGIndex;
+            var autoRngChoices = GetBetChoices(game.Info.Name, game.Odds, game.OddsDisplayNames);
+            viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(autoRngChoices, game.BetLimit);
+            viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds, game.OddsDisplayNames);
+        }
+
+        private void ConfigurePlinkoGame(EditViewModel viewModel, GameConfig game)
+        {
+            viewModel.Type = GameType.Plinko;
             var autoRngChoices = GetBetChoices(game.Info.Name, game.Odds, game.OddsDisplayNames);
             viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(autoRngChoices, game.BetLimit);
             viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds, game.OddsDisplayNames);
@@ -538,6 +551,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 null, // OddsMultipliersConfig
                 null, // TournamentConfig
                 null, // VideoStreamConfig
+                null, //NOSONAR
                 request.OddsDisplayNames,
                 request.Choices);
 
@@ -677,5 +691,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<StatusGameResult> Handle(CheckServiceStatusRequest request, CancellationToken cancellationToken)
         => await gameService.CheckServiceStatus(request);
+
+        public async Task<string> Handle(UpdatePlinkoConfigRequest request, CancellationToken cancellationToken)
+        =>  await gameService.UpdatePlinkoConfig(request);         
+        
     }
 }

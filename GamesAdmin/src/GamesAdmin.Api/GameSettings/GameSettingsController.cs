@@ -129,5 +129,9 @@ namespace GamesAdmin.Api.Games
         [HttpGet("{name}/disabled_message")]
         public Task<Dictionary<string, string>> GetDisableMessage(string name)
             => mediator.Send(new GetDisabledMessageRequest(name));
+
+        [HttpPost("update_plinko_config")]
+        public Task<bool> UpdatePlinkoConfig(UpdatePlinkoConfigRequest request)
+          => mediator.Send(request);
     }
 }

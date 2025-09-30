@@ -74,4 +74,22 @@ namespace GamesAdmin.Api.VoidGame.Models
 
         public BlackjackGameBetEntity GetBet() => BetRecord;
     }
+
+    public class RoundRecord<T1> : IGameTicket<T1>
+        where T1 : class
+    {
+        public RoundRecord(IList<T1> roundRecords, bool isFromArchive)
+        {
+            RoundRecords = roundRecords;
+            IsFromArchive = isFromArchive;
+        }
+
+        public IList<T1> RoundRecords { get; set; }
+
+        public bool IsFromArchive { get; set; }
+
+        public bool Exist() => RoundRecords.Count > 0;
+
+        public T1 GetBet() => RoundRecords.FirstOrDefault();
+    }
 }

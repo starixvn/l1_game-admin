@@ -47,6 +47,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
             GameType.CrashTurnBase,
             GameType.GuaranteedWin,
             GameType.AutoRNGIndex,
+            GameType.Plinko,
             0
         }.Contains(GameType);
 

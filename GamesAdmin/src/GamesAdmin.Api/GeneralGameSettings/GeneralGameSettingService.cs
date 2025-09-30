@@ -25,6 +25,8 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
         Task<bool> IsCrashGame(int gameId);
 
+        Task<bool> IsPlinkoGame(int gameId);
+
         Task<GameConfigEntity> GetGameConfig(int gameId);
     }
 
@@ -121,6 +123,12 @@ namespace GamesAdmin.Api.GeneralGameSettings
         {
             var gameConfig = await GetGameConfig(gameId);
             return gameConfig?.Type == (byte)GameType.Crash || gameConfig?.Type == (byte)GameType.CrashTurnBase;
+        }
+
+        public async Task<bool> IsPlinkoGame(int gameId)
+        {
+            var gameConfig = await GetGameConfig(gameId);
+            return gameConfig?.Type == (byte)GameType.Plinko;
         }
 
         public async Task<GameConfigEntity> GetGameConfig(int gameId)
