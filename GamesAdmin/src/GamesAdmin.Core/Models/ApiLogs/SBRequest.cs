@@ -57,6 +57,10 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public string ReturnUrl { get; set; }
 
         public bool DisableAward { get; set; }
+
+        public string PlayerNickname { get; set; }
+
+        public string PlayerAvatarUrl { get; set; }
     }
 
     public class EndGameInfoRequest : SBRequest
