@@ -257,7 +257,7 @@ namespace GamesAdmin.Api.VoidGame
 
                 if (apiResult.Result.IsSuccessful())
                 {
-                    var sentryLevel = request.CallApi ? Sentry.Protocol.SentryLevel.Fatal : Sentry.Protocol.SentryLevel.Warning;
+                    var sentryLevel = request.CallApi ? SentryLevel.Fatal : SentryLevel.Warning;
                     sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.PlayerId}", sentryLevel);
 
                     var moved = await ticketHandler.Void(
