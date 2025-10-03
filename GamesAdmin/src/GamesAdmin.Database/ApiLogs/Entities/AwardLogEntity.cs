@@ -1,4 +1,7 @@
-﻿namespace GamesAdmin.Database.ApiLogs.Entities
+﻿using GamesAdmin.Database.ApiLogs.Serializers;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace GamesAdmin.Database.ApiLogs.Entities
 {
     internal class AwardLogEntity : ApiLogEntity
     {
@@ -12,7 +15,9 @@
         public string Seq { get; set; }
         public string SiteId { get; set; }
         public string Amount { get; set; }
-        public int PromotionId { get; set; } 
+
+        [BsonSerializer(typeof(PlayerIdSerializer))]
+        public object PromotionId { get; set; }
         public string Currency { get; set; } 
     }
 

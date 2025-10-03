@@ -31,6 +31,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public DateTimeOffset? EndTime { get; set; }
 
         public EndGameMetaData MetaData { get; set; }
+
+        public object PromotionId { get; set; }
     }
 
     public class EndGameMetaData
@@ -85,6 +87,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public float ContributionRate { get; set; }
 
         public decimal ContributionAmount { get; set; }
+
+        public object PromotionId { get; set; }
     }
 
     public class PartnerVoidGameCall : PartnerCall
@@ -95,7 +99,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
     public class PartnerAwardCall : PartnerCall
     {
         public string Currency { get; set; }
-        public int PromotionId { get; set; }
+        public object PromotionId { get; set; }
         public decimal Amount { get; set; }
     }
 

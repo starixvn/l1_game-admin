@@ -38,7 +38,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public DateTimeOffset? RoundEndTime { get; set; }
 
         public string Ip { get; set; }
-
+        
         public bool FreeBet { get; set; }
 
         public bool FreeSpin { get; set; }
@@ -48,6 +48,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public decimal ContributionAmount { get; set; }
 
         public decimal TotalAmount { get; set; }
+
 
         public decimal TotalWin { get; set; }
 
@@ -82,7 +83,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
 
         public string SiteName { get; set; }
 
-        public int? PromotionId { get; set; }
+        [BsonSerializer(typeof(PlayerIdSerializer))]
+        public object PromotionId { get; set; }
 
         public decimal WinningAmount { get; set; }
 
