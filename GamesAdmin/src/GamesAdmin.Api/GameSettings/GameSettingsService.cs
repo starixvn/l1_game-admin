@@ -157,8 +157,8 @@ namespace GamesAdmin.Api.Games
                     ApplyMultiplier = game.Info.ApplyMultiplier,
                     HaveTournament = game.Info.HaveTournament,
                     HaveVideoStream = game.Info.HaveVideoStream,
-                    UseMargin = game.Info.UseMargin,
-                    PlinkoConfig = game.PlinkoConfig
+                    UseMargin = game.Info.UseMargin
+                    // Additional properties will be set by SetAdditionalGameProperties method
                 };
 
                 if (game.Info.ApplyMultiplier)
@@ -185,6 +185,8 @@ namespace GamesAdmin.Api.Games
                         VideoInfos = new List<VideoInfo> { }
                     };
                 }
+
+                SetAdditionalGameProperties(entity, game);
 
                 await repository.InsertOneAsync(entity);
 
@@ -256,6 +258,8 @@ namespace GamesAdmin.Api.Games
                     TournamentConfig = gameConfig.TournamentConfig,
                     VideoStreamConfig = gameConfig.VideoStreamConfig
                 };
+
+                SetAdditionalGameProperties(entity, gameConfig);
 
                 await repository.InsertOneAsync(entity);
 
@@ -981,6 +985,18 @@ namespace GamesAdmin.Api.Games
                 sentryClient.CaptureException(ex);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Sets additional game configuration properties on the entity from the game config
+        /// This method can be extended to handle other properties that need special assignment logic
+        /// </summary>
+        /// <param name="entity">The game config entity to update</param>
+        /// <param name="gameConfig">The game configuration to get properties from</param>
+        private static void SetAdditionalGameProperties(GameConfigEntity entity, GameConfig gameConfig)
+        {
+            entity.PlinkoConfig = gameConfig.PlinkoConfig;
+            // Add other properties here as needed in the future
         }
 
         /// <summary>
