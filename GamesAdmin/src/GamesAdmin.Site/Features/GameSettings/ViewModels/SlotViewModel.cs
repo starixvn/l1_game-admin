@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
@@ -41,11 +42,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double BigWinRatio { get; set; }
 
         [DisplayName("Mega Win Ratio (%)")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Mega Win Ratio must be greater than 0")]
+        [System.ComponentModel.DataAnnotations.Range(0.01, double.MaxValue, ErrorMessage = "Mega Win Ratio must be greater than 0")]
         public double MegaWinRatio { get; set; }
 
         [DisplayName("Super Win Ratio (%)")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Super Win Ratio must be greater than 0")]
+        [System.ComponentModel.DataAnnotations.Range(0.01, double.MaxValue, ErrorMessage = "Super Win Ratio must be greater than 0")]
         public double SuperWinRatio { get; set; }
 
         public int[][] GetSymbolWeight(string key)
