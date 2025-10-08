@@ -64,7 +64,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.Volatility, opt => opt.MapFrom(src => src.Volatility))
                 .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.MultiplierBonus.Min))
                 .ForMember(dest => dest.MaxBonus, opt => opt.MapFrom(src => src.MultiplierBonus.Max))
-                .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ToPercentage()));
+                .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ToPercentage()))
+                .ForMember(dest => dest.MegaWinRatio, opt => opt.MapFrom(src => src.MegaWinRatio.ToPercentage()))
+                .ForMember(dest => dest.SuperWinRatio, opt => opt.MapFrom(src => src.SuperWinRatio.ToPercentage()));
 
             CreateMap<GameConfig, StatusItemViewModel>();
             CreateMap<GameConfig, MonitorItemViewModel>()
@@ -83,6 +85,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             CreateMap<AddViewModel, CascadingSlotsConfig>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ConvertPercentValue()))
+                .ForMember(dest => dest.MegaWinRatio, opt => opt.MapFrom(src => src.MegaWinRatio.ConvertPercentValue()))
+                .ForMember(dest => dest.SuperWinRatio, opt => opt.MapFrom(src => src.SuperWinRatio.ConvertPercentValue()))
                 .ForMember(dest => dest.BetLevels, opt => opt.MapFrom(src => src.BetLevels))
                  .ForMember(dest => dest.BetMultiplier, opt => opt.MapFrom(src => src.BetMultiplier))
                 .ForMember(dest => dest.MaxWinPerRound, opt => opt.MapFrom(src => src.MaxWinPerRound))

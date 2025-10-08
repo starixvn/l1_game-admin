@@ -12,7 +12,6 @@ using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database.Entities;
 using Newtonsoft.Json;
 using Refit;
-using static MongoDB.Driver.WriteConcern;
 
 namespace GamesAdmin.Api._Shared.Helpers
 {
@@ -372,6 +371,8 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("Multiplier Bonus Min", oldConfig.MultiplierBonus.Min.ToString(), newConfig.MultiplierBonus.Min.ToString()),
                 new SettingChangedModel("Multiplier Bonus Max", oldConfig.MultiplierBonus.Max.ToString(), newConfig.MultiplierBonus.Max.ToString()),
                 new SettingChangedModel("Big Win Ratio", oldConfig.BigWinRatio.ToString(), newConfig.BigWinRatio.ToString()),
+                new SettingChangedModel("Mega Win Ratio", oldConfig.MegaWinRatio.ToString(), newConfig.MegaWinRatio.ToString()),
+                new SettingChangedModel("Super Win Ratio", oldConfig.SuperWinRatio.ToString(), newConfig.SuperWinRatio.ToString()),
                 new SettingChangedModel("Mode", oldConfig.Mode.ToString(), newConfig.Mode.ToString()),
                 new SettingChangedModel("Volatility", oldConfig.Volatility.ToString(), newConfig.Volatility.ToString()),
                 new SettingChangedModel("Bet Multiplier", oldConfig.BetMultiplier.ToString(), newConfig.BetMultiplier.ToString()),

@@ -17,6 +17,8 @@ namespace GamesAdmin.Core.Models.GameConfigs
         {
             Mode = config.Mode;
             BigWinRatio = config.BigWinRatio;
+            MegaWinRatio = config.MegaWinRatio;
+            SuperWinRatio = config.SuperWinRatio;
             MultiplierBonus = config.MultiplierBonus;
             BetLevels = config.BetLevels;
             BetMultiplier = config.BetMultiplier;
@@ -27,6 +29,8 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
         public byte Mode { get; set; }
         public double BigWinRatio { get; set; }
+        public double MegaWinRatio { get; set; }
+        public double SuperWinRatio { get; set; }
         public MultiplierBonus MultiplierBonus { get; set; }
         public int[] BetLevels { get; set; }
         public double BetMultiplier { get; set; }

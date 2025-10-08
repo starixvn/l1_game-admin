@@ -728,6 +728,8 @@ namespace GamesAdmin.Api.Games
                        .Set(field => field.Botenabled, botEnabled)
                        .Set(field => field.CascadingSlotsConfig.MultiplierBonus, cascadingSlotsConfig.MultiplierBonus)
                        .Set(field => field.CascadingSlotsConfig.BigWinRatio, cascadingSlotsConfig.BigWinRatio)
+                       .Set(field => field.CascadingSlotsConfig.MegaWinRatio, cascadingSlotsConfig.MegaWinRatio)
+                       .Set(field => field.CascadingSlotsConfig.SuperWinRatio, cascadingSlotsConfig.SuperWinRatio)
                        .Set(field => field.CascadingSlotsConfig.Mode, cascadingSlotsConfig.Mode)
                        .Set(field => field.CascadingSlotsConfig.Volatility, cascadingSlotsConfig.Volatility)
                        .Set(field => field.CascadingSlotsConfig.BetMultiplier, cascadingSlotsConfig.BetMultiplier)

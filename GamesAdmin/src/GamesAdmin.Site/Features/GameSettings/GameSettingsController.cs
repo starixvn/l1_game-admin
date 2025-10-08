@@ -351,6 +351,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                         cascadingSlotsConfig.Mode = (byte)viewModel.SlotViewModel.Mode;
                         cascadingSlotsConfig.Volatility = viewModel.SlotViewModel.Volatility;
                         cascadingSlotsConfig.BigWinRatio = viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue();
+                        cascadingSlotsConfig.MegaWinRatio = viewModel.SlotViewModel.MegaWinRatio.ConvertPercentValue();
+                        cascadingSlotsConfig.SuperWinRatio = viewModel.SlotViewModel.SuperWinRatio.ConvertPercentValue();
                         cascadingSlotsConfig.MultiplierBonus = new MultiplierBonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus);
 
                         break;

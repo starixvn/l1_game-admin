@@ -40,6 +40,14 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Big Win Ratio (%)")]
         public double BigWinRatio { get; set; }
 
+        [DisplayName("Mega Win Ratio (%)")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Mega Win Ratio must be greater than 0")]
+        public double MegaWinRatio { get; set; }
+
+        [DisplayName("Super Win Ratio (%)")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Super Win Ratio must be greater than 0")]
+        public double SuperWinRatio { get; set; }
+
         public int[][] GetSymbolWeight(string key)
         {
             if (SymbolWeight != null && SymbolWeight.TryGetValue(key, out int[][] symbolWeight))
