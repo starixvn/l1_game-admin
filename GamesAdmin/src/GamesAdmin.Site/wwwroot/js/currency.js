@@ -38,6 +38,33 @@
         event.target.checked ? $('#isUncountOnTotalSetting').show() : $('#isUncountOnTotalSetting').hide();
     }
 
+    function openUpdateBetLimitSuggestionForm() {
+        const currencies = [];
+        $('#currency-table tbody tr').each((index, element) => {
+            currencies.push({
+                operatorName: $(element).find('.currency-operator').text(),
+                operatorId: $(element).find('.currency-operator').data('operator-id'),
+                currencyCode: $(element).find('.currency-code').text(),
+                multiplier: Number($(element).find('.currency-multiplier').text()),
+                enabled: $(element).find('.currency-enable').data('enabled') === 'True',
+                groupName: $(element).find('.group-item').text(),
+                groupId: $(element).find('.group-item').data('group-id'),
+            });
+        });
+        const operators = $("#PartnerIds").children().map((index, element) => {
+            return {
+                operatorName: $(element).text(),
+                operatorId: $(element).val(),
+            };
+        }).toArray();
+        globalThis.dispatchEvent(new CustomEvent("showBetLimitSuggestion", {
+            detail: {
+                currencies: currencies,
+                operators: operators,
+            }
+        }));
+    }
+
     return {
         init: function () {
             var table = $('#currency-table');
@@ -49,6 +76,7 @@
         },
         openAddNewCurrencyForm: openModal("#add-new-currency-form"),
         openUpdateCurrencyForm: openModal("#update-currency-form"),
+        openUpdateBetLimitSuggestionForm: openUpdateBetLimitSuggestionForm,
         onCreateCurrencySuccess: onUpsertCurrency,
         onUpdateCurrencySuccess: onUpsertCurrency,
         onClickIsTestCurrency: onClickIsTestCurrency,

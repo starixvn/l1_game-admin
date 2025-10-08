@@ -41,5 +41,9 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         [HttpPost("updateConfig")]
         public Task<bool> UpdateConfig(string currencyGroupId, int gameId, [FromBody] object configValue, string type)
             => mediator.Send(new UpdateConfigRequest(currencyGroupId, gameId, configValue, type));
+
+        [HttpPost("addRange")]
+        public Task<bool> AddRange([FromBody] IEnumerable<CurrencyGroupGame> currencyGroupGames)
+       => mediator.Send(new AddRangeCurrencyGroupGameRequest(currencyGroupGames));
     }
 }

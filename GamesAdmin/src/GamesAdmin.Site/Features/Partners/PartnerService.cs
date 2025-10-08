@@ -72,6 +72,8 @@ namespace GamesAdmin.Site.Features.Partners
 
         Task<string[]> GetPartnerSuperPlayer(string partnerId);
 
+        Task<IEnumerable<Partner>> GetPartners(Func<Partner, bool> criteria);
+
     }
 
     public class PartnerService : IPartnerService
@@ -132,6 +134,14 @@ namespace GamesAdmin.Site.Features.Partners
             var filteredPartners = partners.Where(criteria);
 
             return mapper.Map<IEnumerable<SelectListItem>>(filteredPartners);
+        }
+
+        public async Task<IEnumerable<Partner>> GetPartners(Func<Partner, bool> criteria)
+        {
+            var partners = await GetAll();
+            var filteredPartners = partners.Where(criteria);
+
+            return filteredPartners;
         }
 
         public async Task<ResultBase> Update(Partner partner)

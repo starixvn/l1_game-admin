@@ -29,6 +29,8 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         , IRequestHandler<IndexRequest, IndexViewModel>
         , IRequestHandler<GetGuaranteedFeatureRequest, GuaranteedFeatureViewModel>
         , IRequestHandler<UpdateGuaranteedFeatureRequest, bool>
+        , IRequestHandler<GetByGroupRequest, IEnumerable<CurrencyGroupGame>>
+        , IRequestHandler<AddRangeRequest, bool>
     {
         private readonly ICurrencyGroupGameService currencyGroupGameService;
         private readonly ICurrencyGroupService currencyGroupService;
@@ -194,5 +196,11 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
 
         public Task<bool> Handle(UpdateGuaranteedFeatureRequest request, CancellationToken cancellationToken)
             => currencyGroupGameService.UpdateConfig(request.GroupId, request.GameId, request.ConfigValue, CurrencyGroupGameConfigType.GuaranteedFeature.Value);
+
+        public Task<IEnumerable<CurrencyGroupGame>> Handle(GetByGroupRequest request, CancellationToken cancellationToken)
+            => currencyGroupGameService.GetByGroup(request.GroupId);
+
+        public Task<bool> Handle(AddRangeRequest request, CancellationToken cancellationToken)
+            => currencyGroupGameService.AddRange(request.CurrencyGroupGames);
     }
 }

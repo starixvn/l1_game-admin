@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
@@ -6,6 +6,7 @@ using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.BetDetails;
+using GamesAdmin.Site.Features.BetLimitSuggestion;
 using GamesAdmin.Site.Features.Bot;
 using GamesAdmin.Site.Features.BuyFreeSpins;
 using GamesAdmin.Site.Features.Chips;
@@ -110,7 +111,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IGlobalConfigApi>(appSettings.ApiHost, refitSettings));
 
             services.AddSingleton(RestService.For<ICurrencyApi>(appSettings.ApiHost, refitSettings));
-            
+
             services.AddSingleton(RestService.For<IPlayerChainResultApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IPlayerChainResultService, PlayerChainResultService>();
             services.AddScoped<ICurrencyService, CurrencyService>();
@@ -148,6 +149,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IPlayerInfoApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IPlayerInfoService, PlayerInfoService>();
+
+            services.AddSingleton(RestService.For<IBetLimitSuggestionApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<BetLimitSuggestionService>();
 
             services.AddReportServices();
 

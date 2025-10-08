@@ -1,0 +1,185 @@
+.multi-select-dropdown {
+    border: 1px solid #ccc;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #fff;
+    min-height: 40px;
+    transition: border-color 0.2s ease;
+    margin-bottom: 10px;
+}
+
+.multi-select-dropdown .dropdown-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.multi-select-dropdown .dropdown-item-label {
+    background-color: #e3f2fd;
+    border: 1px solid #2196f3;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.multi-select-dropdown .dropdown-item-label-remove-icon {
+    cursor: pointer;
+    color: #f44336;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.dropdown-list-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-top: none;
+    background-color: #fff;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-list-container .dropdown-list-item {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-list-container .dropdown-list-item-label {
+    cursor: pointer;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.bet-limit-suggestion {
+    padding: 20px;
+    max-width: 1200px;
+}
+
+.tab-button {
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    margin-bottom: 5px;
+    padding: 0.6rem;
+    color: #95949b;
+}
+
+.tab-button:hover {
+    color: #0c8af1;
+}
+.tab-button:focus {
+    outline: none;
+}
+.tabs-header {
+    display: flex;
+    gap: 1.4rem;
+}
+
+.tab-button.active {
+    border-bottom: 2px solid #2196f3;
+    color: #2196f3;
+}
+
+.suggestion-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.suggestion-actions {
+    display: flex;
+    gap: 10px;
+}
+.suggestion-button {
+    border: none;
+    background-color: #1e88e5;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+.suggestion-button:hover {
+    background-color: #1976d2;
+}
+.suggestion-button:focus {
+    outline: none;
+}
+.suggestion-item {
+    padding: 1.2rem;
+    border-radius: 0.8rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid #ccc;
+}
+.suggestion-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+    align-items: flex-start;
+    font-size: 1.4rem;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.suggestion-item ul {
+    padding-inline-start: 2rem;
+    list-style-type: initial;
+    margin-bottom: 0;
+}
+
+.search-container {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-container input {
+    width: 100%;
+    margin-bottom: 0;
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+    border: 1px solid #ccc;
+}
+
+.sub-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1060;
+    overflow-y: auto;
+}
+
+.sub-modal .modal-header {
+    padding: 1.2rem 1.4rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.sub-modal.overflow-content {
+    overflow-y: hidden;
+}
+
+.sub-modal.overflow-content .modal-body {
+    overflow-y: auto;
+    max-height: 80vh;
+}

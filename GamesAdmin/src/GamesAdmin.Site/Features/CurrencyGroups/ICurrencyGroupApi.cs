@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.CurrencyGroups.Models;
+using GamesAdmin.Site.Features.CurrencyGroups.Requests;
 using Refit;
 
 namespace GamesAdmin.Site.Features.CurrencyGroups
@@ -26,5 +27,8 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
 
         [Get("/currency_group/partner/{partnerId}")]
         Task<IEnumerable<CurrencyGroupModel>> GetByPartner(string partnerId);
+
+        [Post("/currency_group/clone")]
+        Task<CurrencyGroupModel> Clone(CloneCurrencyGroupModel model);
     }
 }

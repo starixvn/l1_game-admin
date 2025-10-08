@@ -1,0 +1,15 @@
+@model GamesAdmin.Site.Features.BetLimitSuggestion.ViewModels.BetLimitSuggestionModel
+@{
+    var groupFilter = Model.CurrencyGroupFilterCondition;
+    var currencyNeedToAdd = Model.CurrencyNeedToSuggest;
+}
+<div id="bet-limit-suggestion-root"></div>
+<div style="visibility: hidden" 
+id="currency-group-filter" data-currency-code="@groupFilter.CurrencyCode" 
+data-currency-multiplier="@groupFilter.CurrencyMultiplier"></div>
+<div style="visibility: hidden"
+     id="currency-need-to-add" data-currency-code="@currencyNeedToAdd.CurrencyCode"
+     data-currency-name="@currencyNeedToAdd.CurrencyName"
+     data-operator-id="@currencyNeedToAdd.OperatorId"
+     data-currency-id="@currencyNeedToAdd.CurrencyId"></div>
+

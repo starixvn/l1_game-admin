@@ -25,6 +25,8 @@ namespace GamesAdmin.Api.CurrencyGroupGames
 
         Task<bool> Update(CurrencyGroupGame currencyGroupGame);
 
+        Task<bool> AddRange(IEnumerable<CurrencyGroupGame> currencyGroupGames);
+
         Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId);
 
         Task<IEnumerable<CurrencyGroupGame>> GetByGameId(int gameId);
@@ -186,6 +188,47 @@ namespace GamesAdmin.Api.CurrencyGroupGames
             }
 
             return false;
+        }
+
+        public async Task<bool> AddRange(IEnumerable<CurrencyGroupGame> currencyGroupGames)
+        {
+            try
+            {
+                var entities = new List<CurrencyGroupGameEntity>();
+                
+                foreach (var currencyGroupGame in currencyGroupGames)
+                {
+                    var entity = mapper.Map<CurrencyGroupGameEntity>(currencyGroupGame);
+                    entity.GroupId = ObjectId.Parse(currencyGroupGame.GroupId);
+                    
+                    if (entity.CoinValues == null || entity.CoinValues.Length == 0)
+                    {
+                        entity.CoinValues = new double[0];
+                    }
+                    
+                    if (entity.BetLevels == null || entity.BetLevels.Length == 0)
+                    {
+                        entity.BetLevels = new double[0];
+                    }
+                    
+                    if (entity.Chips == null || entity.Chips.Length == 0)
+                    {
+                        entity.Chips = new string[0];
+                    }
+                    
+                    entity.MaxBetPerChoices ??= new Dictionary<string, double>();
+                    
+                    entities.Add(entity);
+                }
+
+                await currencyGroupGameRepository.InsertManyAsync(entities);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return false;
+            }
         }
 
         public async Task<CurrencyGroupGameConfig> GetConfig(string groupId, int gameId, string type)

@@ -9,6 +9,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
 {
     public class CurrencyGroupGameHandler
         : IRequestHandler<UpdateCurrencyGroupGameRequest, bool>,
+        IRequestHandler<AddRangeCurrencyGroupGameRequest, bool>,
         IRequestHandler<GetCurrenctGroupGameRequest, CurrencyGroupGame>,
         IRequestHandler<GetAllRequest, IEnumerable<CurrencyGroupGame>>,
         IRequestHandler<GetByGroupRequest, IEnumerable<CurrencyGroupGame>>,
@@ -24,6 +25,9 @@ namespace GamesAdmin.Api.CurrencyGroupGames
 
         public Task<bool> Handle(UpdateCurrencyGroupGameRequest request, CancellationToken cancellationToken)
             => this.currencyGroupGameService.Update(request.CurrencyGroupGame);
+
+        public Task<bool> Handle(AddRangeCurrencyGroupGameRequest request, CancellationToken cancellationToken)
+            => this.currencyGroupGameService.AddRange(request.CurrencyGroupGames);
 
         public Task<CurrencyGroupGame> Handle(GetCurrenctGroupGameRequest request, CancellationToken cancellationToken)
             => this.currencyGroupGameService.Get(request.GameId, request.CurrencyGroupId);

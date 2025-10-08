@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -6,6 +6,7 @@ using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ApiLogs.Apis;
+using GamesAdmin.Api.BetLimitSuggestion;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Chips;
 using GamesAdmin.Api.ClientSites;
@@ -92,6 +93,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IGameGroupService, GameGroupService>();
             services.AddScoped<IInternalTestAccountService, InternalTestAccountService>();
             services.AddScoped<IPlayerInfoService, PlayerInfoService>();
+            services.AddScoped<IBetLimitSuggestionService, BetLimitSuggestionService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddSingleton(RestService.For<IUserServiceApi>(appSettings.GameServers.UserService.Api, refitSettings));

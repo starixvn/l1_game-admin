@@ -7,6 +7,7 @@
             <th>Operator</th>
             <th>Currency</th>
             <th>Code</th>
+            <th>Group</th>
             <th>Multiplier</th>
             <th>Enabled</th>
             <th>Testing</th>
@@ -20,12 +21,37 @@
     <tbody>
         @foreach (var item in Model.Models)
         {
+            var currencyGroup = Model.GetCurrencyGroup(item);
+            var partner = Model.GetPartner(item);
+
             <tr>
-                <td class="text-center">@Model.GetPartnerName(item)</td>
+                <td class="text-center currency-operator" data-operator-id="@partner?.PartnerId">@partner?.Name</td>
                 <td class="text-center">@item.Name</td>
-                <td class="text-center">@item.Code</td>
-                <td class="text-center">@item.Multiplier</td>
-                <td class="text-center">
+                <td class="text-center currency-code">@item.Code</td>
+                 @if (currencyGroup != null)
+                    {
+                       <td class="text-center group-item" data-group-id="@currencyGroup?.Id" >@currencyGroup?.Name</td>
+                    }
+                    else
+                    {
+                    <td class="text-center">
+                        <a 
+                           data-ajax="true"
+                           data-ajax-mode="replace"
+                           data-ajax-update="#modal .modal-content"
+                           data-ajax-success="currency.openUpdateBetLimitSuggestionForm"
+                           asp-controller="BetLimitSuggestion"
+                           asp-action="Index"
+                           asp-route-currencyCode="@item.Code"
+                           asp-route-operatorId="@item.PartnerId"
+                           asp-route-currencyId="@item.Id"
+                           asp-route-currencyName="@item.Name">
+                            SuggestGroup
+                        </a>
+                    </td>
+                    }
+                <td class="text-center currency-multiplier">@item.Multiplier</td>
+                <td class="text-center currency-enable" data-enabled="@item.Enabled">
                     @if (item.Enabled)
                     {
                         <i class="icon-check"></i>

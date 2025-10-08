@@ -25,5 +25,8 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
 
         [Post("/currencyGroupGame/updateConfig")]
         Task<bool> UpdateConfig(string currencyGroupId, int gameId, object configValue, string type);
+
+        [Post("/currencyGroupGame/addRange")]
+        Task<bool> AddRange(IEnumerable<CurrencyGroupGame> currencyGroupGames);
     }
 }

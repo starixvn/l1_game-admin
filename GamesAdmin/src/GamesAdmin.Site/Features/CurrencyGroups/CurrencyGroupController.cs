@@ -63,5 +63,14 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
 
             return Json(result);
         }
+
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Clone([Bind] CloneCurrencyGroupModel model)
+        {
+            var result = await mediator.Send(new CloneCurrencyGroupRequest(model));
+
+            return Json(result);
+        }
     }
 }

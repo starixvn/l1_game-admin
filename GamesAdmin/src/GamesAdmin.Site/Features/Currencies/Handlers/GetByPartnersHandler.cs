@@ -7,17 +7,22 @@ using AutoMapper;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site.Features.Currencies.Requests;
 using GamesAdmin.Site.Features.Currencies.ViewModels;
+using GamesAdmin.Site.Features.CurrencyGroups;
+using GamesAdmin.Site.Features.Partners;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.Currencies.Handlers
 {
     public class GetByPartnersHandler : Handler, IRequestHandler<GetByPartnersRequest, CurrencyManagementViewModel>
     {
-        private readonly IMediator mediator;
+        private readonly ICurrencyGroupApi currencyGroupApi;
 
-        public GetByPartnersHandler(IMapper mapper, ICurrencyApi api, IMediator mediator) : base(mapper, api)
+        private readonly IPartnerService partnerService;
+
+        public GetByPartnersHandler(IMapper mapper, ICurrencyApi api, ICurrencyGroupApi currencyGroupApi, IPartnerService partnerService) : base(mapper, api)
         {
-            this.mediator = mediator;
+            this.currencyGroupApi = currencyGroupApi;
+            this.partnerService = partnerService;
         }
 
         public async Task<CurrencyManagementViewModel> Handle(GetByPartnersRequest request, CancellationToken cancellationToken)
@@ -35,12 +40,21 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
                 models = new List<CurrencyModel>();
             }
 
-            var partners = await mediator.Send(new GetPartnersForSelectionRequest());
+            var partners = await partnerService.GetPartners(partner => request.Model.PartnerIds.Contains(partner.PartnerId));
+
+            var groupIds = models
+                .Select(model => model.GroupId)
+                .Where(groupId => !string.IsNullOrWhiteSpace(groupId))
+                .Distinct()
+                .ToList();
+
+            var currencyGroups = groupIds.Any() ? await currencyGroupApi.Query(string.Join(',', groupIds)) : new List<CurrencyGroupModel>();
 
             return new CurrencyManagementViewModel
             {
                 Models = models,
-                Partners = partners
+                Partners = partners,
+                CurrencyGroups = currencyGroups
             };
         }
     }

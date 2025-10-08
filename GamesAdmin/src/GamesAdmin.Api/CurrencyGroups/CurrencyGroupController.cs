@@ -38,6 +38,10 @@ namespace GamesAdmin.Api.CurrencyGroups
         public Task<bool> Create(CreateCurrencyGroupModel model)
             => mediator.Send(new CreateRequest(model));
 
+        [HttpPost("clone")]
+        public Task<CurrencyGroupModel> Clone(CloneCurrencyGroupModel model)
+            => mediator.Send(new CloneRequest(model));
+
         [HttpPut]
         public Task<bool> Update(UpdateCurrencyGroupModel model)
             => mediator.Send(new UpdateRequest(model));
