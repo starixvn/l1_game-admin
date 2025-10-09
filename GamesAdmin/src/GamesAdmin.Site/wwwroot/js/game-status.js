@@ -1222,7 +1222,7 @@
         },
 
         toggleMirrorValues(riskLevel) {
-            const checkbox = $(`#mirror${riskLevel.charAt(0).toUpperCase() + riskLevel.slice(1)}`);
+            const checkbox = $(`#mirror-${riskLevel}`);
             const tabContent = $(`#${riskLevel}`);
 
             // Get all input fields in the current tab

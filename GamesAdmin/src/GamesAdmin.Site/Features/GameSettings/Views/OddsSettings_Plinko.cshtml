@@ -4,19 +4,23 @@
 
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
 @model EditViewModel;
+
+@{
+    var gameModes = new [] { "low", "medium", "high" };
+}
+
 <div>
     <ul class="nav nav-custom" id="setting-tabs">
-        <li class="nav-item">
-            <button type="button" class="nav-link active" id="low-tab-header" onclick="gameStatus.togglePlinkoSettingTabs('low')">Low</button>
-        </li>
+        @foreach(var gameMode in gameModes)
+        {
+            var capitalizedLevel = char.ToUpper(gameMode[0]) + gameMode.Substring(1);
+            var activeClass = gameMode == "low" ? " active" : "";
 
-        <li class="nav-item">
-            <button type="button" class="nav-link" id="medium-tab-header" onclick="gameStatus.togglePlinkoSettingTabs('medium')">Medium</button>
-        </li>
-
-        <li class="nav-item">
-            <button type="button" class="nav-link" id="high-tab-header" onclick="gameStatus.togglePlinkoSettingTabs('high')">High</button>
-        </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link @activeClass" id="@gameMode-tab-header" onclick="gameStatus.togglePlinkoSettingTabs('@gameMode')">@capitalizedLevel</button>
+            </li>
+            
+        }
     </ul>
 
     <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
@@ -25,133 +29,54 @@
     <form class="form-group row">
         <div id="plinkoConfig">Game Name: @Model.Name</div>
         <input type="hidden" asp-for="@Model.Name" />
-        <!-- Low Risk Tab -->
-        <div id="low" class="tab-content">
-            <div class="form-group">
-                <label class="control-label">
-                    Mirror Values (slot <-> row - slot)
-                        <input type="checkbox" id="mirrorLow" onchange="gameStatus.toggleMirrorValues('low')" />
-                </label>
-            </div>
-            <div class="form-group">
-                <div class="control-label">Mode Low Average RTP: <span id="average-rtp-low"></span>%</div>
-            </div>
-            @foreach (var i in Model.PlinkoConfig.Odds["0"])
-            {
-                var odds = i.Value;
-                <div class="col-lg-12 mb-3">
-                    <fieldset>
-                        <legend>Row @i.Key</legend>
-                        <div class="form-group row">
-                            <div class="col-md-11 row">
-                                @for (int j = 0; j < odds.Length; j++)
-                                {
-                                    <div class="col-md-2 mb-2">
-                                        <label class="control-label">
-                                            Slot @j
-                                            <input type="number" asp-for="@Model.PlinkoConfig.Odds["0"][i.Key][j]" class="form-control pl-2" />
-                                        </label>
+        
+        <!-- Risk Level Tabs -->
+        @for (var index = 0; index < gameModes.Length; index++)
+        {
+            var gameMode = gameModes[index];
+            var gameModeOdds = Model.PlinkoConfig.Odds[index.ToString()];
+            var displayStyle = index == 0 ? "" : "display: none;";
+
+            <div id=@gameMode class="tab-content" style=@displayStyle>
+                <div class="form-group">
+                    <label class="control-label">
+                        Mirror Values (slot <->
+                            row - slot)
+                            <input type="checkbox" id="mirror-@gameMode" onchange="gameStatus.toggleMirrorValues('@gameMode')" />
+                    </label>
+                </div>
+                <div class="form-group">
+                    <div class="control-label">Mode @(char.ToUpperInvariant(gameMode[0]) + gameMode.Substring(1)) Average RTP: <span id="average-rtp-@gameMode"></span>%</div>
+                </div>
+                @foreach (var i in gameModeOdds)
+                {
+                    var odds = i.Value;
+                    <div class="col-lg-12 mb-3">
+                        <fieldset>
+                            <legend>Row @i.Key</legend>
+                            <div class="form-group row">
+                                <div class="col-md-11 row">
+                                    @for (int j = 0; j < odds.Length; j++)
+                                    {
+                                        <div class="col-md-2 mb-2">
+                                            <label class="control-label">
+                                                Slot @j
+                                                <input type="number" asp-for="@Model.PlinkoConfig.Odds[index.ToString()][i.Key][j]" class="form-control pl-2" />
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-md-1 mb-2">
+                                    <div class="control-label">
+                                        Estimated RTP (%)
+                                        <div id="rtp-@gameMode-@i.Key" class="form-control" readonly style="background-color: #f8f9fa; border: 1px solid #ced4da; padding: 0.375rem 0.75rem; min-height: 38px; display: inline-block; align-items: center; width: fit-content"></div>
                                     </div>
-                                }
-                            </div>                 
-                            <div class="col-md-1 mb-2">
-                                <div class="control-label">
-                                    Estimated RTP (%)
-                                    <div id="rtp-low-@i.Key" class="form-control" readonly style="background-color: #f8f9fa; border: 1px solid #ced4da; padding: 0.375rem 0.75rem; min-height: 38px; display: inline-block; align-items: center; width: fit-content"></div>
                                 </div>
                             </div>
-                        </div>
-                    </fieldset>
-                </div>
-            }
-        </div>
-
-        <!-- Medium Risk Tab -->
-        <div id="medium" class="tab-content" style="display: none;">
-            <div class="form-group">
-                <label class="control-label">
-                    Mirror Values (slot <-> row - slot)
-                        <input type="checkbox" id="mirrorMedium" onchange="gameStatus.toggleMirrorValues('medium')" />
-                </label>
+                        </fieldset>
+                    </div>
+                }
             </div>
-            <div class="form-group">
-                <div class="control-label">Mode Medium Average RTP: <span id="average-rtp-medium"></span>%</div>
-            </div>
-            @foreach (var i in Model.PlinkoConfig.Odds["1"])
-            {
-                var odds = i.Value;
-                <div class="col-lg-12 mb-3">
-                    <fieldset>
-                        <legend>Row @i.Key</legend>
-                        <div class="form-group row">
-                            <div class="col-md-11 row">
-                                @for (int j = 0; j < odds.Length; j++)
-                                {           
-                                    <div class="col-md-2 mb-2">
-                                        <label class="control-label">
-                                            Slot @j
-                                            <input type="number" asp-for="@Model.PlinkoConfig.Odds["1"][i.Key][j]" class="form-control pl-2" />
-                                        </label>
-                                    </div>
-                                }
-                            </div>
-                            <div class="col-md-1 mb-2">
-                                <div class="control-label">
-                                    Estimated RTP (%)
-                                    <div id="rtp-medium-@i.Key" class="form-control estimated-rtp" style="background-color: #f8f9fa; border: 1px solid #ced4da; padding: 0.375rem 0.75rem; min-height: 38px; display: flex; align-items: center; width: fit-content"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-            }
-        </div>
-
-        <!-- High Risk Tab -->
-        <div id="high" class="tab-content" style="display: none;">
-            <div class="form-group">
-                <label class="control-label">
-                    Mirror Values (slot <-> row - slot)
-                        <input type="checkbox" id="mirrorHigh" onchange="gameStatus.toggleMirrorValues('high')" />
-                </label>
-            </div>
-            <div class="form-group">
-                <div class="control-label">Mode High Average RTP: <span id="average-rtp-high"></span>%</div>
-            </div>
-            @foreach (var i in Model.PlinkoConfig.Odds["2"])
-            {
-                var odds = i.Value;
-                <div class="col-lg-12 mb-3">
-                    <fieldset>
-                        <legend>Row @i.Key</legend>
-                        <div class="form-group row">
-                            <div class="col-md-11 row">
-                            @for (int j = 0; j < odds.Length; j++)
-                            {           
-                                <div class="col-md-2 mb-2">
-                                    <label class="control-label">
-                                        Slot @j
-                                        <input type="number" asp-for="@Model.PlinkoConfig.Odds["2"][i.Key][j]" class="form-control pl-2" />
-                                    </label>
-                                </div>
-                            }
-                            </div>
-                            <div class="col-md-1 mb-2">
-                                <div class="control-label">
-                                    Estimated RTP (%)
-                                    <div id="rtp-high-@i.Key" class="form-control estimated-rtp" style="background-color: #f8f9fa; border: 1px solid #ced4da; padding: 0.375rem 0.75rem; min-height: 38px; display: flex; align-items: center; width: fit-content"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-            }
-        </div>
-
+        }
     </form>
 </div>
-<script>
-
-   
-
-</script>
