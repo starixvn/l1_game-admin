@@ -66,11 +66,11 @@
                         <div class="form-group row">
                             <input type="radio" class="mr-3 ml-3" asp-for="DefaultCoinValue" value="@Model.CoinValues[i]" />
                             <input id="coin-value-@i" type="number" asp-for="@Model.CoinValues[i]" class="col-2 form-control txt-coin-value"
-                                   data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308." 
-                                   data-val-range-max="1.7976931348623157E+308" 
-                                   data-val-range-min="5E-324"
-                                   data-val-unique="Value should be unique" 
-                                   />
+                            data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308." 
+                            data-val-range-max="1.7976931348623157E+308" 
+                            data-val-range-min="5E-324"
+                            data-val-unique="Value should be unique" 
+                            />
                             <i class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="currencyGroupGame.removeCoinValue(event)"></i>
                         </div>
                     }
@@ -122,12 +122,12 @@
                             <div class="form-group row">
                                 <input type="radio" class="mr-3 ml-3" asp-for="DefaultBetLevel" value="@Model.BetLevels[i]" />
                                 <input id="bet-level-@i" type="number" asp-for="@Model.BetLevels[i]" class="col-2 form-control txt-bet-level"
-                                       step=".01"
-                                       data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
-                                       data-val-range-max="1.7976931348623157E+308"
-                                       data-val-range-min="5E-324"
-                                       data-val-unique="Value should be unique"
-                                       oninput="currencyGroupGame.updateTotalBet(this.value,@i)" />
+                                step=".01"
+                                data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
+                                data-val-range-max="1.7976931348623157E+308"
+                                data-val-range-min="5E-324"
+                                data-val-unique="Value should be unique"
+                                oninput="currencyGroupGame.updateTotalBet(this.value,@i)" />
                                 <i class="icon-cancel text-error mt-3 ml-4 mr-5" style="cursor: pointer" onclick="currencyGroupGame.removeBetLevel(event)"></i>
                                 <label class=" mt-3 ml-5 pl-5" id="total-bet-@i">@((decimal)Model.BetLevels[i] * 25m)</label>
                             </div>
@@ -140,6 +140,10 @@
                     </div>
                 </fieldset>
             }
+        }
+        else if (Model.GameType == GamesAdmin.Core.Enumeration.GameType.Plinko)
+        {
+            <div></div>
         }
         else
         {
