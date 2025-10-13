@@ -13,6 +13,13 @@
     <link href="~/scss/pages/game-status.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
+@functions {
+    public static bool ShouldUseSpeedUpGameSetResult(GamesAdmin.Core.Enumeration.GameType type)
+    {
+        return new[] { GameType.Slots, GameType.CascadingSlots, GameType.Crash, GameType.CrashTurnBase, GameType.CascadingClusterSlots }.Contains(type);
+    }
+}
+
 <div class="col-md-12 col-lg-6 game-status">
     <table class="table table-bordered">
         <thead>
@@ -31,10 +38,7 @@
                     <td class="text-center">
                         @if (Model.GameList[index].EnabledMonitoring)
                         {
-                            if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Slots ||
-                            @Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.CascadingSlots ||
-                            @Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Crash ||
-                            @Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.CrashTurnBase)
+                            if (ShouldUseSpeedUpGameSetResult(@Model.GameList[index].Type))
                             {
                                 if (role == Role.Admin.Value)
                                 {

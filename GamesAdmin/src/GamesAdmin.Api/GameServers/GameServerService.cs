@@ -62,6 +62,8 @@ namespace GamesAdmin.Api.GameServers
         Task<bool> SetBaccaratXRersult(SetBaccaratXRersultRequest request);
 
         Task<bool> SetCrashTurnBaseResult(SetCrashTurnBaseResultRequest request);
+
+        Task<object> SetCascadingClusterSlotResult(SetCascadingClusterSlotRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -84,6 +86,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly IFootballDiceApiFactory footballDiceApiFactory;
         private readonly IBaccaratXApi baccaratXApi;
         private readonly ICrashTurnBaseApiFactory crashTurnBaseApiFactory;
+        private readonly ICascadingClusterSlotApiFactory cascadingClusterSlotApiFactory;
 
         public GameServerService(
             ISentryClient sentryClient,
@@ -103,7 +106,8 @@ namespace GamesAdmin.Api.GameServers
             ICrashGameApiFactory crashGameApiFactory,
             IFootballDiceApiFactory footballDiceApiFactory,
             IBaccaratXApi baccaratXApi,
-            ICrashTurnBaseApiFactory crashTurnBaseApiFactory
+            ICrashTurnBaseApiFactory crashTurnBaseApiFactory,
+            ICascadingClusterSlotApiFactory cascadingClusterSlotApiFactory
             )
         {
             this.sentryClient = sentryClient;
@@ -124,6 +128,7 @@ namespace GamesAdmin.Api.GameServers
             this.footballDiceApiFactory = footballDiceApiFactory;
             this.baccaratXApi = baccaratXApi;
             this.crashTurnBaseApiFactory = crashTurnBaseApiFactory;
+            this.cascadingClusterSlotApiFactory = cascadingClusterSlotApiFactory;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -433,5 +438,22 @@ namespace GamesAdmin.Api.GameServers
             return false;
         }
 
+        public async Task<object> SetCascadingClusterSlotResult(SetCascadingClusterSlotRequest request)
+        {
+            try
+            {
+                var config = await gameSettingService.GetByName(request.gameConfigName);
+                var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName, appSettings.ServiceNameSeparator);
+                var result = await cascadingClusterSlotApiFactory.SetResultApi(serviceName).SetResult(request);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return null;
+        }
     }
 }

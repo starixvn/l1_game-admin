@@ -28,6 +28,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<SetFootballDiceResultRequest, FootballDiceControlResult>
         , IRequestHandler<SetBaccaratXRersultRequest, bool>
         , IRequestHandler<SetCrashTurnBaseResultRequest, bool>
+        , IRequestHandler<SetCascadingClusterSlotRequest, object>
     {
         private readonly IGameServerService gameServerService;
 
@@ -87,5 +88,9 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<bool> Handle(SetCrashTurnBaseResultRequest request, CancellationToken cancellationToken)
             => gameServerService.SetCrashTurnBaseResult(request);
+
+
+        public Task<object> Handle(SetCascadingClusterSlotRequest request, CancellationToken cancellationToken)
+            => gameServerService.SetCascadingClusterSlotResult(request);
     }
 }

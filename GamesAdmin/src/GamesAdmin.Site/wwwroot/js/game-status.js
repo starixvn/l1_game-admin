@@ -394,6 +394,7 @@
                 case "CascadingSlots": return "CascadingSlotResult";
                 case "Crash": return "CrashGameResult";
                 case "CrashTurnBase": return "CrashTurnBaseResult"
+                case "CascadingClusterSlots": return "CascadingClusterSlotResult"
             }
         },
 

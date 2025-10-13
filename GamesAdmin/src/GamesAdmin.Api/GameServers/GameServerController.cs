@@ -36,13 +36,13 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
-                return    await mediator.Send(new OnlineUserRequest(game));
+                return await mediator.Send(new OnlineUserRequest(game));
 
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 return null;
-            } 
+            }
 
         }
 
@@ -97,5 +97,9 @@ namespace GamesAdmin.Api.GameServers
         [HttpPost("crashturnbase/set_result")]
         public Task<bool> SetCrashTurnBaseResult([FromBody] SetCrashTurnBaseResultRequest request)
          => mediator.Send(request);
+
+        [HttpPost("cascadingclusterslot/set_result")]
+        public Task<object> SetCascadingClusterSlotResult([FromBody] SetCascadingClusterSlotRequest request)
+        => mediator.Send(request);
     }
 }
