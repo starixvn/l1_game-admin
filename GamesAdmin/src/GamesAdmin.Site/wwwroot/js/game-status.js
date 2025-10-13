@@ -1423,6 +1423,15 @@
                 self.updateEstimatedRTP(this);
             });
 
+            // Initialize mirror values for all risk levels if checkboxes are checked
+            const riskLevels = ['low', 'medium', 'high'];
+            riskLevels.forEach(riskLevel => {
+                const checkbox = $(`#mirror-${riskLevel}`);
+                if (checkbox.is(':checked')) {
+                    self.toggleMirrorValues(riskLevel);
+                }
+            });
+
             // Calculate initial RTP for all rows
             const allRows = $('fieldset');
             allRows.each(function() {
