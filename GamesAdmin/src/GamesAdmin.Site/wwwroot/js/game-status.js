@@ -4,7 +4,7 @@
     var $oddsMultiplierTemplate;
     var oddsMultiplierIndex;
     var originalTeams = null;
-    
+
     return {
         checkAll: function () {
             var checked = $("#status-all").prop("checked"),
@@ -767,7 +767,7 @@
                 $('#video-stream-config').show();
                 $('#use-margin').show();
             }
-            else{
+            else {
                 $('#tournament-config').hide();
                 $('#video-stream-config').hide();
                 $('#use-margin').hide();
@@ -789,8 +789,8 @@
             $('#adjustweight-tab-header').removeClass("active");
             $('#slotBotSetting-tab-header').removeClass("active");
 
-            const id = '#' + name;
-            const headerId = '#' + name + '-tab-header';
+            const id = `#${name}`;
+            const headerId = `#${name}-tab-header`;
 
             $(id).show();
             $(headerId).addClass("active");
@@ -839,8 +839,8 @@
             $('#addnew-tab-header').removeClass("active");
             $('#clonegame-tab-header').removeClass("active");
 
-            const id = '#' + tabName;
-            const headerId = '#' + tabName + '-tab-header';
+            const id = `#${tabName}`;
+            const headerId = `#${tabName}-tab-header`;
 
             $(id).show();
             $(headerId).addClass("active");
@@ -1015,7 +1015,7 @@
             $number.attr("name", $number.attr("name").replace(/\d+/, oddsMultiplierIndex)).val(0);
 
             console.log($newItem.html());
-            
+
             $("#odds-multipliers").append($newItem);
             oddsMultiplierIndex++;
         },
@@ -1042,11 +1042,11 @@
                     ${currentTeamName ? `<span class="ml-2 mt-2 current-team" style="color: grey;">(Current: ${currentTeamName})</span>` : ''}
                 </div>
             `);
-        
+
             if (currentTeamName && currentTeamName !== teamName) {
                 $newItem.find('input').css('color', 'red');
             }
-        
+
             $("#tournament-teams").append($newItem);
         },
         removeAllTournamentTeams: function () {
@@ -1056,16 +1056,16 @@
             // Get current teams before clearing
             if (originalTeams === null) {
                 originalTeams = [];
-                $("#tournament-teams .tournament-team-item input").each(function() {
+                $("#tournament-teams .tournament-team-item input").each(function () {
                     originalTeams.push($(this).val());
                 });
             }
-        
+
             this.removeAllTournamentTeams();
-            
+
             var tournamentTeamsInput = $("#tournament-teams-input").val();
             var tournamentTeams = tournamentTeamsInput.split(/[,;]/).filter(team => team.trim() !== "");
-        
+
             // Add new/updated teams
             for (let index = 0; index < tournamentTeams.length; index++) {
                 var team = tournamentTeams[index];
@@ -1074,7 +1074,7 @@
                     this.addTournamentTeamItem(index, team, currentTeam);
                 }
             }
-        
+
             // Show removed teams
             for (let index = tournamentTeams.length; index < originalTeams.length; index++) {
                 var removedTeam = originalTeams[index];
@@ -1088,20 +1088,20 @@
                 $("#tournament-teams").append($removedItem);
             }
         },
-        rollbackTournamentTeams: function() {
+        rollbackTournamentTeams: function () {
             if (originalTeams === null) {
-                return; 
+                return;
             }
-            
+
             this.removeAllTournamentTeams();
-            
+
             for (let index = 0; index < originalTeams.length; index++) {
                 this.addTournamentTeamItem(index, originalTeams[index], null);
             }
-            
+
             $("#tournament-teams-input").val("");
         },
-        resetOriginalTeams: function() {
+        resetOriginalTeams: function () {
             originalTeams = null;
         },
         importVideoStream: function () {
@@ -1111,18 +1111,18 @@
                 var videoData = JSON.parse(jsonInput);
 
                 // Show the "Updated Number of Videos" column
-                $("#updated-number-header").show(); 
+                $("#updated-number-header").show();
 
                 // Update the table rows with the new JSON data
                 var rowsUpdated = new Set();
-    
+
                 for (const [videoName, updatedNumber] of Object.entries(videoData)) {
-                    var selector = videoName === "0" 
-                    ? `#video-stream-rows tr[data-video-name='0']` 
-                    : `#video-stream-rows tr[data-video-name='${videoName}']`;
+                    var selector = videoName === "0"
+                        ? `#video-stream-rows tr[data-video-name='0']`
+                        : `#video-stream-rows tr[data-video-name='${videoName}']`;
 
                     var $row = $(selector);
-    
+
                     if ($row.length) {
                         // If the video name exists, update the "Updated Number" column
                         var $currentCell = $(".current-number", $row);
@@ -1153,40 +1153,40 @@
                         `;
                         $("#video-stream-rows").append(newRowHtml);
                     }
-    
+
                     rowsUpdated.add(videoName);
                 }
-    
+
                 // Mark rows with no updates as unchanged
                 $("#video-stream-rows tr").each(function () {
                     var videoName = $(this).data("video-name");
-                
+
                     if (videoName === undefined) {
                         return;
                     }
-                
+
                     videoName = videoName.toString();
-                
+
                     if (!rowsUpdated.has(videoName)) {
                         $(this).css({
-                            "text-decoration": "line-through", 
+                            "text-decoration": "line-through",
                             "font-weight": "bold",
-                            "color": "red" 
+                            "color": "red"
                         });
-            
+
                     }
                 });
-    
+
                 // Save the JSON data to the hidden input field
                 $("#video-stream-json").val(jsonInput);
             } catch (error) {
                 // Handle invalid JSON format
                 alert("Invalid JSON format. Please check and try again.");
-                $("#updated-number-header").hide(); 
+                $("#updated-number-header").hide();
                 $(".updated-number").hide();
-        
+
                 // Reset any styling on current number cells but keep their values
-                $("#video-stream-rows tr").each(function() {
+                $("#video-stream-rows tr").each(function () {
                     $(this).css({
                         "text-decoration": "none",
                         "font-weight": "normal",
@@ -1197,12 +1197,12 @@
                         "color": "grey"
                     });
                 });
-                
+
                 // Clear the JSON input
                 $("#video-stream-json").val("");
             }
         }
-                
+
     }
 }(jQuery));
 
