@@ -1203,9 +1203,7 @@
 
         togglePlinkoSettingTabs: function(tabName) {
             // Hide all tab content
-            $('#low').hide();
-            $('#medium').hide();
-            $('#high').hide();
+            $('.tab-pane').removeClass('active').hide();
 
             // Remove active class from all tab headers
             $('#low-tab-header').removeClass('active');
@@ -1217,7 +1215,7 @@
         },
 
         showTab(tabName) {
-            $(`#${tabName}`).show();
+            $(`#${tabName}`).addClass('active').show();
             $(`#${tabName}-tab-header`).addClass("active");
         },
 
@@ -1341,7 +1339,7 @@
             const legend = $rowContainer.find('legend');
             const rowNumber = parseInt(legend.text().replace('Row ', ''));
             
-            const tabContainer = $rowContainer.closest('.tab-content');
+            const tabContainer = $rowContainer.closest('.tab-pane');
             let riskLevel = 'low';
             if (tabContainer.attr('id') === 'medium') {
                 riskLevel = 'medium';
@@ -1432,13 +1430,16 @@
                 }
             });
 
-            // Calculate initial RTP for all rows
-            const allRows = $('fieldset');
-            allRows.each(function() {
-                const firstInput = $(this).find(allInputs).first();
-                if (firstInput.length > 0) {
-                    self.updateEstimatedRTP(firstInput[0]);
-                }
+            // Calculate initial RTP for all rows in all tabs
+            riskLevels.forEach(riskLevel => {
+                const tabContent = $(`#${riskLevel}`);
+                const allRows = tabContent.find('fieldset');
+                allRows.each(function() {
+                    const firstInput = $(this).find(allInputs).first();
+                    if (firstInput.length > 0) {
+                        self.updateEstimatedRTP(firstInput[0]);
+                    }
+                });
             });
 
             // Calculate initial average RTP for all risk levels
