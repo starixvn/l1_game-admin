@@ -733,8 +733,9 @@ namespace GamesAdmin.Api.Games
                        .Set(field => field.CascadingSlotsConfig.Mode, cascadingSlotsConfig.Mode)
                        .Set(field => field.CascadingSlotsConfig.Volatility, cascadingSlotsConfig.Volatility)
                        .Set(field => field.CascadingSlotsConfig.BetMultiplier, cascadingSlotsConfig.BetMultiplier)
-                       .Set(field => field.CascadingSlotsConfig.BetLevels, cascadingSlotsConfig.BetLevels);
-                    var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId); ;
+                       .Set(field => field.CascadingSlotsConfig.BetLevels, cascadingSlotsConfig.BetLevels)
+                       .Set(field => field.CascadingSlotsConfig.ResultChains, cascadingSlotsConfig.ResultChains);
+                    var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
                     writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
                 }
 

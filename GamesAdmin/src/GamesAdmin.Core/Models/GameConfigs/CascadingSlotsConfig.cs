@@ -25,6 +25,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
             MaxWinPerRound = config.MaxWinPerRound;
             OddsByCounts = config.OddsByCounts;
             Volatility = config.Volatility;
+            ResultChains = config.ResultChains;
         }
 
         public byte Mode { get; set; }
@@ -40,6 +41,13 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
         public byte Volatility { get; set; }
         public CascadingSlotFeatures Features { get; set; }
+        public ResultChains ResultChains { get; set; }
+    }
+
+    public class ResultChains
+    {
+        public bool Enabled { get; set; }
+        public bool Reload { get; set; }
     }
 
     public class CascadingSlotFeatures

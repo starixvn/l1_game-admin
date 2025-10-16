@@ -109,6 +109,20 @@
                 <label asp-for="BotEnabled" class="control-label"></label>
             </div>
 
+            <fieldset>
+                <legend>Result Chains</legend>
+                <div class="form-group row">
+                    <div class="col-lg-6">
+                        <input type="checkbox" asp-for="@Model.CascadingSlotsConfig.ResultChains.Enabled" id="ResultChains_Enabled" />
+                        <label asp-for="@Model.CascadingSlotsConfig.ResultChains.Enabled" class="control-label" for="ResultChains_Enabled">Enabled</label>
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="checkbox" asp-for="@Model.CascadingSlotsConfig.ResultChains.Reload" id="ResultChains_Reload" />
+                        <label asp-for="@Model.CascadingSlotsConfig.ResultChains.Reload" class="control-label" for="ResultChains_Reload">Reload</label>
+                    </div>
+                </div>
+            </fieldset>
+
             <div class="form-group">
                 <label class="control-label">Volatility</label>
                 <select asp-items="@Model.SlotViewModel.VolatilityItems" asp-for="@Model.SlotViewModel.Volatility" class="form-control"></select>
@@ -150,5 +164,6 @@
             }
             <br />
         </div>
+        
     </form>
 </div> 
