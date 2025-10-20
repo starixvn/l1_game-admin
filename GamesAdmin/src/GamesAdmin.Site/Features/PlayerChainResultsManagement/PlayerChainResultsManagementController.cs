@@ -1,14 +1,14 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Site.Features.PlayerChainResultsManagement.Requests;
 using GamesAdmin.Site.Features.PlayerChainResultsManagement.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.PlayerChainResultsManagement
 {
+    [Authorize]
     public class PlayerChainResultsManagementController : Controller
     {
         private readonly IMediator mediator;
