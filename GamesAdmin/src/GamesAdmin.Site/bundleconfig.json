@@ -313,5 +313,16 @@
   },{
     "outputFileName": "wwwroot/js/add-new-game.min.js",
     "inputFiles": [ "wwwroot/js/add-new-game.js" ]
+  },
+  {
+    "outputFileName": "wwwroot/css/player-chain-results.min.css",
+    "inputFiles": [ 
+      "wwwroot/lib/data-tables/datatables.min.css", 
+      "wwwroot/scss/pages/player-chain-results.css" 
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/player-chain-results.min.js",
+    "inputFiles": [ "wwwroot/js/player-chain-results.js" ]
   }
 ]

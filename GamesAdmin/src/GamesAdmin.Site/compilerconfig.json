@@ -102,5 +102,9 @@
   {
     "outputFile": "wwwroot/scss/pages/buy-free-spin-setting.css",
     "inputFile": "wwwroot/scss/pages/buy-free-spin-setting.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/player-chain-results.css",
+    "inputFile": "wwwroot/scss/pages/player-chain-results.scss"
   }
 ]

@@ -25,6 +25,7 @@ using GamesAdmin.Site.Features.Lobby;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.OperateSettings;
 using GamesAdmin.Site.Features.Partners;
+using GamesAdmin.Site.Features.PlayerChainResultsManagement.Services;
 using GamesAdmin.Site.Features.PlayerInfo;
 using GamesAdmin.Site.Features.Promotions;
 using GamesAdmin.Site.Features.Report;
@@ -109,6 +110,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IGlobalConfigApi>(appSettings.ApiHost, refitSettings));
 
             services.AddSingleton(RestService.For<ICurrencyApi>(appSettings.ApiHost, refitSettings));
+            
+            services.AddSingleton(RestService.For<IPlayerChainResultApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IPlayerChainResultService, PlayerChainResultService>();
             services.AddScoped<ICurrencyService, CurrencyService>();
 
             services.AddSingleton(RestService.For<ICurrencyGroupApi>(appSettings.ApiHost, refitSettings));
