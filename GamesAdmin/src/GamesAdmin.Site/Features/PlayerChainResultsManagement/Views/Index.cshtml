@@ -48,7 +48,7 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Player ID</th>
-                                    <th>Player Name</th>
+                                    <th>Nickname</th>
                                     <th>Operator ID</th>
                                     <th>Game ID</th>
                                     <th style="width: 150px;">Chain Name</th>
@@ -73,7 +73,7 @@
                                             <td style="text-align: center;" class="truncate-cell" data-full-text="@result.PlayerName">
                                                 @result.PlayerName
                                             </td>
-                                            <td style="text-align: center;">@result.OperatorId</td>
+                                            <td style="text-align: center;" class="truncate-cell" data-full-text="@result.OperatorId">@result.OperatorId</td>
                                             <td style="text-align: center;">@result.GameId</td>
                                             <td class="truncate-cell" data-full-text="@result.ChainName" data-copy-value="@result.ChainName">
                                                 <div class="chain-name-cell">@result.ChainName</div>

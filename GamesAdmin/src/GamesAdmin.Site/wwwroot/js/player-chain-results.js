@@ -123,11 +123,6 @@ $(document).ready(function () {
     });
 
     $('#exportButton').on('click', function () {
-        const $button = $(this);
-        const originalText = $button.text();
-        
-        $button.prop('disabled', true).text('Exporting...');
-        
         const filters = getFilterValues();
         const params = [];
         
@@ -140,20 +135,22 @@ $(document).ready(function () {
         
         const exportUrl = `/PlayerChainResultsManagement/Export${params.length > 0 ? '?' + params.join('&') : ''}`;
         
-        // Use window.location for direct download instead of fetch
-        const link = document.createElement('a');
-        link.href = exportUrl;
-        link.download = `PlayerChainResults_${new Date().toISOString().slice(0, 19).replaceAll(':', '-')}.csv`;
-        link.target = '_blank';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        // Show success message
-        showNotification('Export completed successfully!', 'success');
-        
-        // Re-enable button
-        $button.prop('disabled', false).text(originalText);
+        // Use fetch to check if export is successful before re-enabling button
+        fetch(exportUrl, {
+            method: 'GET',
+            headers: {
+                'Accept': 'text/csv'
+            }
+        })
+        .then(() => {
+            const link = document.createElement('a');
+            link.href = exportUrl;
+            link.download = `PlayerChainResults_${new Date().toISOString().slice(0, 19).replaceAll(':', '-')}.csv`;
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        })
     });
 
     // Tooltip functionality

@@ -17,7 +17,7 @@
     border-color: #454d55;
     font-weight: 600;
     font-size: 1.4rem;
-    padding: 1rem 0.75rem;
+    padding: 1rem !important;
 }
 
 .table tbody tr:hover {
@@ -27,7 +27,22 @@
 .table td,
 .table th {
     vertical-align: middle;
-    word-wrap: break-word;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+.table th:nth-child(11),
+.table td:nth-child(11) {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+}
+
+.table th:nth-child(12),
+.table td:nth-child(12) {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
 }
 
 .badge {
@@ -105,6 +120,50 @@
     cursor: default;
 }
 
+.copy-label {
+    position: absolute;
+    width: fit-content;
+    bottom: 0.25rem;
+    right: 0.25rem;
+    font-size: 1.2rem;
+    color: #007bff;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.2rem;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.copy-label:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.copy-label.copied {
+    background-color: #28a745 !important;
+    color: white !important;
+    border-color: #28a745 !important;
+}
+
+.copy-label.copied:hover {
+    background-color: #218838 !important;
+    color: white !important;
+    border-color: #1e7e34 !important;
+}
+
+.chain-name-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    cursor: default;
+    padding-bottom: 2rem;
+}
+
 .custom-tooltip {
     position: absolute !important;
     background-color: #333 !important;
@@ -113,7 +172,8 @@
     border-radius: 0.25rem !important;
     font-size: 1.4rem !important;
     white-space: normal !important;
-    word-wrap: break-word !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
     max-width: 400px !important;
     z-index: 9999 !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
