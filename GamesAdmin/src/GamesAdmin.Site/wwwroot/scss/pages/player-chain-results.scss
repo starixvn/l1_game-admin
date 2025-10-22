@@ -109,6 +109,49 @@
     cursor: default;
 }
 
+.copy-label {
+    position: absolute;
+    width: fit-content;
+    bottom: 0.25rem;
+    right: 0.25rem;
+    font-size: 1.2rem;
+    color: #007bff;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.2rem;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.copy-label:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.copy-label.copied {
+    background-color: #28a745 !important;
+    color: white !important;
+    border-color: #28a745 !important;
+}
+
+.copy-label.copied:hover {
+    background-color: #218838 !important;
+    color: white !important;
+    border-color: #1e7e34 !important;
+}
+.chain-name-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    cursor: default;
+    padding-bottom: 2rem;
+}
+
 .custom-tooltip {
     position: absolute !important;
     background-color: #333 !important;

@@ -66,33 +66,29 @@ function removeTooltip($element) {
 const playerChainResults = (function ($) {
     return {
         init: function () {
-            // Check if table exists and has correct structure
             const table = $('#playerChainResultsTable');
             if (table.length > 0) {
                 const headerCells = table.find('thead th').length;
                 const firstRowCells = table.find('tbody tr:first td').length;
                 
-                // Check if first row has colspan (no data row)
                 const firstRow = table.find('tbody tr:first');
                 const hasColspan = firstRow.find('td[colspan]').length > 0;
                 
-                // Only initialize DataTables if we have actual data rows (not "No data available")
-                if (headerCells === 16 && firstRowCells === 16 && !hasColspan) {
-                    // Initialize DataTables with proper configuration
+                if (headerCells === 14 && firstRowCells === 14 && !hasColspan) {
                     table.DataTable({
                         "paging": false,
                         "searching": false,
                         "info": false,
                         "ordering": true,
-                        "order": [[8, "desc"]],
+                        "order": [[7, "desc"]],
                         "columnDefs": [
-                            { "orderable": false, "targets": [0, 1, 2, 3, 4] },
-                            { "orderable": true, "targets": [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
+                            { "orderable": false, "targets": [0, 1, 2, 3, 5] },
+                            { "orderable": true, "targets": [4, 6, 7, 8, 9, 10, 11, 12, 13] },
+                            { "width": "150px", "targets": [4] }, // Chain Name column
                         ],
-                        "createdRow": function (row, data, dataIndex) {
+                        "createdRow": function (row) {
+                            formatDateTimeCell($(row).find('td:eq(7)'));
                             formatDateTimeCell($(row).find('td:eq(8)'));
-                            formatDateTimeCell($(row).find('td:eq(9)'));
-                            formatDateTimeCell($(row).find('td:eq(10)'));
                         },
                         "autoWidth": false,
                         "responsive": true
@@ -106,7 +102,6 @@ const playerChainResults = (function ($) {
 $(document).ready(function () {
     playerChainResults.init();
 
-    // Event handlers
     $('#applyFilters').on('click', function () {
         const filters = getFilterValues();
         globalThis.location.href = buildUrlWithParams(filters.gameId, filters.playerId, filters.pageSize);
@@ -127,6 +122,40 @@ $(document).ready(function () {
         }
     });
 
+    $('#exportButton').on('click', function () {
+        const $button = $(this);
+        const originalText = $button.text();
+        
+        $button.prop('disabled', true).text('Exporting...');
+        
+        const filters = getFilterValues();
+        const params = [];
+        
+        if (filters.gameId) {
+            params.push(`gameId=${encodeURIComponent(filters.gameId)}`);
+        }
+        if (filters.playerId) {
+            params.push(`playerId=${encodeURIComponent(filters.playerId)}`);
+        }
+        
+        const exportUrl = `/PlayerChainResultsManagement/Export${params.length > 0 ? '?' + params.join('&') : ''}`;
+        
+        // Use window.location for direct download instead of fetch
+        const link = document.createElement('a');
+        link.href = exportUrl;
+        link.download = `PlayerChainResults_${new Date().toISOString().slice(0, 19).replaceAll(':', '-')}.csv`;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Show success message
+        showNotification('Export completed successfully!', 'success');
+        
+        // Re-enable button
+        $button.prop('disabled', false).text(originalText);
+    });
+
     // Tooltip functionality
     $(document).on('mouseenter', '.truncate-cell', function () {
         const $this = $(this);
@@ -139,6 +168,28 @@ $(document).ready(function () {
 
     $(document).on('mouseleave', '.truncate-cell', function () {
         removeTooltip($(this));
+    });
+
+    // Copy button functionality
+    $(document).on('click', '.copy-label', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const $copyButton = $(this);
+        const $parentCell = $copyButton.closest('td');
+        const copyValue = $parentCell.attr('data-copy-value');
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(copyValue).then(function() {
+            // Success - change button state
+            $copyButton.text('Copied').addClass('copied');
+            
+            // Reset button after 2 seconds
+            setTimeout(function() {
+                $copyButton.text('Copy').addClass('copy-label').removeClass('copied');
+            }, 2000);
+            
+        });
     });
 });
 
@@ -155,5 +206,4 @@ function formatDateTimeToGMT7(dateString) {
         const gmt7Date = new Date(date.getTime() + (7 * 60 * 60 * 1000));
         
         return gmt7Date.toISOString().replace('T', ' ').substring(0, 19);
-    
 }

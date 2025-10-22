@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Site.Features.PlayerChainResultsManagement.Requests;
@@ -54,6 +55,29 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement
             };
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Export(string gameId = null, string playerId = null)
+        {
+            try
+            {
+                var request = new ExportPlayerChainResultsRequest
+                {
+                    GameId = gameId,
+                    PlayerId = playerId
+                };
+
+                var excelData = await mediator.Send(request);
+
+                var fileName = $"PlayerChainResults_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
+                
+                return File(excelData, "text/csv", fileName);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred while exporting data: " + ex.Message);
+            }
         }
     }
 }
