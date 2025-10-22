@@ -69,20 +69,24 @@
                                     @foreach (var result in Model.Results)
                                     {
                                         <tr>
-                                            <td style="text-align: center;" class="truncate-cell" data-full-text="@result.PlayerId">@result.PlayerId</td>
-                                            <td style="text-align: center;" class="truncate-cell" data-full-text="@result.PlayerName">
+                                            <td style="text-align: center;" class="truncate-cell"
+                                                data-full-text="@result.PlayerId">@result.PlayerId</td>
+                                            <td style="text-align: center;" class="truncate-cell"
+                                                data-full-text="@result.PlayerName">
                                                 @result.PlayerName
                                             </td>
-                                            <td style="text-align: center;" class="truncate-cell" data-full-text="@result.OperatorId">@result.OperatorId</td>
+                                            <td style="text-align: center;" class="truncate-cell"
+                                                data-full-text="@result.OperatorId">@result.OperatorId</td>
                                             <td style="text-align: center;">@result.GameId</td>
-                                            <td class="truncate-cell" data-full-text="@result.ChainName" data-copy-value="@result.ChainName">
+                                            <td class="truncate-cell" data-full-text="@result.ChainName"
+                                                data-copy-value="@result.ChainName">
                                                 <div class="chain-name-cell">@result.ChainName</div>
                                                 <div class="copy-label">Copy</div>
                                             </td>
                                             <td style="text-align: center;">@result.CurrentBoardIndex/@result.TotalBoards</td>
                                             <td style="text-align: center;">@result.Currency</td>
-                                            <td style="text-align: center;">@result.AssignedAt.ToString("yyyy-MM-dd HH:mm:ss")
-                                            <td style="text-align: center;">@(result.CompletedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
+                                            <td style="text-align: center;">@result.AssignedAtGMT7</td>
+                                            <td style="text-align: center;">@(result.CompletedAtGMT7 ?? "-")</td>
                                             <td style="text-align: center;">
                                                 @{
                                                     var badgeClass = result.Status switch

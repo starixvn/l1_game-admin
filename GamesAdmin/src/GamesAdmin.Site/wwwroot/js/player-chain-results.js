@@ -1,15 +1,3 @@
-// Helper functions to reduce complexity
-function formatDateTimeCell(cell) {
-    const cellText = cell.text();
-    if (!cellText || cellText === '-') {   
-        return;
-    }
-    const date = new Date(cellText);
-    if (!Number.isNaN(date.getTime())) {
-        cell.text(formatDateTimeToGMT7(date));
-    }
-}
-
 function buildUrlWithParams(gameId, playerId, pageSize) {
     const url = globalThis.location.pathname;
     const params = [];
@@ -86,10 +74,6 @@ const playerChainResults = (function ($) {
                             { "orderable": true, "targets": [4, 6, 7, 8, 9, 10, 11, 12, 13] },
                             { "width": "150px", "targets": [4] }, // Chain Name column
                         ],
-                        "createdRow": function (row) {
-                            formatDateTimeCell($(row).find('td:eq(7)'));
-                            formatDateTimeCell($(row).find('td:eq(8)'));
-                        },
                         "autoWidth": false,
                         "responsive": true
                     });
@@ -189,18 +173,3 @@ $(document).ready(function () {
         });
     });
 });
-
-function formatDateTimeToGMT7(dateString) {
-    if (!dateString || dateString === '' || dateString === '-') {
-            return '-';
-        }
-
-        const date = new Date(dateString);
-        if (Number.isNaN(date.getTime())) {
-            return '-';
-        }
-
-        const gmt7Date = new Date(date.getTime() + (7 * 60 * 60 * 1000));
-        
-        return gmt7Date.toISOString().replace('T', ' ').substring(0, 19);
-}

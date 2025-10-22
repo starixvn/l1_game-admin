@@ -1,4 +1,5 @@
 using System;
+using GamesAdmin.Core.Extensions;
 
 namespace GamesAdmin.Site.Features.PlayerChainResultsManagement.ViewModels
 {
@@ -22,5 +23,7 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement.ViewModels
         public decimal CoinValue { get; set; }
         public decimal TotalWinAmount { get; set; }
         public decimal TotalBetAmount { get; set; }
+        public string AssignedAtGMT7 => AssignedAt.ToUniversalTime().AddHours(DateTimeExtension.AsianGMT).ToString("dd/MM/yyyy HH:mm:ss");
+        public string CompletedAtGMT7 => CompletedAt?.ToUniversalTime().AddHours(DateTimeExtension.AsianGMT).ToString("dd/MM/yyyy HH:mm:ss");
     }
 }
