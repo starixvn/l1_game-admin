@@ -119,6 +119,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ITicketHandler, TicketHandler>();
             services.AddScoped<IBacBall1VoidGameService, BacBall1VoidGameService>();
             services.AddScoped<IBacBall2VoidGameService, BacBall2VoidGameService>();
+            services.AddScoped<ICascadingClusterSlotApiFactory, CascadingClusterSlotApiFactory>();
 
             AddSlotServices(services);
             AddHoldemPokerServices(services, appSettings, refitSettings);

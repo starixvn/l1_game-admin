@@ -11,6 +11,7 @@
         Marble,
         CrashTurnBase,
         GuaranteedWin,
-        AutoRNGIndex
+        AutoRNGIndex,
+        CascadingClusterSlots = 12
     }
 }
