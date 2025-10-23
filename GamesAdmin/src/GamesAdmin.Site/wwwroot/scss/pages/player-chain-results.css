@@ -196,6 +196,106 @@
     font-weight: 600;
 }
 
+/* Table responsive container */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+}
+
+/* Ensure table maintains fixed width on mobile */
+#playerChainResultsTable {
+    min-width: 1200px;
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* Column width definitions */
+#playerChainResultsTable th:nth-child(1), /* Player ID */
+#playerChainResultsTable td:nth-child(1) {
+    width: 80px;
+    min-width: 80px;
+}
+
+#playerChainResultsTable th:nth-child(2), /* Nickname */
+#playerChainResultsTable td:nth-child(2) {
+    width: 120px;
+    min-width: 120px;
+}
+
+#playerChainResultsTable th:nth-child(3), /* Operator ID */
+#playerChainResultsTable td:nth-child(3) {
+    width: 100px;
+    min-width: 100px;
+}
+
+#playerChainResultsTable th:nth-child(4), /* Game ID */
+#playerChainResultsTable td:nth-child(4) {
+    width: 50px;
+    min-width: 50px;
+}
+
+#playerChainResultsTable th:nth-child(5), /* Chain Name */
+#playerChainResultsTable td:nth-child(5) {
+    width: 150px;
+    min-width: 150px;
+}
+
+#playerChainResultsTable th:nth-child(6), /* Current/Total Board */
+#playerChainResultsTable td:nth-child(6) {
+    width: 80px;
+    min-width: 80px;
+}
+
+#playerChainResultsTable th:nth-child(7), /* Currency */
+#playerChainResultsTable td:nth-child(7) {
+    width: 80px;
+    min-width: 80px;
+}
+
+#playerChainResultsTable th:nth-child(8), /* Assigned At */
+#playerChainResultsTable td:nth-child(8) {
+    width: 80px;
+    min-width: 80px;
+}
+
+#playerChainResultsTable th:nth-child(9), /* Completed At */
+#playerChainResultsTable td:nth-child(9) {
+    width: 80px;
+    min-width: 80px;
+}
+
+#playerChainResultsTable th:nth-child(10), /* Status */
+#playerChainResultsTable td:nth-child(10) {
+    width: 80px;
+    min-width: 80px;
+}
+
+#playerChainResultsTable th:nth-child(11), /* Bet Level */
+#playerChainResultsTable td:nth-child(11) {
+    width: 60px;
+    min-width: 60px;
+}
+
+#playerChainResultsTable th:nth-child(12), /* Coin Value */
+#playerChainResultsTable td:nth-child(12) {
+    width: 60px;
+    min-width: 60px;
+}
+
+#playerChainResultsTable th:nth-child(13), /* Total Win Amount */
+#playerChainResultsTable td:nth-child(13) {
+    width: 80px;
+    min-width: 80px;
+}
+
+#playerChainResultsTable th:nth-child(14), /* Total Bet Amount */
+#playerChainResultsTable td:nth-child(14) {
+    width: 80px;
+    min-width: 80px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .d-flex {
@@ -209,5 +309,19 @@
 
     .pagination {
         justify-content: center !important;
+    }
+
+        .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+    }
+
+    /* Keep table width fixed on mobile */
+    #playerChainResultsTable {
+        min-width: 1200px;
+        width: 1200px;
+        table-layout: fixed;
     }
 }
