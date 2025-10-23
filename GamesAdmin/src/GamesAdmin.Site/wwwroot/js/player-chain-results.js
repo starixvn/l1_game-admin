@@ -84,6 +84,43 @@ const playerChainResults = (function ($) {
 
 $(document).ready(function () {
     playerChainResults.init();
+    
+    // Synchronize scroll between table and bottom scrollbar
+    const tableContainer = $('.table-responsive');
+    const bottomScrollbar = $('#bottomScrollbar');
+    
+    if (tableContainer.length && bottomScrollbar.length) {
+        // Sync table scroll to bottom scrollbar
+        tableContainer.on('scroll', function() {
+            const scrollLeft = $(this).scrollLeft();
+            bottomScrollbar.scrollLeft(scrollLeft);
+        });
+        
+        // Sync bottom scrollbar to table scroll
+        bottomScrollbar.on('scroll', function() {
+            const scrollLeft = $(this).scrollLeft();
+            tableContainer.scrollLeft(scrollLeft);
+        });
+        
+        // Update bottom scrollbar width to match table content
+        function updateBottomScrollbar() {
+            const tableWidth = $('#playerChainResultsTable').outerWidth();
+            const containerWidth = tableContainer.width();
+            
+            if (tableWidth > containerWidth) {
+                bottomScrollbar.find('div').css('width', tableWidth + 'px');
+                bottomScrollbar.show();
+            } else {
+                bottomScrollbar.hide();
+            }
+        }
+        
+        // Initial update
+        updateBottomScrollbar();
+        
+        // Update on window resize
+        $(globalThis).on('resize', updateBottomScrollbar);
+    }
 
     $('#applyFilters').on('click', function () {
         const filters = getFilterValues();
@@ -132,7 +169,7 @@ $(document).ready(function () {
             link.target = '_blank';
             document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link);
+            link.remove();
         })
     });
 

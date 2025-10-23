@@ -134,7 +134,6 @@
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
     transition: all 0.2s ease;
-    z-index: 10;
 }
 
 .copy-label:hover {
@@ -196,12 +195,76 @@
     font-weight: 600;
 }
 
-/* Table responsive container */
 .table-responsive {
     overflow-x: auto;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     border: 1px solid #dee2e6;
     border-radius: 0.375rem;
+    position: relative;
+    max-height: calc(100vh - 270px); /* Adjust based on your layout */
+}
+
+/* Custom scrollbar styling for both horizontal and vertical */
+.table-responsive::-webkit-scrollbar {
+    width: 9px;   /* Vertical scrollbar width - smaller */
+    height: 9px;  /* Horizontal scrollbar height - smaller */
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #a9a9a9;
+    border-radius: 4px;
+    border: 1px solid #f8f9fa;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #8a8a8a;
+}
+
+/* Corner where scrollbars meet */
+.table-responsive::-webkit-scrollbar-corner {
+    background: #f8f9fa;
+}
+
+/* Bottom scrollbar container */
+.scrollbar-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    z-index: 1000;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.scrollbar-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.scrollbar-container::-webkit-scrollbar-track {
+    background: #f8f9fa;
+}
+
+.scrollbar-container::-webkit-scrollbar-thumb {
+    background: #a9a9a9;
+    border-radius: 4px;
+}
+
+.scrollbar-container::-webkit-scrollbar-thumb:hover {
+    background: #8a8a8a;
+}
+
+/* Ensure the table content is properly contained */
+.table-responsive .table {
+    margin-bottom: 0;
 }
 
 /* Ensure table maintains fixed width on mobile */
