@@ -114,7 +114,7 @@ namespace GamesAdmin.Api._Shared.Helpers
         }
 
         public static List<SettingChangedModel> GetSlotConfigChangedModel(
-            GameConfigEntity oldConfig, bool botEnabled, SlotsConfig newConfig)
+            GameConfigEntity oldConfig, bool botEnabled, bool enablePromotionRTP, SlotsConfig newConfig)
         {
             var changedSettings = new List<SettingChangedModel>
             {
@@ -122,6 +122,7 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("BigWinRatio", oldConfig.SlotsConfig.BigWinRatio.ToString(), newConfig.BigWinRatio.ToString()),
                 new SettingChangedModel("Mode", ((GameMode)oldConfig.SlotsConfig.Mode).ToString(), ((GameMode)newConfig.Mode).ToString()),
                 new SettingChangedModel("Botenabled", oldConfig.Botenabled.ToString(), botEnabled.ToString()),
+                new SettingChangedModel("Enable Promotion RTP", oldConfig.EnablePromotionRTP.ToString(), botEnabled.ToString()),
             };
 
             return changedSettings;
@@ -361,7 +362,7 @@ namespace GamesAdmin.Api._Shared.Helpers
             return changedSettings;
         }
 
-        public static List<SettingChangedModel> GetCascadingSlotConfigsChangeModel(GameConfigEntity gameConfig, bool newBotEnabled, CascadingSlotsConfig newConfig)
+        public static List<SettingChangedModel> GetCascadingSlotConfigsChangeModel(GameConfigEntity gameConfig, bool newBotEnabled, bool enablePromotionRTP, CascadingSlotsConfig newConfig)
         {
             var oldConfig = gameConfig.CascadingSlotsConfig;
 
@@ -377,6 +378,7 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("Volatility", oldConfig.Volatility.ToString(), newConfig.Volatility.ToString()),
                 new SettingChangedModel("Bet Multiplier", oldConfig.BetMultiplier.ToString(), newConfig.BetMultiplier.ToString()),
                 new SettingChangedModel("Bet Level", oldConfig.BetLevels.ToString(), newConfig.BetLevels.ToString()),
+                new SettingChangedModel("Enable Promotion RTP", gameConfig.EnablePromotionRTP.ToString(), enablePromotionRTP.ToString()),
             };
 
             return settingChanged;

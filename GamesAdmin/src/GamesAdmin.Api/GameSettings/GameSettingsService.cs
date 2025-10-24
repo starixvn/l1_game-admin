@@ -688,7 +688,7 @@ namespace GamesAdmin.Api.Games
 
                 foreach (var gameEntity in gameEntities)
                 {
-                    var changedSettings = SettingHelper.GetSlotConfigChangedModel(gameEntity, botEnabled, slotsConfig);
+                    var changedSettings = SettingHelper.GetSlotConfigChangedModel(gameEntity, botEnabled, enablePromotionRTP, slotsConfig);
                     await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Slot Config", string.Empty, changedSettings);
                     var update = Builders<GameConfigEntity>.Update
                             .Set(field => field.Botenabled, botEnabled)
@@ -723,7 +723,7 @@ namespace GamesAdmin.Api.Games
 
                 foreach (var gameEntity in gameEntities)
                 {
-                    var changedSettings = SettingHelper.GetCascadingSlotConfigsChangeModel(gameEntity, botEnabled, cascadingSlotsConfig);
+                    var changedSettings = SettingHelper.GetCascadingSlotConfigsChangeModel(gameEntity, botEnabled, enablePromotionRTP, cascadingSlotsConfig);
                     await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Cascading Slot Config", string.Empty, changedSettings);
                     var update = Builders<GameConfigEntity>.Update
                        .Set(field => field.Botenabled, botEnabled)
