@@ -104,6 +104,7 @@ namespace GamesAdmin.Api.VoidGame
                        gameType switch
                        {
                            (byte)GameType.CrashTurnBase => await MoveCrashTurnBaseGame(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           (byte)GameType.FixedStepsCrashTurnBase => await MoveCrashTurnBaseGame(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            _ => await Move<CrashGameBetEntity, CrashGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, (GameType)gameType)
                        }
                        : gameId switch

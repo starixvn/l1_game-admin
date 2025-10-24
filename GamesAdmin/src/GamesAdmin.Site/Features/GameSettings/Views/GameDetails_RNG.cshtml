@@ -251,6 +251,30 @@
                         }
                     </div>
                 }
+                @if (Model.CrashConfig.FixedStepsMultiplierConfigs != null)
+                {
+                    <div class="form-group" id="fixedStepsMultiplierConfigs">
+
+                        <p>Fixed Steps Multiplier Configs</p>
+
+                        @for (var i = 0; i < Model.CrashConfig.FixedStepsMultiplierConfigs.Count; i++)
+                        {
+                            var multiplierConfigs = Model.CrashConfig.FixedStepsMultiplierConfigs[i];
+
+                            <p>Mode: @(multiplierConfigs.ModeName)</p>
+                            <div class="form-group">
+                                <textarea style="height:5rem" class="form-control" rows="4" cols="50"
+                                    id="fixedStepsMultiplierConfigs_@(multiplierConfigs.Mode)"
+                                    name="CrashConfig.FixedStepsMultiplierConfigs[@i].ValuesString"
+                                    placeholder="Values are separated by ';'">@(multiplierConfigs.ValuesString)</textarea>
+                                <input type="hidden" name="CrashConfig.FixedStepsMultiplierConfigs[@i].Mode" 
+                                    value="@(multiplierConfigs.Mode)" />
+                                <input type="hidden" name="CrashConfig.FixedStepsMultiplierConfigs[@i].MultiplierSteps"
+                                       id="hiddenFixedStepsMultiplierConfigsValues_@(multiplierConfigs.Mode)" />
+                            </div>
+                        }
+                    </div>
+                }
             }
 
             @if (systemSettings.System == SystemType.GN)

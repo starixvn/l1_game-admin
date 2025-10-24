@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.GameManagementApi;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Helpers;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -122,7 +123,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
         public async Task<bool> IsCrashGame(int gameId)
         {
             var gameConfig = await GetGameConfig(gameId);
-            return gameConfig?.Type == (byte)GameType.Crash || gameConfig?.Type == (byte)GameType.CrashTurnBase;
+            return GameTypeHelper.IsCrashGame(gameConfig?.Type ?? 0);
         }
 
         public async Task<bool> IsPlinkoGame(int gameId)

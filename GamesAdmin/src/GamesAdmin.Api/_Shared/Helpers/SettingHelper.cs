@@ -471,6 +471,24 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("Crash at Base (%)", oldConfig.CrashConfig.CrashAtBase.ToString(), crashConfig.CrashAtBase.ToString()),
             };
 
+            var changedSettingsFixedStepsMultiplierConfigs = new List<SettingChangedModel>();
+            if (oldConfig.CrashConfig.FixedStepsMultiplierConfigs != null)
+            {
+                for (int i = 0; i < oldConfig.CrashConfig.FixedStepsMultiplierConfigs.Count; i++)
+                {
+                    var oldCrashConfig = oldConfig.CrashConfig.FixedStepsMultiplierConfigs[i];
+                    changedSettingsFixedStepsMultiplierConfigs.Add(
+                        new SettingChangedModel(
+                            $"Fixed Step Multiplier Mode {Core.Enumeration.CrashGame.GameModeHelper.GetModeName(oldCrashConfig.Mode)}",
+                            string.Join(";", oldCrashConfig.MultiplierSteps),
+                            string.Join(";", crashConfig.FixedStepsMultiplierConfigs[i].MultiplierSteps)));
+                }
+            }
+
+            if (changedSettingsFixedStepsMultiplierConfigs.Count > 0)
+            {
+                changedSettings.AddRange(changedSettingsFixedStepsMultiplierConfigs);
+            }
             return changedSettings;
         }
 
@@ -496,7 +514,7 @@ namespace GamesAdmin.Api._Shared.Helpers
                     {
                         var oldValue = oldRowOdds.Length > 0 ? string.Join(", ", oldRowOdds) : "Empty";
                         var newValue = newRowOdds.Length > 0 ? string.Join(", ", newRowOdds) : "Empty";
-                        
+
                         changedSettings.Add(new SettingChangedModel(
                             $"Game Mode {riskLevel} - Row {rowCount}",
                             oldValue,

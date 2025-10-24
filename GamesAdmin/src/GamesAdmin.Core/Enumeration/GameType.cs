@@ -13,6 +13,7 @@
         GuaranteedWin,
         AutoRNGIndex,
         Plinko,
-        CascadingClusterSlots = 12
+        CascadingClusterSlots = 12,
+        FixedStepsCrashTurnBase = 13,
     }
 }

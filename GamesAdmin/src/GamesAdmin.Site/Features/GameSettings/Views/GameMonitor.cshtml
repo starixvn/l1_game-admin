@@ -1,6 +1,7 @@
 ﻿@using System.Security.Claims;
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
 @using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Core.Helpers
 @model MonitorViewModel;
 
 @{
@@ -11,13 +12,6 @@
 @section Styles {
     <link href="~/lib/data-tables/datatables.min.css" rel="stylesheet" />
     <link href="~/scss/pages/game-status.min.css" rel="stylesheet" asp-append-version="true" />
-}
-
-@functions {
-    public static bool ShouldUseSpeedUpGameSetResult(GamesAdmin.Core.Enumeration.GameType type)
-    {
-        return new[] { GameType.Slots, GameType.CascadingSlots, GameType.Crash, GameType.CrashTurnBase, GameType.CascadingClusterSlots }.Contains(type);
-    }
 }
 
 <div class="col-md-12 col-lg-6 game-status">
@@ -38,7 +32,7 @@
                     <td class="text-center">
                         @if (Model.GameList[index].EnabledMonitoring)
                         {
-                            if (ShouldUseSpeedUpGameSetResult(@Model.GameList[index].Type))
+                            if (GameTypeHelper.IsAccelerateGameType(Model.GameList[index].Type))
                             {
                                 if (role == Role.Admin.Value)
                                 {
@@ -103,7 +97,7 @@
                             {
                                 <a class="icon-action" href="~/Report/CascadingSlotGameReport?game=@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
                             }
-                            else if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.CrashTurnBase)
+                            else if (GameTypeHelper.IsCrashTurn(@Model.GameList[index].Type))
                             {
                                 <a class="icon-action" href="~/Report/CrashTurnGameReport?game=@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
                             }

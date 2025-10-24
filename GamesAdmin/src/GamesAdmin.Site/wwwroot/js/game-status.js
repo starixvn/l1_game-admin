@@ -393,7 +393,8 @@
                 case "Slots": return "SlotResult";
                 case "CascadingSlots": return "CascadingSlotResult";
                 case "Crash": return "CrashGameResult";
-                case "CrashTurnBase": return "CrashTurnBaseResult"
+                case "FixedStepsCrashTurnBase":
+                case "CrashTurnBase": return "CrashTurnBaseResult";
                 case "CascadingClusterSlots": return "CascadingClusterSlotResult"
             }
         },
@@ -460,7 +461,9 @@
 
             this.updateOddsMultipliersIndex();
             this.resetOriginalTeams();
-
+            if ($('#fixedStepsMultiplierConfigs')) {
+                this.updateFixedStepsMultiplierConfigs();
+            }
             $.ajax({
                 method: "POST",
                 url: requestUrl,
@@ -1447,6 +1450,32 @@
             self.updateAverageRTP('medium');
             self.updateAverageRTP('high');
         },
+        updateFixedStepsMultiplierConfigs() {
+            // Convert string values back to arrays for FixedStepsMultiplierConfigs
+            $('#fixedStepsMultiplierConfigs textarea[id^="fixedStepsMultiplierConfigs_"]').each(function () {
+                var textarea = $(this);
+                var mode = textarea.attr('id').replace('fixedStepsMultiplierConfigs_', '');
+                var valuesString = textarea.val();
+
+                if (valuesString && valuesString.trim() !== '') {
+                    // Split by semicolon and convert to array
+                    var valuesArray = valuesString.split(';')
+                        .map(function (val) { return val.trim(); })
+                        .filter(function (val) { return val !== ''; })
+                        .map(function (val) {
+                            var parsed = parseFloat(val);
+                            return isNaN(parsed) ? 0 : parsed;
+                        });
+
+                    // Set the hidden field with the array values
+                    $('#hiddenFixedStepsMultiplierConfigsValues_' + mode).val(JSON.stringify(valuesArray));
+                } else {
+                    // Clear the hidden field if no values
+                    $('#hiddenFixedStepsMultiplierConfigsValues_' + mode).val('[]');
+                }
+            });
+        }
+
     }
 }(jQuery));
 

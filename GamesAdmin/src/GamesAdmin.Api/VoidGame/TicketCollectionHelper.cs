@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.Helpers;
 
 namespace GamesAdmin.Api.VoidGame
 {
@@ -110,10 +111,11 @@ namespace GamesAdmin.Api.VoidGame
                 var betCollection = type switch
                 {
                     GameType.CrashTurnBase => NamingConverter.RoundCollection(gameName),
+                    GameType.FixedStepsCrashTurnBase => NamingConverter.RoundCollection(gameName),
                     _ => NamingConverter.BetCollection(gameName)
                 };
                 var betLogCollection = NamingConverter.BetLogCollection(gameName);
-                if (type == GameType.CrashTurnBase)
+                if (GameTypeHelper.IsCrashTurn(type))
                 {
                     isCheckBetLog = true;
                 }

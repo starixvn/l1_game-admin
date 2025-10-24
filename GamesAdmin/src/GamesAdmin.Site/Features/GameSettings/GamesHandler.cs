@@ -186,6 +186,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     ConfigureSlotRNGGame(viewModel, game);
                     break;
 
+                case GameType.FixedStepsCrashTurnBase:
                 case GameType.CrashTurnBase:
                 case GameType.Crash:
                     ConfigureCrashGame(viewModel);

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using GamesAdmin.Core.Enumeration.CrashGame;
+using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GamesAdmin.Core.Models.GameConfigs
 {
@@ -11,6 +14,42 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public double CrashAtBase { get; set; } = 0;
 
         public MultiplierConfig MultiplierConfigs { get; set; }
+
+        public List<FixedStepsMultiplierConfig> FixedStepsMultiplierConfigs { get; set; }
+    }
+
+    public class FixedStepsMultiplierConfig
+    {
+        public byte Mode { get; set; }
+        public string ModeName
+        {
+            get => GameModeHelper.GetModeName(Mode);
+        }
+
+        public List<double> MultiplierSteps { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Values list as a semicolon-separated string for form binding
+        /// </summary>
+        [BsonIgnore]
+        public string ValuesString
+        {
+            get => MultiplierSteps != null ? string.Join(";", MultiplierSteps) : string.Empty;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    MultiplierSteps = new List<double>();
+                }
+                else
+                {
+                    MultiplierSteps = value.Split(';')
+                        .Where(x => !string.IsNullOrWhiteSpace(x))
+                        .Select(x => double.TryParse(x.Trim(), out double val) ? val : 0)
+                        .ToList();
+                }
+            }
+        }
     }
 
     public class MultiplierConfig

@@ -133,6 +133,16 @@ namespace GamesAdmin.Api.GameSettings
                 };
             }
 
+            if (gameType == (byte)GameType.FixedStepsCrashTurnBase)
+            {
+                gameConfig.CrashConfig.FixedStepsMultiplierConfigs = new List<FixedStepsMultiplierConfig> {
+                    new FixedStepsMultiplierConfig { Mode = (byte)Core.Enumeration.CrashGame.GameMode.Easy, MultiplierSteps = new List<double> { }},
+                    new FixedStepsMultiplierConfig { Mode = (byte)Core.Enumeration.CrashGame.GameMode.Medium, MultiplierSteps = new List<double> { }},
+                    new FixedStepsMultiplierConfig { Mode = (byte)Core.Enumeration.CrashGame.GameMode.Hard, MultiplierSteps = new List<double> { }},
+                    new FixedStepsMultiplierConfig { Mode = (byte)Core.Enumeration.CrashGame.GameMode.HardCore, MultiplierSteps = new List<double> { }}
+                };
+            }
+
             await gameService.Create(gameConfig);
 
             return true;

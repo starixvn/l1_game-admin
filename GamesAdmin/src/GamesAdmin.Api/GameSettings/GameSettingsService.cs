@@ -11,6 +11,7 @@ using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Helpers;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Core.Models.Lobby;
@@ -282,11 +283,8 @@ namespace GamesAdmin.Api.Games
         [SuppressMessage("SonarQube", "S1067", Justification = "Expressions should not be too complex")]
         private int GetGameId(GameInfo gameInfo)
         {
-            if (gameInfo.Type == GameType.Slots
-                || gameInfo.Type == GameType.Crash
-                || gameInfo.Type == GameType.CrashTurnBase
+            if (GameTypeHelper.IsAccelerateGameType(gameInfo.Type)
                 || gameInfo.Type == GameType.AutoRNGIndex
-                || gameInfo.Type == GameType.CascadingSlots
                 || gameInfo.Type == GameType.Plinko)
             {
                 return gameInfo.GameId;
@@ -912,7 +910,8 @@ namespace GamesAdmin.Api.Games
                 .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
                 .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
                 .Set(field => field.RandomMode, gameInfo.RandomMode)
-                .Set(field => field.CrashConfig.MultiplierConfigs, crashConfig.MultiplierConfigs);
+                .Set(field => field.CrashConfig.MultiplierConfigs, crashConfig.MultiplierConfigs)
+                .Set(field => field.CrashConfig.FixedStepsMultiplierConfigs, crashConfig.FixedStepsMultiplierConfigs);
 
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
