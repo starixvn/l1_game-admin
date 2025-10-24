@@ -493,11 +493,23 @@ namespace GamesAdmin.Site.Features.GameSettings
             switch (request.GameInfo.Type)
             {
                 case GameType.Slots:
-                    return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.GameInfo.EnablePromotionRTP, request.SlotsConfig, request.GameInfo.Type, request.OtherGameIdsInGroup));
+                    return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(
+                        request.GameInfo.Name, 
+                        request.BotSetting.BotEnabled, 
+                        request.GameInfo.EnablePromotionRTP, 
+                        request.SlotsConfig, 
+                        request.GameInfo.Type, 
+                        request.OtherGameIdsInGroup));
 
                 case GameType.CascadingSlots:
                     return gameService
-                        .UpdateCascadingSlotsConfig(new UpdateCascadingSlotsConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.GameInfo.EnablePromotionRTP, request.CascadingSlotsConfig, request.GameInfo.Type, request.OtherGameIdsInGroup));
+                        .UpdateCascadingSlotsConfig(new UpdateCascadingSlotsConfigRequest(
+                            request.GameInfo.Name, 
+                            request.BotSetting.BotEnabled, 
+                            request.GameInfo.EnablePromotionRTP, 
+                            request.CascadingSlotsConfig, 
+                            request.GameInfo.Type, 
+                            request.OtherGameIdsInGroup));
 
                 case GameType.SlotRNG:
                     return gameService.UpdateSlotRNGConfig(new UpdateSlotRNGConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig, request.OtherGameIdsInGroup));

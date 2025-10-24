@@ -37,9 +37,9 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="@Model.SlotViewModel.Mode" class="control-label"></label>
+                <label asp-for="@Model.SlotViewModel.Mode" class="control-label" for="SlotViewModel_Mode"></label>
                 <select asp-items="@Model.SlotViewModel.ModeItems" asp-for="@Model.SlotViewModel.Mode"
-                    class="form-control"></select>
+                    class="form-control" id="SlotViewModel_Mode"></select>
             </div>
 
             <fieldset>
@@ -92,25 +92,39 @@
             <br />
             <div class="form-group row">
                 <div class="col-lg-4">
-                    <label asp-for="@Model.SlotViewModel.BigWinRatio" class="control-label"></label>
-                    <input type="number" asp-for="@Model.SlotViewModel.BigWinRatio" class="form-control" />
+                    <label asp-for="@Model.SlotViewModel.BigWinRatio" class="control-label"
+                        for="SlotViewModel_BigWinRatio">
+                        @Html.DisplayNameFor(m => m.SlotViewModel.BigWinRatio)
+                    </label>
+                    <input type="number" asp-for="@Model.SlotViewModel.BigWinRatio" class="form-control"
+                        id="SlotViewModel_BigWinRatio" />
                     <span asp-validation-for="@Model.SlotViewModel.BigWinRatio" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="@Model.SlotViewModel.MegaWinRatio" class="control-label"></label>
-                    <input type="number" asp-for="@Model.SlotViewModel.MegaWinRatio" class="form-control" />
+                    <label asp-for="@Model.SlotViewModel.MegaWinRatio" class="control-label"
+                        for="SlotViewModel_MegaWinRatio">
+                        @Html.DisplayNameFor(m => m.SlotViewModel.MegaWinRatio)
+                    </label>
+                    <input type="number" asp-for="@Model.SlotViewModel.MegaWinRatio" class="form-control"
+                        id="SlotViewModel_MegaWinRatio" />
                     <span asp-validation-for="@Model.SlotViewModel.MegaWinRatio" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="@Model.SlotViewModel.SuperWinRatio" class="control-label"></label>
-                    <input type="number" asp-for="@Model.SlotViewModel.SuperWinRatio" class="form-control" />
+                    <label asp-for="@Model.SlotViewModel.SuperWinRatio" class="control-label"
+                        for="SlotViewModel_SuperWinRatio">
+                        @Html.DisplayNameFor(m => m.SlotViewModel.SuperWinRatio)
+                    </label>
+                    <input type="number" asp-for="@Model.SlotViewModel.SuperWinRatio" class="form-control"
+                        id="SlotViewModel_SuperWinRatio" />
                     <span asp-validation-for="@Model.SlotViewModel.SuperWinRatio" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="form-group">
-                <input type="checkbox" asp-for="BotEnabled" />
-                <label asp-for="BotEnabled" class="control-label"></label>
+                <label asp-for="BotEnabled" class="control-label">
+                    <input type="checkbox" asp-for="BotEnabled" />
+                    @Html.DisplayNameFor(m => m.BotEnabled)
+                </label>
             </div>
 
             <fieldset>
@@ -138,8 +152,10 @@
             </div>
 
             <div class="form-group">
-                <input type="checkbox" asp-for="EnablePromotionRTP" />
-                <label asp-for="EnablePromotionRTP" class="control-label"></label>
+                <label asp-for="EnablePromotionRTP" class="control-label">
+                    <input type="checkbox" asp-for="EnablePromotionRTP" />
+                    @Html.DisplayNameFor(m => m.EnablePromotionRTP)
+                </label>
             </div>
 
         </div>
@@ -161,7 +177,7 @@
                                 if (index < Model.PayoutViewModel.BetChoiceBetSettings.Count)
                                 {
                                     <div class="col-lg-6">
-                                        <label
+                                        <label for="bot-choice-@index"
                                             class="control-label">@Model.PayoutViewModel.BetChoiceBetSettings[index].DisplayName</label>
                                         <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceBetSettings[index].Name"
                                             class="form-control" />

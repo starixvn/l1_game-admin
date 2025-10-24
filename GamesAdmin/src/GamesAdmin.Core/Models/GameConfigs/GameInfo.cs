@@ -13,11 +13,11 @@ namespace GamesAdmin.Core.Models.GameConfigs
             int gameId = 0,
             string[] siteExclusions = null,
             int maxWinPerRound = 0,
+            bool enablePromotionRTP = false,
             bool applyMultiplier = false,
             bool haveTournament = false,
             bool haveVideoStream = false,
-            bool useMargin = false,
-            bool enablePromotionRTP = false)
+            bool useMargin = false)
         {
             Name = name;
             EnableFreeBet = enableFreeBet;

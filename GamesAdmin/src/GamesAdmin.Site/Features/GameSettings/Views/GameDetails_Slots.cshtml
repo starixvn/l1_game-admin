@@ -114,8 +114,10 @@
             </div>
 
             <div class="form-group">
-                <input type="checkbox" asp-for="EnablePromotionRTP"/>
-                <label asp-for="EnablePromotionRTP" class="control-label"></label>
+                <label asp-for="EnablePromotionRTP" class="control-label">
+                    <input type="checkbox" asp-for="EnablePromotionRTP" />
+                    @Html.DisplayNameFor(m => m.EnablePromotionRTP)
+                </label>
             </div>
 
         </div>
