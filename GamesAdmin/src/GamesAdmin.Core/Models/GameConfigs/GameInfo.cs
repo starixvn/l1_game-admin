@@ -16,7 +16,8 @@ namespace GamesAdmin.Core.Models.GameConfigs
             bool applyMultiplier = false,
             bool haveTournament = false,
             bool haveVideoStream = false,
-            bool useMargin = false)
+            bool useMargin = false,
+            bool enablePromotionRTP = false)
         {
             Name = name;
             EnableFreeBet = enableFreeBet;
@@ -30,6 +31,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
             HaveTournament = haveTournament;
             HaveVideoStream = haveVideoStream;
             UseMargin = useMargin;
+            EnablePromotionRTP = enablePromotionRTP;
         }
 
         public int GameId { get; }
@@ -55,5 +57,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public bool HaveVideoStream { get; set; }
 
         public bool UseMargin { get; set; }
+
+        public bool EnablePromotionRTP { get; set; }
     }
 }

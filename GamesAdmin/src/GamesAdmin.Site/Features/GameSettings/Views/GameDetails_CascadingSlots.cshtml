@@ -4,11 +4,13 @@
 <div>
     <ul class="nav nav-custom" id="setting-tabs">
         <li class="nav-item">
-            <a class="nav-link active" id="general-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('general')">General</a>
+            <a class="nav-link active" id="general-tab-header" href="#"
+                onclick="gameStatus.toggleSettingTabs('general')">General</a>
         </li>
     </ul>
 
-    <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
+    <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span>
+    </div>
     <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
 
     <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
@@ -20,9 +22,8 @@
                     <label class="control-label" for="">Same setting games</label>
                 </div>
                 <div class="col-4">
-                    <select hidden multiple class="form-control"
-                            asp-items="Model.OtherGamesInGroup"
-                            asp-for="OtherGameIdsInGroup">
+                    <select hidden multiple class="form-control" asp-items="Model.OtherGamesInGroup"
+                        asp-for="OtherGameIdsInGroup">
                     </select>
                     <select class="form-control" id="fanexGameIds"></select>
                 </div>
@@ -37,7 +38,8 @@
 
             <div class="form-group">
                 <label asp-for="@Model.SlotViewModel.Mode" class="control-label"></label>
-                <select asp-items="@Model.SlotViewModel.ModeItems" asp-for="@Model.SlotViewModel.Mode" class="form-control"></select>
+                <select asp-items="@Model.SlotViewModel.ModeItems" asp-for="@Model.SlotViewModel.Mode"
+                    class="form-control"></select>
             </div>
 
             <fieldset>
@@ -71,7 +73,9 @@
                     {
                         <div class="col-lg-2">
                             <label class="control-label">@($"Level {i + 1}")</label>
-                            <input type="number" asp-for="@Model.CascadingSlotsConfig.BetLevels[i]" class="form-control txt-bet-level @(Model.CascadingSlotsConfig.BetLevels[i] == 0 ? "" :"disabled")" disabled="@(Model.CascadingSlotsConfig.BetLevels[i] != 0)" />
+                            <input type="number" asp-for="@Model.CascadingSlotsConfig.BetLevels[i]"
+                                class="form-control txt-bet-level @(Model.CascadingSlotsConfig.BetLevels[i] == 0 ? "" : "disabled")"
+                                disabled="@(Model.CascadingSlotsConfig.BetLevels[i] != 0)" />
                         </div>
                     }
                 </div>
@@ -113,19 +117,29 @@
                 <legend>Result Chains</legend>
                 <div class="form-group row">
                     <div class="col-lg-6">
-                        <input type="checkbox" asp-for="@Model.CascadingSlotsConfig.ResultChains.Enabled" id="ResultChains_Enabled" />
-                        <label asp-for="@Model.CascadingSlotsConfig.ResultChains.Enabled" class="control-label" for="ResultChains_Enabled">Enabled</label>
+                        <input type="checkbox" asp-for="@Model.CascadingSlotsConfig.ResultChains.Enabled"
+                            id="ResultChains_Enabled" />
+                        <label asp-for="@Model.CascadingSlotsConfig.ResultChains.Enabled" class="control-label"
+                            for="ResultChains_Enabled">Enabled</label>
                     </div>
                     <div class="col-lg-6">
-                        <input type="checkbox" asp-for="@Model.CascadingSlotsConfig.ResultChains.Reload" id="ResultChains_Reload" />
-                        <label asp-for="@Model.CascadingSlotsConfig.ResultChains.Reload" class="control-label" for="ResultChains_Reload">Reload</label>
+                        <input type="checkbox" asp-for="@Model.CascadingSlotsConfig.ResultChains.Reload"
+                            id="ResultChains_Reload" />
+                        <label asp-for="@Model.CascadingSlotsConfig.ResultChains.Reload" class="control-label"
+                            for="ResultChains_Reload">Reload</label>
                     </div>
                 </div>
             </fieldset>
 
             <div class="form-group">
                 <label class="control-label">Volatility</label>
-                <select asp-items="@Model.SlotViewModel.VolatilityItems" asp-for="@Model.SlotViewModel.Volatility" class="form-control"></select>
+                <select asp-items="@Model.SlotViewModel.VolatilityItems" asp-for="@Model.SlotViewModel.Volatility"
+                    class="form-control"></select>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" asp-for="EnablePromotionRTP" />
+                <label asp-for="EnablePromotionRTP" class="control-label"></label>
             </div>
 
         </div>
@@ -147,14 +161,14 @@
                                 if (index < Model.PayoutViewModel.BetChoiceBetSettings.Count)
                                 {
                                     <div class="col-lg-6">
-                                        <label class="control-label">@Model.PayoutViewModel.BetChoiceBetSettings[index].DisplayName</label>
-                                        <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceBetSettings[index].Name" class="form-control" />
-                                        <input type="text"
-                                               name="PayoutViewModel.BetChoiceBetSettings[@index].MaxBet"
-                                               value="@HtmlHelpers.formatNumber3(Model.PayoutViewModel.BetChoiceBetSettings[index].MaxBet)"
-                                               class="form-control"
-                                               id="bot-choice-@index"
-                                               onkeyup="gameStatus.formatNumber('bot-choice-@index')" />
+                                        <label
+                                            class="control-label">@Model.PayoutViewModel.BetChoiceBetSettings[index].DisplayName</label>
+                                        <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceBetSettings[index].Name"
+                                            class="form-control" />
+                                        <input type="text" name="PayoutViewModel.BetChoiceBetSettings[@index].MaxBet"
+                                            value="@HtmlHelpers.formatNumber3(Model.PayoutViewModel.BetChoiceBetSettings[index].MaxBet)"
+                                            class="form-control" id="bot-choice-@index"
+                                            onkeyup="gameStatus.formatNumber('bot-choice-@index')" />
                                     </div>
                                 }
                             }
@@ -164,6 +178,6 @@
             }
             <br />
         </div>
-        
+
     </form>
-</div> 
+</div>

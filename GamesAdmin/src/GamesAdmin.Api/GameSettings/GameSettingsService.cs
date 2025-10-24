@@ -50,9 +50,9 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateSlotBotSettings(string name, Jackpot jackpot, double[] betLevels, IEnumerable<int> otherGameIdsInGroup);
 
-        Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig, IEnumerable<int> otherGameIdsInGroup);
+        Task<bool> UpdateSlotConfig(string name, bool botEnabled, bool enablePromotionRTP, SlotsConfig slotsConfig, IEnumerable<int> otherGameIdsInGroup);
 
-        Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig, IEnumerable<int> otherGameIdsInGroup);
+        Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, bool enablePromotionRTP, CascadingSlotsConfig cascadingSlotsConfig, IEnumerable<int> otherGameIdsInGroup);
 
         Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null, IEnumerable<int> otherGameIdsInGroup = null, TournamentConfig tournamentConfig = null, VideoStreamConfig videoStreamConfig = null);
 
@@ -677,7 +677,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig, IEnumerable<int> otherGameIdsInGroup)
+        public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, bool enablePromotionRTP, SlotsConfig slotsConfig, IEnumerable<int> otherGameIdsInGroup)
         {
             try
             {
@@ -694,7 +694,8 @@ namespace GamesAdmin.Api.Games
                             .Set(field => field.Botenabled, botEnabled)
                             .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
                             .Set(field => field.SlotsConfig.BigWinRatio, slotsConfig.BigWinRatio)
-                            .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode);
+                            .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode)
+                            .Set(field => field.EnablePromotionRTP, enablePromotionRTP);
                     var filterDefinition = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId); ;
                     writes.Add(new UpdateOneModel<GameConfigEntity>(filterDefinition, update));
                 }
@@ -711,7 +712,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig, IEnumerable<int> otherGameIdsInGroup)
+        public async Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, bool enablePromotionRTP, CascadingSlotsConfig cascadingSlotsConfig, IEnumerable<int> otherGameIdsInGroup)
         {
             try
             {
@@ -726,6 +727,7 @@ namespace GamesAdmin.Api.Games
                     await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Cascading Slot Config", string.Empty, changedSettings);
                     var update = Builders<GameConfigEntity>.Update
                        .Set(field => field.Botenabled, botEnabled)
+                       .Set(field => field.EnablePromotionRTP, enablePromotionRTP)
                        .Set(field => field.CascadingSlotsConfig.MultiplierBonus, cascadingSlotsConfig.MultiplierBonus)
                        .Set(field => field.CascadingSlotsConfig.BigWinRatio, cascadingSlotsConfig.BigWinRatio)
                        .Set(field => field.CascadingSlotsConfig.MegaWinRatio, cascadingSlotsConfig.MegaWinRatio)

@@ -106,6 +106,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public IEnumerable<int> OtherGameIdsInGroup { get; set; }
         public IEnumerable<SelectListItem> OtherGamesInGroup { get; set; }
+
+        [DisplayName("Enable Promotion RTP")]
+        public bool EnablePromotionRTP { get; set; }
     }
 
     public class BotRatioItemViewModel

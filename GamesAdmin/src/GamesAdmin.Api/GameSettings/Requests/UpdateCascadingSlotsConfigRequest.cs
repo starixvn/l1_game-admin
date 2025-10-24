@@ -12,6 +12,7 @@ namespace GamesAdmin.Api.GameSettings.Requests
             string name,
             string displayName,
             bool botEnabled,
+            bool enablePromotionRTP,
             CascadingSlotsConfig cascadingSlotsConfig,
             GameType type,
             IEnumerable<int> otherGameIdsInGroup)
@@ -19,6 +20,7 @@ namespace GamesAdmin.Api.GameSettings.Requests
             Name = name;
             DisplayName = displayName;
             BotEnabled = botEnabled;
+            EnablePromotionRTP = enablePromotionRTP;
             CascadingSlotsConfig = cascadingSlotsConfig;
             Type = type;
             OtherGameIdsInGroup = otherGameIdsInGroup;
@@ -29,6 +31,8 @@ namespace GamesAdmin.Api.GameSettings.Requests
         public string DisplayName { get; }
 
         public bool BotEnabled { get; }
+
+        public bool EnablePromotionRTP { get; }
 
         public GameType Type { get; set; }
 
