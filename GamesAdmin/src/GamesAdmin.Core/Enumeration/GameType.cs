@@ -12,7 +12,7 @@
         CrashTurnBase,
         GuaranteedWin,
         AutoRNGIndex,
+        Plinko,
         CascadingClusterSlots = 12
-        Plinko
     }
 }

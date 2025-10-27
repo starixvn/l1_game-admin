@@ -1,6 +1,7 @@
 $(document).ready(function () {
     // Constants to avoid code duplication
     const GAME_TYPE_AUTO_RNG_INDEX = 10;
+    const GAME_TYPE_PLINKO = 11;
     const SELECTORS = {
         TYPE: "#Type",
         NAME_TEXTBOX: "#name-textbox",
@@ -305,11 +306,16 @@ $(document).ready(function () {
         });
     }
 
+    function isValidGameName(name) {
+        return /^[a-z0-9]+$/.test(name);
+    }
+
     // Function to validate name field
     window.validateNameField = function () {
         var selectedType = parseInt($(SELECTORS.TYPE).val());
         var nameValue = "";
         var isValid = true;
+        var errorText = "The game name must be written in lowercase letters without any spaces.";
 
         if (selectedType === GAME_TYPE_AUTO_RNG_INDEX) {
             nameValue = $(SELECTORS.NAME_TEXTBOX).val().trim();
@@ -319,7 +325,17 @@ $(document).ready(function () {
             } else {
                 $("#name-validation-error").hide();
             }
-        } else {
+        }
+        else if (selectedType === GAME_TYPE_PLINKO) {
+            if (!isValidGameName($(SELECTORS.NAME_TEXTBOX).val().trim())) {
+                $("#name-validation-error").text(errorText);
+                $("#name-validation-error").show();
+                isValid = false;
+            } else {
+                $("#name-validation-error").hide();
+            }
+        }
+        else {
             nameValue = $(SELECTORS.NAME_SELECT).val();
             if (!nameValue) {
                 isValid = false;
