@@ -1313,7 +1313,7 @@
             const probabilities = this.getPlinkoProbabilities(n);
     
             if (multipliers.length !== probabilities.length) {
-                throw new Error("Số lượng hệ số thưởng (multipliers) phải bằng n + 1");
+                throw new Error("Number of multipliers must equal n + 1");
             }
     
             // RTP = Σ(P(i) × M(i))

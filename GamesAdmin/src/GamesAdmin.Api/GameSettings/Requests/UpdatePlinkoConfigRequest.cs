@@ -20,8 +20,6 @@ namespace GamesAdmin.Api.GameSettings.Requests
 
         public string Name { get; set; }
 
-        public GameType Type { get; set; }
-
         public PlinkoConfig PlinkoConfig { get; set; }
     }
 }
