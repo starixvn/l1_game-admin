@@ -937,7 +937,8 @@ namespace GamesAdmin.Api.Games
                     await chatBotService.NotifyAdminUpdatedSettings(gameEntity.Name, "Plinko Odds Config", string.Empty, changedSettings);
 
                     var update = Builders<GameConfigEntity>.Update
-                        .Set(field => field.PlinkoConfig.Odds, plinkoConfig.Odds);
+                        .Set(field => field.PlinkoConfig.Odds, plinkoConfig.Odds)
+                        .Set(field => field.PlinkoConfig.EnabledLightningMode, plinkoConfig.EnabledLightningMode);
 
                     var filter = Builders<GameConfigEntity>.Filter.Eq(x => x.GameId, gameEntity.GameId);
                     writes.Add(new UpdateOneModel<GameConfigEntity>(filter, update));

@@ -7,9 +7,12 @@ namespace GamesAdmin.Core.Models.GameConfigs
     {
         public Dictionary<string, Dictionary<string, double[]>> Odds { get; set; }
 
+        public bool EnabledLightningMode { get; set; }
+
         public PlinkoConfig()
         {
             Odds = InitializeDefaultOdds();
+            EnabledLightningMode = false;
         }
 
         private static Dictionary<string, Dictionary<string, double[]>> InitializeDefaultOdds()

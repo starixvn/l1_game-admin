@@ -1206,9 +1206,9 @@
             $('.tab-pane').removeClass('active').hide();
 
             // Remove active class from all tab headers
-            $('#low-tab-header').removeClass('active');
-            $('#medium-tab-header').removeClass('active');
-            $('#high-tab-header').removeClass('active');
+            $('#plinko-setting-tabs .nav-link').each((index, el) => {
+                $(el).removeClass('active')
+            })
 
             // Show selected tab content
             this.showTab(tabName);

@@ -1,8 +1,5 @@
-﻿using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Models.GameConfigs;
+﻿using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {

@@ -507,6 +507,10 @@ namespace GamesAdmin.Api._Shared.Helpers
                     }
                 }
             }
+            if(oldConfig.EnabledLightningMode != newConfig.EnabledLightningMode)
+            {
+                changedSettings.Add(new SettingChangedModel("Lightning Mode", oldConfig.EnabledLightningMode.ToString(), newConfig.EnabledLightningMode.ToString()));
+            }
 
             return changedSettings;
         }
