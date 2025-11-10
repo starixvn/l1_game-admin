@@ -4,7 +4,6 @@ using GamesAdmin.Database.Entities;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Database.Entities.Promotion;
-using MongoDB.Driver.Core.Authentication;
 using System;
 
 namespace GamesAdmin.Api.Promotions.Mappers

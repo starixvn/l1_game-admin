@@ -1,4 +1,4 @@
-FROM hub.lumigame.com/base/dotnet/core/sdk:8.0-alpine-25h2 AS builder
+FROM hub.lumigame.com/base/dotnet/core/sdk:9.0-alpine-25h2 AS builder
 WORKDIR /src
 
 RUN apk update && apk add --no-cache nodejs npm
@@ -14,7 +14,7 @@ COPY ./GamesAdmin/src/GamesAdmin.Site .
 
 RUN dotnet publish -r linux-x64 --self-contained false -o /app 
 
-FROM hub.lumigame.com/base/dotnet/core/aspnet:8.0-alpine-25h2 AS base
+FROM hub.lumigame.com/base/dotnet/core/aspnet:9.0-alpine-25h2 AS base
 
 RUN apk update && apk upgrade && apk add --no-cache curl
 

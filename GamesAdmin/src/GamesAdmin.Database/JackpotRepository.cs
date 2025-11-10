@@ -5,6 +5,7 @@ using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace GamesAdmin.Database
 {
