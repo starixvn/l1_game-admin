@@ -466,7 +466,7 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("SmartBotEnabled", oldConfig.SmartBotEnabled.ToString(), botSetting.SmartBotEnabled.ToString()),
                 new SettingChangedModel("SmartBotGroupRatio", oldConfig.SmartBotGroupRatio.ToString(), botSetting.SmartBotGroupRatio.ToString()),
                 new SettingChangedModel("RandomMode", oldConfig.RandomMode.ToString(), gameInfo.RandomMode.ToString()),
-                new SettingChangedModel("Max Multiplir", oldConfig.CrashConfig.MaxMultiplier.ToString(), crashConfig.MaxMultiplier.ToString()),
+                new SettingChangedModel("Max Multiplier", oldConfig.CrashConfig.MaxMultiplier.ToString(), crashConfig.MaxMultiplier.ToString()),
                 new SettingChangedModel("Max Win per Round", oldConfig.CrashConfig.MaxWinPerRound.ToString(), crashConfig.MaxWinPerRound.ToString()),
                 new SettingChangedModel("Crash at Base (%)", oldConfig.CrashConfig.CrashAtBase.ToString(), crashConfig.CrashAtBase.ToString()),
             };
