@@ -35,15 +35,16 @@
                         </td>
                         <td class="text-center">@bet.Currency</td>
                         <td class="text-center">@bet.RoundId</td>
-                        <td class="text-center">@bet.Result</td>
                         @if(bet.HasCashOut)
-                        {                           
+                        {                               
+                            <td class="text-center">@bet.Result</td>
                             <td class="text-center">@bet.CashOutBetLog.DisplayMultiplier</td>
                             <td class="text-center">@HtmlHelpers.formatNumber(bet.CashOutBetLog.Amount)</td>
                             <td class="text-center">@HtmlHelpers.formatNumber(bet.CashOutBetLog.WinAmount)</td>
                         }
                         else
                         {
+                            <td class="text-center">Running</td>
                             <td class="text-center">-</td>
                             <td class="text-center">-</td>
                             <td class="text-center">-</td>
