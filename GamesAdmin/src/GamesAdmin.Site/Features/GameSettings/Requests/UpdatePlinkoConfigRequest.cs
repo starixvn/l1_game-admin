@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
+using System;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
@@ -11,6 +12,16 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             string name,
             PlinkoConfig plinkoConfig)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (plinkoConfig == null)
+            {
+                throw new ArgumentNullException(nameof(plinkoConfig));
+            }
+
             Name = name;
             PlinkoConfig = plinkoConfig;
         }

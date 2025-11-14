@@ -480,21 +480,18 @@ namespace GamesAdmin.Api._Shared.Helpers
             var oldOdds = oldConfig.Odds;
             var newOdds = newConfig.Odds;
 
-            // Compare each risk level
             foreach (var newRiskLevel in newOdds)
             {
                 var riskLevel = newRiskLevel.Key;
                 var newRiskOdds = newRiskLevel.Value;
                 var oldRiskOdds = oldOdds[riskLevel];
 
-                // Compare each row count within the risk level
                 foreach (var newRowCount in newRiskOdds)
                 {
                     var rowCount = newRowCount.Key;
                     var newRowOdds = newRowCount.Value;
                     var oldRowOdds = oldRiskOdds[rowCount];
 
-                    // Compare the odds arrays
                     if (!oldRowOdds.SequenceEqual(newRowOdds))
                     {
                         var oldValue = oldRowOdds.Length > 0 ? string.Join(", ", oldRowOdds) : "Empty";

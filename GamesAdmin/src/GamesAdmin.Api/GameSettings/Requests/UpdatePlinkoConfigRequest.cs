@@ -1,8 +1,7 @@
 ﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 
 namespace GamesAdmin.Api.GameSettings.Requests
 {
@@ -14,6 +13,16 @@ namespace GamesAdmin.Api.GameSettings.Requests
             string name,
             PlinkoConfig plinkoConfig)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (plinkoConfig == null)
+            {
+                throw new ArgumentNullException(nameof(plinkoConfig));
+            }
+
             Name = name;
             PlinkoConfig = plinkoConfig;
         }

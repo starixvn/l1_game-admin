@@ -23,7 +23,7 @@
             
         }
         <li class="nav-item">
-            <button type="button" class="nav-link" id="@lightning-tab-header" onclick="gameStatus.togglePlinkoSettingTabs('@lightning')">Lightning</button>
+            <button type="button" class="nav-link" id="@lightning-tab-header" role="tab" aria-selected="false" aria-controls="@lightning" onclick="gameStatus.togglePlinkoSettingTabs('@lightning')">Lightning</button>
         </li>
     </ul>
 
@@ -31,6 +31,7 @@
     <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
 
     <form class="form-group row">
+        @Html.AntiForgeryToken()
         <div id="plinkoConfig">Game Name: @Model.Name</div>
         <input type="hidden" asp-for="@Model.Name" />
         
@@ -42,7 +43,7 @@
                 var gameModeOdds = Model.PlinkoConfig.Odds[index.ToString()];
                 var activeClass = index == 0 ? "tab-pane active" : "tab-pane";
 
-                <div id=@gameMode class="@activeClass">
+                <div id="@gameMode" class="@activeClass" role="tabpanel" aria-labelledby="@gameMode-tab-header">
                     <div class="form-group">
                         <label class="control-label">
                             Mirror Values (slot <->
@@ -85,7 +86,7 @@
             }
 
             <!-- Lightning Tab -->
-            <div id="lightning" class="tab-pane">
+            <div id="lightning" class="tab-pane" role="tabpanel" aria-labelledby="lightning-tab-header">
                 <div class="form-group m-3">
                     <label class="control-label">
                         Enabled Lightning Mode

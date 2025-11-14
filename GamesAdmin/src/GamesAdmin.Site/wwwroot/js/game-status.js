@@ -564,7 +564,7 @@
 
             let requestUrl = "/odds/update";
 
-            if ($('#plinkoConfig').css('display')) {
+            if ($('#plinkoConfig').is(':visible')) {
                 requestUrl = "/plinko-config/update";
             }
 
@@ -1358,7 +1358,7 @@
             // Extract multiplier values
             const multipliers = multiplierInputs.map(function() {
                 const value = $(this).val();
-                return isNaN(value) ? 0 : value;
+                return parseFloat(value) || 0;
             }).get();
     
             try {
@@ -1482,7 +1482,7 @@ $(document).ready(function () {
 
     $("#gameModal").on("shown.bs.modal", function () {
         // Re-initialize Plinko RTP calculation when modal is shown
-        if ($("#plinkoConfig").length > 0) {
+        if ($('#plinkoConfig').is(':visible')) {
             gameStatus.initializePlinkoRTP();
         }
     });
