@@ -25,7 +25,11 @@ namespace GamesAdmin.Core.Models.GameConfigs
         {
             get => GameModeHelper.GetModeName(Mode);
         }
-        
+
+        public FixedStepsMultiplierConfig()
+        {
+        }
+
         public FixedStepsMultiplierConfig(GameMode gameMode)
         {
             Mode = (byte)gameMode;
