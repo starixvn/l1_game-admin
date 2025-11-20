@@ -12,6 +12,7 @@ using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using Sentry;
+using GameMode = GamesAdmin.Core.Enumeration.CrashGame.GameMode;
 
 namespace GamesAdmin.Api.GameSettings
 {
@@ -136,10 +137,10 @@ namespace GamesAdmin.Api.GameSettings
             if (gameType == (byte)GameType.FixedStepsCrashTurnBase)
             {
                 gameConfig.CrashConfig.FixedStepsMultiplierConfigs = new List<FixedStepsMultiplierConfig> {
-                    new FixedStepsMultiplierConfig { Mode = (byte)Core.Enumeration.CrashGame.GameMode.Easy, MultiplierSteps = new List<double> { }},
-                    new FixedStepsMultiplierConfig { Mode = (byte)Core.Enumeration.CrashGame.GameMode.Medium, MultiplierSteps = new List<double> { }},
-                    new FixedStepsMultiplierConfig { Mode = (byte)Core.Enumeration.CrashGame.GameMode.Hard, MultiplierSteps = new List<double> { }},
-                    new FixedStepsMultiplierConfig { Mode = (byte)Core.Enumeration.CrashGame.GameMode.HardCore, MultiplierSteps = new List<double> { }}
+                    new FixedStepsMultiplierConfig(GameMode.Easy),
+                    new FixedStepsMultiplierConfig(GameMode.Medium),
+                    new FixedStepsMultiplierConfig(GameMode.Hard),
+                    new FixedStepsMultiplierConfig(GameMode.HardCore)
                 };
             }
 

@@ -46,7 +46,6 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
             GameType.Marble,
             GameType.CrashTurnBase,
             GameType.GuaranteedWin,
-            GameType.AutoRNGIndex,
             GameType.Plinko,
             GameType.FixedStepsCrashTurnBase,
             0
