@@ -172,21 +172,21 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetKenoPowerBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> GetKenoPowerBetHistory(BetHistoryFilterForHardCodeGame filter, bool convertToUSD)
         {
-            return PartialView("_KenoPowerBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return PartialView("_KenoPowerBetHistory", await mediator.Send(new BetHistoryReportRequest(ConvertToBetHistoryFilter(filter), convertToUSD)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetKenoMatchBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> GetKenoMatchBetHistory(BetHistoryFilterForHardCodeGame filter, bool convertToUSD)
         {
-            return PartialView("_KenoMatchBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return PartialView("_KenoMatchBetHistory", await mediator.Send(new BetHistoryReportRequest(ConvertToBetHistoryFilter(filter), convertToUSD)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetRouletteBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> GetRouletteBetHistory(BetHistoryFilterForHardCodeGame filter, bool convertToUSD)
         {
-            return PartialView("_RouletteBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return PartialView("_RouletteBetHistory", await mediator.Send(new BetHistoryReportRequest(ConvertToBetHistoryFilter(filter), convertToUSD)));
         }
 
         [HttpGet]
@@ -296,9 +296,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetVipSeDieWarBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> GetVipSeDieWarBetHistory(BetHistoryFilterForHardCodeGame filter, bool convertToUSD)
         {
-            return PartialView("_VipSeDieWarBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return PartialView("_VipSeDieWarBetHistory", await mediator.Send(new BetHistoryReportRequest(ConvertToBetHistoryFilter(filter), convertToUSD)));
         }
 
         [HttpGet]
@@ -344,27 +344,27 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSicBoBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> GetSicBoBetHistory(BetHistoryFilterForHardCodeGame filter, bool convertToUSD)
         {
-            return PartialView("_SicBoBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return PartialView("_SicBoBetHistory", await mediator.Send(new BetHistoryReportRequest(ConvertToBetHistoryFilter(filter), convertToUSD)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetLotteryBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> GetLotteryBetHistory(BetHistoryFilterForHardCodeGame filter, bool convertToUSD)
         {
-            return PartialView("_LotteryBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return PartialView("_LotteryBetHistory", await mediator.Send(new BetHistoryReportRequest(ConvertToBetHistoryFilter(filter), convertToUSD)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetHiLoBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> GetHiLoBetHistory(BetHistoryFilterForHardCodeGame filter, bool convertToUSD)
         {
-            return PartialView("_HiLoBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return PartialView("_HiLoBetHistory", await mediator.Send(new BetHistoryReportRequest(ConvertToBetHistoryFilter(filter), convertToUSD)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> KenoBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> KenoBetHistory(BetHistoryFilterForHardCodeGame filter, bool convertToUSD)
         {
-            return View(await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return View(await mediator.Send(new BetHistoryReportRequest(ConvertToBetHistoryFilter(filter), convertToUSD)));
         }
 
         [HttpGet]
@@ -688,15 +688,15 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetNextBallBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> GetNextBallBetHistory(BetHistoryFilterForHardCodeGame filter, bool convertToUSD)
         {
-            return PartialView("_NextBallBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return PartialView("_NextBallBetHistory", await mediator.Send(new BetHistoryReportRequest(ConvertToBetHistoryFilter(filter), convertToUSD)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFootballDiceBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> GetFootballDiceBetHistory(BetHistoryFilterForHardCodeGame filter, bool convertToUSD)
         {
-                return PartialView("_FootballDiceBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+                return PartialView("_FootballDiceBetHistory", await mediator.Send(new BetHistoryReportRequest(ConvertToBetHistoryFilter(filter), convertToUSD)));
         }
 
         [HttpGet]
