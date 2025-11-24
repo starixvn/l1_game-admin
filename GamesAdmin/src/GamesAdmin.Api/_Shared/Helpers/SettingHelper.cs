@@ -474,14 +474,19 @@ namespace GamesAdmin.Api._Shared.Helpers
             var changedSettingsFixedStepsMultiplierConfigs = new List<SettingChangedModel>();
             if (oldConfig.CrashConfig.FixedStepsMultiplierConfigs != null)
             {
-                for (int i = 0; i < oldConfig.CrashConfig.FixedStepsMultiplierConfigs.Count; i++)
+                var oldSteps = oldConfig.CrashConfig.FixedStepsMultiplierConfigs;
+                var newSteps = crashConfig.FixedStepsMultiplierConfigs ?? new List<FixedStepsMultiplierConfig>();
+                var count = Math.Min(oldSteps.Count, newSteps.Count);
+                
+                for (int i = 0; i < count; i++)
                 {
-                    var oldCrashConfig = oldConfig.CrashConfig.FixedStepsMultiplierConfigs[i];
+                    var oldCrashConfig = oldSteps[i];
+                    var newCrashConfig = newSteps[i];
                     changedSettingsFixedStepsMultiplierConfigs.Add(
                         new SettingChangedModel(
                             $"Fixed Step Multiplier Mode {Core.Enumeration.CrashGame.GameModeHelper.GetModeName(oldCrashConfig.Mode)}",
                             string.Join(";", oldCrashConfig.MultiplierSteps),
-                            string.Join(";", crashConfig.FixedStepsMultiplierConfigs[i].MultiplierSteps)));
+                            string.Join(";", newCrashConfig.MultiplierSteps)));
                 }
             }
 
