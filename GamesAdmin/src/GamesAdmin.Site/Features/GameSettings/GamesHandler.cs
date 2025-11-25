@@ -452,7 +452,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 icon.Value)).ToList();
         }
 
-        private IEnumerable<BaseBetChoice> GetBetChoices(List<Choice> choices)
+        private static IEnumerable<BaseBetChoice> GetBetChoices(List<Choice> choices)
         {
             var items = new List<BaseBetChoice>();
             foreach (var choice in choices)
@@ -463,7 +463,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return items;
         }
 
-        private Dictionary<string, string> GetBetChoicesDisplayNames(List<Choice> choices)
+        private static Dictionary<string, string> GetBetChoicesDisplayNames(List<Choice> choices)
         {
             var items = new Dictionary<string, string>();
             foreach (var choice in choices)
@@ -537,7 +537,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
         }
 
-        private List<MarginSettingViewModel> GenerateMarginSettings(IEnumerable<Enumeration> choices, IEnumerable<Dictionary<string, double>> marginSettings)
+        private static List<MarginSettingViewModel> GenerateMarginSettings(IEnumerable<Enumeration> choices, IEnumerable<Dictionary<string, double>> marginSettings)
         {
             if (marginSettings?.Any() == true)
             {

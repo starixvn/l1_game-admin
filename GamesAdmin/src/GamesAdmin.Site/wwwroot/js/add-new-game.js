@@ -444,7 +444,6 @@ $(document).ready(function () {
         var hasValidChoices = false;
         var selectedType = parseInt($(SELECTORS.TYPE).val());
         var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
-        var isMarbleProduct = selectedType === GAME_TYPE_MARBLE_PRODUCT;
         var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
         // Validate odds for: AutoRNGIndex (without separate odds) only
         var shouldValidateOdds = isAutoRNGIndex && !isUseDifferentOdds;
