@@ -57,6 +57,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public string ReturnUrl { get; set; }
 
         public bool DisableAward { get; set; }
+
+        public int XMode { get; set; }
     }
 
     public class EndGameInfoRequest : SBRequest
