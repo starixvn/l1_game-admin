@@ -780,8 +780,13 @@
                 $('#tournament-config').hide();
                 $('#video-stream-config').hide();
                 $('#use-margin').hide();
+                $('#use-margin input[type="checkbox"]').prop('checked', false);
                 $('#have-tournament').prop('checked', false);
                 $('#have-video-stream').prop('checked', false);
+            }
+
+            if (type === '13') {
+                $('#use-margin input[type="checkbox"]').prop('checked', true);
             }
         },
 

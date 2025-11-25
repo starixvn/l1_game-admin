@@ -102,7 +102,14 @@ namespace GamesAdmin.Api.VoidGame
                     return new GameTicketCollection(autoRngIndexBetCollection, autoRngIndexBetLogCollection);
                 }
 
-                if(type == GameType.Plinko)
+                if (type == GameType.MarbleProduct)
+                {
+                    var marbleProductBetCollection = $"{gameName.ToLowerInvariant()}_bets";
+                    var marbleProductBetLogCollection = $"{gameName.ToLowerInvariant()}_betlogs";
+                    return new GameTicketCollection(marbleProductBetCollection, marbleProductBetLogCollection);
+                }
+
+                if (type == GameType.Plinko)
                 {
                     var plinkoRoundCollection = $"{gameName.ToLowerInvariant()}_rounds";
                     return new GameTicketCollection(plinkoRoundCollection);

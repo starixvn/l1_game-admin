@@ -143,7 +143,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             var gameConfig = await gameSettingService.GetByName(gameName);
 
             // If BetChoiceMapper doesn't contain the game, try to build bet choices from odds from database
-            if (gameConfig?.Info?.Type == GameType.AutoRNGIndex)
+            if (gameConfig?.Info?.Type == GameType.AutoRNGIndex || gameConfig?.Info?.Type == GameType.MarbleProduct)
             {
                 var gameChoices = GenerateMaxBetChoicesFromDatabaseOdds(gameName, maxBetPerChoices, gameConfig);
                 if (gameChoices.Any())

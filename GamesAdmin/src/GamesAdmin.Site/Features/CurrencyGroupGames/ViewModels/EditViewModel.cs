@@ -48,6 +48,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
             GameType.GuaranteedWin,
             GameType.Plinko,
             GameType.FixedStepsCrashTurnBase,
+            GameType.MarbleProduct,
             0
         }.Contains(GameType);
 

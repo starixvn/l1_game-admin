@@ -1,6 +1,7 @@
 $(document).ready(function () {
     // Constants to avoid code duplication
     const GAME_TYPE_AUTO_RNG_INDEX = 10;
+    const GAME_TYPE_MARBLE_PRODUCT = 13;
     const GAME_TYPE_PLINKO = 11;
     const SELECTORS = {
         TYPE: "#Type",
@@ -11,6 +12,7 @@ $(document).ready(function () {
         CHOICES_SECTION: "#choices-section",
         NAME_HIDDEN: "#name-hidden",
         USE_DIFFERENT_ODDS: "#use-different-odds",
+        USE_DIFFERENT_ODDS_CONTAINER: "#use-different-odds-container",
         ODDS_SECTION: "#odds-section",
         ODDS_COLUMN: ".odds-column",
         CHOICES_CONTAINER: "#choices-container",
@@ -20,7 +22,7 @@ $(document).ready(function () {
     const MESSAGES = {
         AUTO_RNG_HELPER: "The game name should be provided by Dev",
         PREDEFINED_HELPER: "Select from predefined game names",
-        CHOICES_VALIDATION_ERROR: "At least one choice must be configured for AutoRNGIndex games.",
+        CHOICES_VALIDATION_ERROR: "At least one choice must be configured.",
     };
 
     // Function to toggle Name field based on GameType
@@ -29,26 +31,31 @@ $(document).ready(function () {
         var isNewGame = selectedType >= 10;
 
         if (isNewGame) {
-            showAutoRNGIndexFields();
-        } else {
-            showPredefinedGameFields();
+            showNewGameFields();
+            updateHiddenField();
+            return;
         }
+
+        showPredefinedGameFields();
         updateHiddenField();
     }
 
-    function showAutoRNGIndexFields() {
+    function showNewGameFields() {
         var selectedType = parseInt($(SELECTORS.TYPE).val());
         var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
+        var isMarbleProduct = selectedType === GAME_TYPE_MARBLE_PRODUCT;
 
         $(SELECTORS.NAME_TEXTBOX).show();
         $(SELECTORS.NAME_SELECT).hide().prop("disabled", true);
         $(SELECTORS.NAME_HELPER_TEXT).text(MESSAGES.AUTO_RNG_HELPER);
         $(SELECTORS.GAME_ID_CONTAINER).show();
-        if (isAutoRNGIndex) {
+
+        if (isAutoRNGIndex || isMarbleProduct) {
             $(SELECTORS.CHOICES_SECTION).show();
         } else {
             $(SELECTORS.CHOICES_SECTION).hide();
         }
+
         $(SELECTORS.NAME_TEXTBOX).val("");
     }
 
@@ -80,15 +87,18 @@ $(document).ready(function () {
 
     // Initial setup
     toggleNameField();
+    updateOddsColumnVisibility();
 
-    // Clear textbox on page load if type is AutoRNGIndex
-    if (parseInt($(SELECTORS.TYPE).val()) === GAME_TYPE_AUTO_RNG_INDEX) {
+    // Clear textbox on page load if type is AutoRNGIndex or MarbleProduct
+    var initialType = parseInt($(SELECTORS.TYPE).val());
+    if (initialType === GAME_TYPE_AUTO_RNG_INDEX || initialType === GAME_TYPE_MARBLE_PRODUCT) {
         $(SELECTORS.NAME_TEXTBOX).val("");
     }
 
     // Handle GameType change
     $(SELECTORS.TYPE).on("change", function () {
         toggleNameField();
+        updateOddsColumnVisibility();
         validateGameIdField();
     });
 
@@ -118,13 +128,37 @@ $(document).ready(function () {
         var newRow = createChoiceRowHtml(choiceRowIndex);
         $(SELECTORS.CHOICES_CONTAINER).append(newRow);
 
-        var isOddsDifferentChecked = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
-        if (isOddsDifferentChecked) {
-            $(SELECTORS.CHOICES_CONTAINER + " .choice-row:last-child .odds-column").hide();
-        }
+        // Show/hide odds column based on game type and "Use different odds" checkbox
+        updateOddsColumnVisibility();
 
         choiceRowIndex++;
         updateRemoveButtons();
+    }
+
+    // Function to update odds column visibility based on game type
+    function updateOddsColumnVisibility() {
+        var selectedType = parseInt($(SELECTORS.TYPE).val());
+        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
+        var isMarbleProduct = selectedType === GAME_TYPE_MARBLE_PRODUCT;
+        var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
+
+        if (isMarbleProduct) {
+            $(SELECTORS.ODDS_COLUMN).hide();
+            $(SELECTORS.USE_DIFFERENT_ODDS_CONTAINER).hide();
+            $(SELECTORS.ODDS_SECTION).hide();
+        } else if (isAutoRNGIndex) {
+            // AutoRNGIndex - show "Use different odds" checkbox and show/hide odds column based on checkbox
+            $(SELECTORS.USE_DIFFERENT_ODDS_CONTAINER).show();
+            if (isUseDifferentOdds) {
+                $(SELECTORS.ODDS_COLUMN).hide();
+            } else {
+                $(SELECTORS.ODDS_COLUMN).show();
+            }
+        } else {
+            // Other game types - hide both
+            $(SELECTORS.ODDS_COLUMN).hide();
+            $(SELECTORS.USE_DIFFERENT_ODDS_CONTAINER).hide();
+        }
     }
 
     function createChoiceRowHtml(index) {
@@ -165,7 +199,7 @@ $(document).ready(function () {
     // Function to reindex choice rows after removal
     function reindexChoiceRows() {
         var newIndex = 0;
-        $(".choice-row").each(function () {
+        $(SELECTORS.CHOICES_CONTAINER + " .choice-row").each(function () {
             reindexChoiceRowInputs($(this), newIndex);
             newIndex++;
         });
@@ -193,7 +227,7 @@ $(document).ready(function () {
     }
 
     function updateChoiceRemoveButtons() {
-        var choiceRows = $(".choice-row");
+        var choiceRows = $(SELECTORS.CHOICES_CONTAINER + " .choice-row");
         if (choiceRows.length > 1) {
             choiceRows.find(".remove-choice-row").show();
         } else {
@@ -215,14 +249,26 @@ $(document).ready(function () {
 
     // Initialize odds setting visibility based on checkbox state
     function initializeOddsSettingVisibility() {
-        var isChecked = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
-        if (isChecked) {
-            $(SELECTORS.ODDS_SECTION).show();
-            $(SELECTORS.ODDS_COLUMN).hide();
-        } else {
+        var selectedType = parseInt($(SELECTORS.TYPE).val());
+        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
+        var isMarbleProduct = selectedType === GAME_TYPE_MARBLE_PRODUCT;
+        var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
+
+        if (isAutoRNGIndex) {
+            if (isUseDifferentOdds) {
+                $(SELECTORS.ODDS_SECTION).show();
+            } else {
+                $(SELECTORS.ODDS_SECTION).hide();
+            }
+        } else if (isMarbleProduct) {
             $(SELECTORS.ODDS_SECTION).hide();
-            $(SELECTORS.ODDS_COLUMN).show();
+        } else {
+            // Non-AutoRNGIndex/MarbleProduct games - always hide odds section
+            $(SELECTORS.ODDS_SECTION).hide();
         }
+
+        // Update odds column visibility (handles all game types)
+        updateOddsColumnVisibility();
     }
 
     // Initialize on page load
@@ -230,14 +276,21 @@ $(document).ready(function () {
 
     // Handle "Use different Odds setting" checkbox
     $(SELECTORS.USE_DIFFERENT_ODDS).on("change", function () {
+        var selectedType = parseInt($(SELECTORS.TYPE).val());
+        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
         var isChecked = $(this).is(":checked");
-        if (isChecked) {
-            $(SELECTORS.ODDS_SECTION).show();
-            $(SELECTORS.ODDS_COLUMN).hide();
-        } else {
-            $(SELECTORS.ODDS_SECTION).hide();
-            $(SELECTORS.ODDS_COLUMN).show();
+
+        // Only handle for AutoRNGIndex
+        if (isAutoRNGIndex) {
+            if (isChecked) {
+                $(SELECTORS.ODDS_SECTION).show();
+            } else {
+                $(SELECTORS.ODDS_SECTION).hide();
+            }
         }
+
+        // Update odds column visibility
+        updateOddsColumnVisibility();
     });
 
     // Odds section functionality
@@ -317,7 +370,7 @@ $(document).ready(function () {
         var isValid = true;
         var errorText = "The game name must be written in lowercase letters without any spaces.";
 
-        if (selectedType === GAME_TYPE_AUTO_RNG_INDEX) {
+        if (selectedType === GAME_TYPE_AUTO_RNG_INDEX || selectedType === GAME_TYPE_MARBLE_PRODUCT) {
             nameValue = $(SELECTORS.NAME_TEXTBOX).val().trim();
             if (!nameValue) {
                 $("#name-validation-error").show();
@@ -325,8 +378,7 @@ $(document).ready(function () {
             } else {
                 $("#name-validation-error").hide();
             }
-        }
-        else if (selectedType === GAME_TYPE_PLINKO) {
+        } else if (selectedType === GAME_TYPE_PLINKO) {
             if (!isValidGameName($(SELECTORS.NAME_TEXTBOX).val().trim())) {
                 $("#name-validation-error").text(errorText);
                 $("#name-validation-error").show();
@@ -334,8 +386,7 @@ $(document).ready(function () {
             } else {
                 $("#name-validation-error").hide();
             }
-        }
-        else {
+        } else {
             nameValue = $(SELECTORS.NAME_SELECT).val();
             if (!nameValue) {
                 isValid = false;
@@ -353,7 +404,7 @@ $(document).ready(function () {
         var gameIdValue = $("#game-id-input").val();
         var isValid = true;
 
-        if (selectedType === GAME_TYPE_AUTO_RNG_INDEX) {
+        if (selectedType === GAME_TYPE_AUTO_RNG_INDEX || selectedType === GAME_TYPE_MARBLE_PRODUCT) {
             if (!gameIdValue || parseInt(gameIdValue) <= 0) {
                 $("#game-id-validation-error").show();
                 isValid = false;
@@ -372,13 +423,15 @@ $(document).ready(function () {
         var isValid = true;
         var selectedType = parseInt($(SELECTORS.TYPE).val());
 
-        if (selectedType === GAME_TYPE_AUTO_RNG_INDEX) {
+        if (selectedType === GAME_TYPE_AUTO_RNG_INDEX || selectedType === GAME_TYPE_MARBLE_PRODUCT) {
             isValid = validateChoicesForAutoRNG();
 
-            // ✅ Also validate separate odds section if "Use different odds" is checked
-            var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
-            if (isUseDifferentOdds) {
-                isValid = validateOddsSection() && isValid;
+            // ✅ Also validate separate odds section if "Use different odds" is checked (only for AutoRNGIndex)
+            if (selectedType === GAME_TYPE_AUTO_RNG_INDEX) {
+                var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
+                if (isUseDifferentOdds) {
+                    isValid = validateOddsSection() && isValid;
+                }
             }
         }
 
@@ -389,7 +442,12 @@ $(document).ready(function () {
         var isValid = true;
         var choiceRows = $(".choice-row");
         var hasValidChoices = false;
+        var selectedType = parseInt($(SELECTORS.TYPE).val());
+        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
+        var isMarbleProduct = selectedType === GAME_TYPE_MARBLE_PRODUCT;
         var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
+        // Validate odds for: AutoRNGIndex (without separate odds) only
+        var shouldValidateOdds = isAutoRNGIndex && !isUseDifferentOdds;
 
         choiceRows.each(function () {
             var row = $(this);
@@ -397,21 +455,21 @@ $(document).ready(function () {
             var name = row.find(".choice-name").val().trim();
             var odds = row.find(".choice-odds").val();
 
-            // ✅ Check if we have valid choices based on checkbox state
-            if (isUseDifferentOdds) {
-                // When "Use different odds" is checked, only validate Key and Name
-                if (key && name) {
+            // ✅ Check if we have valid choices based on game type and checkbox state
+            if (shouldValidateOdds) {
+                // AutoRNGIndex (without separate odds) - validate Key, Name, and Odds
+                if (key && name && odds) {
                     hasValidChoices = true;
                 }
             } else {
-                // When "Use different odds" is NOT checked, validate Key, Name, and Odds
-                if (key && name && odds) {
+                // AutoRNGIndex with separate odds - only validate Key and Name
+                if (key && name) {
                     hasValidChoices = true;
                 }
             }
 
             row.find(".field-validation-error").text("");
-            isValid = validateChoiceRow(row, key, name, odds, isUseDifferentOdds) && isValid;
+            isValid = validateChoiceRow(row, key, name, odds, shouldValidateOdds) && isValid;
         });
 
         if (!hasValidChoices) {
@@ -424,7 +482,7 @@ $(document).ready(function () {
         return isValid;
     }
 
-    function validateChoiceRow(row, key, name, odds, isUseDifferentOdds) {
+    function validateChoiceRow(row, key, name, odds, shouldValidateOdds) {
         var isValid = true;
 
         if (!key) {
@@ -436,8 +494,8 @@ $(document).ready(function () {
             isValid = false;
         }
 
-        // ✅ Only validate odds if "Use different odds" is NOT checked
-        if (!isUseDifferentOdds) {
+        // ✅ Validate odds if required (AutoRNGIndex without separate odds only)
+        if (shouldValidateOdds) {
             if (!odds || parseFloat(odds) < 0.01) {
                 row.find("[data-valmsg-for*='.Odds']").text("Odds must be at least 0.01");
                 isValid = false;

@@ -285,7 +285,8 @@ namespace GamesAdmin.Api.Games
         {
             if (GameTypeHelper.IsAccelerateGameType(gameInfo.Type)
                 || gameInfo.Type == GameType.AutoRNGIndex
-                || gameInfo.Type == GameType.Plinko)
+                || gameInfo.Type == GameType.Plinko
+                || gameInfo.Type == GameType.MarbleProduct)
             {
                 return gameInfo.GameId;
             }

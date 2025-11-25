@@ -206,6 +206,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                 case GameType.Plinko:
                     ConfigurePlinkoGame(viewModel, game);
                     break;
+                case GameType.MarbleProduct:
+                    ConfigureMarbleProductGame(viewModel, game);
+                    break;
 
                 default:
                     ConfigureDefaultGame(viewModel, game);
@@ -273,6 +276,16 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
         }
 
+        private void ConfigureMarbleProductGame(EditViewModel viewModel, GameConfig game)
+        {
+            viewModel.Type = GameType.MarbleProduct;
+            var marbleProductChoices = GetBetChoices(game.Choices);
+            viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(marbleProductChoices, game.BetLimit);
+            viewModel.PayoutViewModel.DisplayMargins = GetBetChoicesDisplayNames(game.Choices);
+            viewModel.PayoutViewModel.MarginSettings = GenerateMarginSettings(marbleProductChoices, game.Margin);
+
+        }
+
         private void ConfigureAutoRNGIndexGame(EditViewModel viewModel, GameConfig game)
         {
             viewModel.Type = GameType.AutoRNGIndex;
@@ -327,6 +340,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 case GameType.Crash:
                 case GameType.DynamicOdds:
                 case GameType.Marble:
+                case GameType.MarbleProduct:
                 case GameType.AutoRNGIndex:
                     name += "RNG";
                     break;
@@ -438,6 +452,27 @@ namespace GamesAdmin.Site.Features.GameSettings
                 icon.Value)).ToList();
         }
 
+        private IEnumerable<BaseBetChoice> GetBetChoices(List<Choice> choices)
+        {
+            var items = new List<BaseBetChoice>();
+            foreach (var choice in choices)
+            {
+                items.Add(new BaseBetChoice(choice.Key, choice.Name));
+            }
+
+            return items;
+        }
+
+        private Dictionary<string, string> GetBetChoicesDisplayNames(List<Choice> choices)
+        {
+            var items = new Dictionary<string, string>();
+            foreach (var choice in choices)
+            {
+                items.Add(choice.Key, choice.Name);
+            }
+            return items;
+        }
+
         private IEnumerable<Enumeration> GetBetChoices(string name, Dictionary<string, double> oddsSettings = null, Dictionary<string, string> oddsDisplayNames = null)
         {
             var betChoices = gamesSettings.GetGameFromName(name)?.BetChoices;
@@ -502,27 +537,52 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
         }
 
+        private List<MarginSettingViewModel> GenerateMarginSettings(IEnumerable<Enumeration> choices, IEnumerable<Dictionary<string, double>> marginSettings)
+        {
+            if (marginSettings?.Any() == true)
+            {
+                var viewModel = new List<MarginSettingViewModel>();
+                foreach (var settings in marginSettings)
+                {
+                    viewModel.Add(new MarginSettingViewModel(settings));
+                }
+                return viewModel;
+            }
+            else
+            {
+                var defaultSetting = new Dictionary<string, double> { { "max", 0 } };
+                if (choices?.Any() == true)
+                {
+                    foreach (var choice in choices)
+                    {
+                        defaultSetting.Add(choice.Value, 0);
+                    }
+                }
+                return new List<MarginSettingViewModel> { new MarginSettingViewModel(defaultSetting) };
+            }
+        }
+
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         {
             switch (request.GameInfo.Type)
             {
                 case GameType.Slots:
                     return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(
-                        request.GameInfo.Name, 
-                        request.BotSetting.BotEnabled, 
-                        request.GameInfo.EnablePromotionRTP, 
-                        request.SlotsConfig, 
-                        request.GameInfo.Type, 
+                        request.GameInfo.Name,
+                        request.BotSetting.BotEnabled,
+                        request.GameInfo.EnablePromotionRTP,
+                        request.SlotsConfig,
+                        request.GameInfo.Type,
                         request.OtherGameIdsInGroup));
 
                 case GameType.CascadingSlots:
                     return gameService
                         .UpdateCascadingSlotsConfig(new UpdateCascadingSlotsConfigRequest(
-                            request.GameInfo.Name, 
-                            request.BotSetting.BotEnabled, 
-                            request.GameInfo.EnablePromotionRTP, 
-                            request.CascadingSlotsConfig, 
-                            request.GameInfo.Type, 
+                            request.GameInfo.Name,
+                            request.BotSetting.BotEnabled,
+                            request.GameInfo.EnablePromotionRTP,
+                            request.CascadingSlotsConfig,
+                            request.GameInfo.Type,
                             request.OtherGameIdsInGroup));
 
                 case GameType.SlotRNG:
@@ -694,7 +754,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         => await gameService.CheckServiceStatus(request);
 
         public async Task<string> Handle(UpdatePlinkoConfigRequest request, CancellationToken cancellationToken)
-        =>  await gameService.UpdatePlinkoConfig(request);         
-        
+        => await gameService.UpdatePlinkoConfig(request);
+
     }
 }
