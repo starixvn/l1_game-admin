@@ -26,7 +26,10 @@ namespace GamesAdmin.Site
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR(typeof(Startup));
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.ShouldMapMethod = m => false; // Disable extension method mapping to avoid MaxInteger issue with ObjectId
+            }, typeof(Startup));
 
             var appSettings = new AppSettings(Configuration);
             var systemSettings = new SystemSettings(appSettings.SystemType);

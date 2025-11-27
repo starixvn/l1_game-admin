@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
@@ -31,8 +32,8 @@ namespace GamesAdmin.Database
             var jackpots = await jackpotCollection
                 .Find(jackPot => jackPot.HitTime >= fromDate && jackPot.HitTime <= toDate && jackPot.GameId == gameId && jackPot.HitAt.HasValue)
                 .ToListAsync();
-            var accounts = await accountCollection.AsQueryable().ToListAsync();
-            var acountInfos = await accountInfoCollection.AsQueryable().ToListAsync();
+            var accounts = accountCollection.AsQueryable().ToList();
+            var acountInfos = accountInfoCollection.AsQueryable().ToList();
 
             var result = new List<JackpotReportEntity>();
 

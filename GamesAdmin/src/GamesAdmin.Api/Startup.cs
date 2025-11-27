@@ -43,7 +43,10 @@ namespace GamesAdmin.Api
             services.AddSingleton<ISystemSettings>(systemSettings);
 
             services.AddMediatR(typeof(Startup));
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.ShouldMapMethod = m => false; // Disable extension method mapping to avoid MaxInteger issue with ObjectId
+            }, typeof(Startup));
 
             services.AddDatabase(appSettings);
             services.AddRepositories();
