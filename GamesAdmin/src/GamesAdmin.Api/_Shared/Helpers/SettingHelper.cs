@@ -190,7 +190,7 @@ namespace GamesAdmin.Api._Shared.Helpers
 
             foreach (var n in newConfig)
             {
-                var oldText = oldConfig == null ? string.Empty : oldConfig[n.Key].ToString();
+                var oldText = oldConfig == null ? string.Empty : (oldConfig.Keys.Contains(n.Key) ? oldConfig[n.Key] : 0).ToString();
                 var setting = new SettingChangedModel(n.Key, oldText, n.Value.ToString());
                 changedSettings.Add(setting);
             }

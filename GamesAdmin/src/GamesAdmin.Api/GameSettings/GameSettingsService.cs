@@ -10,6 +10,7 @@ using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
@@ -219,7 +220,14 @@ namespace GamesAdmin.Api.Games
                     Odds = gameConfig.Odds,
                     Margin = gameConfig.Margin,
                     MaxWinPerRound = gameConfig.Info.MaxWinPerRound,
-                    MaxBetChoices = gameConfig.BetLimit.MaxBetChoices
+                    MaxBetChoices = gameConfig.BetLimit.MaxBetChoices,
+                    ApplyMultiplier = gameConfig.Info.ApplyMultiplier,
+                    HaveTournament = gameConfig.Info.HaveTournament,
+                    HaveVideoStream = gameConfig.Info.HaveVideoStream,
+                    UseMargin = gameConfig.Info.UseMargin,
+                    OddsMultipliers = gameConfig.OddsMultipliers,
+                    TournamentConfig = gameConfig.TournamentConfig,
+                    VideoStreamConfig = gameConfig.VideoStreamConfig    
                 };
 
                 await repository.InsertOneAsync(entity);
@@ -246,7 +254,7 @@ namespace GamesAdmin.Api.Games
                 return gameInfo.GameId;
             }
 
-            return (int)Game.FromGameName(gameInfo.Name).GameId;
+            return (int)GamesAdmin.Core.Enumeration.Game.FromGameName(gameInfo.Name).GameId;
         }
 
         private async Task<GameConfigEntity> GetGameEntity(string gameName)
@@ -260,7 +268,7 @@ namespace GamesAdmin.Api.Games
 
             if (gameEntity != null && gameEntity.DisplayName == null)
             {
-                gameEntity.DisplayName = Game.FromGameName(name).DisplayName;
+                gameEntity.DisplayName = GamesAdmin.Core.Enumeration.Game.FromGameName(name).DisplayName;
             }
 
             return gameEntity != null ? mapper.Map<GameConfig>(gameEntity) : default;
