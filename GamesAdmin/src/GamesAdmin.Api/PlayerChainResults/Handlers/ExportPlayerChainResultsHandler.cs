@@ -75,7 +75,7 @@ namespace GamesAdmin.Api.PlayerChainResults.Handlers
                         result.OperatorId,
                         result.GameId,
                         result.ChainName,
-                        $"{result.CurrentBoardIndex}/{result.TotalBoards}",
+                        $"=\"{result.CurrentBoardIndex}/{result.TotalBoards}\"",
                         result.Currency,
                         result.AssignedAtGMT7,
                         result.CompletedAtGMT7 ?? "-",
