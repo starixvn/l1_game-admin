@@ -24,7 +24,8 @@ export const ExistingGroupSuggestion: React.FC<ExistingGroupSuggestionProps> = (
         setShowDetailsModal(true);
     };
 
-    const handleAddCurrencyToGroup = () => {
+    const handleAddCurrencyToGroup = (suggestion: ExistingCurrencyGroupSuggestion) => {
+        setSelectedSuggestion(suggestion);
         setShowAddCurrencyToGroupModal(true);
     };
 

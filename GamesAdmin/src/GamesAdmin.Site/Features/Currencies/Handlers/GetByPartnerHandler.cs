@@ -6,6 +6,7 @@ using AutoMapper;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site.Features.Currencies.Requests;
 using GamesAdmin.Site.Features.Currencies.ViewModels;
+using GamesAdmin.Site.Features.Partners.Requests;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.Currencies.Handlers
@@ -32,7 +33,7 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
                 models = new List<CurrencyModel>();
             }
 
-            var partners = await mediator.Send(new GetPartnersForSelectionRequest());
+            var partners = await mediator.Send(new GetPartnersRequest());
 
             return new CurrencyManagementViewModel
             {

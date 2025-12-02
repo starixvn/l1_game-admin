@@ -18,6 +18,11 @@ export const AddCurrencyToGroup = ({
     const { currencyNeedToAdd } = useCurrencyNeedToAdd();
     const [error, setError] = useState<string>("");
     const handleAddCurrencyToGroup = () => {
+        console.log("handleAddCurrencyToGroup");
+        setError("Please select a target currency group.");
+    };
+    const handleCloneGroup = () => {
+        console.log("handleCloneGroup");
         setError("Please select a target currency group.");
     };
     return (
@@ -56,6 +61,9 @@ export const AddCurrencyToGroup = ({
                                 </div>
                             </div>
                         </div>
+                        <button type="button" className="btn-add" onClick={() => handleCloneGroup()} disabled={!selectedSuggestion}>
+                            Clone Group
+                        </button>
                     </div>
                 )}
 

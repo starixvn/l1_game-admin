@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -21,6 +22,7 @@ namespace GamesAdmin.Site.Features.Partners
         , IRequestHandler<UpdateSuperPlayerRequest, bool>
         , IRequestHandler<GetSuperPlayerViewRequest, SuperPlayersViewModel>
         , IRequestHandler<GetSuperPlayerRequest, string>
+        , IRequestHandler<GetPartnersRequest, IEnumerable<Partner>>
     {
         private readonly IPartnerService partnerService;
         private readonly IMapper mapper;
@@ -68,5 +70,8 @@ namespace GamesAdmin.Site.Features.Partners
 
             return string.Join("; ", superPlayers);
         }
+
+        public Task<IEnumerable<Partner>> Handle(GetPartnersRequest request, CancellationToken cancellationToken)
+            => partnerService.GetPartners(partner => true);
     }
 }

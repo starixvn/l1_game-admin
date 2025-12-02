@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Site.Features.Currencies.Requests;
 using GamesAdmin.Site.Features.Currencies.ViewModels;
+using GamesAdmin.Site.Features.Partners.Requests;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.Currencies.Handlers
@@ -19,7 +20,7 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
         public async Task<CurrencyManagementViewModel> Handle(GetAllRequest request, CancellationToken cancellationToken)
         {
             var models = await Api.GetAll();
-            var partners = await mediator.Send(new GetPartnersForSelectionRequest());
+            var partners = await mediator.Send(new GetPartnersRequest());
 
             return new CurrencyManagementViewModel
             {
