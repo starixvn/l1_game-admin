@@ -23,7 +23,7 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement.Handlers
         {
             try
             {
-                var excelData = await playerChainResultService.ExportPlayerChainResults(request.GameId, request.PlayerId);
+                var excelData = await playerChainResultService.ExportPlayerChainResults(request.GameId, request.PlayerId, request.FromDate, request.ToDate, request.ExcludeUUS);
 
                 if (excelData == null || excelData.Length == 0)
                 {

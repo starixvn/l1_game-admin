@@ -21,7 +21,10 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement.Handlers
         {
             return await playerChainResultService.GetPlayerChainResults(
                 request.GameId, 
-                request.PlayerId, 
+                request.PlayerId,
+                request.FromDate,
+                request.ToDate,
+                request.ExcludeUUS,
                 request.Page, 
                 request.PageSize);
         }

@@ -1,27 +1,45 @@
-function buildUrlWithParams(gameId, playerId, pageSize) {
+function buildQueryParams(filters) {
+    const queryParams = new URLSearchParams();
+    
+    Object.entries(filters).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== '' && value !== false) {
+            queryParams.append(key, value);
+        }
+    });
+    
+    return queryParams;
+}
+
+function buildUrlWithParams(gameId, playerId, fromDate, toDate, excludeUUS, pageSize) {
     const url = globalThis.location.pathname;
-    const params = [];
+    const queryParams = buildQueryParams({ gameId, playerId, fromDate, toDate, excludeUUS, pageSize });
+    queryParams.append('page', '1');
     
-    if (gameId) {
-        params.push(`gameId=${encodeURIComponent(gameId)}`);
-    }
-    if (playerId) {
-        params.push(`playerId=${encodeURIComponent(playerId)}`);
-    }
-    if (pageSize) {
-        params.push(`pageSize=${encodeURIComponent(pageSize)}`);
-    }
-    params.push('page=1');
-    
-    return params.length > 0 ? `${url}?${params.join('&')}` : url;
+    const queryString = queryParams.toString();
+    return queryString ? `${url}?${queryString}` : url;
 }
 
 function getFilterValues() {
     return {
         gameId: $('#gameIdFilter').val().trim(),
         playerId: $('#playerIdFilter').val().trim(),
+        fromDate: $('#fromDateFilter').val(),
+        toDate: $('#toDateFilter').val(),
+        excludeUUS: $('#excludeUUSFilter').is(':checked'),
         pageSize: $('#pageSizeSelect').val()
     };
+}
+
+function setDefaultDates() {
+    const fromDateInput = $('#fromDateFilter');
+    const toDateInput = $('#toDateFilter');
+    
+    // Only set default if both are empty
+    if (!fromDateInput.val() && !toDateInput.val()) {
+        const today = new Date().toISOString().split('T')[0];
+        fromDateInput.val(today);
+        toDateInput.val(today);
+    }
 }
 
 function createTooltip($element, fullText) {
@@ -85,6 +103,9 @@ const playerChainResults = (function ($) {
 $(document).ready(function () {
     playerChainResults.init();
     
+    // Set default dates to today if not already set
+    setDefaultDates();
+    
     // Synchronize scroll between table and bottom scrollbar
     const tableContainer = $('.table-responsive');
     const bottomScrollbar = $('#bottomScrollbar');
@@ -124,19 +145,26 @@ $(document).ready(function () {
 
     $('#applyFilters').on('click', function () {
         const filters = getFilterValues();
-        globalThis.location.href = buildUrlWithParams(filters.gameId, filters.playerId, filters.pageSize);
+        globalThis.location.href = buildUrlWithParams(filters.gameId, filters.playerId, filters.fromDate, filters.toDate, filters.excludeUUS, filters.pageSize);
     });
 
     $('#clearFilters').on('click', function () {
-        globalThis.location.href = globalThis.location.pathname;
+        // Set dates to today when clearing
+        const today = new Date().toISOString().split('T')[0];
+        $('#fromDateFilter').val(today);
+        $('#toDateFilter').val(today);
+        $('#gameIdFilter').val('');
+        $('#playerIdFilter').val('');
+        $('#excludeUUSFilter').prop('checked', false);
+        globalThis.location.href = buildUrlWithParams('', '', today, today, false, $('#pageSizeSelect').val());
     });
 
     $('#pageSizeSelect').on('change', function () {
         const filters = getFilterValues();
-        globalThis.location.href = buildUrlWithParams(filters.gameId, filters.playerId, filters.pageSize);
+        globalThis.location.href = buildUrlWithParams(filters.gameId, filters.playerId, filters.fromDate, filters.toDate, filters.excludeUUS, filters.pageSize);
     });
 
-    $('#gameIdFilter, #playerIdFilter').on('keypress', function (e) {
+    $('#gameIdFilter, #playerIdFilter, #fromDateFilter, #toDateFilter').on('keypress', function (e) {
         if (e.which === 13) {
             $('#applyFilters').click();
         }
@@ -144,16 +172,10 @@ $(document).ready(function () {
 
     $('#exportButton').on('click', function () {
         const filters = getFilterValues();
-        const params = [];
+        const queryParams = buildQueryParams(filters);
+        const queryString = queryParams.toString();
         
-        if (filters.gameId) {
-            params.push(`gameId=${encodeURIComponent(filters.gameId)}`);
-        }
-        if (filters.playerId) {
-            params.push(`playerId=${encodeURIComponent(filters.playerId)}`);
-        }
-        
-        const exportUrl = `/PlayerChainResultsManagement/Export${params.length > 0 ? '?' + params.join('&') : ''}`;
+        const exportUrl = `/PlayerChainResultsManagement/Export${queryString ? '?' + queryString : ''}`;
         
         // Use fetch to check if export is successful before re-enabling button
         fetch(exportUrl, {

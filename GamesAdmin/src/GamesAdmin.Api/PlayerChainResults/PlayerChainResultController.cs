@@ -18,12 +18,15 @@ namespace GamesAdmin.Api.PlayerChainResults
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPlayerChainResults([FromQuery] string gameId = null, [FromQuery] string playerId = null, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+        public async Task<IActionResult> GetPlayerChainResults([FromQuery] string gameId = null, [FromQuery] string playerId = null, [FromQuery] DateTime? fromDate = null, [FromQuery] DateTime? toDate = null, [FromQuery] bool excludeUUS = false, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
         {
             var request = new GetPlayerChainResultsRequest
             {
                 GameId = gameId,
                 PlayerId = playerId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                ExcludeUUS = excludeUUS,
                 Page = page,
                 PageSize = pageSize
             };
@@ -33,14 +36,17 @@ namespace GamesAdmin.Api.PlayerChainResults
         }
 
         [HttpGet("export")]
-        public async Task<IActionResult> ExportPlayerChainResults([FromQuery] string gameId = null, [FromQuery] string playerId = null)
+        public async Task<IActionResult> ExportPlayerChainResults([FromQuery] string gameId = null, [FromQuery] string playerId = null, [FromQuery] DateTime? fromDate = null, [FromQuery] DateTime? toDate = null, [FromQuery] bool excludeUUS = false)
         {
             try
             {
                 var request = new ExportPlayerChainResultsRequest
                 {
                     GameId = gameId,
-                    PlayerId = playerId
+                    PlayerId = playerId,
+                    FromDate = fromDate,
+                    ToDate = toDate,
+                    ExcludeUUS = excludeUUS
                 };
 
                 var excelData = await mediator.Send(request);

@@ -29,6 +29,9 @@ namespace GamesAdmin.Api.PlayerChainResults.Handlers
                 {
                     GameId = request.GameId,
                     PlayerId = request.PlayerId,
+                    FromDate = request.FromDate,
+                    ToDate = request.ToDate,
+                    ExcludeUUS = request.ExcludeUUS,
                     Page = 1,
                     PageSize = int.MaxValue
                 };
@@ -79,8 +82,8 @@ namespace GamesAdmin.Api.PlayerChainResults.Handlers
                         result.Status,
                         result.BetLevel.ToString(),
                         result.CoinValue.ToString(CultureInfo.InvariantCulture),
-                        result.TotalWinAmount.ToString(CultureInfo.InvariantCulture),
-                        result.TotalBetAmount.ToString(CultureInfo.InvariantCulture)
+                        result.TotalWinAmount.ToString("F2", CultureInfo.InvariantCulture),
+                        result.TotalBetAmount.ToString("F2", CultureInfo.InvariantCulture)
                     };
 
                     csv.AppendLine(string.Join(",", row.Select(field => EscapeCsvField(field))));

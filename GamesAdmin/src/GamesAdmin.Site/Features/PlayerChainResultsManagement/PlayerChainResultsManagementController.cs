@@ -19,8 +19,16 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement
             this.mediator = mediator;
         }
 
-        public async Task<IActionResult> Index(string gameId = null, string playerId = null, int page = 1, int pageSize = 25)
+        public async Task<IActionResult> Index(string gameId = null, string playerId = null, DateTime? fromDate = null, DateTime? toDate = null, bool excludeUUS = false, int page = 1, int pageSize = 25)
         {
+            // Default to today if no dates provided
+            if (!fromDate.HasValue && !toDate.HasValue)
+            {
+                var today = DateTime.Today;
+                fromDate = today;
+                toDate = today;
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(new IndexViewModel
@@ -28,6 +36,9 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement
                     Results = new List<PlayerChainResultViewModel>(),
                     GameId = gameId,
                     PlayerId = playerId,
+                    FromDate = fromDate,
+                    ToDate = toDate,
+                    ExcludeUUS = excludeUUS,
                     CurrentPage = page,
                     PageSize = pageSize
                 });
@@ -37,6 +48,9 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement
             {
                 GameId = gameId,
                 PlayerId = playerId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                ExcludeUUS = excludeUUS,
                 Page = page,
                 PageSize = pageSize
             };
@@ -48,6 +62,9 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement
                 Results = response.Results,
                 GameId = gameId,
                 PlayerId = playerId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                ExcludeUUS = excludeUUS,
                 CurrentPage = response.CurrentPage,
                 PageSize = response.PageSize,
                 TotalPages = response.TotalPages,
@@ -58,14 +75,17 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement
         }
 
         [HttpGet]
-        public async Task<IActionResult> Export(string gameId = null, string playerId = null)
+        public async Task<IActionResult> Export(string gameId = null, string playerId = null, DateTime? fromDate = null, DateTime? toDate = null, bool excludeUUS = false)
         {
             try
             {
                 var request = new ExportPlayerChainResultsRequest
                 {
                     GameId = gameId,
-                    PlayerId = playerId
+                    PlayerId = playerId,
+                    FromDate = fromDate,
+                    ToDate = toDate,
+                    ExcludeUUS = excludeUUS
                 };
 
                 var excelData = await mediator.Send(request);
