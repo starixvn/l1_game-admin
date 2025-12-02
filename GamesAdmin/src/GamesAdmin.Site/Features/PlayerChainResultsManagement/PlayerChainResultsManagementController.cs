@@ -19,14 +19,14 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement
             this.mediator = mediator;
         }
 
-        public async Task<IActionResult> Index(string gameId = null, string playerId = null, DateTime? fromDate = null, DateTime? toDate = null, bool excludeUUS = false, int page = 1, int pageSize = 25)
+        public async Task<IActionResult> Index(PlayerChainResultsQuery query)
         {
             // Default to today if no dates provided
-            if (!fromDate.HasValue && !toDate.HasValue)
+            if (!query.FromDate.HasValue && !query.ToDate.HasValue)
             {
                 var today = DateTime.Today;
-                fromDate = today;
-                toDate = today;
+                query.FromDate = today;
+                query.ToDate = today;
             }
 
             if (!ModelState.IsValid)
@@ -34,25 +34,25 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement
                 return View(new IndexViewModel
                 {
                     Results = new List<PlayerChainResultViewModel>(),
-                    GameId = gameId,
-                    PlayerId = playerId,
-                    FromDate = fromDate,
-                    ToDate = toDate,
-                    ExcludeUUS = excludeUUS,
-                    CurrentPage = page,
-                    PageSize = pageSize
+                    GameId = query.GameId,
+                    PlayerId = query.PlayerId,
+                    FromDate = query.FromDate,
+                    ToDate = query.ToDate,
+                    ExcludeUUS = query.ExcludeUUS,
+                    CurrentPage = query.Page,
+                    PageSize = query.PageSize
                 });
             }
 
             var request = new GetPlayerChainResultsRequest
             {
-                GameId = gameId,
-                PlayerId = playerId,
-                FromDate = fromDate,
-                ToDate = toDate,
-                ExcludeUUS = excludeUUS,
-                Page = page,
-                PageSize = pageSize
+                GameId = query.GameId,
+                PlayerId = query.PlayerId,
+                FromDate = query.FromDate,
+                ToDate = query.ToDate,
+                ExcludeUUS = query.ExcludeUUS,
+                Page = query.Page,
+                PageSize = query.PageSize
             };
 
             var response = await mediator.Send(request);
@@ -60,11 +60,11 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement
             var viewModel = new IndexViewModel
             {
                 Results = response.Results,
-                GameId = gameId,
-                PlayerId = playerId,
-                FromDate = fromDate,
-                ToDate = toDate,
-                ExcludeUUS = excludeUUS,
+                GameId = query.GameId,
+                PlayerId = query.PlayerId,
+                FromDate = query.FromDate,
+                ToDate = query.ToDate,
+                ExcludeUUS = query.ExcludeUUS,
                 CurrentPage = response.CurrentPage,
                 PageSize = response.PageSize,
                 TotalPages = response.TotalPages,
@@ -75,17 +75,17 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement
         }
 
         [HttpGet]
-        public async Task<IActionResult> Export(string gameId = null, string playerId = null, DateTime? fromDate = null, DateTime? toDate = null, bool excludeUUS = false)
+        public async Task<IActionResult> Export(PlayerChainResultsQuery query)
         {
             try
             {
                 var request = new ExportPlayerChainResultsRequest
                 {
-                    GameId = gameId,
-                    PlayerId = playerId,
-                    FromDate = fromDate,
-                    ToDate = toDate,
-                    ExcludeUUS = excludeUUS
+                    GameId = query.GameId,
+                    PlayerId = query.PlayerId,
+                    FromDate = query.FromDate,
+                    ToDate = query.ToDate,
+                    ExcludeUUS = query.ExcludeUUS
                 };
 
                 var excelData = await mediator.Send(request);

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Site.Features.PlayerChainResultsManagement.Requests;
 using GamesAdmin.Site.Features.PlayerChainResultsManagement.Services;
+using GamesAdmin.Site.Features.PlayerChainResultsManagement.ViewModels;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -23,7 +24,16 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement.Handlers
         {
             try
             {
-                var excelData = await playerChainResultService.ExportPlayerChainResults(request.GameId, request.PlayerId, request.FromDate, request.ToDate, request.ExcludeUUS);
+                var query = new PlayerChainResultsQuery
+                {
+                    GameId = request.GameId,
+                    PlayerId = request.PlayerId,
+                    FromDate = request.FromDate,
+                    ToDate = request.ToDate,
+                    ExcludeUUS = request.ExcludeUUS
+                };
+
+                var excelData = await playerChainResultService.ExportPlayerChainResults(query);
 
                 if (excelData == null || excelData.Length == 0)
                 {

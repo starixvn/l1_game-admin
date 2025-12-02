@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
+using GamesAdmin.Api.PlayerChainResults.ViewModels;
 using GamesAdmin.Api.PlayerChainResults.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,17 +19,17 @@ namespace GamesAdmin.Api.PlayerChainResults
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPlayerChainResults([FromQuery] string gameId = null, [FromQuery] string playerId = null, [FromQuery] DateTime? fromDate = null, [FromQuery] DateTime? toDate = null, [FromQuery] bool excludeUUS = false, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+        public async Task<IActionResult> GetPlayerChainResults([FromQuery] PlayerChainResultsQuery query)
         {
             var request = new GetPlayerChainResultsRequest
             {
-                GameId = gameId,
-                PlayerId = playerId,
-                FromDate = fromDate,
-                ToDate = toDate,
-                ExcludeUUS = excludeUUS,
-                Page = page,
-                PageSize = pageSize
+                GameId = query.GameId,
+                PlayerId = query.PlayerId,
+                FromDate = query.FromDate,
+                ToDate = query.ToDate,
+                ExcludeUUS = query.ExcludeUUS,
+                Page = query.Page,
+                PageSize = query.PageSize
             };
 
             var response = await mediator.Send(request);
@@ -36,17 +37,17 @@ namespace GamesAdmin.Api.PlayerChainResults
         }
 
         [HttpGet("export")]
-        public async Task<IActionResult> ExportPlayerChainResults([FromQuery] string gameId = null, [FromQuery] string playerId = null, [FromQuery] DateTime? fromDate = null, [FromQuery] DateTime? toDate = null, [FromQuery] bool excludeUUS = false)
+        public async Task<IActionResult> ExportPlayerChainResults([FromQuery] PlayerChainResultsQuery query)
         {
             try
             {
                 var request = new ExportPlayerChainResultsRequest
                 {
-                    GameId = gameId,
-                    PlayerId = playerId,
-                    FromDate = fromDate,
-                    ToDate = toDate,
-                    ExcludeUUS = excludeUUS
+                    GameId = query.GameId,
+                    PlayerId = query.PlayerId,
+                    FromDate = query.FromDate,
+                    ToDate = query.ToDate,
+                    ExcludeUUS = query.ExcludeUUS
                 };
 
                 var excelData = await mediator.Send(request);

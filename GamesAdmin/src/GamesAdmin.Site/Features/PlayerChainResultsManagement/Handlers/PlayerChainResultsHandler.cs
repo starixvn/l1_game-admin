@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Site.Features.PlayerChainResultsManagement.Requests;
@@ -19,14 +18,18 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement.Handlers
 
         public async Task<PlayerChainResultsResponse> Handle(GetPlayerChainResultsRequest request, CancellationToken cancellationToken)
         {
-            return await playerChainResultService.GetPlayerChainResults(
-                request.GameId, 
-                request.PlayerId,
-                request.FromDate,
-                request.ToDate,
-                request.ExcludeUUS,
-                request.Page, 
-                request.PageSize);
+            var query = new PlayerChainResultsQuery
+            {
+                GameId = request.GameId,
+                PlayerId = request.PlayerId,
+                FromDate = request.FromDate,
+                ToDate = request.ToDate,
+                ExcludeUUS = request.ExcludeUUS,
+                Page = request.Page,
+                PageSize = request.PageSize
+            };
+
+            return await playerChainResultService.GetPlayerChainResults(query);
         }
     }
 }

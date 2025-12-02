@@ -11,16 +11,16 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement.Services
     public interface IPlayerChainResultApi : IBaseAuthorizationApi
     {
         [Get("/player-chain-results")]
-        Task<PlayerChainResultsResponse> GetPlayerChainResults(string gameId = null, string playerId = null, DateTime? fromDate = null, DateTime? toDate = null, bool excludeUUS = false, int page = 1, int pageSize = 25);
+        Task<PlayerChainResultsResponse> GetPlayerChainResults(PlayerChainResultsQuery query);
         
         [Get("/player-chain-results/export")]
-        Task<HttpResponseMessage> ExportPlayerChainResults(string gameId = null, string playerId = null, DateTime? fromDate = null, DateTime? toDate = null, bool excludeUUS = false);
+        Task<HttpResponseMessage> ExportPlayerChainResults(PlayerChainResultsQuery query);
     }
 
     public interface IPlayerChainResultService
     {
-        Task<PlayerChainResultsResponse> GetPlayerChainResults(string gameId = null, string playerId = null, DateTime? fromDate = null, DateTime? toDate = null, bool excludeUUS = false, int page = 1, int pageSize = 25);
-        Task<byte[]> ExportPlayerChainResults(string gameId = null, string playerId = null, DateTime? fromDate = null, DateTime? toDate = null, bool excludeUUS = false);
+        Task<PlayerChainResultsResponse> GetPlayerChainResults(PlayerChainResultsQuery query);
+        Task<byte[]> ExportPlayerChainResults(PlayerChainResultsQuery query);
     }
 
     public class PlayerChainResultService : IPlayerChainResultService
@@ -32,14 +32,14 @@ namespace GamesAdmin.Site.Features.PlayerChainResultsManagement.Services
             this.playerChainResultApi = playerChainResultApi;
         }
 
-        public Task<PlayerChainResultsResponse> GetPlayerChainResults(string gameId = null, string playerId = null, DateTime? fromDate = null, DateTime? toDate = null, bool excludeUUS = false, int page = 1, int pageSize = 25)
+        public Task<PlayerChainResultsResponse> GetPlayerChainResults(PlayerChainResultsQuery query)
         {
-            return playerChainResultApi.GetPlayerChainResults(gameId, playerId, fromDate, toDate, excludeUUS, page, pageSize);
+            return playerChainResultApi.GetPlayerChainResults(query);
         }
 
-        public async Task<byte[]> ExportPlayerChainResults(string gameId = null, string playerId = null, DateTime? fromDate = null, DateTime? toDate = null, bool excludeUUS = false)
+        public async Task<byte[]> ExportPlayerChainResults(PlayerChainResultsQuery query)
         {
-            var response = await playerChainResultApi.ExportPlayerChainResults(gameId, playerId, fromDate, toDate, excludeUUS);
+            var response = await playerChainResultApi.ExportPlayerChainResults(query);
             return await response.Content.ReadAsByteArrayAsync();
         }
     }

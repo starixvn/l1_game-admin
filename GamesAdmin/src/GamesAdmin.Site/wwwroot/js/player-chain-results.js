@@ -1,3 +1,13 @@
+// Selector constants
+const SELECTORS = {
+    GAME_ID_FILTER: '#gameIdFilter',
+    PLAYER_ID_FILTER: '#playerIdFilter',
+    FROM_DATE_FILTER: '#fromDateFilter',
+    TO_DATE_FILTER: '#toDateFilter',
+    EXCLUDE_UUS_FILTER: '#excludeUUSFilter',
+    PAGE_SIZE_SELECT: '#pageSizeSelect'
+};
+
 function buildQueryParams(filters) {
     const queryParams = new URLSearchParams();
     
@@ -21,18 +31,18 @@ function buildUrlWithParams(gameId, playerId, fromDate, toDate, excludeUUS, page
 
 function getFilterValues() {
     return {
-        gameId: $('#gameIdFilter').val().trim(),
-        playerId: $('#playerIdFilter').val().trim(),
-        fromDate: $('#fromDateFilter').val(),
-        toDate: $('#toDateFilter').val(),
-        excludeUUS: $('#excludeUUSFilter').is(':checked'),
-        pageSize: $('#pageSizeSelect').val()
+        gameId: $(SELECTORS.GAME_ID_FILTER).val().trim(),
+        playerId: $(SELECTORS.PLAYER_ID_FILTER).val().trim(),
+        fromDate: $(SELECTORS.FROM_DATE_FILTER).val(),
+        toDate: $(SELECTORS.TO_DATE_FILTER).val(),
+        excludeUUS: $(SELECTORS.EXCLUDE_UUS_FILTER).is(':checked'),
+        pageSize: $(SELECTORS.PAGE_SIZE_SELECT).val()
     };
 }
 
 function setDefaultDates() {
-    const fromDateInput = $('#fromDateFilter');
-    const toDateInput = $('#toDateFilter');
+    const fromDateInput = $(SELECTORS.FROM_DATE_FILTER);
+    const toDateInput = $(SELECTORS.TO_DATE_FILTER);
     
     // Only set default if both are empty
     if (!fromDateInput.val() && !toDateInput.val()) {
@@ -151,20 +161,20 @@ $(document).ready(function () {
     $('#clearFilters').on('click', function () {
         // Set dates to today when clearing
         const today = new Date().toISOString().split('T')[0];
-        $('#fromDateFilter').val(today);
-        $('#toDateFilter').val(today);
-        $('#gameIdFilter').val('');
-        $('#playerIdFilter').val('');
-        $('#excludeUUSFilter').prop('checked', false);
-        globalThis.location.href = buildUrlWithParams('', '', today, today, false, $('#pageSizeSelect').val());
+        $(SELECTORS.FROM_DATE_FILTER).val(today);
+        $(SELECTORS.TO_DATE_FILTER).val(today);
+        $(SELECTORS.GAME_ID_FILTER).val('');
+        $(SELECTORS.PLAYER_ID_FILTER).val('');
+        $(SELECTORS.EXCLUDE_UUS_FILTER).prop('checked', false);
+        globalThis.location.href = buildUrlWithParams('', '', today, today, false, $(SELECTORS.PAGE_SIZE_SELECT).val());
     });
 
-    $('#pageSizeSelect').on('change', function () {
+    $(SELECTORS.PAGE_SIZE_SELECT).on('change', function () {
         const filters = getFilterValues();
         globalThis.location.href = buildUrlWithParams(filters.gameId, filters.playerId, filters.fromDate, filters.toDate, filters.excludeUUS, filters.pageSize);
     });
 
-    $('#gameIdFilter, #playerIdFilter, #fromDateFilter, #toDateFilter').on('keypress', function (e) {
+    $(`${SELECTORS.GAME_ID_FILTER}, ${SELECTORS.PLAYER_ID_FILTER}, ${SELECTORS.FROM_DATE_FILTER}, ${SELECTORS.TO_DATE_FILTER}`).on('keypress', function (e) {
         if (e.which === 13) {
             $('#applyFilters').click();
         }
