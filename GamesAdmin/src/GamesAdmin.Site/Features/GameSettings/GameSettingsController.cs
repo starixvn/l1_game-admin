@@ -23,7 +23,7 @@ using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
-    [Authorize]
+    //[Authorize]
     public class GameSettingsController : Controller
     {
         private readonly IMediator mediator;

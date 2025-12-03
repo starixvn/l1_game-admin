@@ -18,7 +18,8 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             OddsMultipliersConfig oddsMultipliers,
             TournamentConfig tournamentConfig,
             VideoStreamConfig videoStreamConfig,
-            IEnumerable<int> otherGameIdsInGroup)
+            IEnumerable<int> otherGameIdsInGroup,
+            ShootingBlitzConfig shootingBlitzConfig = null)
         {
             GameInfo = gameInfo;
             BotSetting = botSetting;
@@ -31,6 +32,7 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             TournamentConfig = tournamentConfig;
             VideoStreamConfig = videoStreamConfig;
             OtherGameIdsInGroup = otherGameIdsInGroup ?? Enumerable.Empty<int>();
+            ShootingBlitzConfig = shootingBlitzConfig;
         }
 
         public GameInfo GameInfo { get; }
@@ -53,5 +55,7 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 
 		public VideoStreamConfig VideoStreamConfig { get; set; }
 		public IEnumerable<int> OtherGameIdsInGroup { get; }
+
+        public ShootingBlitzConfig ShootingBlitzConfig { get; }
     }
 }

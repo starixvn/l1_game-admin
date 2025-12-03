@@ -15,5 +15,6 @@
         Plinko,
         CascadingClusterSlots = 12,
         FixedStepsCrashTurnBase = 13,
+        MinesRNGTurnBase = 15,
     }
 }

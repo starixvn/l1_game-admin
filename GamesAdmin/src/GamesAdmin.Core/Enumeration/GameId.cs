@@ -98,5 +98,6 @@
         RnGSoccer = 118,
         MiniRoulette = 134,
         SeDieMultiplayer = 148,
+        ShootingBlitz = 164,
     }
 }

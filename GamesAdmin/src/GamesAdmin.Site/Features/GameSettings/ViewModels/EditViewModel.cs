@@ -110,6 +110,12 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Enable Promotion RTP")]
         public bool EnablePromotionRTP { get; set; }
         public PlinkoConfig PlinkoConfig { get; set; }
+
+        public ShootingBlitzConfig ShootingBlitzConfig { get; set; }
+
+        public IEnumerable<ShootingBlitzRtpConfig> ShootingBlitzRtpConfigs { get; set; }
+
+        public IEnumerable<ShootingBlitzTeam> ShootingBlitzTeams { get; set; }
     }
 
     public class BotRatioItemViewModel

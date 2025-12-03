@@ -103,5 +103,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Post("/game_settings/update_plinko_config")]
         Task<bool> UpdatePlinkoConfig([Body] UpdatePlinkoConfigRequest request);
+
+        [Post("/game_settings/update_shooting_blitz_config")]
+        Task<bool> UpdateShootingBlitzConfig([Body] UpdateShootingBlitzConfigRequest request);
     }
 }

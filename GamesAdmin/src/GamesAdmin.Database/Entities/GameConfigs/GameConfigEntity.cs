@@ -90,5 +90,7 @@ namespace GamesAdmin.Database.Entities
 
         public bool EnablePromotionRTP { get; set; }
         public PlinkoConfig PlinkoConfig { get; set; }
+
+        public ShootingBlitzConfig ShootingBlitzConfig { get; set; }
     }
 }

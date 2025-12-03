@@ -22,6 +22,7 @@ namespace GamesAdmin.Core.Models
             TournamentConfig tournamentConfig = null,
             VideoStreamConfig videoStreamConfig = null,
             PlinkoConfig plinkoConfig = null,
+            ShootingBlitzConfig shootingBlitzConfig = null,
             Dictionary<string, string> oddsDisplayNames = null,
             List<Choice> choices = null)
         {
@@ -41,6 +42,7 @@ namespace GamesAdmin.Core.Models
             OddsDisplayNames = oddsDisplayNames ?? new Dictionary<string, string>();
             Choices = choices ?? new List<Choice>();
             PlinkoConfig = plinkoConfig ?? new PlinkoConfig();
+            ShootingBlitzConfig = shootingBlitzConfig;
         }
 
         public string Id { get; set; }
@@ -82,6 +84,8 @@ namespace GamesAdmin.Core.Models
         public string Name { get; set; }
 
         public PlinkoConfig PlinkoConfig { get; set; }
+
+        public ShootingBlitzConfig ShootingBlitzConfig { get; set; }
     }
 
 }

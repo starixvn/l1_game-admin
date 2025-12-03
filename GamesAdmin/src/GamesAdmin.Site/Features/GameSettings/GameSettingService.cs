@@ -76,6 +76,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<RtpResult> GetSlotRtp(GetSlotRtpRequest request);
 
         Task<string> UpdatePlinkoConfig(UpdatePlinkoConfigRequest request);
+
+        Task<bool> UpdateShootingBlitzConfig(UpdateShootingBlitzConfigRequest request);
     }
 
     public class GameSettingService : IGameSettingService
@@ -249,5 +251,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<string> UpdatePlinkoConfig(UpdatePlinkoConfigRequest request)
         => await gameApi.UpdatePlinkoConfig(request) ? string.Empty : UpdateFailedMessage;
+
+        public Task<bool> UpdateShootingBlitzConfig(UpdateShootingBlitzConfigRequest request)
+        => gameApi.UpdateShootingBlitzConfig(request);
     }
 }

@@ -133,5 +133,9 @@ namespace GamesAdmin.Api.Games
         [HttpPost("update_plinko_config")]
         public Task<bool> UpdatePlinkoConfig(UpdatePlinkoConfigRequest request)
           => mediator.Send(request);
+
+        [HttpPost("update_shooting_blitz_config")]
+        public Task<bool> UpdateShootingBlitzConfig(UpdateShootingBlitzConfigRequest request)
+          => mediator.Send(request);
     }
 }

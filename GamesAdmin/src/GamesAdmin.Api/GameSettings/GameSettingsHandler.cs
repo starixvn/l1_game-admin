@@ -33,6 +33,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateBotSlotSettingsRequest, bool>
         , IRequestHandler<ImportRequest, bool>
         , IRequestHandler<UpdatePlinkoConfigRequest, bool>
+        , IRequestHandler<UpdateShootingBlitzConfigRequest, bool>
     {
         private readonly IGameSettingsService gameService;
         private readonly ICloneSettingService slotSettingService;
@@ -115,5 +116,8 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(UpdatePlinkoConfigRequest request, CancellationToken cancellationToken)
         => gameService.UpdatePlinkoConfig(request.Name, request.PlinkoConfig);
+
+        public Task<bool> Handle(UpdateShootingBlitzConfigRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateShootingBlitzConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.ShootingBlitzConfig);
     }
 }
