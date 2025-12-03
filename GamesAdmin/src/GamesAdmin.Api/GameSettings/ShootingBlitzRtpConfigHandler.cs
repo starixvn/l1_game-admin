@@ -13,6 +13,7 @@ namespace GamesAdmin.Api.GameSettings
         , IRequestHandler<CreateShootingBlitzRtpConfigRequest, ShootingBlitzRtpConfig>
         , IRequestHandler<UpdateShootingBlitzRtpConfigRequest, bool>
         , IRequestHandler<DeleteShootingBlitzRtpConfigRequest, bool>
+        , IRequestHandler<SelectShootingBlitzRtpConfigRequest, bool>
     {
         private readonly IShootingBlitzRtpConfigService service;
 
@@ -52,6 +53,9 @@ namespace GamesAdmin.Api.GameSettings
 
         public Task<bool> Handle(DeleteShootingBlitzRtpConfigRequest request, CancellationToken cancellationToken)
             => service.DeleteAsync(request.Id);
+
+        public Task<bool> Handle(SelectShootingBlitzRtpConfigRequest request, CancellationToken cancellationToken)
+            => service.SelectRtpConfigAsync(request.Name, request.RtpConfigId);
     }
 }
 

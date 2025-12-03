@@ -75,6 +75,18 @@ namespace GamesAdmin.Api.GameSettings
             }
             return Ok(result);
         }
+
+        [HttpPost("select")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Select([FromBody] SelectShootingBlitzRtpConfigRequest request)
+        {
+            var result = await mediator.Send(request);
+            if (!result)
+            {
+                return BadRequest("Failed to select RTP config");
+            }
+            return Ok(result);
+        }
     }
 }
 

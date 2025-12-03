@@ -31,6 +31,10 @@
             {
                 <partial name="OddsSettings_Plinko" model="Model" />
             }
+            else if (Model.Type == GamesAdmin.Core.Enumeration.GameType.MinesRNGTurnBase)
+            {
+                <partial name="OddsSettings_ShootingBlitz" model="Model" />
+            }
             else
             {  
                 @if (Model.OtherGameIdsInGroup != null && Model.OtherGameIdsInGroup.Any())

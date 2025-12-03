@@ -79,7 +79,16 @@
                         @{
                             if (Model.GameList[index].Name != "luckywheel")
                             {
-                                if (Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.DynamicOdds || Model.GameList[index].GameConfig.Info.UseMargin == true)
+                                if (Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.MinesRNGTurnBase)
+                                {
+                                    // ShootingBlitz: Display current RTP and edit button
+                                    var rtpDisplay = !string.IsNullOrEmpty(Model.GameList[index].ShootingBlitzOddsDisplay)
+                                        ? Model.GameList[index].ShootingBlitzOddsDisplay
+                                        : "--";
+                                    <span class="mr-2">@rtpDisplay</span>
+                                    <button class="btn-edit" onclick='gameStatus.showGameForm("@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "OddSettings")'><i class="icon-edit"></i></button>
+                                }
+                                else if (Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.DynamicOdds || Model.GameList[index].GameConfig.Info.UseMargin == true)
                                 {
                                     <button class="btn-edit" onclick='gameStatus.showGameForm("@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "MarginSettings")'><i class="icon-edit"></i></button>
                                 }

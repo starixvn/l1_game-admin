@@ -22,6 +22,16 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Delete("/shooting_blitz_rtp/{id}")]
         Task<bool> Delete(string id);
+
+        [Post("/shooting_blitz_rtp/select")]
+        Task<bool> Select([Body] SelectShootingBlitzRtpConfigRequest request);
+    }
+
+    public class SelectShootingBlitzRtpConfigRequest
+    {
+        public string Name { get; set; }
+
+        public string RtpConfigId { get; set; }
     }
 }
 

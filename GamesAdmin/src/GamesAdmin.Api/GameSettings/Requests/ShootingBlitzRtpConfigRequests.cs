@@ -47,5 +47,12 @@ namespace GamesAdmin.Api.GameSettings.Requests
 
         public string Id { get; set; }
     }
+
+    public class SelectShootingBlitzRtpConfigRequest : IRequest<bool>
+    {
+        public string Name { get; set; }
+
+        public string RtpConfigId { get; set; }
+    }
 }
 

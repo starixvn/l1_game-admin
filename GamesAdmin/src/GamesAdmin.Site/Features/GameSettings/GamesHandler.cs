@@ -606,15 +606,35 @@ namespace GamesAdmin.Site.Features.GameSettings
             var currencyGroups = await currencyGroupService.GetAll();
             var currencyGroupGames = await currencyGroupGameService.GetAll();
 
-            var statusViewModel = gameConfigs?.Any() == true
-                ? new StatusViewModel(
-                    gameConfigs.Select(game => new StatusItemViewModel(game))
-                        .OrderBy(game => game.DisplayName)
-                        .ToList(),
-                    partners.ToList(),
-                    currencyGroups.Where(group => group.Enabled).ToList(),
-                    currencyGroupGames.ToList())
-                : new StatusViewModel(new List<StatusItemViewModel>());
+            // Get ShootingBlitz RTP configs to display in game list
+            var shootingBlitzRtpConfigs = await shootingBlitzRtpApi.GetAll();
+            var rtpConfigLookup = shootingBlitzRtpConfigs?.ToDictionary(c => c.Id, c => c) ?? new Dictionary<string, ShootingBlitzRtpConfig>();
+
+            var gameList = gameConfigs?.Any() == true
+                ? gameConfigs.Select(game =>
+                {
+                    var statusItem = new StatusItemViewModel(game);
+
+                    // Set ShootingBlitz RTP display for MinesRNGTurnBase games
+                    if (game.Info.Type == GameType.MinesRNGTurnBase && !string.IsNullOrEmpty(game.ShootingBlitzConfig?.RtpConfigId))
+                    {
+                        if (rtpConfigLookup.TryGetValue(game.ShootingBlitzConfig.RtpConfigId, out var rtpConfig))
+                        {
+                            statusItem.ShootingBlitzOddsDisplay = $"{rtpConfig.Rtp * 100}%";
+                        }
+                    }
+
+                    return statusItem;
+                })
+                .OrderBy(game => game.DisplayName)
+                .ToList()
+                : new List<StatusItemViewModel>();
+
+            var statusViewModel = new StatusViewModel(
+                gameList,
+                partners.ToList(),
+                currencyGroups.Where(group => group.Enabled).ToList(),
+                currencyGroupGames.ToList());
 
             return statusViewModel;
         }

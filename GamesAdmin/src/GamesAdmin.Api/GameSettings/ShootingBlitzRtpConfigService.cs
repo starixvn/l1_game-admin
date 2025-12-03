@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api.Games;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
@@ -20,6 +21,7 @@ namespace GamesAdmin.Api.GameSettings
         Task<ShootingBlitzRtpConfig> CreateAsync(ShootingBlitzRtpConfig config);
         Task<bool> UpdateAsync(string id, ShootingBlitzRtpConfig config);
         Task<bool> DeleteAsync(string id);
+        Task<bool> SelectRtpConfigAsync(string gameName, string rtpConfigId);
     }
 
     public class ShootingBlitzRtpConfigService : IShootingBlitzRtpConfigService
@@ -27,15 +29,18 @@ namespace GamesAdmin.Api.GameSettings
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
         private readonly IGenericRepository<ShootingBlitzRtpConfigEntity> repository;
+        private readonly IGameSettingsService gameSettingsService;
 
         public ShootingBlitzRtpConfigService(
             IMapper mapper,
             ISentryClient sentryClient,
-            IGenericRepository<ShootingBlitzRtpConfigEntity> repository)
+            IGenericRepository<ShootingBlitzRtpConfigEntity> repository,
+            IGameSettingsService gameSettingsService)
         {
             this.mapper = mapper;
             this.sentryClient = sentryClient;
             this.repository = repository;
+            this.gameSettingsService = gameSettingsService;
         }
 
         public async Task<IEnumerable<ShootingBlitzRtpConfig>> GetAllAsync()
@@ -107,6 +112,19 @@ namespace GamesAdmin.Api.GameSettings
             {
                 await repository.DeleteByIdAsync(id);
                 return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return false;
+            }
+        }
+
+        public async Task<bool> SelectRtpConfigAsync(string gameName, string rtpConfigId)
+        {
+            try
+            {
+                return await gameSettingsService.UpdateShootingBlitzRtpConfigId(gameName, rtpConfigId);
             }
             catch (Exception ex)
             {

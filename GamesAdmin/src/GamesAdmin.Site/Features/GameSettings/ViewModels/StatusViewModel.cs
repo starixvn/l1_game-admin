@@ -104,7 +104,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string DisabledMessage => GameConfig.EnableSetting.DisabledMessage;
 
-        
+        public GameType Type => GameConfig.Info.Type;
+
+        public string ShootingBlitzRtpConfigId => GameConfig.ShootingBlitzConfig?.RtpConfigId;
+
+        public string ShootingBlitzOddsDisplay { get; set; }
     }
 
     public class GameDisableMessage
