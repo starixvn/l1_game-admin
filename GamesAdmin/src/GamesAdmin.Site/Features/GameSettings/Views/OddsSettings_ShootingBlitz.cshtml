@@ -1,9 +1,16 @@
+@{
+    Layout = null;
+}
+
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
 @using Newtonsoft.Json;
 @model EditViewModel;
 
 <div class="shooting-blitz-odds">
     <input type="hidden" id="gameName" value="@Model.Name" />
+    
+    <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
+    <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
     
     <!-- Current RTP Selection -->
     <div class="card mb-3">
@@ -144,7 +151,5 @@
 <input type="hidden" id="rtpConfigsData" value='@Html.Raw(JsonConvert.SerializeObject(Model.ShootingBlitzRtpConfigs ?? new List<GamesAdmin.Core.Models.GameConfigs.ShootingBlitzRtpConfig>()))' />
 <input type="hidden" id="currentRtpConfigId" value="@(Model.ShootingBlitzConfig?.RtpConfigId ?? "")" />
 
-@section Scripts {
-    <script src="~/js/shooting-blitz-odds.js" asp-append-version="true"></script>
-}
+<script src="/js/shooting-blitz-odds.js"></script>
 

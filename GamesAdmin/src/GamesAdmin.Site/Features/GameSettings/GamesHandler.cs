@@ -170,14 +170,14 @@ namespace GamesAdmin.Site.Features.GameSettings
                         .Select(g => new SelectListItem(g.Info.DisplayName ?? Game.FromGameName(g.Info.Name).DisplayName, g.Info.GameId.ToString()));
                 }
 
-                ConfigureViewModelByGameType(viewModel, game);
+                await ConfigureViewModelByGameTypeAsync(viewModel, game);
                 viewModel.DetailsView = GetDetailsView(viewModel.Type);
             }
 
             return viewModel;
         }
 
-        private void ConfigureViewModelByGameType(EditViewModel viewModel, GameConfig game)
+        private async Task ConfigureViewModelByGameTypeAsync(EditViewModel viewModel, GameConfig game)
         {
             switch (game.Info.Type)
             {
@@ -215,7 +215,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     break;
 
                 case GameType.MinesRNGTurnBase:
-                    ConfigureMinesRNGTurnBaseGame(viewModel, game);
+                    await ConfigureMinesRNGTurnBaseGameAsync(viewModel, game);
                     break;
 
                 default:
@@ -300,12 +300,12 @@ namespace GamesAdmin.Site.Features.GameSettings
             viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds, game.OddsDisplayNames);
         }
 
-        private async void ConfigureMinesRNGTurnBaseGame(EditViewModel viewModel, GameConfig game)
+        private async Task ConfigureMinesRNGTurnBaseGameAsync(EditViewModel viewModel, GameConfig game)
         {
             viewModel.Type = GameType.MinesRNGTurnBase;
             viewModel.ShootingBlitzConfig = game.ShootingBlitzConfig;
-            viewModel.ShootingBlitzRtpConfigs = await shootingBlitzRtpApi.GetAll();
-            viewModel.ShootingBlitzTeams = await shootingBlitzTeamApi.GetAll();
+            viewModel.ShootingBlitzRtpConfigs = await shootingBlitzRtpApi.GetAll() ?? new List<ShootingBlitzRtpConfig>();
+            viewModel.ShootingBlitzTeams = await shootingBlitzTeamApi.GetAll() ?? new List<ShootingBlitzTeam>();
         }
 
         private void ConfigureDefaultGame(EditViewModel viewModel, GameConfig game)

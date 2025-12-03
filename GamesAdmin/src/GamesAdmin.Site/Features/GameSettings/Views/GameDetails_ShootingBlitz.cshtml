@@ -150,6 +150,4 @@
 
 <input type="hidden" id="teamsData" value='@Html.Raw(JsonConvert.SerializeObject(Model.ShootingBlitzTeams ?? new List<GamesAdmin.Core.Models.GameConfigs.ShootingBlitzTeam>()))' />
 
-@section Scripts {
-    <script src="~/js/shooting-blitz-general.js" asp-append-version="true"></script>
-}
+<script src="/js/shooting-blitz-general.js"></script>
