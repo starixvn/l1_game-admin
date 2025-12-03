@@ -37,59 +37,28 @@
 {
   "_id": "ObjectId",
   "rtp": 0.95,
-  "bombCount": [
-    {
-      "bombCount": 4,
-      "probability": 0.5
-    },
-    {
-      "bombCount": 3,
-      "probability": 0.5
-    }
-  ],
   "multiplierSteps": [
     {
       "mode": 4,
       "name": "star player rate 2% - 1 mines",
       "starPlayerRate": 0.02,
       "starPosition": [3, 4, 5, 6],
-      "multiplier": [
-        { "picks": 1, "pays": 1 },
-        { "picks": 2, "pays": 1.06 },
-        { "picks": 3, "pays": 1.12 },
-        { "picks": 4, "pays": 1.19 },
-        { "picks": 5, "pays": 1.27 },
-        { "picks": 6, "pays": 1.36 },
-        { "picks": 7, "pays": 1.46 },
-        { "picks": 8, "pays": 1.58 },
-        { "picks": 9, "pays": 1.73 },
-        { "picks": 10, "pays": 1.9 },
-        { "picks": 11, "pays": 2.11 },
-        { "picks": 12, "pays": 2.37 },
-        { "picks": 13, "pays": 2.71 },
-        { "picks": 14, "pays": 3.17 },
-        { "picks": 15, "pays": 3.8 },
-        { "picks": 16, "pays": 4.75 },
-        { "picks": 17, "pays": 6.33 },
-        { "picks": 18, "pays": 9.5 },
-        { "picks": 19, "pays": 19 }
-      ]
+      "pays": [1, 1.06, 1.12, 1.19, 1.27, 1.36, 1.46, 1.58, 1.73, 1.9, 2.11, 2.37, 2.71, 3.17, 3.8, 4.75, 6.33, 9.5, 19]
     },
     {
       "mode": 3,
       "name": "star player rate 2% - 2 mines",
       "starPlayerRate": 0.02,
       "starPosition": [3, 4, 5],
-      "multiplier": [
-        { "picks": 1, "pays": 1.06 },
-        { "picks": 2, "pays": 1.18 },
-        { "picks": 3, "pays": 1.33 }
-        // ... more entries
-      ]
+      "pays": [1.06, 1.18, 1.33, 1.52, 1.78, 2.14, 2.67, 3.56, 5.33]
     }
   ]
 }
 ```
+
+> **Note**: 
+> - `pays` 陣列的 index 對應 picks 值：`pays[0]` = picks 1 的賠率, `pays[1]` = picks 2 的賠率, 以此類推
+> - 不同 mode 的 `pays` 陣列長度可以不同
 
 ### 2.3 Teams Collection (Team Management)
 
@@ -200,7 +169,6 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 | Field | Description |
 |-------|-------------|
 | RTP | Display RTP value (e.g., 95%) |
-| Bomb Count Rules | Display bomb count rules summary |
 | Multiplier Steps | Display number of modes |
 | Actions | Edit / Delete buttons |
 
@@ -211,28 +179,29 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 |-------|------|------------|
 | RTP | Number (0-1) | **No validation** (temporarily) |
 
-###### Bomb Count Configuration
-| Field | Type | Description |
-|-------|------|-------------|
-| bombCount | Number | Bomb count (e.g., 1-7) |
-| probability | Number | Probability value |
-
-- ✅ Can dynamically add/remove items
-- ✅ Default values: 1, 2, 3, 4, 5, 6, 7
-- ⚠️ **No validation for sum = 1**, but need to **display probability sum**
-
 ###### Multiplier Steps Configuration (Mode Tabs)
 | Field | Type | Description |
 |-------|------|-------------|
-| mode | Number | Mode number (1-7 represents mines count) |
+| mode | Number | Mode number (represents mines count) |
 | name | String | Mode name (e.g., "star player rate 2% - 1 mines") |
 | starPlayerRate | Number | Star player appearance rate |
 | starPosition | Array<Number> | Pick positions where star player can appear |
-| multiplier | Array<{picks, pays}> | Multiplier table |
+| pays | Array<Number> | Multiplier pays array (index+1 = picks) |
 
 - ✅ Can dynamically add/remove Mode
-- ✅ Can dynamically add/remove multiplier items
-- ✅ Picks must be in ascending order
+- ✅ Can dynamically add/remove pays items
+- ✅ Picks 欄位自動依照 pays 陣列 index 顯示（index + 1）
+- ✅ 不同 mode 的 pays 陣列長度可以不同
+
+###### Pays Array UI Display
+| Picks (Auto) | Pays (Input) | Actions |
+|--------------|--------------|---------|
+| 1 | [Input: 1.00] | [Remove] |
+| 2 | [Input: 1.06] | [Remove] |
+| 3 | [Input: 1.12] | [Remove] |
+| ... | ... | ... |
+
+> **Note**: Picks 欄位為自動顯示（唯讀），使用者只需輸入 Pays 值
 
 ---
 
@@ -265,6 +234,29 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 | POST | `/api/shooting_blitz_rtp` | Create RTP Config |
 | PUT | `/api/shooting_blitz_rtp/{id}` | Update RTP Config |
 | DELETE | `/api/shooting_blitz_rtp/{id}` | Delete RTP Config |
+
+**Create/Update Request Body:**
+```json
+{
+  "rtp": 0.95,
+  "multiplierSteps": [
+    {
+      "mode": 4,
+      "name": "star player rate 2% - 1 mines",
+      "starPlayerRate": 0.02,
+      "starPosition": [3, 4, 5, 6],
+      "pays": [1, 1.06, 1.12, 1.19, 1.27]
+    },
+    {
+      "mode": 3,
+      "name": "star player rate 2% - 2 mines",
+      "starPlayerRate": 0.02,
+      "starPosition": [3, 4, 5],
+      "pays": [1.06, 1.18, 1.33]
+    }
+  ]
+}
+```
 
 ### 4.3 RTP Config Selection API (Odds Feature)
 
@@ -375,8 +367,7 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 | Item | Rule | Status |
 |------|------|--------|
 | RTP Range | 0-1 | ❌ No validation temporarily |
-| bombCount probability sum | = 1 | ❌ No validation, but **need to display sum** |
-| multiplier picks | Ascending order | ✅ Validation required |
+| pays array | Must have at least 1 item | ✅ Validation required |
 | teamId | Unique value | ✅ Validation required |
 | playerNumber | Number | ✅ Validation required |
 
@@ -394,6 +385,10 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 6. **UI Entry Points Separation**:
    - **General Setting** (Game Management → General Setting column): General config + Teams management
    - **Odds** (Game Management → Odds column): RTP Config selection + CRUD management
+7. **Pays Array Format**:
+   - `pays` 陣列的 index 對應 picks 值：`pays[0]` = picks 1, `pays[1]` = picks 2, ...
+   - UI 中 Picks 欄位自動顯示（唯讀），使用者只需輸入 Pays 值
+   - 不同 mode 的 pays 陣列長度可以不同
 
 ---
 
@@ -406,22 +401,44 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 {
   "_id": ObjectId("..."),
   "rtp": 0.95,
-  "bombCount": [
-    { "bombCount": 3, "probability": 0.5 },
-    { "bombCount": 4, "probability": 0.5 }
-  ],
-  "multiplierSteps": [/* ... */]
+  "multiplierSteps": [
+    {
+      "mode": 4,
+      "name": "star player rate 2% - 1 mines",
+      "starPlayerRate": 0.02,
+      "starPosition": [3, 4, 5, 6],
+      "pays": [1, 1.06, 1.12, 1.19, 1.27, 1.36, 1.46, 1.58, 1.73, 1.9, 2.11, 2.37, 2.71, 3.17, 3.8, 4.75, 6.33, 9.5, 19]
+    },
+    {
+      "mode": 3,
+      "name": "star player rate 2% - 2 mines",
+      "starPlayerRate": 0.02,
+      "starPosition": [3, 4, 5],
+      "pays": [1.06, 1.18, 1.33, 1.52, 1.78, 2.14, 2.67, 3.56, 5.33]
+    }
+  ]
 }
 
 // RTP Config 2: 96%
 {
   "_id": ObjectId("..."),
   "rtp": 0.96,
-  "bombCount": [
-    { "bombCount": 3, "probability": 0.4 },
-    { "bombCount": 4, "probability": 0.6 }
-  ],
-  "multiplierSteps": [/* ... */]
+  "multiplierSteps": [
+    {
+      "mode": 4,
+      "name": "star player rate 2% - 1 mines",
+      "starPlayerRate": 0.02,
+      "starPosition": [3, 4, 5, 6],
+      "pays": [1, 1.08, 1.16, 1.25, 1.35, 1.47, 1.62, 1.80, 2.03, 2.32]
+    },
+    {
+      "mode": 3,
+      "name": "star player rate 2% - 2 mines",
+      "starPlayerRate": 0.02,
+      "starPosition": [3, 4, 5],
+      "pays": [1.08, 1.22, 1.40, 1.65, 2.00, 2.55, 3.50]
+    }
+  ]
 }
 ```
 
@@ -557,30 +574,25 @@ Odds Modal: ShootingBlitz RTP Configuration
 ├── RTP Config List Section
 │   ├── Display RTP Config List (Table)
 │   │   ├── RTP (%)
-│   │   ├── Bomb Count Rules
 │   │   ├── Multiplier Steps Count
 │   │   └── Actions (Edit / Delete)
 │   │
 │   ├── [Create New RTP Config] Button
 │   │   └── Open Sub-Modal / Expandable Section
 │   │       ├── RTP (Number Input)
-│   │       ├── Bomb Count Section
-│   │       │   ├── [Add Bomb Count] Button
-│   │       │   ├── Bomb Count Rows
-│   │       │   │   ├── Bomb Count (Number)
-│   │       │   │   ├── Probability (Number)
-│   │       │   │   └── [Remove] Button
-│   │       │   └── Display Probability Sum
 │   │       ├── Multiplier Steps Section (Tabs)
 │   │       │   ├── [Add Mode] Button
 │   │       │   └── Mode Tabs
 │   │       │       ├── Mode Number
 │   │       │       ├── Name
 │   │       │       ├── Star Player Rate
-│   │       │       ├── Star Position
-│   │       │       ├── Multiplier Table
-│   │       │       │   ├── Picks | Pays | Actions
-│   │       │       │   └── [Add Multiplier] Button
+│   │       │       ├── Star Position (comma separated)
+│   │       │       ├── Pays Table
+│   │       │       │   ├── Picks (Auto) | Pays (Input) | Actions
+│   │       │       │   ├── 1 | [Input] | [Remove]
+│   │       │       │   ├── 2 | [Input] | [Remove]
+│   │       │       │   ├── ...
+│   │       │       │   └── [Add Pays] Button
 │   │       │       └── [Remove Mode] Button
 │   │       └── [Save] / [Cancel] Buttons
 │   │
@@ -628,3 +640,55 @@ Odds Modal: ShootingBlitz RTP Configuration
                                                │  (MongoDB)          │
                                                └─────────────────────┘
 ```
+
+---
+
+## 11. RTP Config Data Model Comparison
+
+### Old Format (Deprecated)
+```json
+{
+  "rtp": 0.95,
+  "bombCount": [
+    { "bombCount": 4, "probability": 0.5 },
+    { "bombCount": 3, "probability": 0.5 }
+  ],
+  "multiplierSteps": [
+    {
+      "mode": 4,
+      "name": "...",
+      "starPlayerRate": 0.02,
+      "starPosition": [3, 4, 5, 6],
+      "multiplier": [
+        { "picks": 1, "pays": 1 },
+        { "picks": 2, "pays": 1.06 }
+      ]
+    }
+  ]
+}
+```
+
+### New Format (Current)
+```json
+{
+  "rtp": 0.95,
+  "multiplierSteps": [
+    {
+      "mode": 4,
+      "name": "...",
+      "starPlayerRate": 0.02,
+      "starPosition": [3, 4, 5, 6],
+      "pays": [1, 1.06, 1.12, 1.19]
+    }
+  ]
+}
+```
+
+### Changes Summary
+| Item | Old | New |
+|------|-----|-----|
+| bombCount | ✅ Required | ❌ **Removed** |
+| multiplierSteps.multiplier | `[{ picks, pays }]` | ❌ **Removed** |
+| multiplierSteps.pays | ❌ N/A | ✅ **New**: `[number]` array |
+
+> **Note**: `pays[index]` corresponds to `picks = index + 1`

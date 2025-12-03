@@ -62,7 +62,6 @@
                 <thead>
                     <tr>
                         <th>RTP</th>
-                        <th>Bomb Count Rules</th>
                         <th>Multiplier Steps</th>
                         <th>Actions</th>
                     </tr>
@@ -81,7 +80,6 @@
                                         <span class="badge badge-success ml-2">Current</span>
                                     }
                                 </td>
-                                <td>@(rtpConfig.BombCount?.Count ?? 0) rules</td>
                                 <td>@(rtpConfig.MultiplierSteps?.Count ?? 0) modes</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-info" onclick="shootingBlitzOdds.editRtpConfig('@rtpConfig.Id')">
@@ -120,17 +118,6 @@
                     </div>
                     
                     <fieldset class="border p-3 mb-3">
-                        <legend class="w-auto">Bomb Count Configuration</legend>
-                        <div id="bombCountContainer"></div>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="shootingBlitzOdds.addBombCountRow()">
-                            <i class="icon-plus"></i> Add Bomb Count
-                        </button>
-                        <div class="mt-2">
-                            <strong>Probability Sum: <span id="probabilitySum">0</span></strong>
-                        </div>
-                    </fieldset>
-                    
-                    <fieldset class="border p-3 mb-3">
                         <legend class="w-auto">Multiplier Steps</legend>
                         <ul class="nav nav-tabs" id="multiplierStepsTabs"></ul>
                         <div class="tab-content p-3 border border-top-0" id="multiplierStepsContent"></div>
@@ -152,4 +139,3 @@
 <input type="hidden" id="currentRtpConfigId" value="@(Model.ShootingBlitzConfig?.RtpConfigId ?? "")" />
 
 <script src="/js/shooting-blitz-odds.js"></script>
-

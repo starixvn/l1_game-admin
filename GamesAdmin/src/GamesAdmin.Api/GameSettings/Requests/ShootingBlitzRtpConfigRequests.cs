@@ -22,8 +22,6 @@ namespace GamesAdmin.Api.GameSettings.Requests
     {
         public double Rtp { get; set; }
 
-        public List<BombCountConfig> BombCount { get; set; }
-
         public List<MultiplierStepsConfig> MultiplierSteps { get; set; }
     }
 
@@ -32,8 +30,6 @@ namespace GamesAdmin.Api.GameSettings.Requests
         public string Id { get; set; }
 
         public double Rtp { get; set; }
-
-        public List<BombCountConfig> BombCount { get; set; }
 
         public List<MultiplierStepsConfig> MultiplierSteps { get; set; }
     }

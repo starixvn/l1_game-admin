@@ -10,20 +10,8 @@ namespace GamesAdmin.Database.Entities.ShootingBlitz
         [BsonElement("rtp")]
         public double Rtp { get; set; }
 
-        [BsonElement("bombCount")]
-        public List<BombCountConfigEntity> BombCount { get; set; }
-
         [BsonElement("multiplierSteps")]
         public List<MultiplierStepsConfigEntity> MultiplierSteps { get; set; }
-    }
-
-    public class BombCountConfigEntity
-    {
-        [BsonElement("bombCount")]
-        public int BombCount { get; set; }
-
-        [BsonElement("probability")]
-        public double Probability { get; set; }
     }
 
     public class MultiplierStepsConfigEntity
@@ -40,17 +28,11 @@ namespace GamesAdmin.Database.Entities.ShootingBlitz
         [BsonElement("starPosition")]
         public List<int> StarPosition { get; set; }
 
-        [BsonElement("multiplier")]
-        public List<MultiplierItemEntity> Multiplier { get; set; }
-    }
-
-    public class MultiplierItemEntity
-    {
-        [BsonElement("picks")]
-        public int Picks { get; set; }
-
+        /// <summary>
+        /// Pays array where index+1 = picks (e.g., pays[0] = picks 1, pays[1] = picks 2)
+        /// </summary>
         [BsonElement("pays")]
-        public double Pays { get; set; }
+        public List<double> Pays { get; set; }
     }
 }
 

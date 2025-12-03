@@ -729,9 +729,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<ShootingBlitzRtpConfigEntity, ShootingBlitzRtpConfig>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ReverseMap();
-            CreateMap<BombCountConfigEntity, BombCountConfig>().ReverseMap();
             CreateMap<MultiplierStepsConfigEntity, MultiplierStepsConfig>().ReverseMap();
-            CreateMap<MultiplierItemEntity, MultiplierItem>().ReverseMap();
 
             CreateMap<ShootingBlitzTeamEntity, ShootingBlitzTeam>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))

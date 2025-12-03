@@ -33,7 +33,6 @@ namespace GamesAdmin.Api.GameSettings
             var config = new ShootingBlitzRtpConfig
             {
                 Rtp = request.Rtp,
-                BombCount = request.BombCount,
                 MultiplierSteps = request.MultiplierSteps
             };
             return service.CreateAsync(config);
@@ -45,7 +44,6 @@ namespace GamesAdmin.Api.GameSettings
             {
                 Id = request.Id,
                 Rtp = request.Rtp,
-                BombCount = request.BombCount,
                 MultiplierSteps = request.MultiplierSteps
             };
             return service.UpdateAsync(request.Id, config);

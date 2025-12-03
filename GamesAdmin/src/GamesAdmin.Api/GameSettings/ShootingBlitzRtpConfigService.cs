@@ -93,7 +93,6 @@ namespace GamesAdmin.Api.GameSettings
             {
                 var update = Builders<ShootingBlitzRtpConfigEntity>.Update
                     .Set(x => x.Rtp, config.Rtp)
-                    .Set(x => x.BombCount, mapper.Map<List<BombCountConfigEntity>>(config.BombCount))
                     .Set(x => x.MultiplierSteps, mapper.Map<List<MultiplierStepsConfigEntity>>(config.MultiplierSteps));
 
                 await repository.UpdateAsync(x => x.Id == ObjectId.Parse(id), update);

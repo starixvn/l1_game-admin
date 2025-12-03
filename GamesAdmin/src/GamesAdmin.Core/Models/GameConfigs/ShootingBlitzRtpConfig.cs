@@ -8,16 +8,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
         public double Rtp { get; set; }
 
-        public List<BombCountConfig> BombCount { get; set; }
-
         public List<MultiplierStepsConfig> MultiplierSteps { get; set; }
-    }
-
-    public class BombCountConfig
-    {
-        public int BombCount { get; set; }
-
-        public double Probability { get; set; }
     }
 
     public class MultiplierStepsConfig
@@ -30,14 +21,10 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
         public List<int> StarPosition { get; set; }
 
-        public List<MultiplierItem> Multiplier { get; set; }
-    }
-
-    public class MultiplierItem
-    {
-        public int Picks { get; set; }
-
-        public double Pays { get; set; }
+        /// <summary>
+        /// Pays array where index+1 = picks (e.g., pays[0] = picks 1, pays[1] = picks 2)
+        /// </summary>
+        public List<double> Pays { get; set; }
     }
 }
 
