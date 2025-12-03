@@ -118,17 +118,25 @@
 
 ## 3. UI Requirements
 
-### 3.1 Tab Structure
+### 3.1 UI Entry Points Overview
 
-| Tab Name | Description |
-|----------|-------------|
-| General | General settings (similar to other games) |
-| RTP Config | Replaces Bot Config Tab, manages RTP configurations |
-| Teams | Team management, supports Create/Update/Delete teams and players |
+ShootingBlitz 的設定分為兩個入口：
+
+| Entry Point | Location | Features |
+|-------------|----------|----------|
+| **General Setting** | Game Management → General Setting 欄位 (編輯按鈕) | General Tab + Teams Tab |
+| **Odds** | Game Management → Odds 欄位 (編輯按鈕) | RTP Config 選擇 + CRUD 管理 |
 
 > **Note**: This game has **NO Jackpot**
 
-### 3.2 General Tab Fields
+### 3.2 General Setting Modal - Tab Structure
+
+| Tab Name | Description |
+|----------|-------------|
+| General | General settings (game status, free bet, live score, delay time) |
+| Teams | Team management, supports Create/Update/Delete teams and players |
+
+### 3.3 General Tab Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -137,48 +145,8 @@
 | Enable Free Bet | Checkbox | Whether to enable free betting |
 | Use Live Score | Checkbox | Whether to use live score |
 | Delay Start Time | Number | Delay start time |
-| RTP Config | Dropdown | Select RTP configuration (read from RTP Config Collection) |
 
-### 3.3 RTP Config Tab Features
-
-#### 3.3.1 List Display
-
-| Field | Description |
-|-------|-------------|
-| RTP | Display RTP value (e.g., 95%) |
-| Bomb Count Rules | Display bomb count rules summary |
-| Multiplier Steps | Display number of modes |
-| Actions | Edit / Delete buttons |
-
-#### 3.3.2 Create/Edit RTP Config
-
-##### RTP Field
-| Field | Type | Validation |
-|-------|------|------------|
-| RTP | Number (0-1) | **No validation** (temporarily) |
-
-##### Bomb Count Configuration
-| Field | Type | Description |
-|-------|------|-------------|
-| bombCount | Number | Bomb count (e.g., 1-7) |
-| probability | Number | Probability value |
-
-- ✅ Can dynamically add/remove items
-- ✅ Default values: 1, 2, 3, 4, 5, 6, 7
-- ⚠️ **No validation for sum = 1**, but need to **display probability sum**
-
-##### Multiplier Steps Configuration (Mode Tabs)
-| Field | Type | Description |
-|-------|------|-------------|
-| mode | Number | Mode number (1-7 represents mines count) |
-| name | String | Mode name (e.g., "star player rate 2% - 1 mines") |
-| starPlayerRate | Number | Star player appearance rate |
-| starPosition | Array<Number> | Pick positions where star player can appear |
-| multiplier | Array<{picks, pays}> | Multiplier table |
-
-- ✅ Can dynamically add/remove Mode
-- ✅ Can dynamically add/remove multiplier items
-- ✅ Picks must be in ascending order
+> **Note**: RTP Config selection has been moved to Game Management → Odds
 
 ### 3.4 Teams Tab Features
 
@@ -209,11 +177,68 @@
 - ✅ Each Team is one record
 - ✅ Supports Create/Update/Delete Team
 
+### 3.5 Game Management - Odds Column
+
+#### 3.5.1 Odds Column Display in Game List
+
+| Item | Description |
+|------|-------------|
+| Display Content | Show current selected RTP value (e.g., "95%") |
+| No Selection | Display "-- Not Set --" or empty |
+| Click Action | Open RTP Config Modal |
+
+#### 3.5.2 Odds Modal Features
+
+Click the edit button in the Odds column to open a **standalone Modal** with the following features:
+
+##### Current RTP Selection
+| Field | Type | Description |
+|-------|------|-------------|
+| Selected RTP Config | Dropdown + Display | Shows current selected RTP Config, allows changing selection |
+
+##### RTP Config List
+| Field | Description |
+|-------|-------------|
+| RTP | Display RTP value (e.g., 95%) |
+| Bomb Count Rules | Display bomb count rules summary |
+| Multiplier Steps | Display number of modes |
+| Actions | Edit / Delete buttons |
+
+##### Create/Edit RTP Config (Sub-Modal or Expandable Section)
+
+###### RTP Field
+| Field | Type | Validation |
+|-------|------|------------|
+| RTP | Number (0-1) | **No validation** (temporarily) |
+
+###### Bomb Count Configuration
+| Field | Type | Description |
+|-------|------|-------------|
+| bombCount | Number | Bomb count (e.g., 1-7) |
+| probability | Number | Probability value |
+
+- ✅ Can dynamically add/remove items
+- ✅ Default values: 1, 2, 3, 4, 5, 6, 7
+- ⚠️ **No validation for sum = 1**, but need to **display probability sum**
+
+###### Multiplier Steps Configuration (Mode Tabs)
+| Field | Type | Description |
+|-------|------|-------------|
+| mode | Number | Mode number (1-7 represents mines count) |
+| name | String | Mode name (e.g., "star player rate 2% - 1 mines") |
+| starPlayerRate | Number | Star player appearance rate |
+| starPosition | Array<Number> | Pick positions where star player can appear |
+| multiplier | Array<{picks, pays}> | Multiplier table |
+
+- ✅ Can dynamically add/remove Mode
+- ✅ Can dynamically add/remove multiplier items
+- ✅ Picks must be in ascending order
+
 ---
 
 ## 4. API Design
 
-### 4.1 Game Config API
+### 4.1 Game Config API (General Settings)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -224,13 +249,14 @@
 {
   "name": "ShootingBlitz",
   "shootingBlitzConfig": {
-    "useLiveScore": true,
-    "rtpConfigId": "6123456789abcdef01234567"
+    "useLiveScore": true
   }
 }
 ```
 
-### 4.2 RTP Config CRUD API
+> **Note**: `rtpConfigId` is managed separately via Odds API (see 4.2)
+
+### 4.2 RTP Config CRUD API (Odds Feature)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -240,7 +266,23 @@
 | PUT | `/api/shooting_blitz_rtp/{id}` | Update RTP Config |
 | DELETE | `/api/shooting_blitz_rtp/{id}` | Delete RTP Config |
 
-### 4.3 Teams CRUD API
+### 4.3 RTP Config Selection API (Odds Feature)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/shooting_blitz_rtp/select` | Select RTP Config for the game |
+
+**Request Body:**
+```json
+{
+  "name": "ShootingBlitz",
+  "rtpConfigId": "6123456789abcdef01234567"
+}
+```
+
+> This API updates the `rtpConfigId` in `shootingBlitzConfig` within `game_configs` collection
+
+### 4.4 Teams CRUD API
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -295,10 +337,10 @@
 
 | File | Action | Description |
 |------|--------|-------------|
-| `GameSettings/Requests/UpdateShootingBlitzConfigRequest.cs` | **New** | Update Config Request |
-| `GameSettings/Requests/ShootingBlitzRtpConfigRequests.cs` | **New** | RTP CRUD Requests |
+| `GameSettings/Requests/UpdateShootingBlitzConfigRequest.cs` | **New** | Update Config Request (General Settings only) |
+| `GameSettings/Requests/ShootingBlitzRtpConfigRequests.cs` | **New** | RTP CRUD + Selection Requests |
 | `GameSettings/Requests/ShootingBlitzTeamRequests.cs` | **New** | Team CRUD Requests |
-| `GameSettings/ShootingBlitzRtpConfigController.cs` | **New** | RTP Controller |
+| `GameSettings/ShootingBlitzRtpConfigController.cs` | **New** | RTP Controller (for Odds feature) |
 | `GameSettings/ShootingBlitzRtpConfigHandler.cs` | **New** | RTP Handler |
 | `GameSettings/ShootingBlitzRtpConfigService.cs` | **New** | RTP Service |
 | `GameSettings/ShootingBlitzTeamController.cs` | **New** | Team Controller |
@@ -316,13 +358,15 @@
 |------|--------|-------------|
 | `Features/GameSettings/ViewModels/EditViewModel.cs` | Modify | Add properties |
 | `Features/GameSettings/GamesHandler.cs` | Modify | Add configuration method |
-| `Features/GameSettings/Views/GameDetails_ShootingBlitz.cshtml` | **New** | Detail settings page (with 3 Tabs) |
-| `Features/GameSettings/Views/OddSettings.cshtml` | Modify | Add branch |
+| `Features/GameSettings/Views/GameDetails_ShootingBlitz.cshtml` | **New** | General Setting Modal (General + Teams Tabs) |
+| `Features/GameSettings/Views/OddSettings.cshtml` | Modify | Add ShootingBlitz branch for Odds Modal |
+| `Features/GameSettings/Views/_ShootingBlitzOddsModal.cshtml` | **New** | Odds Modal (RTP Config List + CRUD + Selection) |
 | `Features/GameSettings/IGameSettingApi.cs` | Modify | Add API interface |
 | `Features/GameSettings/IShootingBlitzRtpApi.cs` | **New** | RTP API interface |
 | `Features/GameSettings/IShootingBlitzTeamApi.cs` | **New** | Team API interface |
 | `Features/GameSettings/Requests/UpdateShootingBlitzConfigRequest.cs` | **New** | Site Request |
-| `wwwroot/js/shooting-blitz.js` | **New** | JavaScript interaction logic (RTP + Team) |
+| `wwwroot/js/shooting-blitz-general.js` | **New** | JavaScript for General Setting Modal (Teams) |
+| `wwwroot/js/shooting-blitz-odds.js` | **New** | JavaScript for Odds Modal (RTP Config) |
 
 ---
 
@@ -347,6 +391,9 @@
 5. **MongoDB Collection Names**:
    - RTP Config: `ShootingBlitz_rtpConfig`
    - Teams: `ShootingBlitz_team`
+6. **UI Entry Points Separation**:
+   - **General Setting** (Game Management → General Setting column): General config + Teams management
+   - **Odds** (Game Management → Odds column): RTP Config selection + CRUD management
 
 ---
 
@@ -443,64 +490,141 @@
 
 ## 9. UI Operation Flow
 
-### 9.1 Teams Tab Operation Flow
+### 9.1 Game Management List - Odds Column Display
 
 ```
-Teams Tab
-├── Display Teams List (Table)
-│   ├── Team ID
-│   ├── Team Name
-│   ├── Player Count
-│   └── Actions (Edit / Delete)
-│
-├── [Create New Team] Button
-│   └── Open Modal
-│       ├── Team ID (Number Input)
-│       ├── Team Name (Text Input)
-│       ├── Player List Section
-│       │   ├── [Add Player] Button
-│       │   └── Player Rows
-│       │       ├── Player Name (Text Input)
-│       │       ├── Player Number (Number Input)
-│       │       └── [Remove] Button
-│       └── [Save] / [Cancel] Buttons
-│
-└── Edit Team (Same as Create Modal, pre-filled data)
+Game Management List
+├── ...
+├── ShootingBlitz Row
+│   ├── Name: ShootingBlitz
+│   ├── Enabled: ✓
+│   ├── Operator: 1W
+│   ├── Bet Limit: ...
+│   ├── Setting: [Edit Button]
+│   ├── Odds: "95%" or "-- Not Set --" [Edit Button] ← Click to open Odds Modal
+│   └── General Setting: [Edit Button] ← Click to open General Setting Modal
+└── ...
 ```
 
-### 9.2 RTP Config Tab Operation Flow
+### 9.2 General Setting Modal - Teams Tab Operation Flow
 
 ```
-RTP Config Tab
-├── Display RTP Config List (Table)
-│   ├── RTP (%)
-│   ├── Bomb Count Rules
-│   ├── Multiplier Steps Count
-│   └── Actions (Edit / Delete)
+General Setting Modal: ShootingBlitz
+├── [General Tab]
+│   ├── Game Status: Enabled (Display)
+│   ├── Game Type: MinesRNGTurnBase (Display)
+│   ├── Enable Free Bet: [Checkbox]
+│   ├── Use Live Score: [Checkbox]
+│   └── Delay Start Time: [Number Input]
 │
-├── [Create New RTP Config] Button
-│   └── Open Modal
-│       ├── RTP (Number Input)
-│       ├── Bomb Count Section
-│       │   ├── [Add Bomb Count] Button
-│       │   ├── Bomb Count Rows
-│       │   │   ├── Bomb Count (Number)
-│       │   │   ├── Probability (Number)
-│       │   │   └── [Remove] Button
-│       │   └── Display Probability Sum
-│       ├── Multiplier Steps Section (Tabs)
-│       │   ├── [Add Mode] Button
-│       │   └── Mode Tabs
-│       │       ├── Mode Number
-│       │       ├── Name
-│       │       ├── Star Player Rate
-│       │       ├── Star Position
-│       │       ├── Multiplier Table
-│       │       │   ├── Picks | Pays | Actions
-│       │       │   └── [Add Multiplier] Button
-│       │       └── [Remove Mode] Button
-│       └── [Save] / [Cancel] Buttons
+├── [Teams Tab]
+│   ├── Display Teams List (Table)
+│   │   ├── Team ID
+│   │   ├── Team Name
+│   │   ├── Player Count
+│   │   └── Actions (Edit / Delete)
+│   │
+│   ├── [Create New Team] Button
+│   │   └── Open Sub-Modal
+│   │       ├── Team ID (Number Input)
+│   │       ├── Team Name (Text Input)
+│   │       ├── Player List Section
+│   │       │   ├── [Add Player] Button
+│   │       │   └── Player Rows
+│   │       │       ├── Player Name (Text Input)
+│   │       │       ├── Player Number (Number Input)
+│   │       │       └── [Remove] Button
+│   │       └── [Save] / [Cancel] Buttons
+│   │
+│   └── Edit Team (Same as Create Modal, pre-filled data)
 │
-└── Edit RTP Config (Same as Create Modal, pre-filled data)
+└── [Close] / [Save] Buttons
 ```
 
+### 9.3 Odds Modal - RTP Config Operation Flow
+
+```
+Odds Modal: ShootingBlitz RTP Configuration
+├── Current Selection Section
+│   ├── Label: "Current RTP Config"
+│   ├── Dropdown: [Select RTP Config ▼]
+│   │   ├── -- Select RTP Config --
+│   │   ├── RTP 95% (id: xxx)
+│   │   ├── RTP 96% (id: yyy)
+│   │   └── RTP 97% (id: zzz)
+│   └── [Apply Selection] Button
+│
+├── RTP Config List Section
+│   ├── Display RTP Config List (Table)
+│   │   ├── RTP (%)
+│   │   ├── Bomb Count Rules
+│   │   ├── Multiplier Steps Count
+│   │   └── Actions (Edit / Delete)
+│   │
+│   ├── [Create New RTP Config] Button
+│   │   └── Open Sub-Modal / Expandable Section
+│   │       ├── RTP (Number Input)
+│   │       ├── Bomb Count Section
+│   │       │   ├── [Add Bomb Count] Button
+│   │       │   ├── Bomb Count Rows
+│   │       │   │   ├── Bomb Count (Number)
+│   │       │   │   ├── Probability (Number)
+│   │       │   │   └── [Remove] Button
+│   │       │   └── Display Probability Sum
+│   │       ├── Multiplier Steps Section (Tabs)
+│   │       │   ├── [Add Mode] Button
+│   │       │   └── Mode Tabs
+│   │       │       ├── Mode Number
+│   │       │       ├── Name
+│   │       │       ├── Star Player Rate
+│   │       │       ├── Star Position
+│   │       │       ├── Multiplier Table
+│   │       │       │   ├── Picks | Pays | Actions
+│   │       │       │   └── [Add Multiplier] Button
+│   │       │       └── [Remove Mode] Button
+│   │       └── [Save] / [Cancel] Buttons
+│   │
+│   └── Edit RTP Config (Same as Create, pre-filled data)
+│
+└── [Close] Button
+```
+
+---
+
+## 10. Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                        Game Management Page                          │
+├─────────────────────────────────────────────────────────────────────┤
+│  Name          │ Enabled │ ... │ Setting │  Odds   │ General Setting│
+├─────────────────────────────────────────────────────────────────────┤
+│  ShootingBlitz │    ✓    │ ... │   [✎]   │  95%[✎] │      [✎]       │
+└─────────────────────────────────────────────────────────────────────┘
+                                      │                   │
+                                      ▼                   ▼
+                    ┌─────────────────────┐    ┌─────────────────────┐
+                    │    Odds Modal       │    │ General Setting     │
+                    │                     │    │      Modal          │
+                    │ ┌─────────────────┐ │    │                     │
+                    │ │ Current RTP     │ │    │ ┌─────────────────┐ │
+                    │ │ Selection       │ │    │ │  General Tab    │ │
+                    │ │ [Dropdown ▼]    │ │    │ │  - Game Status  │ │
+                    │ └─────────────────┘ │    │ │  - Enable Free  │ │
+                    │                     │    │ │  - Use Live     │ │
+                    │ ┌─────────────────┐ │    │ │  - Delay Time   │ │
+                    │ │ RTP Config List │ │    │ └─────────────────┘ │
+                    │ │ + CRUD Actions  │ │    │                     │
+                    │ └─────────────────┘ │    │ ┌─────────────────┐ │
+                    └─────────────────────┘    │ │  Teams Tab      │ │
+                              │                │ │  - Teams List   │ │
+                              ▼                │ │  - CRUD Actions │ │
+                    ┌─────────────────────┐    │ └─────────────────┘ │
+                    │  ShootingBlitz_     │    └─────────────────────┘
+                    │  rtpConfig          │              │
+                    │  (MongoDB)          │              ▼
+                    └─────────────────────┘    ┌─────────────────────┐
+                                               │  ShootingBlitz_team │
+                                               │  (MongoDB)          │
+                                               └─────────────────────┘
+```
