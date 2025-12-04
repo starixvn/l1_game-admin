@@ -18,7 +18,9 @@ var shootingBlitz = (function () {
     function toggleSettingTabs(tabName) {
         var tabs = ['general', 'teams', 'rtp'];
         tabs.forEach(function (tab) {
-            var tabElement = document.getElementById(tab);
+            // RTP tab uses 'rtp-tab-content' to avoid ID conflicts
+            var elementId = tab === 'rtp' ? 'rtp-tab-content' : tab;
+            var tabElement = document.getElementById(elementId);
             var tabHeader = document.getElementById(tab + '-tab-header');
             if (tabElement) {
                 tabElement.style.display = tab === tabName ? 'block' : 'none';
