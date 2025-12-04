@@ -81,40 +81,63 @@ var shootingBlitzOdds = (function () {
 
     function addMultiplierMode(modeData) {
         currentModeCount++;
-        var modeNum = modeData ? modeData.mode : currentModeCount;
+        var opponentCount = modeData ? modeData.opponentCount : currentModeCount;
         var tabId = 'mode-' + currentModeCount;
+        
+        // Extract home/away data
+        var homeData = modeData && modeData.home ? modeData.home : { starPlayerRate: 0.02, starPositions: [] };
+        var awayData = modeData && modeData.away ? modeData.away : { starPlayerRate: 0.02, starPositions: [] };
         
         // Add tab
         var tabsContainer = document.getElementById('multiplierStepsTabs');
         var isFirst = tabsContainer.children.length === 0;
         var tabHtml = '<li class="nav-item">' +
-            '<a class="nav-link' + (isFirst ? ' active' : '') + '" data-toggle="tab" href="#' + tabId + '">Mode ' + modeNum + '</a>' +
+            '<a class="nav-link' + (isFirst ? ' active' : '') + '" data-toggle="tab" href="#' + tabId + '">Opponent ' + opponentCount + '</a>' +
             '</li>';
         tabsContainer.insertAdjacentHTML('beforeend', tabHtml);
         
         // Add tab content
         var contentContainer = document.getElementById('multiplierStepsContent');
-        var contentHtml = '<div class="tab-pane' + (isFirst ? ' active' : '') + '" id="' + tabId + '" data-mode="' + modeNum + '">' +
+        var contentHtml = '<div class="tab-pane' + (isFirst ? ' active' : '') + '" id="' + tabId + '" data-opponent-count="' + opponentCount + '">' +
             '<div class="form-group row">' +
             '<div class="col-4">' +
-            '<label>Mode Number</label>' +
-            '<input type="number" class="form-control mode-number" value="' + modeNum + '" />' +
+            '<label>Opponent Count</label>' +
+            '<input type="number" class="form-control opponent-count" value="' + opponentCount + '" />' +
             '</div>' +
             '<div class="col-8">' +
             '<label>Name</label>' +
             '<input type="text" class="form-control mode-name" value="' + (modeData ? modeData.name : '') + '" />' +
             '</div>' +
             '</div>' +
+            // Home Star Player Settings
+            '<fieldset class="border p-2 mb-2">' +
+            '<legend class="w-auto">Home Star Player Settings</legend>' +
             '<div class="form-group row">' +
             '<div class="col-4">' +
             '<label>Star Player Rate</label>' +
-            '<input type="number" step="0.01" class="form-control star-player-rate" value="' + (modeData ? modeData.starPlayerRate : '0.02') + '" />' +
+            '<input type="number" step="0.001" class="form-control home-star-player-rate" value="' + homeData.starPlayerRate + '" />' +
             '</div>' +
             '<div class="col-8">' +
-            '<label>Star Position (comma separated)</label>' +
-            '<input type="text" class="form-control star-position" value="' + (modeData && modeData.starPosition ? modeData.starPosition.join(',') : '') + '" />' +
+            '<label>Star Positions (comma separated)</label>' +
+            '<input type="text" class="form-control home-star-positions" value="' + (homeData.starPositions ? homeData.starPositions.join(',') : '') + '" />' +
             '</div>' +
             '</div>' +
+            '</fieldset>' +
+            // Away Star Player Settings
+            '<fieldset class="border p-2 mb-2">' +
+            '<legend class="w-auto">Away Star Player Settings</legend>' +
+            '<div class="form-group row">' +
+            '<div class="col-4">' +
+            '<label>Star Player Rate</label>' +
+            '<input type="number" step="0.001" class="form-control away-star-player-rate" value="' + awayData.starPlayerRate + '" />' +
+            '</div>' +
+            '<div class="col-8">' +
+            '<label>Star Positions (comma separated)</label>' +
+            '<input type="text" class="form-control away-star-positions" value="' + (awayData.starPositions ? awayData.starPositions.join(',') : '') + '" />' +
+            '</div>' +
+            '</div>' +
+            '</fieldset>' +
+            // Pays Table
             '<fieldset class="border p-2">' +
             '<legend class="w-auto">Pays Table (index+1 = picks)</legend>' +
             '<div class="pays-table-container"></div>' +
@@ -212,11 +235,18 @@ var shootingBlitzOdds = (function () {
         // Collect multiplier steps
         var multiplierSteps = [];
         document.querySelectorAll('#multiplierStepsContent .tab-pane').forEach(function (pane) {
-            var mode = parseInt(pane.querySelector('.mode-number').value);
+            var opponentCount = parseInt(pane.querySelector('.opponent-count').value);
             var name = pane.querySelector('.mode-name').value;
-            var starPlayerRate = parseFloat(pane.querySelector('.star-player-rate').value);
-            var starPositionStr = pane.querySelector('.star-position').value;
-            var starPosition = starPositionStr ? starPositionStr.split(',').map(function (x) { return parseInt(x.trim()); }) : [];
+            
+            // Home star player settings
+            var homeStarPlayerRate = parseFloat(pane.querySelector('.home-star-player-rate').value);
+            var homeStarPositionsStr = pane.querySelector('.home-star-positions').value;
+            var homeStarPositions = homeStarPositionsStr ? homeStarPositionsStr.split(',').map(function (x) { return parseInt(x.trim()); }).filter(function(x) { return !isNaN(x); }) : [];
+            
+            // Away star player settings
+            var awayStarPlayerRate = parseFloat(pane.querySelector('.away-star-player-rate').value);
+            var awayStarPositionsStr = pane.querySelector('.away-star-positions').value;
+            var awayStarPositions = awayStarPositionsStr ? awayStarPositionsStr.split(',').map(function (x) { return parseInt(x.trim()); }).filter(function(x) { return !isNaN(x); }) : [];
             
             // Collect pays as array (index+1 = picks)
             var pays = [];
@@ -228,10 +258,16 @@ var shootingBlitzOdds = (function () {
             });
             
             multiplierSteps.push({
-                mode: mode,
+                opponentCount: opponentCount,
                 name: name,
-                starPlayerRate: starPlayerRate,
-                starPosition: starPosition,
+                home: {
+                    starPlayerRate: homeStarPlayerRate,
+                    starPositions: homeStarPositions
+                },
+                away: {
+                    starPlayerRate: awayStarPlayerRate,
+                    starPositions: awayStarPositions
+                },
                 pays: pays
             });
         });

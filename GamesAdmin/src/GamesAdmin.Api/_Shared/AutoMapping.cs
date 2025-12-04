@@ -730,6 +730,7 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ReverseMap();
             CreateMap<MultiplierStepsConfigEntity, MultiplierStepsConfig>().ReverseMap();
+            CreateMap<StarPlayerSettingsEntity, StarPlayerSettings>().ReverseMap();
 
             CreateMap<ShootingBlitzTeamEntity, ShootingBlitzTeam>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))

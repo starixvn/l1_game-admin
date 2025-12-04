@@ -39,17 +39,17 @@
   "rtp": 0.95,
   "multiplierSteps": [
     {
-      "mode": 4,
+      "opponentCount": 4,
       "name": "star player rate 2% - 1 mines",
-      "starPlayerRate": 0.02,
-      "starPosition": [3, 4, 5, 6],
+      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
+      "away": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
       "pays": [1, 1.06, 1.12, 1.19, 1.27, 1.36, 1.46, 1.58, 1.73, 1.9, 2.11, 2.37, 2.71, 3.17, 3.8, 4.75, 6.33, 9.5, 19]
     },
     {
-      "mode": 3,
+      "opponentCount": 3,
       "name": "star player rate 2% - 2 mines",
-      "starPlayerRate": 0.02,
-      "starPosition": [3, 4, 5],
+      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5] },
+      "away": { "starPlayerRate": 0.03, "starPositions": [3, 4, 5] },
       "pays": [1.06, 1.18, 1.33, 1.52, 1.78, 2.14, 2.67, 3.56, 5.33]
     }
   ]
@@ -57,8 +57,10 @@
 ```
 
 > **Note**: 
+> - `opponentCount` 代表對手數量（等同於地雷數量），選到對手即輸
+> - `home` 和 `away` 分別設定主場和客場球員的星級球員設定，可以有不同的出現率和位置
 > - `pays` 陣列的 index 對應 picks 值：`pays[0]` = picks 1 的賠率, `pays[1]` = picks 2 的賠率, 以此類推
-> - 不同 mode 的 `pays` 陣列長度可以不同
+> - 不同 `opponentCount` 的 `pays` 陣列長度可以不同
 
 ### 2.3 Teams Collection (Team Management)
 
@@ -182,16 +184,19 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 ###### Multiplier Steps Configuration (Mode Tabs)
 | Field | Type | Description |
 |-------|------|-------------|
-| mode | Number | Mode number (represents mines count) |
+| opponentCount | Number | 對手數量（等同於地雷數量，選到對手即輸） |
 | name | String | Mode name (e.g., "star player rate 2% - 1 mines") |
-| starPlayerRate | Number | Star player appearance rate |
-| starPosition | Array<Number> | Pick positions where star player can appear |
+| home.starPlayerRate | Number | 主場球員星級球員出現率 |
+| home.starPositions | Array<Number> | 主場球員星級球員可出現的 Pick 位置 |
+| away.starPlayerRate | Number | 客場球員星級球員出現率 |
+| away.starPositions | Array<Number> | 客場球員星級球員可出現的 Pick 位置 |
 | pays | Array<Number> | Multiplier pays array (index+1 = picks) |
 
 - ✅ Can dynamically add/remove Mode
 - ✅ Can dynamically add/remove pays items
 - ✅ Picks 欄位自動依照 pays 陣列 index 顯示（index + 1）
-- ✅ 不同 mode 的 pays 陣列長度可以不同
+- ✅ 不同 opponentCount 的 pays 陣列長度可以不同
+- ✅ Home 和 Away 可分別設定不同的星級球員出現率和位置
 
 ###### Pays Array UI Display
 | Picks (Auto) | Pays (Input) | Actions |
@@ -241,17 +246,17 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
   "rtp": 0.95,
   "multiplierSteps": [
     {
-      "mode": 4,
+      "opponentCount": 4,
       "name": "star player rate 2% - 1 mines",
-      "starPlayerRate": 0.02,
-      "starPosition": [3, 4, 5, 6],
+      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
+      "away": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
       "pays": [1, 1.06, 1.12, 1.19, 1.27]
     },
     {
-      "mode": 3,
+      "opponentCount": 3,
       "name": "star player rate 2% - 2 mines",
-      "starPlayerRate": 0.02,
-      "starPosition": [3, 4, 5],
+      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5] },
+      "away": { "starPlayerRate": 0.03, "starPositions": [3, 4, 5] },
       "pays": [1.06, 1.18, 1.33]
     }
   ]
@@ -388,7 +393,13 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 7. **Pays Array Format**:
    - `pays` 陣列的 index 對應 picks 值：`pays[0]` = picks 1, `pays[1]` = picks 2, ...
    - UI 中 Picks 欄位自動顯示（唯讀），使用者只需輸入 Pays 值
-   - 不同 mode 的 pays 陣列長度可以不同
+   - 不同 opponentCount 的 pays 陣列長度可以不同
+8. **Home/Away Star Player Settings**:
+   - `home` 和 `away` 可分別設定不同的星級球員出現率 (`starPlayerRate`) 和位置 (`starPositions`)
+   - 這允許主場和客場球員有不同的遊戲特性
+9. **Opponent Count**:
+   - `opponentCount` 代表對手數量，等同於原本的「地雷數量」概念
+   - 選到對手即輸（類似踩地雷遊戲）
 
 ---
 
@@ -403,17 +414,17 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
   "rtp": 0.95,
   "multiplierSteps": [
     {
-      "mode": 4,
+      "opponentCount": 4,
       "name": "star player rate 2% - 1 mines",
-      "starPlayerRate": 0.02,
-      "starPosition": [3, 4, 5, 6],
+      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
+      "away": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
       "pays": [1, 1.06, 1.12, 1.19, 1.27, 1.36, 1.46, 1.58, 1.73, 1.9, 2.11, 2.37, 2.71, 3.17, 3.8, 4.75, 6.33, 9.5, 19]
     },
     {
-      "mode": 3,
+      "opponentCount": 3,
       "name": "star player rate 2% - 2 mines",
-      "starPlayerRate": 0.02,
-      "starPosition": [3, 4, 5],
+      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5] },
+      "away": { "starPlayerRate": 0.03, "starPositions": [3, 4, 5] },
       "pays": [1.06, 1.18, 1.33, 1.52, 1.78, 2.14, 2.67, 3.56, 5.33]
     }
   ]
@@ -425,17 +436,17 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
   "rtp": 0.96,
   "multiplierSteps": [
     {
-      "mode": 4,
+      "opponentCount": 4,
       "name": "star player rate 2% - 1 mines",
-      "starPlayerRate": 0.02,
-      "starPosition": [3, 4, 5, 6],
+      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
+      "away": { "starPlayerRate": 0.025, "starPositions": [3, 4, 5, 6] },
       "pays": [1, 1.08, 1.16, 1.25, 1.35, 1.47, 1.62, 1.80, 2.03, 2.32]
     },
     {
-      "mode": 3,
+      "opponentCount": 3,
       "name": "star player rate 2% - 2 mines",
-      "starPlayerRate": 0.02,
-      "starPosition": [3, 4, 5],
+      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5] },
+      "away": { "starPlayerRate": 0.03, "starPositions": [3, 4, 5] },
       "pays": [1.08, 1.22, 1.40, 1.65, 2.00, 2.55, 3.50]
     }
   ]
@@ -645,7 +656,7 @@ Odds Modal: ShootingBlitz RTP Configuration
 
 ## 11. RTP Config Data Model Comparison
 
-### Old Format (Deprecated)
+### Old Format v1 (Deprecated)
 ```json
 {
   "rtp": 0.95,
@@ -668,7 +679,7 @@ Odds Modal: ShootingBlitz RTP Configuration
 }
 ```
 
-### New Format (Current)
+### Old Format v2 (Deprecated)
 ```json
 {
   "rtp": 0.95,
@@ -684,11 +695,37 @@ Odds Modal: ShootingBlitz RTP Configuration
 }
 ```
 
-### Changes Summary
-| Item | Old | New |
+### New Format (Current)
+```json
+{
+  "rtp": 0.95,
+  "multiplierSteps": [
+    {
+      "opponentCount": 4,
+      "name": "...",
+      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
+      "away": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
+      "pays": [1, 1.06, 1.12, 1.19]
+    }
+  ]
+}
+```
+
+### Changes Summary (v1 → Current)
+| Item | v1 | Current |
 |------|-----|-----|
 | bombCount | ✅ Required | ❌ **Removed** |
 | multiplierSteps.multiplier | `[{ picks, pays }]` | ❌ **Removed** |
 | multiplierSteps.pays | ❌ N/A | ✅ **New**: `[number]` array |
 
-> **Note**: `pays[index]` corresponds to `picks = index + 1`
+### Changes Summary (v2 → Current)
+| Item | v2 | Current |
+|------|-----|-----|
+| mode | ✅ `mode` | ✅ **Renamed**: `opponentCount` |
+| starPlayerRate | ✅ 單一欄位 | ✅ **Split**: `home.starPlayerRate`, `away.starPlayerRate` |
+| starPosition | ✅ 單一陣列 | ✅ **Split & Renamed**: `home.starPositions`, `away.starPositions` |
+
+> **Note**: 
+> - `pays[index]` corresponds to `picks = index + 1`
+> - `opponentCount` 代表對手數量（等同於地雷數量），選到對手即輸
+> - `home` 和 `away` 可分別設定不同的星級球員出現率和位置
