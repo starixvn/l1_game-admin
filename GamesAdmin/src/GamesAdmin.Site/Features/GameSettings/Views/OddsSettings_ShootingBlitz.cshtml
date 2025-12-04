@@ -135,7 +135,7 @@
     </div>
 </div>
 
-<input type="hidden" id="rtpConfigsData" value='@Html.Raw(JsonConvert.SerializeObject(Model.ShootingBlitzRtpConfigs ?? new List<GamesAdmin.Core.Models.GameConfigs.ShootingBlitzRtpConfig>()))' />
+<input type="hidden" id="rtpConfigsData" value='@Html.Raw(JsonConvert.SerializeObject(Model.ShootingBlitzRtpConfigs ?? new List<GamesAdmin.Core.Models.GameConfigs.ShootingBlitzRtpConfig>(), new JsonSerializerSettings { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() }))' />
 <input type="hidden" id="currentRtpConfigId" value="@(Model.ShootingBlitzConfig?.RtpConfigId ?? "")" />
 
 <script src="/js/shooting-blitz-odds.js"></script>
