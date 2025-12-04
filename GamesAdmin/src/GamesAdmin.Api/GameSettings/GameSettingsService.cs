@@ -1053,7 +1053,15 @@ namespace GamesAdmin.Api.Games
 
                 await repository.UpdateAsync(config => config.Name == gameName, update);
 
-                await chatBotService.NotifyAdminUpdatedSettings(gameName, "ShootingBlitz RTP Config Selection", $"RtpConfigId: {rtpConfigId}", null);
+                // Notify via chatbot (don't let notification failure affect the main operation)
+                try
+                {
+                    await chatBotService.NotifyAdminUpdatedSettings(gameName, "ShootingBlitz RTP Config Selection", $"RtpConfigId: {rtpConfigId}", null);
+                }
+                catch (Exception notifyEx)
+                {
+                    sentryClient.CaptureException(notifyEx);
+                }
 
                 return true;
             }

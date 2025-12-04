@@ -24,13 +24,13 @@
     <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
     <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
 
-    <!-- General Tab -->
-    <div id="general">
-        <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
-            <input hidden asp-for="GameId" />
-            <input hidden asp-for="Name" />
-            <input hidden asp-for="Type" />
-            
+    <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
+        <input hidden asp-for="GameId" />
+        <input hidden asp-for="Name" />
+        <input hidden asp-for="Type" />
+
+        <!-- General Tab -->
+        <div id="general">
             <div class="form-group row">
                 <div class="col-lg-6">
                     Game Status: <strong>@Model.StatusDisplay</strong>
@@ -63,9 +63,24 @@
                         <input type="number" asp-for="DelayStartTime" class="form-control" />
                     </label>
                 </div>
+                <div class="col-lg-6">
+                    <label asp-for="BotMaxBet" class="control-label">
+                        Bot Max Bet
+                        <input type="number" asp-for="BotMaxBet" class="form-control" />
+                    </label>
+                </div>
             </div>
-        </form>
-    </div>
+
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label asp-for="BotEnabled" class="control-label">
+                        <input type="checkbox" asp-for="BotEnabled" />
+                        Bot Enabled
+                    </label>
+                </div>
+            </div>
+        </div>
+    </form>
 
     <!-- Teams Tab -->
     <div id="teams" style="display:none">

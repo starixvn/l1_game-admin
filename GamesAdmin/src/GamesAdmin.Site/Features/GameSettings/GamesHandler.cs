@@ -303,6 +303,13 @@ namespace GamesAdmin.Site.Features.GameSettings
             viewModel.Type = GameType.MinesRNGTurnBase;
             viewModel.ShootingBlitzConfig = game.ShootingBlitzConfig;
 
+            // Set default bet limits
+            if (game.BetLimit != null)
+            {
+                viewModel.PayoutViewModel.MinBet = game.BetLimit.MinBet;
+                viewModel.PayoutViewModel.MaxBet = game.BetLimit.MaxBet;
+            }
+
             // 使用統一端點查詢 RTP 配置
             var rtpResult = await gameService.UpdateShootingBlitzConfig(new UpdateShootingBlitzConfigRequest
             {
