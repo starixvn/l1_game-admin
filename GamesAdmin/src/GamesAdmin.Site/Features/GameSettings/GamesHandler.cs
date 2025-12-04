@@ -172,45 +172,29 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         private void ConfigureViewModelByGameType(EditViewModel viewModel, GameConfig game)
         {
-            switch (game.Info.Type)
+            var configurator = GetGameConfigurator(game.Info.Type);
+            configurator(viewModel, game);
+        }
+
+        private Action<EditViewModel, GameConfig> GetGameConfigurator(GameType gameType)
+        {
+            var configurators = new Dictionary<GameType, Action<EditViewModel, GameConfig>>
             {
-                case GameType.Slots:
-                    ConfigureSlotsGame(viewModel, game);
-                    break;
+                { GameType.Slots, ConfigureSlotsGame },
+                { GameType.CascadingSlots, ConfigureCascadingSlotsGame },
+                { GameType.SlotRNG, ConfigureSlotRNGGame },
+                { GameType.FixedStepsCrashTurnBase, (vm, g) => ConfigureCrashGame(vm) },
+                { GameType.CrashTurnBase, (vm, g) => ConfigureCrashGame(vm) },
+                { GameType.Crash, (vm, g) => ConfigureCrashGame(vm) },
+                { GameType.DynamicOdds, ConfigureDynamicOddsGame },
+                { GameType.Marble, ConfigureMarbleGame },
+                { GameType.AutoRNGIndex, ConfigureAutoRNGIndexGame },
+                { GameType.Plinko, ConfigurePlinkoGame }
+            };
 
-                case GameType.CascadingSlots:
-                    ConfigureCascadingSlotsGame(viewModel, game);
-                    break;
-
-                case GameType.SlotRNG:
-                    ConfigureSlotRNGGame(viewModel, game);
-                    break;
-
-                case GameType.FixedStepsCrashTurnBase:
-                case GameType.CrashTurnBase:
-                case GameType.Crash:
-                    ConfigureCrashGame(viewModel);
-                    break;
-
-                case GameType.DynamicOdds:
-                    ConfigureDynamicOddsGame(viewModel, game);
-                    break;
-
-                case GameType.Marble:
-                    ConfigureMarbleGame(viewModel, game);
-                    break;
-
-                case GameType.AutoRNGIndex:
-                    ConfigureAutoRNGIndexGame(viewModel, game);
-                    break;
-                case GameType.Plinko:
-                    ConfigurePlinkoGame(viewModel, game);
-                    break;
-
-                default:
-                    ConfigureDefaultGame(viewModel, game);
-                    break;
-            }
+            return configurators.TryGetValue(gameType, out var configurator) 
+                ? configurator 
+                : ConfigureDefaultGame;
         }
 
         private void ConfigureSlotsGame(EditViewModel viewModel, GameConfig game)
@@ -526,13 +510,33 @@ namespace GamesAdmin.Site.Features.GameSettings
                             request.OtherGameIdsInGroup));
 
                 case GameType.SlotRNG:
-                    return gameService.UpdateSlotRNGConfig(new UpdateSlotRNGConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig, request.OtherGameIdsInGroup));
+                    return gameService.UpdateSlotRNGConfig(
+                        new UpdateSlotRNGConfigRequest(
+                            request.GameInfo, 
+                            request.BotSetting, 
+                            request.EnableSetting, 
+                            request.SlotRNGConfig, 
+                            request.OtherGameIdsInGroup));
 
                 case GameType.Crash:
-                    return gameService.UpdateCrashConfig(new UpdateCrashConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.CrashConfig, request.OtherGameIdsInGroup));
+                    return gameService.UpdateCrashConfig(
+                        new UpdateCrashConfigRequest(
+                            request.GameInfo, 
+                            request.BotSetting, 
+                            request.EnableSetting, 
+                            request.CrashConfig, 
+                            request.OtherGameIdsInGroup));
 
                 default:
-                    return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers, request.OtherGameIdsInGroup, request.TournamentConfig, request.VideoStreamConfig));
+                    return gameService.UpdateGeneralConfig(
+                        new UpdateGeneralConfigRequest(
+                            request.GameInfo, 
+                            request.BotSetting, 
+                            request.EnableSetting, 
+                            request.OddsMultipliers, 
+                            request.OtherGameIdsInGroup, 
+                            request.TournamentConfig, 
+                            request.VideoStreamConfig));
             }
         }
 
