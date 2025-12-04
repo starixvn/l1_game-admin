@@ -37,7 +37,7 @@ var shootingBlitzOdds = (function () {
         };
         
         $.ajax({
-            url: '/api/shooting_blitz_rtp/select',
+            url: '/shooting_blitz_rtp/select',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(data),
@@ -225,7 +225,7 @@ var shootingBlitzOdds = (function () {
             multiplierSteps: multiplierSteps
         };
         
-        var url = id ? '/api/shooting_blitz_rtp/' + id : '/api/shooting_blitz_rtp';
+        var url = id ? '/shooting_blitz_rtp/' + id : '/shooting_blitz_rtp';
         var method = id ? 'PUT' : 'POST';
         
         $.ajax({
@@ -248,7 +248,7 @@ var shootingBlitzOdds = (function () {
         if (!confirm('Are you sure you want to delete this RTP config?')) return;
         
         $.ajax({
-            url: '/api/shooting_blitz_rtp/' + id,
+            url: '/shooting_blitz_rtp/' + id,
             method: 'DELETE',
             success: function () {
                 showSuccess();
