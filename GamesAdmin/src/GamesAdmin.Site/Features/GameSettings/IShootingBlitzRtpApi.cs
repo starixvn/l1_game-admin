@@ -15,16 +15,30 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<ShootingBlitzRtpConfig> GetById(string id);
 
         [Post("/shooting_blitz_rtp")]
-        Task<ShootingBlitzRtpConfig> Create([Body] ShootingBlitzRtpConfig config);
+        Task<ShootingBlitzRtpConfig> Create([Body] CreateShootingBlitzRtpApiRequest request);
 
         [Put("/shooting_blitz_rtp/{id}")]
-        Task<bool> Update(string id, [Body] ShootingBlitzRtpConfig config);
+        Task<bool> Update(string id, [Body] UpdateShootingBlitzRtpApiRequest request);
 
         [Delete("/shooting_blitz_rtp/{id}")]
         Task<bool> Delete(string id);
 
         [Post("/shooting_blitz_rtp/select")]
         Task<bool> Select([Body] SelectShootingBlitzRtpConfigRequest request);
+    }
+
+    public class CreateShootingBlitzRtpApiRequest
+    {
+        public double Rtp { get; set; }
+
+        public List<MultiplierStepsConfig> MultiplierSteps { get; set; }
+    }
+
+    public class UpdateShootingBlitzRtpApiRequest
+    {
+        public double Rtp { get; set; }
+
+        public List<MultiplierStepsConfig> MultiplierSteps { get; set; }
     }
 
     public class SelectShootingBlitzRtpConfigRequest

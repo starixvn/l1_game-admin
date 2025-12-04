@@ -30,20 +30,17 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly ISentryClient sentryClient;
         private readonly IAppSettings appSettings;
         private readonly IMapper mapper;
-        private readonly IShootingBlitzRtpApi shootingBlitzRtpApi;
 
         public GameSettingsController(
             IMediator mediator, 
             ISentryClient sentryClient, 
             IAppSettings appSettings, 
-            IMapper mapper,
-            IShootingBlitzRtpApi shootingBlitzRtpApi)
+            IMapper mapper)
         {
             this.mediator = mediator;
             this.sentryClient = sentryClient;
             this.appSettings = appSettings;
             this.mapper = mapper;
-            this.shootingBlitzRtpApi = shootingBlitzRtpApi;
         }
 
         [HttpGet]
@@ -535,11 +532,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost, Audit]
         [Route("/shooting_blitz_rtp")]
-        public async Task<IActionResult> CreateShootingBlitzRtpConfig([FromBody] ShootingBlitzRtpConfig config)
+        public async Task<IActionResult> CreateShootingBlitzRtpConfig([FromBody] CreateShootingBlitzRtpSiteRequest request)
         {
             try
             {
-                var result = await shootingBlitzRtpApi.Create(config);
+                var result = await mediator.Send(request);
                 return Json(result);
             }
             catch (Exception ex)
@@ -551,11 +548,12 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPut, Audit]
         [Route("/shooting_blitz_rtp/{id}")]
-        public async Task<IActionResult> UpdateShootingBlitzRtpConfig(string id, [FromBody] ShootingBlitzRtpConfig config)
+        public async Task<IActionResult> UpdateShootingBlitzRtpConfig(string id, [FromBody] UpdateShootingBlitzRtpSiteRequest request)
         {
             try
             {
-                var result = await shootingBlitzRtpApi.Update(id, config);
+                request.Id = id;
+                var result = await mediator.Send(request);
                 return Json(result);
             }
             catch (Exception ex)
@@ -571,7 +569,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                var result = await shootingBlitzRtpApi.Delete(id);
+                var result = await mediator.Send(new DeleteShootingBlitzRtpSiteRequest { Id = id });
                 return Json(result);
             }
             catch (Exception ex)
@@ -583,11 +581,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost, Audit]
         [Route("/shooting_blitz_rtp/select")]
-        public async Task<IActionResult> SelectShootingBlitzRtpConfig([FromBody] SelectShootingBlitzRtpConfigRequest request)
+        public async Task<IActionResult> SelectShootingBlitzRtpConfig([FromBody] SelectShootingBlitzRtpSiteRequest request)
         {
             try
             {
-                var result = await shootingBlitzRtpApi.Select(request);
+                var result = await mediator.Send(request);
                 return Json(result);
             }
             catch (Exception ex)

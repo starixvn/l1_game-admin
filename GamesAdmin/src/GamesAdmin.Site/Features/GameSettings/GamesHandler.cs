@@ -53,6 +53,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateSlotBotConfigRequest, bool>
         , IRequestHandler<UpdatePlinkoConfigRequest, string>
         , IRequestHandler<UpdateShootingBlitzConfigRequest, bool>
+        , IRequestHandler<CreateShootingBlitzRtpSiteRequest, ShootingBlitzRtpConfig>
+        , IRequestHandler<UpdateShootingBlitzRtpSiteRequest, bool>
+        , IRequestHandler<DeleteShootingBlitzRtpSiteRequest, bool>
+        , IRequestHandler<SelectShootingBlitzRtpSiteRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -752,5 +756,42 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Handle(UpdateShootingBlitzConfigRequest request, CancellationToken cancellationToken)
         => gameService.UpdateShootingBlitzConfig(request);
+
+        #region ShootingBlitz RTP Config
+
+        public async Task<ShootingBlitzRtpConfig> Handle(CreateShootingBlitzRtpSiteRequest request, CancellationToken cancellationToken)
+        {
+            var apiRequest = new CreateShootingBlitzRtpApiRequest
+            {
+                Rtp = request.Rtp,
+                MultiplierSteps = request.MultiplierSteps
+            };
+            return await shootingBlitzRtpApi.Create(apiRequest);
+        }
+
+        public async Task<bool> Handle(UpdateShootingBlitzRtpSiteRequest request, CancellationToken cancellationToken)
+        {
+            var apiRequest = new UpdateShootingBlitzRtpApiRequest
+            {
+                Rtp = request.Rtp,
+                MultiplierSteps = request.MultiplierSteps
+            };
+            return await shootingBlitzRtpApi.Update(request.Id, apiRequest);
+        }
+
+        public Task<bool> Handle(DeleteShootingBlitzRtpSiteRequest request, CancellationToken cancellationToken)
+            => shootingBlitzRtpApi.Delete(request.Id);
+
+        public Task<bool> Handle(SelectShootingBlitzRtpSiteRequest request, CancellationToken cancellationToken)
+        {
+            var apiRequest = new SelectShootingBlitzRtpConfigRequest
+            {
+                Name = request.Name,
+                RtpConfigId = request.RtpConfigId
+            };
+            return shootingBlitzRtpApi.Select(apiRequest);
+        }
+
+        #endregion
     }
 }
