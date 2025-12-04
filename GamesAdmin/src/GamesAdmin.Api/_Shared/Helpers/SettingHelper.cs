@@ -379,6 +379,8 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("Bet Multiplier", oldConfig.BetMultiplier.ToString(), newConfig.BetMultiplier.ToString()),
                 new SettingChangedModel("Bet Level", oldConfig.BetLevels.ToString(), newConfig.BetLevels.ToString()),
                 new SettingChangedModel("Enable Promotion RTP", gameConfig.EnablePromotionRTP.ToString(), enablePromotionRTP.ToString()),
+                new SettingChangedModel("Result chains enabled", oldConfig.ResultChains.Enabled.ToString(), newConfig.ResultChains.Enabled.ToString()),
+                new SettingChangedModel("Result chains reload", oldConfig.ResultChains.Reload.ToString(), newConfig.ResultChains.Reload.ToString())
             };
 
             return settingChanged;
