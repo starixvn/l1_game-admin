@@ -1,8 +1,22 @@
 $(document).ready(function () {
     // Constants to avoid code duplication
-    const GAME_TYPE_AUTO_RNG_INDEX = 10;
-    const GAME_TYPE_MARBLE_PRODUCT = 13;
-    const GAME_TYPE_PLINKO = 11;
+    const GAME_TYPE_ENUM = {
+        // GameType enum
+        AutoRNG: 1,
+        Slots: 2,
+        CascadingSlots: 3,
+        SlotRNG: 4,
+        Crash: 5,
+        DynamicOdds: 6,
+        Marble: 7,
+        CrashTurnBase: 8,
+        GuaranteedWin: 9,
+        AutoRNGIndex: 10,
+        Plinko: 11,
+        CascadingClusterSlots: 12,
+        FixedStepsCrashTurnBase: 13,
+        MarbleProduct: 14,
+    };
     const SELECTORS = {
         TYPE: "#Type",
         NAME_TEXTBOX: "#name-textbox",
@@ -42,8 +56,8 @@ $(document).ready(function () {
 
     function showNewGameFields() {
         var selectedType = parseInt($(SELECTORS.TYPE).val());
-        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
-        var isMarbleProduct = selectedType === GAME_TYPE_MARBLE_PRODUCT;
+        var isAutoRNGIndex = selectedType === GAME_TYPE_ENUM.AutoRNGIndex;
+        var isMarbleProduct = selectedType === GAME_TYPE_ENUM.MarbleProduct;
 
         $(SELECTORS.NAME_TEXTBOX).show();
         $(SELECTORS.NAME_SELECT).hide().prop("disabled", true);
@@ -74,7 +88,7 @@ $(document).ready(function () {
     // Function to update the hidden field with the current visible field's value
     function updateHiddenField() {
         var selectedType = parseInt($(SELECTORS.TYPE).val());
-        var isNewGame = selectedType >= GAME_TYPE_AUTO_RNG_INDEX;
+        var isNewGame = selectedType >= GAME_TYPE_ENUM.AutoRNGIndex;
 
         if (isNewGame) {
             $(SELECTORS.NAME_HIDDEN).val($(SELECTORS.NAME_TEXTBOX).val());
@@ -91,7 +105,7 @@ $(document).ready(function () {
 
     // Clear textbox on page load if type is AutoRNGIndex or MarbleProduct
     var initialType = parseInt($(SELECTORS.TYPE).val());
-    if (initialType === GAME_TYPE_AUTO_RNG_INDEX || initialType === GAME_TYPE_MARBLE_PRODUCT) {
+    if (initialType === GAME_TYPE_ENUM.AutoRNGIndex || initialType === GAME_TYPE_ENUM.MarbleProduct) {
         $(SELECTORS.NAME_TEXTBOX).val("");
     }
 
@@ -138,8 +152,8 @@ $(document).ready(function () {
     // Function to update odds column visibility based on game type
     function updateOddsColumnVisibility() {
         var selectedType = parseInt($(SELECTORS.TYPE).val());
-        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
-        var isMarbleProduct = selectedType === GAME_TYPE_MARBLE_PRODUCT;
+        var isAutoRNGIndex = selectedType === GAME_TYPE_ENUM.AutoRNGIndex;
+        var isMarbleProduct = selectedType === GAME_TYPE_ENUM.MarbleProduct;
         var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
 
         if (isMarbleProduct) {
@@ -250,8 +264,8 @@ $(document).ready(function () {
     // Initialize odds setting visibility based on checkbox state
     function initializeOddsSettingVisibility() {
         var selectedType = parseInt($(SELECTORS.TYPE).val());
-        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
-        var isMarbleProduct = selectedType === GAME_TYPE_MARBLE_PRODUCT;
+        var isAutoRNGIndex = selectedType === GAME_TYPE_ENUM.AutoRNGIndex;
+        var isMarbleProduct = selectedType === GAME_TYPE_ENUM.MarbleProduct;
         var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
 
         if (isAutoRNGIndex) {
@@ -277,7 +291,7 @@ $(document).ready(function () {
     // Handle "Use different Odds setting" checkbox
     $(SELECTORS.USE_DIFFERENT_ODDS).on("change", function () {
         var selectedType = parseInt($(SELECTORS.TYPE).val());
-        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
+        var isAutoRNGIndex = selectedType === GAME_TYPE_ENUM.AutoRNGIndex;
         var isChecked = $(this).is(":checked");
 
         // Only handle for AutoRNGIndex
@@ -370,7 +384,7 @@ $(document).ready(function () {
         var isValid = true;
         var errorText = "The game name must be written in lowercase letters without any spaces.";
 
-        if (selectedType === GAME_TYPE_AUTO_RNG_INDEX || selectedType === GAME_TYPE_MARBLE_PRODUCT) {
+        if (selectedType === GAME_TYPE_ENUM.AutoRNGIndex || selectedType === GAME_TYPE_ENUM.MarbleProduct) {
             nameValue = $(SELECTORS.NAME_TEXTBOX).val().trim();
             if (!nameValue) {
                 $("#name-validation-error").show();
@@ -378,7 +392,7 @@ $(document).ready(function () {
             } else {
                 $("#name-validation-error").hide();
             }
-        } else if (selectedType === GAME_TYPE_PLINKO) {
+        } else if (selectedType === GAME_TYPE_ENUM.Plinko) {
             if (!isValidGameName($(SELECTORS.NAME_TEXTBOX).val().trim())) {
                 $("#name-validation-error").text(errorText);
                 $("#name-validation-error").show();
@@ -404,7 +418,7 @@ $(document).ready(function () {
         var gameIdValue = $("#game-id-input").val();
         var isValid = true;
 
-        if (selectedType === GAME_TYPE_AUTO_RNG_INDEX || selectedType === GAME_TYPE_MARBLE_PRODUCT) {
+        if (selectedType === GAME_TYPE_ENUM.AutoRNGIndex || selectedType === GAME_TYPE_ENUM.MarbleProduct) {
             if (!gameIdValue || parseInt(gameIdValue) <= 0) {
                 $("#game-id-validation-error").show();
                 isValid = false;
@@ -423,11 +437,11 @@ $(document).ready(function () {
         var isValid = true;
         var selectedType = parseInt($(SELECTORS.TYPE).val());
 
-        if (selectedType === GAME_TYPE_AUTO_RNG_INDEX || selectedType === GAME_TYPE_MARBLE_PRODUCT) {
+        if (selectedType === GAME_TYPE_ENUM.AutoRNGIndex || selectedType === GAME_TYPE_ENUM.MarbleProduct) {
             isValid = validateChoicesForAutoRNG();
 
             // ✅ Also validate separate odds section if "Use different odds" is checked (only for AutoRNGIndex)
-            if (selectedType === GAME_TYPE_AUTO_RNG_INDEX) {
+            if (selectedType === GAME_TYPE_ENUM.AutoRNGIndex) {
                 var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
                 if (isUseDifferentOdds) {
                     isValid = validateOddsSection() && isValid;
@@ -443,7 +457,7 @@ $(document).ready(function () {
         var choiceRows = $(".choice-row");
         var hasValidChoices = false;
         var selectedType = parseInt($(SELECTORS.TYPE).val());
-        var isAutoRNGIndex = selectedType === GAME_TYPE_AUTO_RNG_INDEX;
+        var isAutoRNGIndex = selectedType === GAME_TYPE_ENUM.AutoRNGIndex;
         var isUseDifferentOdds = $(SELECTORS.USE_DIFFERENT_ODDS).is(":checked");
         // Validate odds for: AutoRNGIndex (without separate odds) only
         var shouldValidateOdds = isAutoRNGIndex && !isUseDifferentOdds;

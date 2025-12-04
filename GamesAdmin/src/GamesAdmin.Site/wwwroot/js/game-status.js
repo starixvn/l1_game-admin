@@ -1,4 +1,21 @@
 ﻿var gameStatus = (function ($) {
+    var gameTypeEnum = { // GameType enum
+        AutoRNG: 1,
+        Slots: 2,
+        CascadingSlots: 3,
+        SlotRNG: 4,
+        Crash: 5,
+        DynamicOdds: 6,
+        Marble: 7,
+        CrashTurnBase: 8,
+        GuaranteedWin: 9,
+        AutoRNGIndex: 10,
+        Plinko: 11,
+        CascadingClusterSlots: 12,
+        FixedStepsCrashTurnBase: 13,
+        MarbleProduct: 14,
+    };
+
     var currentGameName = '';
     var myChart = null;
     var $oddsMultiplierTemplate;
@@ -733,10 +750,10 @@
         },
 
         toggleGameTypeConfig: function () {
-            const type = $('#Type').val();
+            const type = parseInt($('#Type').val());
 
             switch (type) {
-                case '4':
+                case gameTypeEnum.SlotRNG:
                     $('#cascading-slots-config .common-field').attr('disabled', true);
                     $('#slots-config .common-field').attr('disabled', true);
                     $('#slot-rng-config .common-field').attr('disabled', null);
@@ -746,7 +763,7 @@
                     $('#slots-config').hide();
                     $('#cascading-slots-config').hide();
                     break;
-                case '3':
+                case gameTypeEnum.CascadingSlots:
                     $('#slots-config .common-field').attr('disabled', true);
                     $('#slot-rng-config .common-field').attr('disabled', true);
                     $('#cascading-slots-config .common-field').attr('disabled', null);
@@ -755,7 +772,7 @@
                     $('#rng-game').hide();
                     $('#cascading-slots-config').show();
                     break;
-                case '2':
+                case gameTypeEnum.Slots:
                     $('#cascading-slots-config .common-field').attr('disabled', true);
                     $('#slot-rng-config .common-field').attr('disabled', true);
                     $('#slots-config .common-field').attr('disabled', null);
@@ -771,7 +788,7 @@
                     $('#rng-game').show();
             }
 
-            if (type === '7') {
+            if (type === gameTypeEnum.Marble) {
                 $('#tournament-config').show();
                 $('#video-stream-config').show();
                 $('#use-margin').show();
@@ -785,7 +802,7 @@
                 $('#have-video-stream').prop('checked', false);
             }
 
-            if (type === '13') {
+            if (type === gameTypeEnum.MarbleProduct) {
                 $('#use-margin input[type="checkbox"]').prop('checked', true);
             }
         },
