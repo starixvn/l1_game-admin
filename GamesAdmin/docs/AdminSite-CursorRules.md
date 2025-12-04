@@ -1,8 +1,8 @@
-# Admin Site 開發規範 (Cursor Rules)
+# Admin Site Development Guidelines (Cursor Rules)
 
-本文檔描述 `GamesAdmin.Site` 專案的開發規範，確保代碼一致性和架構正確性。
+This document describes the development guidelines for `GamesAdmin.Site` project, ensuring code consistency and architectural correctness.
 
-## 架構流程
+## Architecture Flow
 
 ```
 Browser (JavaScript)
@@ -12,41 +12,41 @@ Controller (GameSettingsController)
 Handler (GamesHandler)
     ↓ gameService.Method(SiteRequest)
 Service (GameSettingService)
-    ↓ 創建 ApiRequest，調用 Refit API
+    ↓ Create ApiRequest, call Refit API
 Refit API Interface (IXxxApi)
     ↓ HTTP Request
 Backend API (GamesAdmin.Api)
 ```
 
-## 1. Controller 規範
+## 1. Controller Guidelines
 
-### 1.1 路由定義
-- Site Controller 的路由**不需要** `/api` 前綴
-- 前端 JavaScript 直接調用 Site Controller
+### 1.1 Route Definition
+- Site Controller routes **do NOT need** `/api` prefix
+- Frontend JavaScript calls Site Controller directly
 
 ```csharp
-// ✅ 正確：Site Controller 路由
+// ✅ Correct: Site Controller route
 [HttpPost, Audit]
 [Route("/shooting_blitz_rtp")]
 public async Task<IActionResult> CreateShootingBlitzRtpConfig([FromBody] CreateShootingBlitzRtpSiteRequest request)
 
-// ❌ 錯誤：不要在 Site Controller 使用 /api 前綴
+// ❌ Wrong: Do not use /api prefix in Site Controller
 [Route("/api/shooting_blitz_rtp")]
 ```
 
-### 1.2 使用 MediatR
-- Controller 必須使用 `mediator.Send()` 調用 Handler
-- 不要直接調用 Service 或 API
+### 1.2 Use MediatR
+- Controller must use `mediator.Send()` to call Handler
+- Do not call Service or API directly
 
 ```csharp
-// ✅ 正確：使用 mediator.Send
+// ✅ Correct: Use mediator.Send
 public async Task<IActionResult> CreateShootingBlitzRtpConfig([FromBody] CreateShootingBlitzRtpSiteRequest request)
 {
     var result = await mediator.Send(request);
     return Json(result);
 }
 
-// ❌ 錯誤：直接調用 Service
+// ❌ Wrong: Call Service directly
 public async Task<IActionResult> CreateShootingBlitzRtpConfig([FromBody] CreateShootingBlitzRtpSiteRequest request)
 {
     var result = await gameService.CreateShootingBlitzRtpConfig(request);
@@ -54,120 +54,120 @@ public async Task<IActionResult> CreateShootingBlitzRtpConfig([FromBody] CreateS
 }
 ```
 
-## 2. Handler 規範
+## 2. Handler Guidelines
 
-### 2.1 Handler 只調用 Service
-- Handler 接收 `*SiteRequest`
-- Handler 調用 `gameService.Method(request)`
-- Handler **不直接調用** Refit API
+### 2.1 Handler Only Calls Service
+- Handler receives `*SiteRequest`
+- Handler calls `gameService.Method(request)`
+- Handler **does NOT call** Refit API directly
 
 ```csharp
-// ✅ 正確：Handler 調用 Service
+// ✅ Correct: Handler calls Service
 public Task<ShootingBlitzRtpConfig> Handle(CreateShootingBlitzRtpSiteRequest request, CancellationToken cancellationToken)
     => gameService.CreateShootingBlitzRtpConfig(request);
 
-// ❌ 錯誤：Handler 直接調用 Refit API
+// ❌ Wrong: Handler calls Refit API directly
 public Task<ShootingBlitzRtpConfig> Handle(CreateShootingBlitzRtpSiteRequest request, CancellationToken cancellationToken)
     => shootingBlitzRtpApi.Create(apiRequest);
 ```
 
-### 2.2 Handler 方法參數
-- 只接收一個 Request 參數
-- 不要拆解 Request 的屬性
+### 2.2 Handler Method Parameters
+- Only receive one Request parameter
+- Do not decompose Request properties
 
 ```csharp
-// ✅ 正確：傳遞整個 Request
+// ✅ Correct: Pass entire Request
 => gameService.CreateShootingBlitzRtpConfig(request);
 
-// ❌ 錯誤：拆解 Request 屬性
+// ❌ Wrong: Decompose Request properties
 => gameService.CreateShootingBlitzRtpConfig(request.Rtp, request.MultiplierSteps);
 ```
 
-### 2.3 EditRequest Handler 中設置所有 Config
-- 在 `Handle(EditRequest...)` 方法中，必須設置所有遊戲的 Config
+### 2.3 Set All Configs in EditRequest Handler
+- In `Handle(EditRequest...)` method, must set all game Configs
 
 ```csharp
-// ✅ 正確：設置所有 Config
+// ✅ Correct: Set all Configs
 viewModel.CascadingSlotsConfig = game.CascadingSlotsConfig;
 viewModel.SlotRNGConfig = game.SlotRNGConfig;
 viewModel.CrashConfig = game.CrashConfig;
 viewModel.PlinkoConfig = game.PlinkoConfig;
-viewModel.ShootingBlitzConfig = game.ShootingBlitzConfig;  // 不要遺漏！
+viewModel.ShootingBlitzConfig = game.ShootingBlitzConfig;  // Don't miss!
 
-// ❌ 錯誤：遺漏某些 Config
+// ❌ Wrong: Missing some Configs
 viewModel.PlinkoConfig = game.PlinkoConfig;
-// 缺少 ShootingBlitzConfig
+// Missing ShootingBlitzConfig
 ```
 
-## 3. Service 規範
+## 3. Service Guidelines
 
-### 3.1 Service Interface 使用 Site Request
-- Service 介面接收 `*SiteRequest` 類型
-- **不要**拆解成多個參數
+### 3.1 Service Interface Uses Site Request
+- Service interface receives `*SiteRequest` type
+- **Do NOT** decompose into multiple parameters
 
 ```csharp
-// ✅ 正確：使用 Site Request
+// ✅ Correct: Use Site Request
 public interface IGameSettingService
 {
     Task<ShootingBlitzRtpConfig> CreateShootingBlitzRtpConfig(CreateShootingBlitzRtpSiteRequest request);
 }
 
-// ❌ 錯誤：拆解成多個參數
+// ❌ Wrong: Decompose into multiple parameters
 public interface IGameSettingService
 {
     Task<ShootingBlitzRtpConfig> CreateShootingBlitzRtpConfig(double rtp, List<MultiplierStepsConfig> multiplierSteps);
 }
 ```
 
-### 3.2 Service Implementation 直接傳遞 Request
-- Service 直接將 `*SiteRequest` 傳給 Refit API
-- **不需要**創建額外的 `*ApiRequest` 類型
+### 3.2 Service Implementation Passes Request Directly
+- Service passes `*SiteRequest` directly to Refit API
+- **No need** to create additional `*ApiRequest` type
 
 ```csharp
-// ✅ 正確：直接傳遞 Request
+// ✅ Correct: Pass Request directly
 public Task<ShootingBlitzRtpConfig> CreateShootingBlitzRtpConfig(CreateShootingBlitzRtpSiteRequest request)
     => shootingBlitzRtpApi.Create(request);
 
 public Task<bool> UpdateShootingBlitzRtpConfig(UpdateShootingBlitzRtpSiteRequest request)
     => shootingBlitzRtpApi.Update(request.Id, request);
 
-// ❌ 錯誤：創建額外的 ApiRequest 類型
+// ❌ Wrong: Create additional ApiRequest type
 public Task<ShootingBlitzRtpConfig> CreateShootingBlitzRtpConfig(CreateShootingBlitzRtpSiteRequest request)
 {
-    var apiRequest = new CreateShootingBlitzRtpApiRequest { ... };  // 不需要！
+    var apiRequest = new CreateShootingBlitzRtpApiRequest { ... };  // Not needed!
     return shootingBlitzRtpApi.Create(apiRequest);
 }
 ```
 
-## 4. Refit API 規範
+## 4. Refit API Guidelines
 
-### 4.1 統一使用 IGameSettingApi
-- 所有 Game Settings 相關的 API 都應該定義在 `IGameSettingApi` 中
-- **不要**為每個功能創建獨立的 API Interface
+### 4.1 Use Unified IGameSettingApi
+- All Game Settings related APIs should be defined in `IGameSettingApi`
+- **Do NOT** create separate API Interface for each feature
 
-### 4.2 每個遊戲使用單一配置端點
-- 每個遊戲應該只有**一個**主要的配置端點
-- 使用 `ActionType` 參數區分不同操作（CRUD）
-- 這樣便於管理，特別是多人開發時
+### 4.2 Single Endpoint Per Game
+- Each game should have only **one** main configuration endpoint
+- Use `ActionType` parameter to distinguish different operations (CRUD)
+- This is easier to manage, especially in team development
 
 ```csharp
-// ✅ 正確：單一端點 + ActionType
+// ✅ Correct: Single endpoint + ActionType
 public interface IGameSettingApi : IBaseAuthorizationApi
 {
     [Post("/game_settings/update_shooting_blitz_config")]
     Task<ShootingBlitzConfigResult> UpdateShootingBlitzConfig([Body] UpdateShootingBlitzConfigRequest request);
 }
 
-// Request 中包含 ActionType
+// Request includes ActionType
 public class UpdateShootingBlitzConfigRequest
 {
     public ShootingBlitzActionType ActionType { get; set; }  // Query, Create, Update, Delete, Select
-    public string Id { get; set; }                           // 用於 Update, Delete, Select
-    public ShootingBlitzConfig Config { get; set; }          // 遊戲配置
-    public ShootingBlitzRtpConfigData RtpConfig { get; set; } // RTP 配置數據
+    public string Id { get; set; }                           // For Update, Delete, Select
+    public ShootingBlitzConfig Config { get; set; }          // Game config
+    public ShootingBlitzRtpConfigData RtpConfig { get; set; } // RTP config data
 }
 
-// ❌ 錯誤：為每個操作創建獨立端點
+// ❌ Wrong: Create separate endpoint for each operation
 [Get("/shooting_blitz_rtp")]
 [Post("/shooting_blitz_rtp")]
 [Put("/shooting_blitz_rtp/{id}")]
@@ -175,79 +175,79 @@ public class UpdateShootingBlitzConfigRequest
 [Post("/shooting_blitz_rtp/select")]
 ```
 
-### 4.3 ActionType 枚舉設計
+### 4.3 ActionType Enum Design
 ```csharp
 public enum ShootingBlitzActionType
 {
-    UpdateConfig = 0,      // 更新遊戲配置
-    QueryRtpConfigs = 1,   // 查詢所有 RTP 配置
-    CreateRtpConfig = 2,   // 創建 RTP 配置
-    UpdateRtpConfig = 3,   // 更新 RTP 配置
-    DeleteRtpConfig = 4,   // 刪除 RTP 配置
-    SelectRtpConfig = 5    // 選擇/應用 RTP 配置
+    UpdateConfig = 0,      // Update game config
+    QueryRtpConfigs = 1,   // Query all RTP configs
+    CreateRtpConfig = 2,   // Create RTP config
+    UpdateRtpConfig = 3,   // Update RTP config
+    DeleteRtpConfig = 4,   // Delete RTP config
+    SelectRtpConfig = 5    // Select/Apply RTP config
 }
 ```
 
-### 4.4 Response 設計
+### 4.4 Response Design
 ```csharp
 public class ShootingBlitzConfigResult
 {
     public bool Success { get; set; }
     public string Message { get; set; }
-    public ShootingBlitzRtpConfig RtpConfig { get; set; }           // 單一結果（Create/Update）
-    public IList<ShootingBlitzRtpConfig> RtpConfigs { get; set; }   // 列表結果（Query）
+    public ShootingBlitzRtpConfig RtpConfig { get; set; }           // Single result (Create/Update)
+    public IList<ShootingBlitzRtpConfig> RtpConfigs { get; set; }   // List result (Query)
 }
 ```
 
-## 5. Request 類型命名規範
+## 5. Request Type Naming Convention
 
-| 層級 | 命名規範 | 範例 | 說明 |
-|------|----------|------|------|
-| Site Request | `*SiteRequest` | `CreateShootingBlitzRtpSiteRequest` | Site 層使用，也傳給 Refit API |
-| Backend Request | `*Request` | `CreateShootingBlitzRtpConfigRequest` | Backend API 使用 |
+| Layer | Naming Convention | Example | Description |
+|-------|-------------------|---------|-------------|
+| Site Request | `*SiteRequest` | `CreateShootingBlitzRtpSiteRequest` | Used in Site layer, also passed to Refit API |
+| Backend Request | `*Request` | `CreateShootingBlitzRtpConfigRequest` | Used in Backend API |
 
-> **注意**：不需要定義 `*ApiRequest` 類型，直接使用 `*SiteRequest`
+> **Note**: No need to define `*ApiRequest` type, use `*SiteRequest` directly
 
-## 6. 檔案位置規範
+## 6. File Location Guidelines
 
 ```
 Features/GameSettings/
 ├── GameSettingsController.cs      # Controller
 ├── GamesHandler.cs                # MediatR Handler
 ├── GameSettingService.cs          # Service Interface & Implementation
-├── IGameSettingApi.cs             # Refit API Interface（統一放這裡）
+├── IGameSettingApi.cs             # Refit API Interface (unified location)
 ├── Requests/
-│   ├── ShootingBlitzRtpRequests.cs  # Site Request 定義
+│   ├── ShootingBlitzRtpRequests.cs  # Site Request definitions
 │   └── ...
 └── ViewModels/
     └── ...
 ```
 
-> **注意**：不要為每個功能創建獨立的 `IXxxApi.cs`，統一在 `IGameSettingApi.cs` 中添加
+> **Note**: Do not create separate `IXxxApi.cs` for each feature, add to unified `IGameSettingApi.cs`
 
-## 7. 新增遊戲功能 Checklist
+## 7. New Game Feature Checklist
 
-新增一個遊戲的配置功能時，請依序檢查：
+When adding a new game configuration feature, check the following in order:
 
-### 7.1 使用單一端點 + ActionType 模式
+### 7.1 Use Single Endpoint + ActionType Pattern
 
-- [ ] **ActionType 枚舉** - 定義該遊戲的操作類型枚舉
-- [ ] **Request 類型** - 定義包含 ActionType 的統一 Request 類型
-- [ ] **Result 類型** - 定義統一的 Response 類型
-- [ ] **Refit API** - 在 `IGameSettingApi` 添加**一個**方法
-- [ ] **Service** - 在 `IGameSettingService` / `GameSettingService` 添加**一個**方法
-- [ ] **Handler** - 在 `GamesHandler` 添加**一個** `IRequestHandler`
-- [ ] **Controller** - 添加**一個**路由方法
-- [ ] **Backend API** - 在 API 端實現根據 ActionType 分派邏輯
-- [ ] **EditRequest Handler** - 如有新 Config，在 `Handle(EditRequest...)` 中設置
+- [ ] **ActionType Enum** - Define action type enum for the game
+- [ ] **Request Type** - Define unified Request type with ActionType
+- [ ] **Result Type** - Define unified Response type
+- [ ] **Refit API** - Add **one** method to `IGameSettingApi`
+- [ ] **Service** - Add **one** method to `IGameSettingService` / `GameSettingService`
+- [ ] **Handler** - Add **one** `IRequestHandler` to `GamesHandler`
+- [ ] **Controller** - Add **one** route method
+- [ ] **Backend API** - Implement ActionType dispatch logic in API
+- [ ] **EditRequest Handler** - If new Config, set in `Handle(EditRequest...)`
 
-### 7.2 範例：新增 NewGame 配置
+### 7.2 Example: Adding NewGame Configuration
 
 ```csharp
-// 1. ActionType 枚舉
+// 1. ActionType Enum
 public enum NewGameActionType { UpdateConfig, QueryConfigs, CreateConfig, ... }
 
-// 2. 統一 Request
+// 2. Unified Request
 public class UpdateNewGameConfigRequest
 {
     public NewGameActionType ActionType { get; set; }
@@ -255,7 +255,7 @@ public class UpdateNewGameConfigRequest
     public NewGameConfigData ConfigData { get; set; }
 }
 
-// 3. 統一 Result
+// 3. Unified Result
 public class NewGameConfigResult
 {
     public bool Success { get; set; }
@@ -264,39 +264,39 @@ public class NewGameConfigResult
     public IList<NewGameConfig> Configs { get; set; }
 }
 
-// 4. Refit API（只有一個方法）
+// 4. Refit API (only one method)
 [Post("/game_settings/update_newgame_config")]
 Task<NewGameConfigResult> UpdateNewGameConfig([Body] UpdateNewGameConfigRequest request);
 ```
 
-## 8. 常見錯誤
+## 8. Common Mistakes
 
-### 8.1 Handler 直接調用 API
+### 8.1 Handler Calls API Directly
 ```csharp
-// ❌ 錯誤
+// ❌ Wrong
 return await shootingBlitzRtpApi.Create(request);
 
-// ✅ 正確
+// ✅ Correct
 return gameService.CreateShootingBlitzRtpConfig(request);
 ```
 
-### 8.2 Service 創建額外的 API Request
+### 8.2 Service Creates Additional API Request
 ```csharp
-// ❌ 錯誤：不需要創建額外的 ApiRequest
+// ❌ Wrong: No need to create additional ApiRequest
 public Task<ShootingBlitzRtpConfig> CreateShootingBlitzRtpConfig(CreateShootingBlitzRtpSiteRequest request)
 {
     var apiRequest = new CreateShootingBlitzRtpApiRequest { ... };
     return shootingBlitzRtpApi.Create(apiRequest);
 }
 
-// ✅ 正確：直接傳遞 SiteRequest
+// ✅ Correct: Pass SiteRequest directly
 public Task<ShootingBlitzRtpConfig> CreateShootingBlitzRtpConfig(CreateShootingBlitzRtpSiteRequest request)
     => shootingBlitzRtpApi.Create(request);
 ```
 
-### 8.3 為每個操作創建獨立端點
+### 8.3 Create Separate Endpoint for Each Operation
 ```csharp
-// ❌ 錯誤：每個操作都有獨立端點，難以管理
+// ❌ Wrong: Separate endpoint for each operation, hard to manage
 [Get("/shooting_blitz_rtp")]
 Task<IList<ShootingBlitzRtpConfig>> GetAllShootingBlitzRtpConfigs();
 
@@ -309,18 +309,18 @@ Task<bool> UpdateShootingBlitzRtpConfig(...);
 [Delete("/shooting_blitz_rtp/{id}")]
 Task<bool> DeleteShootingBlitzRtpConfig(...);
 
-// ✅ 正確：單一端點 + ActionType
+// ✅ Correct: Single endpoint + ActionType
 [Post("/game_settings/update_shooting_blitz_config")]
 Task<ShootingBlitzConfigResult> UpdateShootingBlitzConfig([Body] UpdateShootingBlitzConfigRequest request);
 ```
 
-### 8.4 創建獨立的 API Interface
+### 8.4 Create Separate API Interface
 ```csharp
-// ❌ 錯誤：不需要為每個遊戲創建獨立的 API Interface
+// ❌ Wrong: No need to create separate API Interface for each game
 public interface IShootingBlitzRtpApi { ... }
 public interface IPlinkoApi { ... }
 
-// ✅ 正確：統一在 IGameSettingApi 中，每個遊戲一個方法
+// ✅ Correct: Unified in IGameSettingApi, one method per game
 public interface IGameSettingApi
 {
     Task<ShootingBlitzConfigResult> UpdateShootingBlitzConfig([Body] UpdateShootingBlitzConfigRequest request);
@@ -328,36 +328,85 @@ public interface IGameSettingApi
 }
 ```
 
-### 8.4 前端 JavaScript 調用錯誤的 URL
+### 8.5 Frontend JavaScript Calls Wrong URL
 ```javascript
-// ❌ 錯誤：前端不應該調用 /api 路徑
+// ❌ Wrong: Frontend should not call /api path
 $.ajax({ url: '/api/shooting_blitz_rtp', ... });
 
-// ✅ 正確：前端調用 Site Controller 路徑
+// ✅ Correct: Frontend calls Site Controller path
 $.ajax({ url: '/shooting_blitz_rtp', ... });
 ```
 
-### 8.5 遺漏 Config 設置
+### 8.6 Missing Config Setting
 ```csharp
-// ❌ 錯誤：在 Handle(EditRequest...) 中遺漏新增的 Config
+// ❌ Wrong: Missing newly added Config in Handle(EditRequest...)
 viewModel.PlinkoConfig = game.PlinkoConfig;
-// 忘記 ShootingBlitzConfig
+// Forgot ShootingBlitzConfig
 
-// ✅ 正確：設置所有 Config
+// ✅ Correct: Set all Configs
 viewModel.PlinkoConfig = game.PlinkoConfig;
 viewModel.ShootingBlitzConfig = game.ShootingBlitzConfig;
 ```
 
-### 8.6 Service 方法拆解 Request 參數
+### 8.7 Service Method Decomposes Request Parameters
 ```csharp
-// ❌ 錯誤：拆解成多個參數
+// ❌ Wrong: Decompose into multiple parameters
 Task<bool> UpdateConfig(string id, double rtp, List<MultiplierStepsConfig> multiplierSteps);
 
-// ✅ 正確：接收單一 Request 參數
+// ✅ Correct: Receive single Request parameter
 Task<bool> UpdateConfig(UpdateShootingBlitzRtpSiteRequest request);
 ```
 
 ---
 
-**最後更新**：2025-12-04
+## 9. Game-Specific UI Structure
+
+### 9.1 ShootingBlitz UI Architecture
+
+ShootingBlitz uses a **consolidated UI structure** where all settings are in the General Setting Modal:
+
+| Entry Point | Location | Features |
+|-------------|----------|----------|
+| **General Setting** | Game Management → General Setting column | General Tab + Teams Tab + **RTP Tab** |
+| **Odds** | Game Management → Odds column | **Empty (Not used)** |
+
+> **Important**: ShootingBlitz does NOT use the Odds column. RTP settings are integrated into the General Setting Modal's RTP Tab.
+
+### 9.2 General Setting Modal Tab Structure (ShootingBlitz)
+
+```
+General Setting Modal: ShootingBlitz
+├── [General Tab]     → Game status, Enable Free Bet, Use Live Score, Delay Time
+├── [Teams Tab]       → Team CRUD management
+└── [RTP Tab]         → RTP Config selection + CRUD (previously Odds Modal)
+```
+
+### 9.3 JavaScript File Organization
+
+| File | Purpose |
+|------|---------|
+| `shooting-blitz-general.js` | General Tab + Teams Tab functionality |
+| `shooting-blitz-rtp.js` | RTP Tab functionality (RTP Config CRUD) |
+
+> Both JS files are loaded in `GameDetails_ShootingBlitz.cshtml`
+
+### 9.4 Files to Update When Modifying ShootingBlitz
+
+| File | Description |
+|------|-------------|
+| `GameDetails_ShootingBlitz.cshtml` | General Setting Modal (General + Teams + RTP Tabs) |
+| `shooting-blitz-general.js` | JS for General/Teams Tabs |
+| `shooting-blitz-rtp.js` | JS for RTP Tab |
+| `OddSettings.cshtml` | Ensure ShootingBlitz branch returns empty |
+
+### 9.5 Deprecated Files (Do Not Use)
+
+| File | Reason |
+|------|--------|
+| `OddsSettings_ShootingBlitz.cshtml` | **Deleted** - Integrated into GameDetails_ShootingBlitz.cshtml |
+| `shooting-blitz-odds.js` | **Renamed** to `shooting-blitz-rtp.js` |
+
+---
+
+**Last Updated**: 2025-12-04
 

@@ -1,12 +1,12 @@
-// ShootingBlitz Odds Settings JavaScript (RTP Config Management)
-// 使用統一端點 /shooting_blitz_config + ActionType
+// ShootingBlitz RTP Tab JavaScript (RTP Config Management)
+// Uses unified endpoint /shooting_blitz_config + ActionType
 
-var shootingBlitzOdds = (function () {
+var shootingBlitzRtp = (function () {
     var rtpConfigs = [];
     var currentModeCount = 0;
     var gameName = '';
 
-    // ActionType 枚舉（與後端對應）
+    // ActionType enum (corresponds to backend)
     var ActionType = {
         UpdateConfig: 0,
         QueryRtpConfigs: 1,
@@ -141,9 +141,9 @@ var shootingBlitzOdds = (function () {
             '<fieldset class="border p-2">' +
             '<legend class="w-auto">Pays Table (index+1 = picks)</legend>' +
             '<div class="pays-table-container"></div>' +
-            '<button type="button" class="btn btn-secondary btn-sm" onclick="shootingBlitzOdds.addPaysRow(this)"><i class="icon-plus"></i> Add Pays</button>' +
+            '<button type="button" class="btn btn-secondary btn-sm" onclick="shootingBlitzRtp.addPaysRow(this)"><i class="icon-plus"></i> Add Pays</button>' +
             '</fieldset>' +
-            '<button type="button" class="btn btn-danger btn-sm mt-2" onclick="shootingBlitzOdds.removeMode(this)"><i class="icon-trash"></i> Remove Mode</button>' +
+            '<button type="button" class="btn btn-danger btn-sm mt-2" onclick="shootingBlitzRtp.removeMode(this)"><i class="icon-trash"></i> Remove Mode</button>' +
             '</div>';
         contentContainer.insertAdjacentHTML('beforeend', contentHtml);
         
@@ -172,7 +172,7 @@ var shootingBlitzOdds = (function () {
             '<input type="number" step="0.01" class="form-control pays-input" placeholder="Pays" value="' + pays + '" />' +
             '</div>' +
             '<div class="col-4">' +
-            '<button type="button" class="btn btn-danger btn-sm" onclick="shootingBlitzOdds.removePaysRow(this)"><i class="icon-trash"></i></button>' +
+            '<button type="button" class="btn btn-danger btn-sm" onclick="shootingBlitzRtp.removePaysRow(this)"><i class="icon-trash"></i></button>' +
             '</div>' +
             '</div>';
         container.insertAdjacentHTML('beforeend', html);
@@ -364,3 +364,4 @@ var shootingBlitzOdds = (function () {
         deleteRtpConfig: deleteRtpConfig
     };
 })();
+

@@ -57,10 +57,10 @@
 ```
 
 > **Note**: 
-> - `opponentCount` 代表對手數量（等同於地雷數量），選到對手即輸
-> - `home` 和 `away` 分別設定主場和客場球員的星級球員設定，可以有不同的出現率和位置
-> - `pays` 陣列的 index 對應 picks 值：`pays[0]` = picks 1 的賠率, `pays[1]` = picks 2 的賠率, 以此類推
-> - 不同 `opponentCount` 的 `pays` 陣列長度可以不同
+> - `opponentCount` represents opponent count (equivalent to mine count), selecting opponent loses
+> - `home` and `away` set star player settings for home and away teams respectively, can have different rates and positions
+> - `pays` array index corresponds to picks value: `pays[0]` = picks 1 odds, `pays[1]` = picks 2 odds, and so on
+> - Different `opponentCount` can have different `pays` array lengths
 
 ### 2.3 Teams Collection (Team Management)
 
@@ -91,14 +91,16 @@
 
 ### 3.1 UI Entry Points Overview
 
-ShootingBlitz 的設定分為兩個入口：
+All ShootingBlitz settings are consolidated in the General Setting Modal:
 
 | Entry Point | Location | Features |
 |-------------|----------|----------|
-| **General Setting** | Game Management → General Setting 欄位 (編輯按鈕) | General Tab + Teams Tab |
-| **Odds** | Game Management → Odds 欄位 (編輯按鈕) | RTP Config 選擇 + CRUD 管理 |
+| **General Setting** | Game Management → General Setting column (Edit button) | General Tab + Teams Tab + **RTP Tab** |
+| **Odds** | Game Management → Odds column | **Empty (Not used)** |
 
-> **Note**: This game has **NO Jackpot**
+> **Note**: 
+> - This game has **NO Jackpot**
+> - Odds column displays nothing for ShootingBlitz. RTP settings are integrated into General Setting Modal
 
 ### 3.2 General Setting Modal - Tab Structure
 
@@ -106,6 +108,7 @@ ShootingBlitz 的設定分為兩個入口：
 |----------|-------------|
 | General | General settings (game status, free bet, live score, delay time) |
 | Teams | Team management, supports Create/Update/Delete teams and players |
+| **RTP** | **RTP Config selection + CRUD management (previously in Odds Modal)** |
 
 ### 3.3 General Tab Fields
 
@@ -116,8 +119,6 @@ ShootingBlitz 的設定分為兩個入口：
 | Enable Free Bet | Checkbox | Whether to enable free betting |
 | Use Live Score | Checkbox | Whether to use live score |
 | Delay Start Time | Number | Delay start time |
-
-> **Note**: RTP Config selection has been moved to Game Management → Odds
 
 ### 3.4 Teams Tab Features
 
@@ -148,24 +149,26 @@ ShootingBlitz 的設定分為兩個入口：
 - ✅ Each Team is one record
 - ✅ Supports Create/Update/Delete Team
 
-### 3.5 Game Management - Odds Column
+### 3.5 RTP Tab Features (in General Setting Modal)
 
-#### 3.5.1 Odds Column Display in Game List
+#### 3.5.1 Game Management - Odds Column Display
 
 | Item | Description |
 |------|-------------|
-| Display Content | Show current selected RTP value (e.g., "95%") |
-| No Selection | Display "-- Not Set --" or empty |
-| Click Action | Open RTP Config Modal |
+| ShootingBlitz | **Empty (Odds feature not used)** |
+| Other Games | Maintain existing Odds functionality |
 
-#### 3.5.2 Odds Modal Features
+> **Note**: ShootingBlitz RTP settings are integrated into the RTP Tab of General Setting Modal
 
-Click the edit button in the Odds column to open a **standalone Modal** with the following features:
+#### 3.5.2 RTP Tab Layout
+
+RTP Tab contains the following feature sections:
 
 ##### Current RTP Selection
 | Field | Type | Description |
 |-------|------|-------------|
 | Selected RTP Config | Dropdown + Display | Shows current selected RTP Config, allows changing selection |
+| Apply Selection | Button | Apply the selected RTP Config |
 
 ##### RTP Config List
 | Field | Description |
@@ -173,8 +176,9 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 | RTP | Display RTP value (e.g., 95%) |
 | Multiplier Steps | Display number of modes |
 | Actions | Edit / Delete buttons |
+| Create New | Button to create new RTP Config |
 
-##### Create/Edit RTP Config (Sub-Modal or Expandable Section)
+##### Create/Edit RTP Config (Sub-Modal)
 
 ###### RTP Field
 | Field | Type | Validation |
@@ -184,19 +188,19 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 ###### Multiplier Steps Configuration (Mode Tabs)
 | Field | Type | Description |
 |-------|------|-------------|
-| opponentCount | Number | 對手數量（等同於地雷數量，選到對手即輸） |
+| opponentCount | Number | Opponent count (equivalent to mine count, selecting opponent loses) |
 | name | String | Mode name (e.g., "star player rate 2% - 1 mines") |
-| home.starPlayerRate | Number | 主場球員星級球員出現率 |
-| home.starPositions | Array<Number> | 主場球員星級球員可出現的 Pick 位置 |
-| away.starPlayerRate | Number | 客場球員星級球員出現率 |
-| away.starPositions | Array<Number> | 客場球員星級球員可出現的 Pick 位置 |
+| home.starPlayerRate | Number | Home team star player appearance rate |
+| home.starPositions | Array<Number> | Home team star player available pick positions |
+| away.starPlayerRate | Number | Away team star player appearance rate |
+| away.starPositions | Array<Number> | Away team star player available pick positions |
 | pays | Array<Number> | Multiplier pays array (index+1 = picks) |
 
 - ✅ Can dynamically add/remove Mode
 - ✅ Can dynamically add/remove pays items
-- ✅ Picks 欄位自動依照 pays 陣列 index 顯示（index + 1）
-- ✅ 不同 opponentCount 的 pays 陣列長度可以不同
-- ✅ Home 和 Away 可分別設定不同的星級球員出現率和位置
+- ✅ Picks field auto-displays based on pays array index (index + 1)
+- ✅ Different opponentCount can have different pays array lengths
+- ✅ Home and Away can have different star player rates and positions
 
 ###### Pays Array UI Display
 | Picks (Auto) | Pays (Input) | Actions |
@@ -206,7 +210,7 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 | 3 | [Input: 1.12] | [Remove] |
 | ... | ... | ... |
 
-> **Note**: Picks 欄位為自動顯示（唯讀），使用者只需輸入 Pays 值
+> **Note**: Picks field is auto-displayed (read-only), users only need to input Pays values
 
 ---
 
@@ -355,15 +359,15 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 |------|--------|-------------|
 | `Features/GameSettings/ViewModels/EditViewModel.cs` | Modify | Add properties |
 | `Features/GameSettings/GamesHandler.cs` | Modify | Add configuration method |
-| `Features/GameSettings/Views/GameDetails_ShootingBlitz.cshtml` | **New** | General Setting Modal (General + Teams Tabs) |
-| `Features/GameSettings/Views/OddSettings.cshtml` | Modify | Add ShootingBlitz branch for Odds Modal |
-| `Features/GameSettings/Views/_ShootingBlitzOddsModal.cshtml` | **New** | Odds Modal (RTP Config List + CRUD + Selection) |
+| `Features/GameSettings/Views/GameDetails_ShootingBlitz.cshtml` | Modify | General Setting Modal (General + Teams + **RTP** Tabs) |
+| `Features/GameSettings/Views/OddSettings.cshtml` | Modify | Remove ShootingBlitz branch (Odds column displays empty) |
+| `Features/GameSettings/Views/OddsSettings_ShootingBlitz.cshtml` | **Delete** | Integrated into GameDetails_ShootingBlitz.cshtml |
 | `Features/GameSettings/IGameSettingApi.cs` | Modify | Add API interface |
 | `Features/GameSettings/IShootingBlitzRtpApi.cs` | **New** | RTP API interface |
 | `Features/GameSettings/IShootingBlitzTeamApi.cs` | **New** | Team API interface |
 | `Features/GameSettings/Requests/UpdateShootingBlitzConfigRequest.cs` | **New** | Site Request |
-| `wwwroot/js/shooting-blitz-general.js` | **New** | JavaScript for General Setting Modal (Teams) |
-| `wwwroot/js/shooting-blitz-odds.js` | **New** | JavaScript for Odds Modal (RTP Config) |
+| `wwwroot/js/shooting-blitz-general.js` | **New** | JavaScript for General Setting Modal (General + Teams) |
+| `wwwroot/js/shooting-blitz-rtp.js` | **New** | JavaScript for RTP Tab (RTP Config CRUD) |
 
 ---
 
@@ -387,19 +391,19 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 5. **MongoDB Collection Names**:
    - RTP Config: `ShootingBlitz_rtpConfig`
    - Teams: `ShootingBlitz_team`
-6. **UI Entry Points Separation**:
-   - **General Setting** (Game Management → General Setting column): General config + Teams management
-   - **Odds** (Game Management → Odds column): RTP Config selection + CRUD management
+6. **Unified UI Entry Points**:
+   - **General Setting** (Game Management → General Setting column): General config + Teams management + **RTP Config management**
+   - **Odds** (Game Management → Odds column): **Not used for ShootingBlitz, displays empty**
 7. **Pays Array Format**:
-   - `pays` 陣列的 index 對應 picks 值：`pays[0]` = picks 1, `pays[1]` = picks 2, ...
-   - UI 中 Picks 欄位自動顯示（唯讀），使用者只需輸入 Pays 值
-   - 不同 opponentCount 的 pays 陣列長度可以不同
+   - `pays` array index corresponds to picks value: `pays[0]` = picks 1, `pays[1]` = picks 2, ...
+   - Picks field auto-displays in UI (read-only), users only need to input Pays values
+   - Different opponentCount can have different pays array lengths
 8. **Home/Away Star Player Settings**:
-   - `home` 和 `away` 可分別設定不同的星級球員出現率 (`starPlayerRate`) 和位置 (`starPositions`)
-   - 這允許主場和客場球員有不同的遊戲特性
+   - `home` and `away` can have different star player rates (`starPlayerRate`) and positions (`starPositions`)
+   - This allows home and away teams to have different gameplay characteristics
 9. **Opponent Count**:
-   - `opponentCount` 代表對手數量，等同於原本的「地雷數量」概念
-   - 選到對手即輸（類似踩地雷遊戲）
+   - `opponentCount` represents opponent count, equivalent to "mine count" concept
+   - Selecting opponent loses (similar to minesweeper game)
 
 ---
 
@@ -518,7 +522,7 @@ Click the edit button in the Odds column to open a **standalone Modal** with the
 
 ## 9. UI Operation Flow
 
-### 9.1 Game Management List - Odds Column Display
+### 9.1 Game Management List Display
 
 ```
 Game Management List
@@ -529,12 +533,14 @@ Game Management List
 │   ├── Operator: 1W
 │   ├── Bet Limit: ...
 │   ├── Setting: [Edit Button]
-│   ├── Odds: "95%" or "-- Not Set --" [Edit Button] ← Click to open Odds Modal
-│   └── General Setting: [Edit Button] ← Click to open General Setting Modal
+│   ├── Odds: (Empty, not used)
+│   └── General Setting: [Edit Button] ← Click to open General Setting Modal (includes RTP settings)
 └── ...
 ```
 
-### 9.2 General Setting Modal - Teams Tab Operation Flow
+> **Note**: ShootingBlitz Odds column displays empty. All settings (including RTP) are consolidated in General Setting Modal
+
+### 9.2 General Setting Modal - Complete Operation Flow
 
 ```
 General Setting Modal: ShootingBlitz
@@ -566,50 +572,50 @@ General Setting Modal: ShootingBlitz
 │   │
 │   └── Edit Team (Same as Create Modal, pre-filled data)
 │
-└── [Close] / [Save] Buttons
-```
-
-### 9.3 Odds Modal - RTP Config Operation Flow
-
-```
-Odds Modal: ShootingBlitz RTP Configuration
-├── Current Selection Section
-│   ├── Label: "Current RTP Config"
-│   ├── Dropdown: [Select RTP Config ▼]
-│   │   ├── -- Select RTP Config --
-│   │   ├── RTP 95% (id: xxx)
-│   │   ├── RTP 96% (id: yyy)
-│   │   └── RTP 97% (id: zzz)
-│   └── [Apply Selection] Button
-│
-├── RTP Config List Section
-│   ├── Display RTP Config List (Table)
-│   │   ├── RTP (%)
-│   │   ├── Multiplier Steps Count
-│   │   └── Actions (Edit / Delete)
+├── [RTP Tab] ← Previously Odds Modal functionality integrated here
+│   ├── Current Selection Section
+│   │   ├── Label: "Current RTP Config"
+│   │   ├── Dropdown: [Select RTP Config ▼]
+│   │   │   ├── -- Select RTP Config --
+│   │   │   ├── RTP 95% (id: xxx)
+│   │   │   ├── RTP 96% (id: yyy)
+│   │   │   └── RTP 97% (id: zzz)
+│   │   └── [Apply Selection] Button
 │   │
-│   ├── [Create New RTP Config] Button
-│   │   └── Open Sub-Modal / Expandable Section
-│   │       ├── RTP (Number Input)
-│   │       ├── Multiplier Steps Section (Tabs)
-│   │       │   ├── [Add Mode] Button
-│   │       │   └── Mode Tabs
-│   │       │       ├── Mode Number
-│   │       │       ├── Name
-│   │       │       ├── Star Player Rate
-│   │       │       ├── Star Position (comma separated)
-│   │       │       ├── Pays Table
-│   │       │       │   ├── Picks (Auto) | Pays (Input) | Actions
-│   │       │       │   ├── 1 | [Input] | [Remove]
-│   │       │       │   ├── 2 | [Input] | [Remove]
-│   │       │       │   ├── ...
-│   │       │       │   └── [Add Pays] Button
-│   │       │       └── [Remove Mode] Button
-│   │       └── [Save] / [Cancel] Buttons
+│   ├── RTP Config List Section
+│   │   ├── Display RTP Config List (Table)
+│   │   │   ├── RTP (%)
+│   │   │   ├── Multiplier Steps Count
+│   │   │   └── Actions (Edit / Delete)
+│   │   │
+│   │   ├── [Create New RTP Config] Button
+│   │   │   └── Open Sub-Modal
+│   │   │       ├── RTP (Number Input)
+│   │   │       ├── Multiplier Steps Section (Tabs)
+│   │   │       │   ├── [Add Mode] Button
+│   │   │       │   └── Mode Tabs
+│   │   │       │       ├── Opponent Count (Number)
+│   │   │       │       ├── Name (Text)
+│   │   │       │       ├── Home Star Player Settings
+│   │   │       │       │   ├── Star Player Rate
+│   │   │       │       │   └── Star Positions (comma separated)
+│   │   │       │       ├── Away Star Player Settings
+│   │   │       │       │   ├── Star Player Rate
+│   │   │       │       │   └── Star Positions (comma separated)
+│   │   │       │       ├── Pays Table
+│   │   │       │       │   ├── Picks (Auto) | Pays (Input) | Actions
+│   │   │       │       │   ├── 1 | [Input] | [Remove]
+│   │   │       │       │   ├── 2 | [Input] | [Remove]
+│   │   │       │       │   ├── ...
+│   │   │       │       │   └── [Add Pays] Button
+│   │   │       │       └── [Remove Mode] Button
+│   │   │       └── [Save] / [Cancel] Buttons
+│   │   │
+│   │   └── Edit RTP Config (Same as Create, pre-filled data)
 │   │
-│   └── Edit RTP Config (Same as Create, pre-filled data)
+│   └── (RTP changes saved immediately via AJAX, no need to wait for Modal Save)
 │
-└── [Close] Button
+└── [Close] / [Save] Buttons (Save only saves General Tab settings)
 ```
 
 ---
@@ -622,34 +628,45 @@ Odds Modal: ShootingBlitz RTP Configuration
 ├─────────────────────────────────────────────────────────────────────┤
 │  Name          │ Enabled │ ... │ Setting │  Odds   │ General Setting│
 ├─────────────────────────────────────────────────────────────────────┤
-│  ShootingBlitz │    ✓    │ ... │   [✎]   │  95%[✎] │      [✎]       │
+│  ShootingBlitz │    ✓    │ ... │   [✎]   │  (Empty) │      [✎]       │
 └─────────────────────────────────────────────────────────────────────┘
-                                      │                   │
-                                      ▼                   ▼
-                    ┌─────────────────────┐    ┌─────────────────────┐
-                    │    Odds Modal       │    │ General Setting     │
-                    │                     │    │      Modal          │
-                    │ ┌─────────────────┐ │    │                     │
-                    │ │ Current RTP     │ │    │ ┌─────────────────┐ │
-                    │ │ Selection       │ │    │ │  General Tab    │ │
-                    │ │ [Dropdown ▼]    │ │    │ │  - Game Status  │ │
-                    │ └─────────────────┘ │    │ │  - Enable Free  │ │
-                    │                     │    │ │  - Use Live     │ │
-                    │ ┌─────────────────┐ │    │ │  - Delay Time   │ │
-                    │ │ RTP Config List │ │    │ └─────────────────┘ │
-                    │ │ + CRUD Actions  │ │    │                     │
-                    │ └─────────────────┘ │    │ ┌─────────────────┐ │
-                    └─────────────────────┘    │ │  Teams Tab      │ │
-                              │                │ │  - Teams List   │ │
-                              ▼                │ │  - CRUD Actions │ │
-                    ┌─────────────────────┐    │ └─────────────────┘ │
-                    │  ShootingBlitz_     │    └─────────────────────┘
-                    │  rtpConfig          │              │
-                    │  (MongoDB)          │              ▼
-                    └─────────────────────┘    ┌─────────────────────┐
-                                               │  ShootingBlitz_team │
-                                               │  (MongoDB)          │
-                                               └─────────────────────┘
+                                                          │
+                                                          ▼
+                                            ┌─────────────────────────┐
+                                            │   General Setting       │
+                                            │        Modal            │
+                                            │                         │
+                                            │ ┌─────────────────────┐ │
+                                            │ │   General Tab       │ │
+                                            │ │   - Game Status     │ │
+                                            │ │   - Enable Free Bet │ │
+                                            │ │   - Use Live Score  │ │
+                                            │ │   - Delay Time      │ │
+                                            │ └─────────────────────┘ │
+                                            │                         │
+                                            │ ┌─────────────────────┐ │
+                                            │ │   Teams Tab         │ │
+                                            │ │   - Teams List      │ │
+                                            │ │   - CRUD Actions    │ │
+                                            │ └─────────────────────┘ │
+                                            │           │             │
+                                            │           ▼             │
+                                            │ ┌─────────────────────┐ │
+                                            │ │   RTP Tab (NEW)     │ │
+                                            │ │   - Current RTP     │ │
+                                            │ │     Selection       │ │
+                                            │ │   - RTP Config List │ │
+                                            │ │   - CRUD Actions    │ │
+                                            │ └─────────────────────┘ │
+                                            └─────────────────────────┘
+                                                          │
+                            ┌─────────────────────────────┴─────────────────────────────┐
+                            │                                                           │
+                            ▼                                                           ▼
+              ┌─────────────────────────┐                              ┌─────────────────────────┐
+              │   ShootingBlitz_team    │                              │  ShootingBlitz_rtpConfig│
+              │       (MongoDB)         │                              │       (MongoDB)         │
+              └─────────────────────────┘                              └─────────────────────────┘
 ```
 
 ---
@@ -722,10 +739,10 @@ Odds Modal: ShootingBlitz RTP Configuration
 | Item | v2 | Current |
 |------|-----|-----|
 | mode | ✅ `mode` | ✅ **Renamed**: `opponentCount` |
-| starPlayerRate | ✅ 單一欄位 | ✅ **Split**: `home.starPlayerRate`, `away.starPlayerRate` |
-| starPosition | ✅ 單一陣列 | ✅ **Split & Renamed**: `home.starPositions`, `away.starPositions` |
+| starPlayerRate | ✅ Single field | ✅ **Split**: `home.starPlayerRate`, `away.starPlayerRate` |
+| starPosition | ✅ Single array | ✅ **Split & Renamed**: `home.starPositions`, `away.starPositions` |
 
 > **Note**: 
 > - `pays[index]` corresponds to `picks = index + 1`
-> - `opponentCount` 代表對手數量（等同於地雷數量），選到對手即輸
-> - `home` 和 `away` 可分別設定不同的星級球員出現率和位置
+> - `opponentCount` represents opponent count (equivalent to mine count), selecting opponent loses
+> - `home` and `away` can have different star player rates and positions
