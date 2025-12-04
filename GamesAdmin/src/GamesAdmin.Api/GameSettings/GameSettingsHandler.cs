@@ -33,15 +33,20 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateBotSlotSettingsRequest, bool>
         , IRequestHandler<ImportRequest, bool>
         , IRequestHandler<UpdatePlinkoConfigRequest, bool>
-        , IRequestHandler<UpdateShootingBlitzConfigRequest, bool>
+        , IRequestHandler<UpdateShootingBlitzConfigRequest, ShootingBlitzConfigResult>
     {
         private readonly IGameSettingsService gameService;
         private readonly ICloneSettingService slotSettingService;
+        private readonly IShootingBlitzRtpConfigService shootingBlitzRtpConfigService;
 
-        public GameSettingsHandler(IGameSettingsService gameService, ICloneSettingService slotSettingService)
+        public GameSettingsHandler(
+            IGameSettingsService gameService, 
+            ICloneSettingService slotSettingService,
+            IShootingBlitzRtpConfigService shootingBlitzRtpConfigService)
         {
             this.gameService = gameService;
             this.slotSettingService = slotSettingService;
+            this.shootingBlitzRtpConfigService = shootingBlitzRtpConfigService;
         }
 
         public Task<IEnumerable<GameConfig>> Handle(GetAllRequest request, CancellationToken cancellationToken)
@@ -117,7 +122,58 @@ namespace GamesAdmin.Api.Games
         public Task<bool> Handle(UpdatePlinkoConfigRequest request, CancellationToken cancellationToken)
         => gameService.UpdatePlinkoConfig(request.Name, request.PlinkoConfig);
 
-        public Task<bool> Handle(UpdateShootingBlitzConfigRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateShootingBlitzConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.ShootingBlitzConfig);
+        public async Task<ShootingBlitzConfigResult> Handle(UpdateShootingBlitzConfigRequest request, CancellationToken cancellationToken)
+        {
+            switch (request.ActionType)
+            {
+                case ShootingBlitzActionType.UpdateConfig:
+                    var updateResult = await gameService.UpdateShootingBlitzConfig(
+                        request.GameInfo, request.BotSetting, request.EnableSetting, request.ShootingBlitzConfig);
+                    return updateResult 
+                        ? ShootingBlitzConfigResult.Ok("Config updated successfully") 
+                        : ShootingBlitzConfigResult.Fail("Failed to update config");
+
+                case ShootingBlitzActionType.QueryRtpConfigs:
+                    var rtpConfigs = await shootingBlitzRtpConfigService.GetAllAsync();
+                    return ShootingBlitzConfigResult.Ok(rtpConfigs as IList<ShootingBlitzRtpConfig> ?? new List<ShootingBlitzRtpConfig>(rtpConfigs));
+
+                case ShootingBlitzActionType.CreateRtpConfig:
+                    var newConfig = new ShootingBlitzRtpConfig
+                    {
+                        Rtp = request.Rtp,
+                        MultiplierSteps = request.MultiplierSteps
+                    };
+                    var createdConfig = await shootingBlitzRtpConfigService.CreateAsync(newConfig);
+                    return createdConfig != null 
+                        ? ShootingBlitzConfigResult.Ok(createdConfig) 
+                        : ShootingBlitzConfigResult.Fail("Failed to create RTP config");
+
+                case ShootingBlitzActionType.UpdateRtpConfig:
+                    var configToUpdate = new ShootingBlitzRtpConfig
+                    {
+                        Rtp = request.Rtp,
+                        MultiplierSteps = request.MultiplierSteps
+                    };
+                    var updateRtpResult = await shootingBlitzRtpConfigService.UpdateAsync(request.RtpConfigId, configToUpdate);
+                    return updateRtpResult 
+                        ? ShootingBlitzConfigResult.Ok("RTP config updated successfully") 
+                        : ShootingBlitzConfigResult.Fail("Failed to update RTP config");
+
+                case ShootingBlitzActionType.DeleteRtpConfig:
+                    var deleteResult = await shootingBlitzRtpConfigService.DeleteAsync(request.RtpConfigId);
+                    return deleteResult 
+                        ? ShootingBlitzConfigResult.Ok("RTP config deleted successfully") 
+                        : ShootingBlitzConfigResult.Fail("Failed to delete RTP config");
+
+                case ShootingBlitzActionType.SelectRtpConfig:
+                    var selectResult = await shootingBlitzRtpConfigService.SelectRtpConfigAsync(request.Name, request.RtpConfigId);
+                    return selectResult 
+                        ? ShootingBlitzConfigResult.Ok("RTP config selected successfully") 
+                        : ShootingBlitzConfigResult.Fail("Failed to select RTP config");
+
+                default:
+                    return ShootingBlitzConfigResult.Fail($"Unknown action type: {request.ActionType}");
+            }
+        }
     }
 }

@@ -121,6 +121,20 @@ public class SelectShootingBlitzRtpSiteRequest : IRequest<bool>
 2. 添加 `UpdateShootingBlitzRtpApiRequest` 類
 3. 修改 Refit 方法參數類型
 
+### 6. 後端 Service - 修復 AutoMapper 問題 ✅ 已完成
+
+**文件**: `GamesAdmin/src/GamesAdmin.Api/GameSettings/ShootingBlitzRtpConfigService.cs`
+
+**問題**：AutoMapper 的 `ReverseMap()` 在創建新記錄時，會嘗試將 null 的 `Id` (string) 映射到 `ObjectId`，導致錯誤。
+
+**修改內容**：手動創建 Entity，避免 AutoMapper 映射 Id 欄位。
+
+### 7. Handler 錯誤日誌 ✅ 已完成
+
+**文件**: `GamesAdmin/src/GamesAdmin.Site/Features/GameSettings/GamesHandler.cs`
+
+**修改內容**：添加 Refit.ApiException 的詳細錯誤日誌，記錄 URL、狀態碼和錯誤內容。
+
 ## 不需要修改的文件
 
 以下文件**不需要修改**，因為它們已經正確：
@@ -129,7 +143,6 @@ public class SelectShootingBlitzRtpSiteRequest : IRequest<bool>
 |------|------|
 | `ShootingBlitzRtpConfigController.cs` | 後端 API 路由正確 |
 | `ShootingBlitzRtpConfigHandler.cs` | 後端 Handler 邏輯正確 |
-| `ShootingBlitzRtpConfigService.cs` | 後端 Service 邏輯正確 |
 | `ServiceMiddleware.cs` | Refit 已註冊 |
 
 ## 參考範例

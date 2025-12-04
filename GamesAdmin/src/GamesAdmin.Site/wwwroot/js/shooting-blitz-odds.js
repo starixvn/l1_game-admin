@@ -1,9 +1,20 @@
 // ShootingBlitz Odds Settings JavaScript (RTP Config Management)
+// 使用統一端點 /shooting_blitz_config + ActionType
 
 var shootingBlitzOdds = (function () {
     var rtpConfigs = [];
     var currentModeCount = 0;
     var gameName = '';
+
+    // ActionType 枚舉（與後端對應）
+    var ActionType = {
+        UpdateConfig: 0,
+        QueryRtpConfigs: 1,
+        CreateRtpConfig: 2,
+        UpdateRtpConfig: 3,
+        DeleteRtpConfig: 4,
+        SelectRtpConfig: 5
+    };
 
     function init() {
         var rtpConfigsEl = document.getElementById('rtpConfigsData');
@@ -32,18 +43,23 @@ var shootingBlitzOdds = (function () {
         }
         
         var data = {
+            actionType: ActionType.SelectRtpConfig,
             name: gameName,
             rtpConfigId: selectedId
         };
         
         $.ajax({
-            url: '/shooting_blitz_rtp/select',
+            url: '/shooting_blitz_config',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (result) {
-                showSuccess();
-                location.reload();
+                if (result.success) {
+                    showSuccess();
+                    location.reload();
+                } else {
+                    showError(result.message || 'Failed to apply RTP selection');
+                }
             },
             error: function (xhr) {
                 showError('Failed to apply RTP selection: ' + (xhr.responseText || 'Unknown error'));
@@ -221,22 +237,25 @@ var shootingBlitzOdds = (function () {
         });
         
         var data = {
+            actionType: id ? ActionType.UpdateRtpConfig : ActionType.CreateRtpConfig,
+            rtpConfigId: id || null,
             rtp: rtp,
             multiplierSteps: multiplierSteps
         };
         
-        var url = id ? '/shooting_blitz_rtp/' + id : '/shooting_blitz_rtp';
-        var method = id ? 'PUT' : 'POST';
-        
         $.ajax({
-            url: url,
-            method: method,
+            url: '/shooting_blitz_config',
+            method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (result) {
-                $('#rtpConfigModal').modal('hide');
-                showSuccess();
-                location.reload();
+                if (result.success) {
+                    $('#rtpConfigModal').modal('hide');
+                    showSuccess();
+                    location.reload();
+                } else {
+                    showError(result.message || 'Failed to save RTP config');
+                }
             },
             error: function (xhr) {
                 showError('Failed to save RTP config: ' + (xhr.responseText || 'Unknown error'));
@@ -247,12 +266,23 @@ var shootingBlitzOdds = (function () {
     function deleteRtpConfig(id) {
         if (!confirm('Are you sure you want to delete this RTP config?')) return;
         
+        var data = {
+            actionType: ActionType.DeleteRtpConfig,
+            rtpConfigId: id
+        };
+        
         $.ajax({
-            url: '/shooting_blitz_rtp/' + id,
-            method: 'DELETE',
-            success: function () {
-                showSuccess();
-                location.reload();
+            url: '/shooting_blitz_config',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.success) {
+                    showSuccess();
+                    location.reload();
+                } else {
+                    showError(result.message || 'Failed to delete RTP config');
+                }
             },
             error: function (xhr) {
                 showError('Failed to delete RTP config: ' + (xhr.responseText || 'Unknown error'));

@@ -75,8 +75,13 @@ namespace GamesAdmin.Api.GameSettings
         {
             try
             {
-                var entity = mapper.Map<ShootingBlitzRtpConfigEntity>(config);
-                entity.Time = DateTime.Now;
+                // 手動創建 Entity，避免 AutoMapper ReverseMap 時 null Id 轉換為 ObjectId 的問題
+                var entity = new ShootingBlitzRtpConfigEntity
+                {
+                    Rtp = config.Rtp,
+                    MultiplierSteps = mapper.Map<List<MultiplierStepsConfigEntity>>(config.MultiplierSteps),
+                    Time = DateTime.Now
+                };
                 await repository.InsertOneAsync(entity);
                 return mapper.Map<ShootingBlitzRtpConfig>(entity);
             }

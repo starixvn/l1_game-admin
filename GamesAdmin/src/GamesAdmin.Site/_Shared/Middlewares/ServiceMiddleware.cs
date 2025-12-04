@@ -64,7 +64,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<ICascadingSlotsConfigValidator, CascadingSlotsConfigValidator>();
             services.AddScoped<IGameSettingService, GameSettingService>();
 
-            services.AddSingleton(RestService.For<IShootingBlitzRtpApi>(appSettings.ApiHost, refitSettings));
             services.AddSingleton(RestService.For<IShootingBlitzTeamApi>(appSettings.ApiHost, refitSettings));
 
             services.AddSingleton(RestService.For<IGameUserApi>(appSettings.ApiHost, refitSettings));

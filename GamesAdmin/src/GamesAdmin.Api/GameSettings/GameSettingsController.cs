@@ -134,8 +134,11 @@ namespace GamesAdmin.Api.Games
         public Task<bool> UpdatePlinkoConfig(UpdatePlinkoConfigRequest request)
           => mediator.Send(request);
 
+        /// <summary>
+        /// ShootingBlitz 統一配置端點（根據 ActionType 執行不同操作）
+        /// </summary>
         [HttpPost("update_shooting_blitz_config")]
-        public Task<bool> UpdateShootingBlitzConfig(UpdateShootingBlitzConfigRequest request)
+        public Task<ShootingBlitzConfigResult> UpdateShootingBlitzConfig(UpdateShootingBlitzConfigRequest request)
           => mediator.Send(request);
     }
 }

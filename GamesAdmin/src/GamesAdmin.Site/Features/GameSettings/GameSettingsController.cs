@@ -528,11 +528,14 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        #region ShootingBlitz RTP Config
+        #region ShootingBlitz Config
 
+        /// <summary>
+        /// ShootingBlitz 統一配置端點（根據 ActionType 執行不同操作）
+        /// </summary>
         [HttpPost, Audit]
-        [Route("/shooting_blitz_rtp")]
-        public async Task<IActionResult> CreateShootingBlitzRtpConfig([FromBody] CreateShootingBlitzRtpSiteRequest request)
+        [Route("/shooting_blitz_config")]
+        public async Task<IActionResult> UpdateShootingBlitzConfig([FromBody] UpdateShootingBlitzConfigRequest request)
         {
             try
             {
@@ -542,56 +545,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        [HttpPut, Audit]
-        [Route("/shooting_blitz_rtp/{id}")]
-        public async Task<IActionResult> UpdateShootingBlitzRtpConfig(string id, [FromBody] UpdateShootingBlitzRtpSiteRequest request)
-        {
-            try
-            {
-                request.Id = id;
-                var result = await mediator.Send(request);
-                return Json(result);
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        [HttpDelete, Audit]
-        [Route("/shooting_blitz_rtp/{id}")]
-        public async Task<IActionResult> DeleteShootingBlitzRtpConfig(string id)
-        {
-            try
-            {
-                var result = await mediator.Send(new DeleteShootingBlitzRtpSiteRequest { Id = id });
-                return Json(result);
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        [HttpPost, Audit]
-        [Route("/shooting_blitz_rtp/select")]
-        public async Task<IActionResult> SelectShootingBlitzRtpConfig([FromBody] SelectShootingBlitzRtpSiteRequest request)
-        {
-            try
-            {
-                var result = await mediator.Send(request);
-                return Json(result);
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, ShootingBlitzConfigResult.Fail(ex.Message));
             }
         }
 
