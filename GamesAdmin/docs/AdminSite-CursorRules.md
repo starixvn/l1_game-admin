@@ -357,6 +357,53 @@ Task<bool> UpdateConfig(string id, double rtp, List<MultiplierStepsConfig> multi
 Task<bool> UpdateConfig(UpdateShootingBlitzRtpSiteRequest request);
 ```
 
+### 8.8 JSON Serialization Case Mismatch (Frontend/Backend)
+
+ASP.NET Core MVC Controller 預設使用 `System.Text.Json` 回傳 JSON，屬性名稱為 **PascalCase**，但前端 JavaScript 期望 **camelCase**。
+
+```csharp
+// ❌ Wrong: Missing JsonPropertyName - Frontend receives { "Success": true }
+public class ShootingBlitzConfigResult
+{
+    public bool Success { get; set; }      // JavaScript: result.success → undefined!
+    public string Message { get; set; }
+}
+
+// ✅ Correct: Add JsonPropertyName - Frontend receives { "success": true }
+using System.Text.Json.Serialization;
+
+public class ShootingBlitzConfigResult
+{
+    [JsonPropertyName("success")]
+    public bool Success { get; set; }      // JavaScript: result.success → true ✓
+
+    [JsonPropertyName("message")]
+    public string Message { get; set; }
+
+    [JsonPropertyName("rtpConfig")]
+    public ShootingBlitzRtpConfig RtpConfig { get; set; }
+
+    [JsonPropertyName("rtpConfigs")]
+    public IList<ShootingBlitzRtpConfig> RtpConfigs { get; set; }
+}
+```
+
+```javascript
+// Frontend expects camelCase
+$.ajax({
+    url: '/shooting_blitz_config',
+    success: function (result) {
+        if (result.success) {  // ← Needs camelCase from backend
+            showSuccess();
+        } else {
+            showError(result.message);
+        }
+    }
+});
+```
+
+> **Rule**: 當建立新的 Response/Result 類別供 Controller 回傳給前端時，**必須**在所有屬性上加上 `[JsonPropertyName("camelCase")]` 屬性。
+
 ---
 
 ## 9. Game-Specific UI Structure
@@ -408,5 +455,5 @@ General Setting Modal: ShootingBlitz
 
 ---
 
-**Last Updated**: 2025-12-04
+**Last Updated**: 2025-12-05
 
