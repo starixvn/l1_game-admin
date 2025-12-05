@@ -17,6 +17,7 @@ namespace GamesAdmin.Api.PlayerChainResults.Handlers
     {
         private readonly IGenericRepository<PlayerChainAssignmentEntity> repository;
         private readonly IMapper mapper;
+        private static readonly TimeSpan GMT7Offset = TimeSpan.FromHours(7);
 
         public PlayerChainResultHandler(IGenericRepository<PlayerChainAssignmentEntity> repository, IMapper mapper)
         {
@@ -50,12 +51,22 @@ namespace GamesAdmin.Api.PlayerChainResults.Handlers
         private static FilterDefinition<PlayerChainAssignmentEntity> BuildFilter(GetPlayerChainResultsRequest request)
         {
             var filterBuilder = Builders<PlayerChainAssignmentEntity>.Filter;
+            
+            // Convert GMT+7 input dates to UTC for database query
+            var fromDateUTC = request.FromDate.HasValue 
+                ? request.FromDate.Value.Subtract(GMT7Offset) 
+                : (DateTime?)null;
+            
+            var toDateUTC = request.ToDate.HasValue 
+                ? request.ToDate.Value.Date.AddDays(1).AddTicks(-1).Subtract(GMT7Offset) 
+                : (DateTime?)null;
+            
             var filterConditions = new (bool condition, Func<FilterDefinition<PlayerChainAssignmentEntity>> filter)[]
             {
                 (!string.IsNullOrEmpty(request.GameId), () => filterBuilder.Eq(x => x.GameId, request.GameId)),
                 (!string.IsNullOrEmpty(request.PlayerId), () => filterBuilder.Eq(x => x.PlayerId, request.PlayerId)),
-                (request.FromDate.HasValue, () => filterBuilder.Gte(x => x.AssignedAt, request.FromDate.Value.ToUniversalTime())),
-                (request.ToDate.HasValue, () => filterBuilder.Lte(x => x.AssignedAt, request.ToDate.Value.Date.AddDays(1).AddTicks(-1).ToUniversalTime())),
+                (fromDateUTC.HasValue, () => filterBuilder.Gte(x => x.AssignedAt, fromDateUTC.Value)),
+                (toDateUTC.HasValue, () => filterBuilder.Lte(x => x.AssignedAt, toDateUTC.Value)),
                 (request.ExcludeUUS, () => filterBuilder.Ne(x => x.Currency, "UUS"))
             };
 
