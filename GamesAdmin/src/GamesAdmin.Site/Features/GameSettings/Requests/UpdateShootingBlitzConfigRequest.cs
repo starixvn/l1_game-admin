@@ -76,9 +76,10 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         #region RTP Config 相關屬性
 
         /// <summary>
-        /// RTP 值（用於 CreateRtpConfig, UpdateRtpConfig）
+        /// RTP Config 顯示名稱（用於 CreateRtpConfig, UpdateRtpConfig）
+        /// e.g., "RTP 95% - Normal Mode", "Live Mode Config"
         /// </summary>
-        public double Rtp { get; set; }
+        public string RtpConfigName { get; set; }
 
         /// <summary>
         /// 倍率步驟配置（用於 CreateRtpConfig, UpdateRtpConfig）
