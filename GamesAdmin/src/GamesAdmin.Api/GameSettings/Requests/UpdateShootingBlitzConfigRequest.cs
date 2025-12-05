@@ -70,16 +70,19 @@ namespace GamesAdmin.Api.GameSettings.Requests
         /// <summary>
         /// 操作類型
         /// </summary>
+        [JsonPropertyName("actionType")]
         public ShootingBlitzActionType ActionType { get; set; }
 
         /// <summary>
         /// 遊戲名稱（用於 UpdateConfig, SelectRtpConfig）
         /// </summary>
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
         /// <summary>
         /// RTP 配置 ID（用於 UpdateRtpConfig, DeleteRtpConfig, SelectRtpConfig）
         /// </summary>
+        [JsonPropertyName("rtpConfigId")]
         public string RtpConfigId { get; set; }
 
         #region UpdateConfig 相關屬性
@@ -114,26 +117,31 @@ namespace GamesAdmin.Api.GameSettings.Requests
         /// <summary>
         /// Team 資料庫 ID（用於 UpdateTeam, DeleteTeam）
         /// </summary>
+        [JsonPropertyName("teamDbId")]
         public string TeamDbId { get; set; }
 
         /// <summary>
         /// Team ID（用於 CreateTeam, UpdateTeam）
         /// </summary>
+        [JsonPropertyName("teamId")]
         public int? TeamId { get; set; }
 
         /// <summary>
         /// Team 名稱（用於 CreateTeam, UpdateTeam）
         /// </summary>
+        [JsonPropertyName("teamName")]
         public string TeamName { get; set; }
 
         /// <summary>
         /// 是否啟用此 Team（用於 CreateTeam, UpdateTeam，預設 true）
         /// </summary>
+        [JsonPropertyName("isEnabled")]
         public bool? IsEnabled { get; set; } = true;
 
         /// <summary>
         /// 球員列表（用於 CreateTeam, UpdateTeam）
         /// </summary>
+        [JsonPropertyName("playerList")]
         public List<ShootingBlitzPlayer> PlayerList { get; set; }
 
         #endregion
