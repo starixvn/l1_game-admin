@@ -115,7 +115,7 @@
             viewModel.ConvertToUserCurrency(true, 1000);
 
             // assert
-            Assert.Equal(HtmlHelpers.formatNumber(viewModel.WinningAmount), expected);
+            Assert.Equal(HtmlHelpers.formatNumber2Decimals(viewModel.WinningAmount), expected);
         }
     }
 }

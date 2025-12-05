@@ -39,8 +39,8 @@
         }
 
         [Theory]
-        [InlineData(true, "50.00")]
-        [InlineData(false, "30.00")]
+        [InlineData(true, "50.0000")]
+        [InlineData(false, "30.0000")]
         public void DisplayWinLoss_ReturnExpected(bool isFreeSpin, string expected)
         {
             // arrange

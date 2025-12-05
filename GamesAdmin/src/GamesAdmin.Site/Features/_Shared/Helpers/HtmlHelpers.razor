@@ -1,11 +1,19 @@
 ﻿@functions {
+
+    public const string NumberFormat2Decimals = "#,##0.##";
+    public const string NumberFormat4Decimals = "#,##0.####";
+
+    public const string _2DecimalsFormat = "#,##0.00";
+    public const string _4DecimalsFormat = "#,##0.0000";
+
+
     public static string formatNumber(decimal value)
     {
         if (value == 0)
         {
             return "0";
         }
-        return value.ToString("#,##0.00");
+        return value.ToString(_4DecimalsFormat);
     }
 
     public static string formatNumber(decimal? value)
@@ -13,11 +21,24 @@
         return value.HasValue ? formatNumber(value.Value) : string.Empty;
     }
 
+    public static string formatNumber2Decimals(decimal value)
+    {
+        if (value == 0)
+        {
+            return "0";
+        }
+        return value.ToString(_2DecimalsFormat);
+    }
+
+    public static string formatNumber2Decimals(decimal? value)
+    {
+        return value.HasValue ? formatNumber2Decimals(value.Value) : string.Empty;
+    }
+
     public static string formatNumber2(decimal? value)
     {
         return value.HasValue ? formatNumber(value.Value) : string.Empty;
     }
-
     public static string convertByExchangeRate(decimal? value, decimal? rate)
     {
         var exchangeRate = !rate.HasValue || rate == 0 ? 1 : rate;
@@ -27,7 +48,7 @@
 
     public static string formatNumber3(double value)
     {
-        return value.ToString("#,##0.##");
+        return value.ToString(_4DecimalsFormat);
     }
 
     public static decimal formatOdds(decimal value, bool fractionalOddsFormat)
