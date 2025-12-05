@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace GamesAdmin.Api.GameSettings.Requests
 {
@@ -70,19 +70,19 @@ namespace GamesAdmin.Api.GameSettings.Requests
         /// <summary>
         /// 操作類型
         /// </summary>
-        [JsonPropertyName("actionType")]
+        [JsonProperty("actionType")]
         public ShootingBlitzActionType ActionType { get; set; }
 
         /// <summary>
         /// 遊戲名稱（用於 UpdateConfig, SelectRtpConfig）
         /// </summary>
-        [JsonPropertyName("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
         /// <summary>
         /// RTP 配置 ID（用於 UpdateRtpConfig, DeleteRtpConfig, SelectRtpConfig）
         /// </summary>
-        [JsonPropertyName("rtpConfigId")]
+        [JsonProperty("rtpConfigId")]
         public string RtpConfigId { get; set; }
 
         #region UpdateConfig 相關屬性
@@ -103,11 +103,13 @@ namespace GamesAdmin.Api.GameSettings.Requests
         /// RTP Config 顯示名稱（用於 CreateRtpConfig, UpdateRtpConfig）
         /// e.g., "RTP 95% - Normal Mode", "Live Mode Config"
         /// </summary>
+        [JsonProperty("rtpConfigName")]
         public string RtpConfigName { get; set; }
 
         /// <summary>
         /// 倍率步驟配置（用於 CreateRtpConfig, UpdateRtpConfig）
         /// </summary>
+        [JsonProperty("multiplierSteps")]
         public List<MultiplierStepsConfig> MultiplierSteps { get; set; }
 
         #endregion
@@ -117,31 +119,31 @@ namespace GamesAdmin.Api.GameSettings.Requests
         /// <summary>
         /// Team 資料庫 ID（用於 UpdateTeam, DeleteTeam）
         /// </summary>
-        [JsonPropertyName("teamDbId")]
+        [JsonProperty("teamDbId")]
         public string TeamDbId { get; set; }
 
         /// <summary>
         /// Team ID（用於 CreateTeam, UpdateTeam）
         /// </summary>
-        [JsonPropertyName("teamId")]
+        [JsonProperty("teamId")]
         public int? TeamId { get; set; }
 
         /// <summary>
         /// Team 名稱（用於 CreateTeam, UpdateTeam）
         /// </summary>
-        [JsonPropertyName("teamName")]
+        [JsonProperty("teamName")]
         public string TeamName { get; set; }
 
         /// <summary>
         /// 是否啟用此 Team（用於 CreateTeam, UpdateTeam，預設 true）
         /// </summary>
-        [JsonPropertyName("isEnabled")]
+        [JsonProperty("isEnabled")]
         public bool? IsEnabled { get; set; } = true;
 
         /// <summary>
         /// 球員列表（用於 CreateTeam, UpdateTeam）
         /// </summary>
-        [JsonPropertyName("playerList")]
+        [JsonProperty("playerList")]
         public List<ShootingBlitzPlayer> PlayerList { get; set; }
 
         #endregion
@@ -152,34 +154,34 @@ namespace GamesAdmin.Api.GameSettings.Requests
     /// </summary>
     public class ShootingBlitzConfigResult
     {
-        [JsonPropertyName("success")]
+        [JsonProperty("success")]
         public bool Success { get; set; }
 
-        [JsonPropertyName("message")]
+        [JsonProperty("message")]
         public string Message { get; set; }
 
         /// <summary>
         /// 單一 RTP 配置結果（用於 CreateRtpConfig, UpdateRtpConfig）
         /// </summary>
-        [JsonPropertyName("rtpConfig")]
+        [JsonProperty("rtpConfig")]
         public ShootingBlitzRtpConfig RtpConfig { get; set; }
 
         /// <summary>
         /// RTP 配置列表（用於 QueryRtpConfigs）
         /// </summary>
-        [JsonPropertyName("rtpConfigs")]
+        [JsonProperty("rtpConfigs")]
         public IList<ShootingBlitzRtpConfig> RtpConfigs { get; set; }
 
         /// <summary>
         /// 單一 Team 結果（用於 CreateTeam, UpdateTeam）
         /// </summary>
-        [JsonPropertyName("team")]
+        [JsonProperty("team")]
         public ShootingBlitzTeam Team { get; set; }
 
         /// <summary>
         /// Team 列表（用於 QueryTeams）
         /// </summary>
-        [JsonPropertyName("teams")]
+        [JsonProperty("teams")]
         public IList<ShootingBlitzTeam> Teams { get; set; }
 
         public static ShootingBlitzConfigResult Ok(string message = null)
