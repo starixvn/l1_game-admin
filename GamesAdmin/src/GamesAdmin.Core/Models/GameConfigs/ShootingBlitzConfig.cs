@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace GamesAdmin.Core.Models.GameConfigs
 {
@@ -42,7 +43,13 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
             try
             {
-                var config = JsonConvert.DeserializeObject<ShootingBlitzConfig>(jsonData);
+                // 使用 CamelCasePropertyNamesContractResolver 來處理 JavaScript camelCase 命名
+                var settings = new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                };
+                
+                var config = JsonConvert.DeserializeObject<ShootingBlitzConfig>(jsonData, settings);
                 if (config != null)
                 {
                     this.RtpSetting = config.RtpSetting ?? new List<ShootingBlitzRtpSetting>();
@@ -50,9 +57,11 @@ namespace GamesAdmin.Core.Models.GameConfigs
                     this.MaxWinRound = config.MaxWinRound;
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 // 如果 JSON 解析失敗，保持現有值
+                // 可以記錄錯誤以便調試
+                System.Diagnostics.Debug.WriteLine($"Failed to parse ShootingBlitzConfig JSON: {ex.Message}");
             }
         }
     }

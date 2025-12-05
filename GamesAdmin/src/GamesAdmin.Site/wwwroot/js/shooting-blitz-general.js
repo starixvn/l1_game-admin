@@ -281,29 +281,48 @@ var shootingBlitz = (function () {
     function collectShootingBlitzConfig() {
         var rtpSettings = [];
         document.querySelectorAll('.rtp-setting-row').forEach(function (row) {
-            var key = row.querySelector('.rtp-setting-key').value.trim();
-            var rtpConfigId = row.querySelector('.rtp-setting-config').value;
-            if (key && rtpConfigId) {
-                rtpSettings.push({
-                    key: key,
-                    rtpConfigId: rtpConfigId
-                });
+            var keyInput = row.querySelector('.rtp-setting-key');
+            var configSelect = row.querySelector('.rtp-setting-config');
+            
+            if (keyInput && configSelect) {
+                var key = keyInput.value.trim();
+                var rtpConfigId = configSelect.value.trim();
+                
+                // Only add if both key and rtpConfigId are provided
+                if (key && rtpConfigId) {
+                    rtpSettings.push({
+                        key: key,
+                        rtpConfigId: rtpConfigId
+                    });
+                }
             }
         });
 
         var scoreSettings = [];
         document.querySelectorAll('.score-setting-row').forEach(function (row) {
-            var homeScore = parseInt(row.querySelector('.score-setting-home').value) || 0;
-            var awayScore = parseInt(row.querySelector('.score-setting-away').value) || 0;
-            var probability = parseFloat(row.querySelector('.score-setting-probability').value) || 0;
-            scoreSettings.push({
-                homeScore: homeScore,
-                awayScore: awayScore,
-                probability: probability
-            });
+            var homeInput = row.querySelector('.score-setting-home');
+            var awayInput = row.querySelector('.score-setting-away');
+            var probInput = row.querySelector('.score-setting-probability');
+            
+            if (homeInput && awayInput && probInput) {
+                var homeScore = parseInt(homeInput.value);
+                var awayScore = parseInt(awayInput.value);
+                var probability = parseFloat(probInput.value);
+                
+                // Only add if at least one value is provided (not all empty)
+                // Allow 0 values but not NaN
+                if (!isNaN(homeScore) && !isNaN(awayScore) && !isNaN(probability)) {
+                    scoreSettings.push({
+                        homeScore: homeScore,
+                        awayScore: awayScore,
+                        probability: probability
+                    });
+                }
+            }
         });
 
-        var maxWinRound = parseFloat(document.getElementById('MaxWinRound').value) || 0;
+        var maxWinRoundEl = document.getElementById('MaxWinRound');
+        var maxWinRound = maxWinRoundEl ? (parseFloat(maxWinRoundEl.value) || 0) : 0;
 
         return {
             rtpSetting: rtpSettings,
@@ -323,6 +342,11 @@ var shootingBlitz = (function () {
             form.addEventListener('submit', function (e) {
                 var config = collectShootingBlitzConfig();
                 
+                // Debug: log collected config
+                console.log('Collected ShootingBlitzConfig:', config);
+                console.log('RTP Settings count:', config.rtpSetting.length);
+                console.log('Score Settings count:', config.scoreSetting.length);
+                
                 // Remove existing hidden input
                 var existingInput = document.getElementById('shootingBlitzConfigJson');
                 if (existingInput) {
@@ -334,8 +358,12 @@ var shootingBlitz = (function () {
                 hiddenInput.type = 'hidden';
                 hiddenInput.id = 'shootingBlitzConfigJson';
                 hiddenInput.name = 'ShootingBlitzConfigJson';
-                hiddenInput.value = JSON.stringify(config);
+                var jsonString = JSON.stringify(config);
+                hiddenInput.value = jsonString;
                 form.appendChild(hiddenInput);
+                
+                // Debug: log JSON string
+                console.log('ShootingBlitzConfigJson:', jsonString);
             });
         }
     });
