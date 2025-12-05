@@ -8,7 +8,7 @@ import { ExistingRangeSuggestionResult, NewCurrencyGroupSuggestion } from "../..
 interface CurrencyGroupSuggestionProps {
     operators: string[];
     defaultCurrencyGroupName: string;
-    currencyGroups: { groupId: string; groupName: string; operatorId: string }[];
+    currencyGroups: { groupId: string; groupName: string; operatorId: string; operatorName: string }[];
     handleApplySelection: (selection: any) => void;
 }
 
@@ -72,7 +72,9 @@ export function CurrencyGroupSuggestion({
                 const result = await IntegrateNewCurrencyApi.getBetLimitSuggestion({
                     baseCurrencyGroupId: suggestionFormData.baseCurrencyGroupId,
                     currencyRate: suggestionFormData.currencyRate,
-                    candidateCurrencyGroupIds: currencyGroups.filter((x) => selectedPartners.includes(x.operatorId)).map((x) => x.groupId),
+                    candidateCurrencyGroupIds: currencyGroups
+                        .filter((x) => selectedPartners.includes(x.operatorName))
+                        .map((x) => x.groupId),
                 });
 
                 setSuggestions(result);

@@ -10,13 +10,29 @@ const MultiSelectDropdown = ({
     onChange,
     value,
     title,
+    selectAllByDefault = true,
 }: {
     options: Option[];
     onChange: (values: string[]) => void;
     value?: string[];
     title?: string;
+    selectAllByDefault?: boolean;
 }) => {
-    const [selectedItems, setSelectedItems] = useState<string[]>(value || []);
+    const isInitializedRef = useRef(false);
+    const onChangeRef = useRef(onChange);
+    onChangeRef.current = onChange;
+
+    const getInitialSelectedItems = () => {
+        if (value !== undefined) {
+            return value;
+        }
+        if (selectAllByDefault && options.length > 0) {
+            return options.map((option) => option.value);
+        }
+        return [];
+    };
+
+    const [selectedItems, setSelectedItems] = useState<string[]>(getInitialSelectedItems);
     const [selectAll, setSelectAll] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -33,17 +49,25 @@ const MultiSelectDropdown = ({
         }
     };
 
+    // Update selectAll state when selectedItems or options change
     useEffect(() => {
-        onChange(selectedItems);
         setSelectAll(selectedItems.length === options.length && options.length > 0);
     }, [selectedItems, options.length]);
 
+    // Notify parent of changes (skip initial mount to avoid double-calling)
     useEffect(() => {
-        setSelectedItems(options.map((option) => option.value));
-    }, []);
+        if (isInitializedRef.current) {
+            onChangeRef.current(selectedItems);
+        } else {
+            isInitializedRef.current = true;
+            // Call onChange on mount to sync initial state with parent
+            onChangeRef.current(selectedItems);
+        }
+    }, [selectedItems]);
 
+    // Handle controlled value changes from parent
     useEffect(() => {
-        if (value && JSON.stringify(value) !== JSON.stringify(selectedItems)) {
+        if (value !== undefined) {
             setSelectedItems(value);
         }
     }, [value]);
