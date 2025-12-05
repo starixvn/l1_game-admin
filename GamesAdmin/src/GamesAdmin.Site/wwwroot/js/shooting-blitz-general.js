@@ -1,7 +1,22 @@
 // ShootingBlitz General Settings JavaScript (Teams Management)
+// Uses unified endpoint /shooting_blitz_config + ActionType
 
 var shootingBlitz = (function () {
     var teams = [];
+
+    // ActionType enum (corresponds to backend)
+    var ActionType = {
+        UpdateConfig: 0,
+        QueryRtpConfigs: 1,
+        CreateRtpConfig: 2,
+        UpdateRtpConfig: 3,
+        DeleteRtpConfig: 4,
+        SelectRtpConfig: 5,
+        QueryTeams: 6,
+        CreateTeam: 7,
+        UpdateTeam: 8,
+        DeleteTeam: 9
+    };
 
     function init() {
         var teamsDataEl = document.getElementById('teamsData');
@@ -37,6 +52,7 @@ var shootingBlitz = (function () {
         document.getElementById('teamDbId').value = '';
         document.getElementById('teamId').value = '';
         document.getElementById('teamName').value = '';
+        document.getElementById('teamIsEnabled').checked = true;  // Default enabled
         document.getElementById('playerListContainer').innerHTML = '';
         
         $('#teamModal').modal('show');
@@ -66,6 +82,7 @@ var shootingBlitz = (function () {
         document.getElementById('teamDbId').value = id;
         document.getElementById('teamId').value = team.teamId;
         document.getElementById('teamName').value = team.name;
+        document.getElementById('teamIsEnabled').checked = team.isEnabled !== false;  // null/undefined treated as true
         document.getElementById('playerListContainer').innerHTML = '';
         
         if (team.playerList) {
@@ -81,6 +98,7 @@ var shootingBlitz = (function () {
         var dbId = document.getElementById('teamDbId').value;
         var teamId = parseInt(document.getElementById('teamId').value);
         var teamName = document.getElementById('teamName').value;
+        var isEnabled = document.getElementById('teamIsEnabled').checked;
         
         if (!teamId || !teamName) {
             showError('Team ID and Name are required');
@@ -96,24 +114,29 @@ var shootingBlitz = (function () {
             }
         });
         
+        // Use unified endpoint with ActionType (per Cursor Rules 4.2)
         var data = {
+            actionType: dbId ? ActionType.UpdateTeam : ActionType.CreateTeam,
+            teamDbId: dbId || null,
             teamId: teamId,
-            name: teamName,
+            teamName: teamName,
+            isEnabled: isEnabled,
             playerList: playerList
         };
         
-        var url = dbId ? '/api/shooting_blitz_team/' + dbId : '/api/shooting_blitz_team';
-        var method = dbId ? 'PUT' : 'POST';
-        
         $.ajax({
-            url: url,
-            method: method,
+            url: '/shooting_blitz_config',
+            method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (result) {
-                $('#teamModal').modal('hide');
-                showSuccess();
-                location.reload();
+                if (result.success) {
+                    $('#teamModal').modal('hide');
+                    showSuccess();
+                    location.reload();
+                } else {
+                    showError(result.message || 'Failed to save team');
+                }
             },
             error: function (xhr) {
                 showError('Failed to save team: ' + (xhr.responseText || 'Unknown error'));
@@ -124,12 +147,24 @@ var shootingBlitz = (function () {
     function deleteTeam(id) {
         if (!confirm('Are you sure you want to delete this team?')) return;
         
+        // Use unified endpoint with ActionType (per Cursor Rules 4.2)
+        var data = {
+            actionType: ActionType.DeleteTeam,
+            teamDbId: id
+        };
+        
         $.ajax({
-            url: '/api/shooting_blitz_team/' + id,
-            method: 'DELETE',
-            success: function () {
-                showSuccess();
-                location.reload();
+            url: '/shooting_blitz_config',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.success) {
+                    showSuccess();
+                    location.reload();
+                } else {
+                    showError(result.message || 'Failed to delete team');
+                }
             },
             error: function (xhr) {
                 showError('Failed to delete team: ' + (xhr.responseText || 'Unknown error'));

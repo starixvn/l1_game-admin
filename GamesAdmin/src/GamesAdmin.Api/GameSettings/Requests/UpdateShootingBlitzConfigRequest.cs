@@ -107,6 +107,35 @@ namespace GamesAdmin.Api.GameSettings.Requests
         public List<MultiplierStepsConfig> MultiplierSteps { get; set; }
 
         #endregion
+
+        #region Team 相關屬性
+
+        /// <summary>
+        /// Team 資料庫 ID（用於 UpdateTeam, DeleteTeam）
+        /// </summary>
+        public string TeamDbId { get; set; }
+
+        /// <summary>
+        /// Team ID（用於 CreateTeam, UpdateTeam）
+        /// </summary>
+        public int? TeamId { get; set; }
+
+        /// <summary>
+        /// Team 名稱（用於 CreateTeam, UpdateTeam）
+        /// </summary>
+        public string TeamName { get; set; }
+
+        /// <summary>
+        /// 是否啟用此 Team（用於 CreateTeam, UpdateTeam，預設 true）
+        /// </summary>
+        public bool? IsEnabled { get; set; } = true;
+
+        /// <summary>
+        /// 球員列表（用於 CreateTeam, UpdateTeam）
+        /// </summary>
+        public List<ShootingBlitzPlayer> PlayerList { get; set; }
+
+        #endregion
     }
 
     /// <summary>
@@ -128,6 +157,16 @@ namespace GamesAdmin.Api.GameSettings.Requests
         /// </summary>
         public IList<ShootingBlitzRtpConfig> RtpConfigs { get; set; }
 
+        /// <summary>
+        /// 單一 Team 結果（用於 CreateTeam, UpdateTeam）
+        /// </summary>
+        public ShootingBlitzTeam Team { get; set; }
+
+        /// <summary>
+        /// Team 列表（用於 QueryTeams）
+        /// </summary>
+        public IList<ShootingBlitzTeam> Teams { get; set; }
+
         public static ShootingBlitzConfigResult Ok(string message = null)
             => new ShootingBlitzConfigResult { Success = true, Message = message };
 
@@ -136,6 +175,12 @@ namespace GamesAdmin.Api.GameSettings.Requests
 
         public static ShootingBlitzConfigResult Ok(IList<ShootingBlitzRtpConfig> rtpConfigs)
             => new ShootingBlitzConfigResult { Success = true, RtpConfigs = rtpConfigs };
+
+        public static ShootingBlitzConfigResult OkTeam(ShootingBlitzTeam team)
+            => new ShootingBlitzConfigResult { Success = true, Team = team };
+
+        public static ShootingBlitzConfigResult OkTeams(IList<ShootingBlitzTeam> teams)
+            => new ShootingBlitzConfigResult { Success = true, Teams = teams };
 
         public static ShootingBlitzConfigResult Fail(string message)
             => new ShootingBlitzConfigResult { Success = false, Message = message };

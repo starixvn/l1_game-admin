@@ -10,6 +10,11 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
         public string Name { get; set; }
 
+        /// <summary>
+        /// 是否啟用此 Team（預設 true，null 視為 true）
+        /// </summary>
+        public bool? IsEnabled { get; set; } = true;
+
         public List<ShootingBlitzPlayer> PlayerList { get; set; }
     }
 

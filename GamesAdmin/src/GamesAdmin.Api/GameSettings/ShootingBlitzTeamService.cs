@@ -104,6 +104,7 @@ namespace GamesAdmin.Api.GameSettings
                 var update = Builders<ShootingBlitzTeamEntity>.Update
                     .Set(x => x.TeamId, team.TeamId)
                     .Set(x => x.Name, team.Name)
+                    .Set(x => x.IsEnabled, team.IsEnabled ?? true)
                     .Set(x => x.PlayerList, mapper.Map<List<ShootingBlitzPlayerEntity>>(team.PlayerList));
 
                 await repository.UpdateAsync(x => x.Id == ObjectId.Parse(id), update);

@@ -13,6 +13,12 @@ namespace GamesAdmin.Database.Entities.ShootingBlitz
         [BsonElement("name")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// 是否啟用此 Team（預設 true，null 視為 true）
+        /// </summary>
+        [BsonElement("isEnabled")]
+        public bool? IsEnabled { get; set; } = true;
+
         [BsonElement("playerList")]
         public List<ShootingBlitzPlayerEntity> PlayerList { get; set; }
     }

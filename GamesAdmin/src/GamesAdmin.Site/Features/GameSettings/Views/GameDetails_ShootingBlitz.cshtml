@@ -95,6 +95,7 @@
                 <tr>
                     <th>Team ID</th>
                     <th>Team Name</th>
+                    <th>Enabled</th>
                     <th>Player Count</th>
                     <th>Actions</th>
                 </tr>
@@ -104,9 +105,21 @@
                 {
                     @foreach (var team in Model.ShootingBlitzTeams)
                     {
-                        <tr data-id="@team.Id">
+                        var isEnabled = team.IsEnabled ?? true;
+                        var rowClass = isEnabled ? "" : "table-secondary";
+                        <tr data-id="@team.Id" class="@rowClass">
                             <td>@team.TeamId</td>
                             <td>@team.Name</td>
+                            <td>
+                                @if (isEnabled)
+                                {
+                                    <span class="badge badge-success">✓</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">✗</span>
+                                }
+                            </td>
                             <td>@(team.PlayerList?.Count ?? 0)</td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-info" onclick="shootingBlitz.editTeam('@team.Id')">
@@ -229,13 +242,20 @@
                     <input type="hidden" id="teamDbId" />
                     
                     <div class="form-group row">
-                        <div class="col-6">
+                        <div class="col-4">
                             <label>Team ID</label>
                             <input type="number" class="form-control" id="teamId" required />
                         </div>
-                        <div class="col-6">
+                        <div class="col-5">
                             <label>Team Name</label>
                             <input type="text" class="form-control" id="teamName" required />
+                        </div>
+                        <div class="col-3">
+                            <label>Enabled</label>
+                            <div class="form-check mt-2">
+                                <input type="checkbox" class="form-check-input" id="teamIsEnabled" checked />
+                                <label class="form-check-label" for="teamIsEnabled">Active</label>
+                            </div>
                         </div>
                     </div>
                     
@@ -256,7 +276,7 @@
     </div>
 </div>
 
-<input type="hidden" id="teamsData" value='@Html.Raw(JsonConvert.SerializeObject(Model.ShootingBlitzTeams ?? new List<GamesAdmin.Core.Models.GameConfigs.ShootingBlitzTeam>()))' />
+<input type="hidden" id="teamsData" value='@Html.Raw(JsonConvert.SerializeObject(Model.ShootingBlitzTeams ?? new List<GamesAdmin.Core.Models.GameConfigs.ShootingBlitzTeam>(), new JsonSerializerSettings { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() }))' />
 
 <!-- RTP Config Modal -->
 <div class="modal fade" id="rtpConfigModal" tabindex="-1" role="dialog">

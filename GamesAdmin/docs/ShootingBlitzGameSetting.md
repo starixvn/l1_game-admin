@@ -114,6 +114,7 @@
   "_id": "507f1f77bcf86cd799439011",
   "name": "FC Barcelona",
   "teamId": 12345,
+  "isEnabled": true,
   "playerList": [
     {
       "name": "Lionel Messi",
@@ -126,6 +127,13 @@
   ]
 }
 ```
+
+> **Note**:
+> - `isEnabled`: 控制此 Team 是否可被使用
+>   - `true`: 啟用，Game Client 可取得此 Team
+>   - `false`: 停用，Game Client 不會取得此 Team
+>   - `null` 或欄位不存在: 視為 `true`（向後相容舊資料）
+> - 新建立的 Team 預設 `isEnabled: true`
 
 ---
 
@@ -193,8 +201,14 @@ All ShootingBlitz settings are consolidated in the General Setting Modal:
 |-------|-------------|
 | Team ID | Team ID |
 | Team Name | Team name |
+| **Enabled** | **是否啟用（✓ 或 ✗）** |
 | Player Count | Number of players |
 | Actions | Edit / Delete buttons |
+
+> **Display Rules**:
+> - 顯示資料庫中**所有** Team（不過濾）
+> - 停用的 Team 建議以灰色背景或刪除線樣式區分
+> - **不需要**過濾 Dropdown（Game API 會自行過濾給 Game Client）
 
 #### 3.4.2 Create/Edit Team
 
@@ -203,6 +217,7 @@ All ShootingBlitz settings are consolidated in the General Setting Modal:
 |-------|------|-------------|
 | teamId | Number | Team ID (unique identifier) |
 | name | String | Team name |
+| **isEnabled** | **Checkbox** | **是否啟用此 Team（預設勾選）** |
 
 ##### Player List Configuration
 | Field | Type | Description |
@@ -213,6 +228,7 @@ All ShootingBlitz settings are consolidated in the General Setting Modal:
 - ✅ Can dynamically add/remove players
 - ✅ Each Team is one record
 - ✅ Supports Create/Update/Delete Team
+- ✅ **新增的 Team 預設 `isEnabled: true`**
 
 ### 3.5 RTP Tab Features (in General Setting Modal)
 
@@ -416,6 +432,7 @@ public class ShootingBlitzConfigResult
   "team": {
     "teamId": 12345,
     "name": "FC Barcelona",
+    "isEnabled": true,
     "playerList": [
       { "name": "Lionel Messi", "playerNumber": 10 },
       { "name": "Pedri", "playerNumber": 8 }
@@ -423,6 +440,8 @@ public class ShootingBlitzConfigResult
   }
 }
 ```
+
+> **Note**: `isEnabled` 預設為 `true`，可省略
 
 #### UpdateTeam (ActionType = 7)
 ```json
@@ -432,6 +451,7 @@ public class ShootingBlitzConfigResult
   "team": {
     "teamId": 12345,
     "name": "FC Barcelona",
+    "isEnabled": false,
     "playerList": [...]
   }
 }
@@ -520,6 +540,7 @@ public class ShootingBlitzConfigResult
 | rtpConfig.name | Required, non-empty string | ✅ Validation required |
 | pays array | Must have at least 1 item | ✅ Validation required |
 | teamId | Unique value | ✅ Validation required |
+| team.isEnabled | Boolean (default: true) | ✅ Default value handling |
 | playerNumber | Number | ✅ Validation required |
 | rtpSetting.key | Unique within array | ✅ Validation required |
 | rtpSetting.rtpConfigId | Required, valid ObjectId | ✅ Validation required |
@@ -554,6 +575,11 @@ public class ShootingBlitzConfigResult
    - All probabilities should sum to 1.0
 8. **Max Win Round** - Maximum win amount per round
 9. **Teams Independent Management** - Each Team is one record, supports independent CRUD
+   - `isEnabled` field controls whether a Team is active
+   - Default value is `true` for new Teams
+   - `null` or missing field is treated as `true` (backward compatibility)
+   - **Admin Site**: 顯示所有 Team（不過濾），列表包含 TeamId, TeamName, IsEnabled
+   - **Game API**: 回傳給 Game Client 時只回傳 `isEnabled: true` 的 Team（Game API 負責過濾）
 10. **MongoDB Collection Names**:
     - RTP Config: `ShootingBlitz_rtpConfig` (shared by normal and live mode)
     - Teams: `ShootingBlitz_team`
@@ -693,11 +719,12 @@ public class ShootingBlitzConfigResult
 ### 8.3 Teams Examples
 
 ```json
-// Team 1: FC Barcelona
+// Team 1: FC Barcelona (啟用)
 {
   "_id": "507f1f77bcf86cd799439011",
   "name": "FC Barcelona",
   "teamId": 12345,
+  "isEnabled": true,
   "playerList": [
     {
       "name": "Lionel Messi",
@@ -714,11 +741,12 @@ public class ShootingBlitzConfigResult
   ]
 }
 
-// Team 2: Real Madrid
+// Team 2: Real Madrid (啟用)
 {
   "_id": "507f1f77bcf86cd799439012",
   "name": "Real Madrid",
   "teamId": 12346,
+  "isEnabled": true,
   "playerList": [
     {
       "name": "Karim Benzema",
@@ -734,7 +762,20 @@ public class ShootingBlitzConfigResult
     }
   ]
 }
+
+// Team 3: AC Milan (停用 - 維護中)
+{
+  "_id": "507f1f77bcf86cd799439013",
+  "name": "AC Milan",
+  "teamId": 12347,
+  "isEnabled": false,
+  "playerList": [...]
+}
 ```
+
+> **Note**: 
+> - `isEnabled: true` - Game Client 可取得此 Team
+> - `isEnabled: false` - Game Client 不會取得此 Team（可用於暫時停用或維護）
 
 ---
 
@@ -785,16 +826,19 @@ General Setting Modal: ShootingBlitz
 │           └── [Remove] Button
 │
 ├── [Teams Tab]
-│   ├── Display Teams List (Table)
+│   ├── Display Teams List (Table) - **顯示所有 Team，不過濾**
 │   │   ├── Team ID
 │   │   ├── Team Name
+│   │   ├── **Enabled (✓/✗)**
 │   │   ├── Player Count
 │   │   └── Actions (Edit / Delete)
+│   │   └── (Disabled Teams: gray background style)
 │   │
 │   ├── [Create New Team] Button
 │   │   └── Open Sub-Modal
 │   │       ├── Team ID (Number Input)
 │   │       ├── Team Name (Text Input)
+│   │       ├── **Enabled [Checkbox] (Default: checked)**
 │   │       ├── Player List Section
 │   │       │   ├── [Add Player] Button
 │   │       │   └── Player Rows

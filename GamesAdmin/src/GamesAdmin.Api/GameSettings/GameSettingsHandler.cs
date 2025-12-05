@@ -38,15 +38,18 @@ namespace GamesAdmin.Api.Games
         private readonly IGameSettingsService gameService;
         private readonly ICloneSettingService slotSettingService;
         private readonly IShootingBlitzRtpConfigService shootingBlitzRtpConfigService;
+        private readonly IShootingBlitzTeamService shootingBlitzTeamService;
 
         public GameSettingsHandler(
             IGameSettingsService gameService, 
             ICloneSettingService slotSettingService,
-            IShootingBlitzRtpConfigService shootingBlitzRtpConfigService)
+            IShootingBlitzRtpConfigService shootingBlitzRtpConfigService,
+            IShootingBlitzTeamService shootingBlitzTeamService)
         {
             this.gameService = gameService;
             this.slotSettingService = slotSettingService;
             this.shootingBlitzRtpConfigService = shootingBlitzRtpConfigService;
+            this.shootingBlitzTeamService = shootingBlitzTeamService;
         }
 
         public Task<IEnumerable<GameConfig>> Handle(GetAllRequest request, CancellationToken cancellationToken)
@@ -171,9 +174,41 @@ namespace GamesAdmin.Api.Games
                         ? ShootingBlitzConfigResult.Ok("RTP config selected successfully") 
                         : ShootingBlitzConfigResult.Fail("Failed to select RTP config");
 
-                // Note: Team operations (QueryTeams, CreateTeam, UpdateTeam, DeleteTeam) 
-                // are handled by ShootingBlitzTeamHandler via separate endpoint
-                // These cases are reserved for future unified endpoint implementation
+                case ShootingBlitzActionType.QueryTeams:
+                    var teams = await shootingBlitzTeamService.GetAllAsync();
+                    return ShootingBlitzConfigResult.OkTeams(teams as IList<ShootingBlitzTeam> ?? new List<ShootingBlitzTeam>(teams));
+
+                case ShootingBlitzActionType.CreateTeam:
+                    var newTeam = new ShootingBlitzTeam
+                    {
+                        TeamId = request.TeamId ?? 0,
+                        Name = request.TeamName,
+                        IsEnabled = request.IsEnabled ?? true,
+                        PlayerList = request.PlayerList
+                    };
+                    var createdTeam = await shootingBlitzTeamService.CreateAsync(newTeam);
+                    return createdTeam != null 
+                        ? ShootingBlitzConfigResult.OkTeam(createdTeam) 
+                        : ShootingBlitzConfigResult.Fail("Failed to create team");
+
+                case ShootingBlitzActionType.UpdateTeam:
+                    var teamToUpdate = new ShootingBlitzTeam
+                    {
+                        TeamId = request.TeamId ?? 0,
+                        Name = request.TeamName,
+                        IsEnabled = request.IsEnabled ?? true,
+                        PlayerList = request.PlayerList
+                    };
+                    var updateTeamResult = await shootingBlitzTeamService.UpdateAsync(request.TeamDbId, teamToUpdate);
+                    return updateTeamResult 
+                        ? ShootingBlitzConfigResult.Ok("Team updated successfully") 
+                        : ShootingBlitzConfigResult.Fail("Failed to update team");
+
+                case ShootingBlitzActionType.DeleteTeam:
+                    var deleteTeamResult = await shootingBlitzTeamService.DeleteAsync(request.TeamDbId);
+                    return deleteTeamResult 
+                        ? ShootingBlitzConfigResult.Ok("Team deleted successfully") 
+                        : ShootingBlitzConfigResult.Fail("Failed to delete team");
 
                 default:
                     return ShootingBlitzConfigResult.Fail($"Unknown action type: {request.ActionType}");
