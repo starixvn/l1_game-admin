@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
@@ -143,28 +144,34 @@ namespace GamesAdmin.Api.GameSettings.Requests
     /// </summary>
     public class ShootingBlitzConfigResult
     {
+        [JsonPropertyName("success")]
         public bool Success { get; set; }
 
+        [JsonPropertyName("message")]
         public string Message { get; set; }
 
         /// <summary>
         /// 單一 RTP 配置結果（用於 CreateRtpConfig, UpdateRtpConfig）
         /// </summary>
+        [JsonPropertyName("rtpConfig")]
         public ShootingBlitzRtpConfig RtpConfig { get; set; }
 
         /// <summary>
         /// RTP 配置列表（用於 QueryRtpConfigs）
         /// </summary>
+        [JsonPropertyName("rtpConfigs")]
         public IList<ShootingBlitzRtpConfig> RtpConfigs { get; set; }
 
         /// <summary>
         /// 單一 Team 結果（用於 CreateTeam, UpdateTeam）
         /// </summary>
+        [JsonPropertyName("team")]
         public ShootingBlitzTeam Team { get; set; }
 
         /// <summary>
         /// Team 列表（用於 QueryTeams）
         /// </summary>
+        [JsonPropertyName("teams")]
         public IList<ShootingBlitzTeam> Teams { get; set; }
 
         public static ShootingBlitzConfigResult Ok(string message = null)

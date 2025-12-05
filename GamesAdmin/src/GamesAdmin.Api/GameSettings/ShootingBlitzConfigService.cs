@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api.Games;
@@ -89,17 +90,41 @@ namespace GamesAdmin.Api.GameSettings
                     return ShootingBlitzConfigResult.OkTeams(teams as IList<ShootingBlitzTeam> ?? new List<ShootingBlitzTeam>(teams));
 
                 case ShootingBlitzActionType.CreateTeam:
-                    var newTeam = new ShootingBlitzTeam
+                    try
                     {
-                        TeamId = request.TeamId ?? 0,
-                        Name = request.TeamName,
-                        IsEnabled = request.IsEnabled ?? true,
-                        PlayerList = request.PlayerList
-                    };
-                    var createdTeam = await shootingBlitzTeamService.CreateAsync(newTeam);
-                    return createdTeam != null 
-                        ? ShootingBlitzConfigResult.OkTeam(createdTeam) 
-                        : ShootingBlitzConfigResult.Fail("Failed to create team");
+                        // Validate required fields
+                        if (request.TeamId == null || request.TeamId <= 0)
+                        {
+                            return ShootingBlitzConfigResult.Fail("Team ID is required and must be greater than 0");
+                        }
+
+                        if (string.IsNullOrWhiteSpace(request.TeamName))
+                        {
+                            return ShootingBlitzConfigResult.Fail("Team Name is required");
+                        }
+
+                        // Check if TeamId already exists
+                        if (await shootingBlitzTeamService.IsTeamIdExistsAsync(request.TeamId.Value))
+                        {
+                            return ShootingBlitzConfigResult.Fail($"Team with Team ID {request.TeamId.Value} already exists");
+                        }
+
+                        var newTeam = new ShootingBlitzTeam
+                        {
+                            TeamId = request.TeamId.Value,
+                            Name = request.TeamName,
+                            IsEnabled = request.IsEnabled ?? true,
+                            PlayerList = request.PlayerList
+                        };
+                        var createdTeam = await shootingBlitzTeamService.CreateAsync(newTeam);
+                        return createdTeam != null 
+                            ? ShootingBlitzConfigResult.OkTeam(createdTeam) 
+                            : ShootingBlitzConfigResult.Fail("Failed to create team. Please check server logs for details.");
+                    }
+                    catch (Exception ex)
+                    {
+                        return ShootingBlitzConfigResult.Fail($"Failed to create team: {ex.Message}");
+                    }
 
                 case ShootingBlitzActionType.UpdateTeam:
                     var teamToUpdate = new ShootingBlitzTeam
