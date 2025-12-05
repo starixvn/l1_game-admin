@@ -429,7 +429,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     viewModel.OddsMultipliers,
                     viewModel.TournamentConfig,
                     viewModel.VideoStreamConfig,
-                    viewModel.OtherGameIdsInGroup);
+                    viewModel.OtherGameIdsInGroup,
+                    viewModel.ShootingBlitzConfig);
 
                 await mediator.Send(request);
 
