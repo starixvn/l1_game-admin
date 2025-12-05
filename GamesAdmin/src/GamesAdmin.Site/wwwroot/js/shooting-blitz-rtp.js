@@ -71,7 +71,7 @@ var shootingBlitzRtp = (function () {
     function showCreateRtpModal() {
         document.getElementById('rtpConfigModalTitle').textContent = 'Create RTP Config';
         document.getElementById('rtpConfigId').value = '';
-        document.getElementById('rtpValue').value = '0.95';
+        document.getElementById('rtpConfigName').value = '';
         document.getElementById('multiplierStepsTabs').innerHTML = '';
         document.getElementById('multiplierStepsContent').innerHTML = '';
         currentModeCount = 0;
@@ -85,8 +85,8 @@ var shootingBlitzRtp = (function () {
         var tabId = 'mode-' + currentModeCount;
         
         // Extract home/away data
-        var homeData = modeData && modeData.home ? modeData.home : { starPlayerRate: 0.02, starPositions: [] };
-        var awayData = modeData && modeData.away ? modeData.away : { starPlayerRate: 0.02, starPositions: [] };
+        var homeData = modeData && modeData.home ? modeData.home : { starPlayerRate: 0.02, startPosition: 3, endPosition: 5 };
+        var awayData = modeData && modeData.away ? modeData.away : { starPlayerRate: 0.02, startPosition: 3, endPosition: 5 };
         
         // Add tab
         var tabsContainer = document.getElementById('multiplierStepsTabs');
@@ -117,9 +117,13 @@ var shootingBlitzRtp = (function () {
             '<label>Star Player Rate</label>' +
             '<input type="number" step="0.001" class="form-control home-star-player-rate" value="' + homeData.starPlayerRate + '" />' +
             '</div>' +
-            '<div class="col-8">' +
-            '<label>Star Positions (comma separated)</label>' +
-            '<input type="text" class="form-control home-star-positions" value="' + (homeData.starPositions ? homeData.starPositions.join(',') : '') + '" />' +
+            '<div class="col-4">' +
+            '<label>Start Position</label>' +
+            '<input type="number" class="form-control home-start-position" value="' + (homeData.startPosition || 3) + '" />' +
+            '</div>' +
+            '<div class="col-4">' +
+            '<label>End Position</label>' +
+            '<input type="number" class="form-control home-end-position" value="' + (homeData.endPosition || 5) + '" />' +
             '</div>' +
             '</div>' +
             '</fieldset>' +
@@ -131,9 +135,13 @@ var shootingBlitzRtp = (function () {
             '<label>Star Player Rate</label>' +
             '<input type="number" step="0.001" class="form-control away-star-player-rate" value="' + awayData.starPlayerRate + '" />' +
             '</div>' +
-            '<div class="col-8">' +
-            '<label>Star Positions (comma separated)</label>' +
-            '<input type="text" class="form-control away-star-positions" value="' + (awayData.starPositions ? awayData.starPositions.join(',') : '') + '" />' +
+            '<div class="col-4">' +
+            '<label>Start Position</label>' +
+            '<input type="number" class="form-control away-start-position" value="' + (awayData.startPosition || 3) + '" />' +
+            '</div>' +
+            '<div class="col-4">' +
+            '<label>End Position</label>' +
+            '<input type="number" class="form-control away-end-position" value="' + (awayData.endPosition || 5) + '" />' +
             '</div>' +
             '</div>' +
             '</fieldset>' +
@@ -213,7 +221,7 @@ var shootingBlitzRtp = (function () {
         
         document.getElementById('rtpConfigModalTitle').textContent = 'Edit RTP Config';
         document.getElementById('rtpConfigId').value = id;
-        document.getElementById('rtpValue').value = config.rtp;
+        document.getElementById('rtpConfigName').value = config.name || '';
         document.getElementById('multiplierStepsTabs').innerHTML = '';
         document.getElementById('multiplierStepsContent').innerHTML = '';
         currentModeCount = 0;
@@ -230,7 +238,7 @@ var shootingBlitzRtp = (function () {
 
     function saveRtpConfig() {
         var id = document.getElementById('rtpConfigId').value;
-        var rtp = parseFloat(document.getElementById('rtpValue').value);
+        var rtpConfigName = document.getElementById('rtpConfigName').value;
         
         // Collect multiplier steps
         var multiplierSteps = [];
@@ -240,13 +248,13 @@ var shootingBlitzRtp = (function () {
             
             // Home star player settings
             var homeStarPlayerRate = parseFloat(pane.querySelector('.home-star-player-rate').value);
-            var homeStarPositionsStr = pane.querySelector('.home-star-positions').value;
-            var homeStarPositions = homeStarPositionsStr ? homeStarPositionsStr.split(',').map(function (x) { return parseInt(x.trim()); }).filter(function(x) { return !isNaN(x); }) : [];
+            var homeStartPosition = parseInt(pane.querySelector('.home-start-position').value) || 3;
+            var homeEndPosition = parseInt(pane.querySelector('.home-end-position').value) || 5;
             
             // Away star player settings
             var awayStarPlayerRate = parseFloat(pane.querySelector('.away-star-player-rate').value);
-            var awayStarPositionsStr = pane.querySelector('.away-star-positions').value;
-            var awayStarPositions = awayStarPositionsStr ? awayStarPositionsStr.split(',').map(function (x) { return parseInt(x.trim()); }).filter(function(x) { return !isNaN(x); }) : [];
+            var awayStartPosition = parseInt(pane.querySelector('.away-start-position').value) || 3;
+            var awayEndPosition = parseInt(pane.querySelector('.away-end-position').value) || 5;
             
             // Collect pays as array (index+1 = picks)
             var pays = [];
@@ -262,11 +270,13 @@ var shootingBlitzRtp = (function () {
                 name: name,
                 home: {
                     starPlayerRate: homeStarPlayerRate,
-                    starPositions: homeStarPositions
+                    startPosition: homeStartPosition,
+                    endPosition: homeEndPosition
                 },
                 away: {
                     starPlayerRate: awayStarPlayerRate,
-                    starPositions: awayStarPositions
+                    startPosition: awayStartPosition,
+                    endPosition: awayEndPosition
                 },
                 pays: pays
             });
@@ -275,7 +285,7 @@ var shootingBlitzRtp = (function () {
         var data = {
             actionType: id ? ActionType.UpdateRtpConfig : ActionType.CreateRtpConfig,
             rtpConfigId: id || null,
-            rtp: rtp,
+            rtpConfigName: rtpConfigName,
             multiplierSteps: multiplierSteps
         };
         

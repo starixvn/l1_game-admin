@@ -59,10 +59,16 @@ namespace GamesAdmin.Database.Entities.ShootingBlitz
         public double StarPlayerRate { get; set; }
 
         /// <summary>
-        /// 星級球員可出現的 Pick 位置
+        /// 星級球員可出現的起始位置
         /// </summary>
-        [BsonElement("starPositions")]
-        public List<int> StarPositions { get; set; }
+        [BsonElement("startPosition")]
+        public int StartPosition { get; set; }
+
+        /// <summary>
+        /// 星級球員可出現的結束位置
+        /// </summary>
+        [BsonElement("endPosition")]
+        public int EndPosition { get; set; }
     }
 }
 

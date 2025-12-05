@@ -81,15 +81,15 @@
     {
       "opponentCount": 4,
       "name": "star player rate 2% - 1 mines",
-      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
-      "away": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
+      "home": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 6 },
+      "away": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 6 },
       "pays": [1, 1.06, 1.12, 1.19, 1.27, 1.36, 1.46, 1.58, 1.73, 1.9, 2.11, 2.37, 2.71, 3.17, 3.8, 4.75, 6.33, 9.5, 19]
     },
     {
       "opponentCount": 3,
       "name": "star player rate 2% - 2 mines",
-      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5] },
-      "away": { "starPlayerRate": 0.03, "starPositions": [3, 4, 5] },
+      "home": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 5 },
+      "away": { "starPlayerRate": 0.03, "startPosition": 3, "endPosition": 5 },
       "pays": [1.06, 1.18, 1.33, 1.52, 1.78, 2.14, 2.67, 3.56, 5.33]
     }
   ]
@@ -99,7 +99,8 @@
 > **Note**: 
 > - `name`: Display name for the RTP Config (e.g., "RTP 95% Config", "High RTP Config", "Live Mode Config")
 > - `opponentCount` represents opponent count (equivalent to mine count), selecting opponent loses
-> - `home` and `away` set star player settings for home and away teams respectively, can have different rates and positions
+> - `home` and `away` set star player settings for home and away teams respectively, can have different rates and position ranges
+> - `startPosition` and `endPosition` define the range where star players can appear (e.g., startPosition: 3, endPosition: 6 means positions 3-6)
 > - `pays` array index corresponds to picks value: `pays[0]` = picks 1 odds, `pays[1]` = picks 2 odds, and so on
 > - Different `opponentCount` can have different `pays` array lengths
 
@@ -255,9 +256,11 @@ RTP Tab contains the following feature sections:
 | opponentCount | Number | Opponent count (equivalent to mine count, selecting opponent loses) |
 | name | String | Mode name (e.g., "star player rate 2% - 1 mines") |
 | home.starPlayerRate | Number | Home team star player appearance rate |
-| home.starPositions | Array<Number> | Home team star player available pick positions |
+| home.startPosition | Number | Home team star player start position (range start) |
+| home.endPosition | Number | Home team star player end position (range end) |
 | away.starPlayerRate | Number | Away team star player appearance rate |
-| away.starPositions | Array<Number> | Away team star player available pick positions |
+| away.startPosition | Number | Away team star player start position (range start) |
+| away.endPosition | Number | Away team star player end position (range end) |
 | pays | Array<Number> | Multiplier pays array (index+1 = picks) |
 
 - ✅ Can dynamically add/remove Mode
@@ -370,8 +373,8 @@ public class ShootingBlitzConfigResult
       {
         "opponentCount": 4,
         "name": "star player rate 2% - 1 mines",
-        "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
-        "away": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
+        "home": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 6 },
+        "away": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 6 },
         "pays": [1, 1.06, 1.12, 1.19, 1.27]
       }
     ]
@@ -562,7 +565,8 @@ public class ShootingBlitzConfigResult
     - Picks field auto-displays in UI (read-only), users only need to input Pays values
     - Different opponentCount can have different pays array lengths
 13. **Home/Away Star Player Settings**:
-    - `home` and `away` can have different star player rates (`starPlayerRate`) and positions (`starPositions`)
+    - `home` and `away` can have different star player rates (`starPlayerRate`) and position ranges (`startPosition`, `endPosition`)
+    - `startPosition` and `endPosition` define the range where star players can appear
     - This allows home and away teams to have different gameplay characteristics
 14. **Opponent Count**:
     - `opponentCount` represents opponent count, equivalent to "mine count" concept
@@ -583,15 +587,15 @@ public class ShootingBlitzConfigResult
     {
       "opponentCount": 4,
       "name": "star player rate 2% - 1 mines",
-      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
-      "away": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
+      "home": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 6 },
+      "away": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 6 },
       "pays": [1, 1.06, 1.12, 1.19, 1.27, 1.36, 1.46, 1.58, 1.73, 1.9, 2.11, 2.37, 2.71, 3.17, 3.8, 4.75, 6.33, 9.5, 19]
     },
     {
       "opponentCount": 3,
       "name": "star player rate 2% - 2 mines",
-      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5] },
-      "away": { "starPlayerRate": 0.03, "starPositions": [3, 4, 5] },
+      "home": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 5 },
+      "away": { "starPlayerRate": 0.03, "startPosition": 3, "endPosition": 5 },
       "pays": [1.06, 1.18, 1.33, 1.52, 1.78, 2.14, 2.67, 3.56, 5.33]
     }
   ]
@@ -605,15 +609,15 @@ public class ShootingBlitzConfigResult
     {
       "opponentCount": 4,
       "name": "star player rate 2% - 1 mines",
-      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
-      "away": { "starPlayerRate": 0.025, "starPositions": [3, 4, 5, 6] },
+      "home": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 6 },
+      "away": { "starPlayerRate": 0.025, "startPosition": 3, "endPosition": 6 },
       "pays": [1, 1.08, 1.16, 1.25, 1.35, 1.47, 1.62, 1.80, 2.03, 2.32]
     },
     {
       "opponentCount": 3,
       "name": "star player rate 2% - 2 mines",
-      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5] },
-      "away": { "starPlayerRate": 0.03, "starPositions": [3, 4, 5] },
+      "home": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 5 },
+      "away": { "starPlayerRate": 0.03, "startPosition": 3, "endPosition": 5 },
       "pays": [1.08, 1.22, 1.40, 1.65, 2.00, 2.55, 3.50]
     }
   ]
@@ -819,10 +823,12 @@ General Setting Modal: ShootingBlitz
 │   │   │       │       ├── Name (Text)
 │   │   │       │       ├── Home Star Player Settings
 │   │   │       │       │   ├── Star Player Rate
-│   │   │       │       │   └── Star Positions (comma separated)
+│   │   │       │       │   ├── Start Position
+│   │   │       │       │   └── End Position
 │   │   │       │       ├── Away Star Player Settings
 │   │   │       │       │   ├── Star Player Rate
-│   │   │       │       │   └── Star Positions (comma separated)
+│   │   │       │       │   ├── Start Position
+│   │   │       │       │   └── End Position
 │   │   │       │       ├── Pays Table
 │   │   │       │       │   ├── Picks (Auto) | Pays (Input) | Actions
 │   │   │       │       │   ├── 1 | [Input] | [Remove]
@@ -946,8 +952,8 @@ General Setting Modal: ShootingBlitz
     {
       "opponentCount": 4,
       "name": "...",
-      "home": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
-      "away": { "starPlayerRate": 0.02, "starPositions": [3, 4, 5, 6] },
+      "home": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 6 },
+      "away": { "starPlayerRate": 0.02, "startPosition": 3, "endPosition": 6 },
       "pays": [1, 1.06, 1.12, 1.19]
     }
   ]
@@ -970,13 +976,14 @@ General Setting Modal: ShootingBlitz
 | name | ❌ N/A | ✅ **New**: Display name string |
 | mode | ✅ `mode` | ✅ **Renamed**: `opponentCount` |
 | starPlayerRate | ✅ Single field | ✅ **Split**: `home.starPlayerRate`, `away.starPlayerRate` |
-| starPosition | ✅ Single array | ✅ **Split & Renamed**: `home.starPositions`, `away.starPositions` |
+| starPosition | ✅ Single array | ✅ **Split & Renamed**: `home.startPosition`/`home.endPosition`, `away.startPosition`/`away.endPosition` |
 
 > **Note**: 
 > - `name` is now a display name string (e.g., "RTP 95% - Normal Mode", "Live Mode Config")
 > - `pays[index]` corresponds to `picks = index + 1`
 > - `opponentCount` represents opponent count (equivalent to mine count), selecting opponent loses
-> - `home` and `away` can have different star player rates and positions
+> - `home` and `away` can have different star player rates and position ranges
+> - `startPosition` and `endPosition` define the range where star players can appear (e.g., startPosition: 3, endPosition: 6 means positions 3-6)
 
 ---
 
