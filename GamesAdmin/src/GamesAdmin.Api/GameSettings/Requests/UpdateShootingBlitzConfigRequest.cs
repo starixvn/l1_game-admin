@@ -11,7 +11,7 @@ namespace GamesAdmin.Api.GameSettings.Requests
     public enum ShootingBlitzActionType
     {
         /// <summary>
-        /// 更新遊戲配置
+        /// 更新遊戲配置（rtpSetting, scoreSetting, maxWinRound）
         /// </summary>
         UpdateConfig = 0,
 
@@ -36,9 +36,24 @@ namespace GamesAdmin.Api.GameSettings.Requests
         DeleteRtpConfig = 4,
 
         /// <summary>
-        /// 選擇/應用 RTP 配置
+        /// 查詢所有 Teams
         /// </summary>
-        SelectRtpConfig = 5
+        QueryTeams = 5,
+
+        /// <summary>
+        /// 創建 Team
+        /// </summary>
+        CreateTeam = 6,
+
+        /// <summary>
+        /// 更新 Team
+        /// </summary>
+        UpdateTeam = 7,
+
+        /// <summary>
+        /// 刪除 Team
+        /// </summary>
+        DeleteTeam = 8
     }
 
     /// <summary>
@@ -76,9 +91,10 @@ namespace GamesAdmin.Api.GameSettings.Requests
         #region RTP Config 相關屬性
 
         /// <summary>
-        /// RTP 值（用於 CreateRtpConfig, UpdateRtpConfig）
+        /// RTP Config 顯示名稱（用於 CreateRtpConfig, UpdateRtpConfig）
+        /// e.g., "RTP 95% - Normal Mode", "Live Mode Config"
         /// </summary>
-        public double Rtp { get; set; }
+        public string RtpConfigName { get; set; }
 
         /// <summary>
         /// 倍率步驟配置（用於 CreateRtpConfig, UpdateRtpConfig）

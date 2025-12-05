@@ -18,22 +18,37 @@ namespace GamesAdmin.Api.GameSettings.Requests
         public string Id { get; set; }
     }
 
+    /// <summary>
+    /// [Deprecated] Use UpdateShootingBlitzConfigRequest with ActionType.CreateRtpConfig instead
+    /// </summary>
     public class CreateShootingBlitzRtpConfigRequest : IRequest<ShootingBlitzRtpConfig>
     {
-        public double Rtp { get; set; }
+        /// <summary>
+        /// RTP Config 顯示名稱 (e.g., "RTP 95% - Normal Mode")
+        /// </summary>
+        public string Name { get; set; }
 
         public List<MultiplierStepsConfig> MultiplierSteps { get; set; }
     }
 
-    public class UpdateShootingBlitzRtpConfigRequest : IRequest<bool>
+    /// <summary>
+    /// [Deprecated] Use UpdateShootingBlitzConfigRequest with ActionType.UpdateRtpConfig instead
+    /// </summary>
+    public class UpdateShootingBlitzRtpConfigSingleRequest : IRequest<bool>
     {
         public string Id { get; set; }
 
-        public double Rtp { get; set; }
+        /// <summary>
+        /// RTP Config 顯示名稱 (e.g., "RTP 95% - Normal Mode")
+        /// </summary>
+        public string Name { get; set; }
 
         public List<MultiplierStepsConfig> MultiplierSteps { get; set; }
     }
 
+    /// <summary>
+    /// [Deprecated] Use UpdateShootingBlitzConfigRequest with ActionType.DeleteRtpConfig instead
+    /// </summary>
     public class DeleteShootingBlitzRtpConfigRequest : IRequest<bool>
     {
         public DeleteShootingBlitzRtpConfigRequest(string id)
@@ -42,13 +57,6 @@ namespace GamesAdmin.Api.GameSettings.Requests
         }
 
         public string Id { get; set; }
-    }
-
-    public class SelectShootingBlitzRtpConfigRequest : IRequest<bool>
-    {
-        public string Name { get; set; }
-
-        public string RtpConfigId { get; set; }
     }
 }
 

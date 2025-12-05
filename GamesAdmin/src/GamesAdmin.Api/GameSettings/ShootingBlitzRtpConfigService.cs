@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using GamesAdmin.Api.Games;
-using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.ShootingBlitz;
@@ -21,7 +19,6 @@ namespace GamesAdmin.Api.GameSettings
         Task<ShootingBlitzRtpConfig> CreateAsync(ShootingBlitzRtpConfig config);
         Task<bool> UpdateAsync(string id, ShootingBlitzRtpConfig config);
         Task<bool> DeleteAsync(string id);
-        Task<bool> SelectRtpConfigAsync(string gameName, string rtpConfigId);
     }
 
     public class ShootingBlitzRtpConfigService : IShootingBlitzRtpConfigService
@@ -29,18 +26,15 @@ namespace GamesAdmin.Api.GameSettings
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
         private readonly IGenericRepository<ShootingBlitzRtpConfigEntity> repository;
-        private readonly IGameSettingsService gameSettingsService;
 
         public ShootingBlitzRtpConfigService(
             IMapper mapper,
             ISentryClient sentryClient,
-            IGenericRepository<ShootingBlitzRtpConfigEntity> repository,
-            IGameSettingsService gameSettingsService)
+            IGenericRepository<ShootingBlitzRtpConfigEntity> repository)
         {
             this.mapper = mapper;
             this.sentryClient = sentryClient;
             this.repository = repository;
-            this.gameSettingsService = gameSettingsService;
         }
 
         public async Task<IEnumerable<ShootingBlitzRtpConfig>> GetAllAsync()
@@ -78,7 +72,7 @@ namespace GamesAdmin.Api.GameSettings
                 // 手動創建 Entity，避免 AutoMapper ReverseMap 時 null Id 轉換為 ObjectId 的問題
                 var entity = new ShootingBlitzRtpConfigEntity
                 {
-                    Rtp = config.Rtp,
+                    Name = config.Name,
                     MultiplierSteps = mapper.Map<List<MultiplierStepsConfigEntity>>(config.MultiplierSteps),
                     Time = DateTime.Now
                 };
@@ -97,7 +91,7 @@ namespace GamesAdmin.Api.GameSettings
             try
             {
                 var update = Builders<ShootingBlitzRtpConfigEntity>.Update
-                    .Set(x => x.Rtp, config.Rtp)
+                    .Set(x => x.Name, config.Name)
                     .Set(x => x.MultiplierSteps, mapper.Map<List<MultiplierStepsConfigEntity>>(config.MultiplierSteps));
 
                 await repository.UpdateAsync(x => x.Id == ObjectId.Parse(id), update);
@@ -116,19 +110,6 @@ namespace GamesAdmin.Api.GameSettings
             {
                 await repository.DeleteByIdAsync(id);
                 return true;
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-                return false;
-            }
-        }
-
-        public async Task<bool> SelectRtpConfigAsync(string gameName, string rtpConfigId)
-        {
-            try
-            {
-                return await gameSettingsService.UpdateShootingBlitzRtpConfigId(gameName, rtpConfigId);
             }
             catch (Exception ex)
             {

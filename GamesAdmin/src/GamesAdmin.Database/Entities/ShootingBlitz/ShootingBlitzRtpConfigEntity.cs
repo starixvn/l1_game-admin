@@ -7,8 +7,11 @@ namespace GamesAdmin.Database.Entities.ShootingBlitz
     [BsonCollection("ShootingBlitz_rtpConfig")]
     public class ShootingBlitzRtpConfigEntity : MiniGameBaseEntity
     {
-        [BsonElement("rtp")]
-        public double Rtp { get; set; }
+        /// <summary>
+        /// RTP Config 顯示名稱 (e.g., "RTP 95% - Normal Mode", "Live Mode Config")
+        /// </summary>
+        [BsonElement("name")]
+        public string Name { get; set; }
 
         [BsonElement("multiplierSteps")]
         public List<MultiplierStepsConfigEntity> MultiplierSteps { get; set; }

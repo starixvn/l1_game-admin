@@ -632,12 +632,13 @@ namespace GamesAdmin.Site.Features.GameSettings
                     var statusItem = new StatusItemViewModel(game);
 
                     // Set ShootingBlitz RTP display for MinesRNGTurnBase games
-                    if (game.Info.Type == GameType.MinesRNGTurnBase && !string.IsNullOrEmpty(game.ShootingBlitzConfig?.RtpConfigId))
+                    if (game.Info.Type == GameType.MinesRNGTurnBase && game.ShootingBlitzConfig?.RtpSetting?.Any() == true)
                     {
-                        if (rtpConfigLookup.TryGetValue(game.ShootingBlitzConfig.RtpConfigId, out var rtpConfig))
-                        {
-                            statusItem.ShootingBlitzOddsDisplay = $"{rtpConfig.Rtp * 100}%";
-                        }
+                        var rtpNames = game.ShootingBlitzConfig.RtpSetting
+                            .Where(rs => !string.IsNullOrEmpty(rs.RtpConfigId) && rtpConfigLookup.ContainsKey(rs.RtpConfigId))
+                            .Select(rs => $"{rs.Key}: {rtpConfigLookup[rs.RtpConfigId].Name}")
+                            .ToList();
+                        statusItem.ShootingBlitzOddsDisplay = rtpNames.Any() ? string.Join(", ", rtpNames) : "-";
                     }
 
                     return statusItem;

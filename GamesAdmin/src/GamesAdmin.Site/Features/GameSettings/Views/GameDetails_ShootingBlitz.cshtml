@@ -1,3 +1,4 @@
+@using System.Linq;
 @using GamesAdmin.Core.Enumeration;
 @using GamesAdmin.Core;
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
@@ -49,9 +50,8 @@
                 </div>
                 <div class="col-lg-6">
                     <label class="control-label">
-                        <input type="checkbox" id="UseLiveScore" name="ShootingBlitzConfig.UseLiveScore" 
-                               @(Model.ShootingBlitzConfig?.UseLiveScore == true ? "checked" : "") />
-                        Use Live Score
+                        Max Win Round
+                        <input type="number" id="MaxWinRound" name="ShootingBlitzConfig.MaxWinRound" class="form-control" value="@(Model.ShootingBlitzConfig?.MaxWinRound ?? 0)" />
                     </label>
                 </div>
             </div>
@@ -142,14 +142,14 @@
                             {
                                 @foreach (var rtpConfig in Model.ShootingBlitzRtpConfigs)
                                 {
-                                    var isSelected = Model.ShootingBlitzConfig?.RtpConfigId == rtpConfig.Id;
+                                    var isSelected = Model.ShootingBlitzConfig?.RtpSetting?.Any(rs => rs.RtpConfigId == rtpConfig.Id) == true;
                                     if (isSelected)
                                     {
-                                        <option value="@rtpConfig.Id" selected="selected">RTP @(rtpConfig.Rtp * 100)%</option>
+                                        <option value="@rtpConfig.Id" selected="selected">@rtpConfig.Name</option>
                                     }
                                     else
                                     {
-                                        <option value="@rtpConfig.Id">RTP @(rtpConfig.Rtp * 100)%</option>
+                                        <option value="@rtpConfig.Id">@rtpConfig.Name</option>
                                     }
                                 }
                             }
@@ -186,10 +186,10 @@
                         {
                             @foreach (var rtpConfig in Model.ShootingBlitzRtpConfigs)
                             {
-                                var isCurrentlySelected = Model.ShootingBlitzConfig?.RtpConfigId == rtpConfig.Id;
+                                var isCurrentlySelected = Model.ShootingBlitzConfig?.RtpSetting?.Any(rs => rs.RtpConfigId == rtpConfig.Id) == true;
                                 <tr data-id="@rtpConfig.Id" class="@(isCurrentlySelected ? "table-success" : "")">
                                     <td>
-                                        @(rtpConfig.Rtp * 100)%
+                                        @rtpConfig.Name
                                         @if (isCurrentlySelected)
                                         {
                                             <span class="badge badge-success ml-2">Current</span>
@@ -296,7 +296,7 @@
 </div>
 
 <input type="hidden" id="rtpConfigsData" value='@Html.Raw(JsonConvert.SerializeObject(Model.ShootingBlitzRtpConfigs ?? new List<GamesAdmin.Core.Models.GameConfigs.ShootingBlitzRtpConfig>(), new JsonSerializerSettings { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() }))' />
-<input type="hidden" id="currentRtpConfigId" value="@(Model.ShootingBlitzConfig?.RtpConfigId ?? "")" />
+<input type="hidden" id="currentRtpConfigId" value="@(Model.ShootingBlitzConfig?.RtpSetting?.FirstOrDefault()?.RtpConfigId ?? "")" />
 
 <script src="/js/shooting-blitz-general.js"></script>
 <script src="/js/shooting-blitz-rtp.js"></script>

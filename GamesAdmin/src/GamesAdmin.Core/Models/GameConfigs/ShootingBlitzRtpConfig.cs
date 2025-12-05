@@ -6,7 +6,10 @@ namespace GamesAdmin.Core.Models.GameConfigs
     {
         public string Id { get; set; }
 
-        public double Rtp { get; set; }
+        /// <summary>
+        /// RTP Config 顯示名稱 (e.g., "RTP 95% - Normal Mode", "Live Mode Config")
+        /// </summary>
+        public string Name { get; set; }
 
         public List<MultiplierStepsConfig> MultiplierSteps { get; set; }
     }

@@ -140,7 +140,7 @@ namespace GamesAdmin.Api.Games
                 case ShootingBlitzActionType.CreateRtpConfig:
                     var newConfig = new ShootingBlitzRtpConfig
                     {
-                        Rtp = request.Rtp,
+                        Name = request.RtpConfigName,
                         MultiplierSteps = request.MultiplierSteps
                     };
                     var createdConfig = await shootingBlitzRtpConfigService.CreateAsync(newConfig);
@@ -151,7 +151,7 @@ namespace GamesAdmin.Api.Games
                 case ShootingBlitzActionType.UpdateRtpConfig:
                     var configToUpdate = new ShootingBlitzRtpConfig
                     {
-                        Rtp = request.Rtp,
+                        Name = request.RtpConfigName,
                         MultiplierSteps = request.MultiplierSteps
                     };
                     var updateRtpResult = await shootingBlitzRtpConfigService.UpdateAsync(request.RtpConfigId, configToUpdate);
@@ -165,11 +165,9 @@ namespace GamesAdmin.Api.Games
                         ? ShootingBlitzConfigResult.Ok("RTP config deleted successfully") 
                         : ShootingBlitzConfigResult.Fail("Failed to delete RTP config");
 
-                case ShootingBlitzActionType.SelectRtpConfig:
-                    var selectResult = await shootingBlitzRtpConfigService.SelectRtpConfigAsync(request.Name, request.RtpConfigId);
-                    return selectResult 
-                        ? ShootingBlitzConfigResult.Ok("RTP config selected successfully") 
-                        : ShootingBlitzConfigResult.Fail("Failed to select RTP config");
+                // Note: Team operations (QueryTeams, CreateTeam, UpdateTeam, DeleteTeam) 
+                // are handled by ShootingBlitzTeamHandler via separate endpoint
+                // These cases are reserved for future unified endpoint implementation
 
                 default:
                     return ShootingBlitzConfigResult.Fail($"Unknown action type: {request.ActionType}");

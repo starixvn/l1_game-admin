@@ -106,7 +106,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public GameType Type => GameConfig.Info.Type;
 
-        public string ShootingBlitzRtpConfigId => GameConfig.ShootingBlitzConfig?.RtpConfigId;
+        public string ShootingBlitzRtpConfigId => GameConfig.ShootingBlitzConfig?.RtpSetting?.FirstOrDefault()?.RtpConfigId;
 
         public string ShootingBlitzOddsDisplay { get; set; }
     }

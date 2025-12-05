@@ -7,13 +7,16 @@ using MediatR;
 
 namespace GamesAdmin.Api.GameSettings
 {
+    /// <summary>
+    /// [Deprecated] Use GameSettingsHandler with UpdateShootingBlitzConfigRequest instead.
+    /// This handler is kept for backward compatibility.
+    /// </summary>
     public class ShootingBlitzRtpConfigHandler
         : IRequestHandler<GetAllShootingBlitzRtpConfigRequest, IEnumerable<ShootingBlitzRtpConfig>>
         , IRequestHandler<GetShootingBlitzRtpConfigByIdRequest, ShootingBlitzRtpConfig>
         , IRequestHandler<CreateShootingBlitzRtpConfigRequest, ShootingBlitzRtpConfig>
-        , IRequestHandler<UpdateShootingBlitzRtpConfigRequest, bool>
+        , IRequestHandler<UpdateShootingBlitzRtpConfigSingleRequest, bool>
         , IRequestHandler<DeleteShootingBlitzRtpConfigRequest, bool>
-        , IRequestHandler<SelectShootingBlitzRtpConfigRequest, bool>
     {
         private readonly IShootingBlitzRtpConfigService service;
 
@@ -32,18 +35,18 @@ namespace GamesAdmin.Api.GameSettings
         {
             var config = new ShootingBlitzRtpConfig
             {
-                Rtp = request.Rtp,
+                Name = request.Name,
                 MultiplierSteps = request.MultiplierSteps
             };
             return service.CreateAsync(config);
         }
 
-        public Task<bool> Handle(UpdateShootingBlitzRtpConfigRequest request, CancellationToken cancellationToken)
+        public Task<bool> Handle(UpdateShootingBlitzRtpConfigSingleRequest request, CancellationToken cancellationToken)
         {
             var config = new ShootingBlitzRtpConfig
             {
                 Id = request.Id,
-                Rtp = request.Rtp,
+                Name = request.Name,
                 MultiplierSteps = request.MultiplierSteps
             };
             return service.UpdateAsync(request.Id, config);
@@ -51,9 +54,6 @@ namespace GamesAdmin.Api.GameSettings
 
         public Task<bool> Handle(DeleteShootingBlitzRtpConfigRequest request, CancellationToken cancellationToken)
             => service.DeleteAsync(request.Id);
-
-        public Task<bool> Handle(SelectShootingBlitzRtpConfigRequest request, CancellationToken cancellationToken)
-            => service.SelectRtpConfigAsync(request.Name, request.RtpConfigId);
     }
 }
 
