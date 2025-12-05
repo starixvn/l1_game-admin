@@ -331,6 +331,37 @@ var shootingBlitz = (function () {
         };
     }
 
+    // Function to prepare form data before serialization
+    function prepareFormData() {
+        var config = collectShootingBlitzConfig();
+        
+        // Debug: log collected config
+        console.log('Collected ShootingBlitzConfig:', config);
+        console.log('RTP Settings count:', config.rtpSetting.length);
+        console.log('Score Settings count:', config.scoreSetting.length);
+        
+        var form = document.getElementById('gameForm');
+        if (!form) return;
+        
+        // Remove existing hidden input
+        var existingInput = document.getElementById('shootingBlitzConfigJson');
+        if (existingInput) {
+            existingInput.remove();
+        }
+        
+        // Add JSON as hidden input (similar to VideoStreamConfigJson)
+        var hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.id = 'shootingBlitzConfigJson';
+        hiddenInput.name = 'ShootingBlitzConfigJson';
+        var jsonString = JSON.stringify(config);
+        hiddenInput.value = jsonString;
+        form.appendChild(hiddenInput);
+        
+        // Debug: log JSON string
+        console.log('ShootingBlitzConfigJson:', jsonString);
+    }
+
     // Initialize on document ready
     $(document).ready(function () {
         init();
@@ -339,33 +370,30 @@ var shootingBlitz = (function () {
         // Intercept form submission to include RTP Setting and Score Setting
         var form = document.getElementById('gameForm');
         if (form) {
+            // Listen for submit event (traditional form submit)
             form.addEventListener('submit', function (e) {
-                var config = collectShootingBlitzConfig();
-                
-                // Debug: log collected config
-                console.log('Collected ShootingBlitzConfig:', config);
-                console.log('RTP Settings count:', config.rtpSetting.length);
-                console.log('Score Settings count:', config.scoreSetting.length);
-                
-                // Remove existing hidden input
-                var existingInput = document.getElementById('shootingBlitzConfigJson');
-                if (existingInput) {
-                    existingInput.remove();
-                }
-                
-                // Add JSON as hidden input (similar to VideoStreamConfigJson)
-                var hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.id = 'shootingBlitzConfigJson';
-                hiddenInput.name = 'ShootingBlitzConfigJson';
-                var jsonString = JSON.stringify(config);
-                hiddenInput.value = jsonString;
-                form.appendChild(hiddenInput);
-                
-                // Debug: log JSON string
-                console.log('ShootingBlitzConfigJson:', jsonString);
+                prepareFormData();
             });
         }
+        
+        // Intercept the updateBtn click to prepare data before AJAX submit
+        // This is needed because gameStatus.submit() uses AJAX, not traditional form submit
+        // Use capture phase to ensure our code runs first
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'updateBtn') {
+                prepareFormData();
+            }
+        }, true); // true = use capture phase
+        
+        // Also intercept serialize() for gameForm specifically
+        var originalSerialize = $.fn.serialize;
+        $.fn.serialize = function() {
+            // If this is the gameForm, prepare data first
+            if (this.length > 0 && this[0].id === 'gameForm') {
+                prepareFormData();
+            }
+            return originalSerialize.apply(this, arguments);
+        };
     });
 
     return {
