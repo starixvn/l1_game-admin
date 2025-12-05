@@ -79,6 +79,91 @@
                     </label>
                 </div>
             </div>
+
+            <!-- RTP Setting Section -->
+            <fieldset class="border p-3 mb-3">
+                <legend class="w-auto">RTP Setting Configuration</legend>
+                <div class="mb-2">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="shootingBlitz.addRtpSettingRow()">
+                        <i class="icon-plus"></i> Add RTP Setting
+                    </button>
+                </div>
+                <div id="rtpSettingContainer">
+                    @if (Model.ShootingBlitzConfig?.RtpSetting != null && Model.ShootingBlitzConfig.RtpSetting.Any())
+                    {
+                        @for (int i = 0; i < Model.ShootingBlitzConfig.RtpSetting.Count; i++)
+                        {
+                            var rtpSetting = Model.ShootingBlitzConfig.RtpSetting[i];
+                            <div class="form-group row rtp-setting-row mb-2">
+                                <div class="col-lg-4">
+                                    <label class="control-label">Key</label>
+                                    <input type="text" class="form-control rtp-setting-key" placeholder="e.g., normal, live, 1, 2" value="@rtpSetting.Key" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="control-label">RTP Config</label>
+                                    <select class="form-control rtp-setting-config">
+                                        <option value="">-- Select RTP Config --</option>
+                                        @if (Model.ShootingBlitzRtpConfigs != null)
+                                        {
+                                            @foreach (var rtpConfig in Model.ShootingBlitzRtpConfigs)
+                                            {
+                                                var isSelected = rtpSetting.RtpConfigId == rtpConfig.Id;
+                                                <option value="@rtpConfig.Id" selected="@isSelected">@rtpConfig.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="control-label">&nbsp;</label>
+                                    <button type="button" class="btn btn-danger btn-sm btn-block" onclick="this.closest('.rtp-setting-row').remove()">
+                                        <i class="icon-trash"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </fieldset>
+
+            <!-- Score Setting Section -->
+            <fieldset class="border p-3 mb-3">
+                <legend class="w-auto">Score Setting Configuration (Non-Live Score Mode)</legend>
+                <div class="mb-2">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="shootingBlitz.addScoreSettingRow()">
+                        <i class="icon-plus"></i> Add Score Setting
+                    </button>
+                    <span class="ml-3 text-muted" id="probabilitySum">Total Probability: 0.0</span>
+                </div>
+                <div id="scoreSettingContainer">
+                    @if (Model.ShootingBlitzConfig?.ScoreSetting != null && Model.ShootingBlitzConfig.ScoreSetting.Any())
+                    {
+                        @for (int i = 0; i < Model.ShootingBlitzConfig.ScoreSetting.Count; i++)
+                        {
+                            var scoreSetting = Model.ShootingBlitzConfig.ScoreSetting[i];
+                            <div class="form-group row score-setting-row mb-2">
+                                <div class="col-lg-3">
+                                    <label class="control-label">Home Score</label>
+                                    <input type="number" class="form-control score-setting-home" value="@scoreSetting.HomeScore" />
+                                </div>
+                                <div class="col-lg-3">
+                                    <label class="control-label">Away Score</label>
+                                    <input type="number" class="form-control score-setting-away" value="@scoreSetting.AwayScore" />
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="control-label">Probability (0-1)</label>
+                                    <input type="number" step="0.01" min="0" max="1" class="form-control score-setting-probability" value="@scoreSetting.Probability" onchange="shootingBlitz.updateProbabilitySum()" />
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="control-label">&nbsp;</label>
+                                    <button type="button" class="btn btn-danger btn-sm btn-block" onclick="this.closest('.score-setting-row').remove(); shootingBlitz.updateProbabilitySum();">
+                                        <i class="icon-trash"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </fieldset>
         </div>
     </form>
 
@@ -120,7 +205,7 @@
                                     <span class="badge badge-secondary">✗</span>
                                 }
                             </td>
-                            <td>@(team.PlayerList?.Count ?? 0)</td>
+                            <td>@(team.StarPlayList?.Count ?? 0)</td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-info" onclick="shootingBlitz.editTeam('@team.Id')">
                                     <i class="icon-edit"></i> Edit

@@ -434,7 +434,7 @@ public class ShootingBlitzConfigService : IShootingBlitzConfigService
 ```
 
 **When to use dedicated Service**:
-- ✅ Game needs to operate on **independent collections** (e.g., `ShootingBlitz_rtpConfig`, `ShootingBlitz_team`)
+- ✅ Game needs to operate on **independent collections** (e.g., `ShootingBlitz_rtpConfig`, `ShootingBlitz_teams`)
 - ✅ Game has complex logic that doesn't fit in `GameSettingsService`
 - ❌ Simple config updates (like Plinko, Crash) - use `GameSettingsService` directly
 

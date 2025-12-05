@@ -107,7 +107,7 @@
 ### 2.3 Teams Collection (Team Management)
 
 - **Database**: `minigame`
-- **Collection**: `ShootingBlitz_team`
+- **Collection**: `ShootingBlitz_teams`
 
 ```json
 {
@@ -115,7 +115,7 @@
   "name": "FC Barcelona",
   "teamId": 12345,
   "isEnabled": true,
-  "playerList": [
+  "starPlayList": [
     {
       "name": "Lionel Messi",
       "playerNumber": 10
@@ -219,16 +219,17 @@ All ShootingBlitz settings are consolidated in the General Setting Modal:
 | name | String | Team name |
 | **isEnabled** | **Checkbox** | **是否啟用此 Team（預設勾選）** |
 
-##### Player List Configuration
+##### Star Play List Configuration
 | Field | Type | Description |
 |-------|------|-------------|
 | name | String | Player name |
 | playerNumber | Number | Player jersey number |
 
-- ✅ Can dynamically add/remove players
+- ✅ Can dynamically add/remove star players
 - ✅ Each Team is one record
 - ✅ Supports Create/Update/Delete Team
 - ✅ **新增的 Team 預設 `isEnabled: true`**
+- ✅ Field name: `starPlayList` (not `playerList`)
 
 ### 3.5 RTP Tab Features (in General Setting Modal)
 
@@ -310,7 +311,7 @@ RTP Tab contains the following feature sections:
 
 ### 4.1.1 Handler Pattern (Dedicated Service Pattern)
 
-**Important**: ShootingBlitz needs to operate on **independent collections** (`ShootingBlitz_rtpConfig`, `ShootingBlitz_team`), which is different from other games (Plinko, Crash) that only operate on `GameConfigEntity`.
+**Important**: ShootingBlitz needs to operate on **independent collections** (`ShootingBlitz_rtpConfig`, `ShootingBlitz_teams`), which is different from other games (Plinko, Crash) that only operate on `GameConfigEntity`.
 
 **Handler should inject dedicated game service**:
 
@@ -383,7 +384,7 @@ public class ShootingBlitzConfigService : IShootingBlitzConfigService
 - ✅ Follows Single Responsibility Principle
 
 **When to use dedicated Service**:
-- ✅ Game needs to operate on **independent collections** (e.g., `ShootingBlitz_rtpConfig`, `ShootingBlitz_team`)
+- ✅ Game needs to operate on **independent collections** (e.g., `ShootingBlitz_rtpConfig`, `ShootingBlitz_teams`)
 - ✅ Game has complex logic that doesn't fit in `GameSettingsService`
 - ❌ Simple config updates (like Plinko, Crash) - use `GameSettingsService` directly
 
@@ -513,7 +514,7 @@ public class ShootingBlitzConfigResult
     "teamId": 12345,
     "name": "FC Barcelona",
     "isEnabled": true,
-    "playerList": [
+    "starPlayList": [
       { "name": "Lionel Messi", "playerNumber": 10 },
       { "name": "Pedri", "playerNumber": 8 }
     ]
@@ -532,7 +533,7 @@ public class ShootingBlitzConfigResult
     "teamId": 12345,
     "name": "FC Barcelona",
     "isEnabled": false,
-    "playerList": [...]
+    "starPlayList": [...]
   }
 }
 ```
@@ -631,7 +632,9 @@ public class ShootingBlitzConfigResult
 | pays array | Must have at least 1 item | ✅ Validation required |
 | teamId | Unique value | ✅ Validation required |
 | team.isEnabled | Boolean (default: true) | ✅ Default value handling |
-| playerNumber | Number | ✅ Validation required |
+| starPlayList | Array of players | ✅ Optional, can be empty |
+| starPlayList[].name | String | ✅ Required if starPlayList provided |
+| starPlayList[].playerNumber | Number | ✅ Required if starPlayList provided |
 | rtpSetting.key | Unique within array | ✅ Validation required |
 | rtpSetting.rtpConfigId | Required, valid ObjectId | ✅ Validation required |
 | scoreSetting.probability | Sum of all probabilities should equal 1 | ✅ Validation required |
@@ -678,7 +681,7 @@ public class ShootingBlitzConfigResult
    - **Game API**: 回傳給 Game Client 時只回傳 `isEnabled: true` 的 Team（Game API 負責過濾）
 10. **MongoDB Collection Names**:
     - RTP Config: `ShootingBlitz_rtpConfig` (shared by normal and live mode)
-    - Teams: `ShootingBlitz_team`
+    - Teams: `ShootingBlitz_teams`
 11. **Unified UI Entry Points**:
     - **General Setting** (Game Management → General Setting column): General config + Teams management + **RTP Config management**
     - **Odds** (Game Management → Odds column): **Not used for ShootingBlitz, displays empty**
@@ -821,7 +824,7 @@ public class ShootingBlitzConfigResult
   "name": "FC Barcelona",
   "teamId": 12345,
   "isEnabled": true,
-  "playerList": [
+  "starPlayList": [
     {
       "name": "Lionel Messi",
       "playerNumber": 10
@@ -843,7 +846,7 @@ public class ShootingBlitzConfigResult
   "name": "Real Madrid",
   "teamId": 12346,
   "isEnabled": true,
-  "playerList": [
+  "starPlayList": [
     {
       "name": "Karim Benzema",
       "playerNumber": 9
@@ -865,7 +868,7 @@ public class ShootingBlitzConfigResult
   "name": "AC Milan",
   "teamId": 12347,
   "isEnabled": false,
-  "playerList": [...]
+  "starPlayList": [...]
 }
 ```
 
@@ -1034,7 +1037,7 @@ General Setting Modal: ShootingBlitz
                             │                                                           │
                             ▼                                                           ▼
               ┌─────────────────────────┐                              ┌─────────────────────────┐
-              │   ShootingBlitz_team    │                              │  ShootingBlitz_rtpConfig│
+              │   ShootingBlitz_teams   │                              │  ShootingBlitz_rtpConfig│
               │       (MongoDB)         │                              │       (MongoDB)         │
               └─────────────────────────┘                              │  (shared by normal and  │
                                                                        │   live mode selection)  │

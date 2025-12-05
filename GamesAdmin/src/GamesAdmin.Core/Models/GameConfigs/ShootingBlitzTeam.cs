@@ -15,7 +15,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         /// </summary>
         public bool? IsEnabled { get; set; } = true;
 
-        public List<ShootingBlitzPlayer> PlayerList { get; set; }
+        public List<ShootingBlitzPlayer> StarPlayList { get; set; }
     }
 
     public class ShootingBlitzPlayer

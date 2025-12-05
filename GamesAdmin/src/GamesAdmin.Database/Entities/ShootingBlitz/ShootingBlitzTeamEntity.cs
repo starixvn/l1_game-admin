@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities.ShootingBlitz
 {
-    [BsonCollection("ShootingBlitz_team")]
+    [BsonCollection("ShootingBlitz_teams")]
     public class ShootingBlitzTeamEntity : MiniGameBaseEntity
     {
         [BsonElement("teamId")]
@@ -19,8 +19,8 @@ namespace GamesAdmin.Database.Entities.ShootingBlitz
         [BsonElement("isEnabled")]
         public bool? IsEnabled { get; set; } = true;
 
-        [BsonElement("playerList")]
-        public List<ShootingBlitzPlayerEntity> PlayerList { get; set; }
+        [BsonElement("starPlayList")]
+        public List<ShootingBlitzPlayerEntity> StarPlayList { get; set; }
     }
 
     public class ShootingBlitzPlayerEntity

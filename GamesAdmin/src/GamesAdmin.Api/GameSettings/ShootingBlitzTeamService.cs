@@ -16,6 +16,7 @@ namespace GamesAdmin.Api.GameSettings
     public interface IShootingBlitzTeamService
     {
         Task<IEnumerable<ShootingBlitzTeam>> GetAllAsync();
+        Task<IEnumerable<ShootingBlitzTeam>> GetEnabledTeamsAsync();
         Task<ShootingBlitzTeam> GetByIdAsync(string id);
         Task<ShootingBlitzTeam> CreateAsync(ShootingBlitzTeam team);
         Task<bool> UpdateAsync(string id, ShootingBlitzTeam team);
@@ -44,6 +45,25 @@ namespace GamesAdmin.Api.GameSettings
             try
             {
                 var entities = await Task.Run(() => repository.AsQueryable().ToList());
+                return entities.Select(entity => mapper.Map<ShootingBlitzTeam>(entity));
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return Enumerable.Empty<ShootingBlitzTeam>();
+            }
+        }
+
+        /// <summary>
+        /// 取得所有啟用的 Teams（用於 Game API，只回傳 isEnabled: true 的 Team）
+        /// </summary>
+        public async Task<IEnumerable<ShootingBlitzTeam>> GetEnabledTeamsAsync()
+        {
+            try
+            {
+                var entities = await Task.Run(() => repository.AsQueryable()
+                    .Where(x => x.IsEnabled != false)  // true or null
+                    .ToList());
                 return entities.Select(entity => mapper.Map<ShootingBlitzTeam>(entity));
             }
             catch (Exception ex)
@@ -105,7 +125,7 @@ namespace GamesAdmin.Api.GameSettings
                     .Set(x => x.TeamId, team.TeamId)
                     .Set(x => x.Name, team.Name)
                     .Set(x => x.IsEnabled, team.IsEnabled ?? true)
-                    .Set(x => x.PlayerList, mapper.Map<List<ShootingBlitzPlayerEntity>>(team.PlayerList));
+                    .Set(x => x.StarPlayList, mapper.Map<List<ShootingBlitzPlayerEntity>>(team.StarPlayList));
 
                 await repository.UpdateAsync(x => x.Id == ObjectId.Parse(id), update);
                 return true;

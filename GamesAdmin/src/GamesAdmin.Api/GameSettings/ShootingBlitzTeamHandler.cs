@@ -33,7 +33,7 @@ namespace GamesAdmin.Api.GameSettings
             {
                 TeamId = request.TeamId,
                 Name = request.Name,
-                PlayerList = request.PlayerList
+                StarPlayList = request.StarPlayList
             };
             return service.CreateAsync(team);
         }
@@ -45,7 +45,7 @@ namespace GamesAdmin.Api.GameSettings
                 Id = request.Id,
                 TeamId = request.TeamId,
                 Name = request.Name,
-                PlayerList = request.PlayerList
+                StarPlayList = request.StarPlayList
             };
             return service.UpdateAsync(request.Id, team);
         }

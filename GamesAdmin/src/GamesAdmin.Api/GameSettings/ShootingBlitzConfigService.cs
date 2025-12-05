@@ -127,7 +127,7 @@ namespace GamesAdmin.Api.GameSettings
                             TeamId = request.TeamId.Value,
                             Name = request.TeamName,
                             IsEnabled = request.IsEnabled ?? true,
-                            PlayerList = request.PlayerList
+                            StarPlayList = request.StarPlayList
                         };
                         
                         sentryClient.CaptureMessage($"CreateTeam: Calling CreateAsync with TeamId={newTeam.TeamId}, Name={newTeam.Name}");
@@ -154,7 +154,7 @@ namespace GamesAdmin.Api.GameSettings
                         TeamId = request.TeamId ?? 0,
                         Name = request.TeamName,
                         IsEnabled = request.IsEnabled ?? true,
-                        PlayerList = request.PlayerList
+                        StarPlayList = request.StarPlayList
                     };
                     var updateTeamResult = await shootingBlitzTeamService.UpdateAsync(request.TeamDbId, teamToUpdate);
                     return updateTeamResult 

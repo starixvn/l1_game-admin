@@ -24,7 +24,7 @@ namespace GamesAdmin.Api.GameSettings.Requests
 
         public string Name { get; set; }
 
-        public List<ShootingBlitzPlayer> PlayerList { get; set; }
+        public List<ShootingBlitzPlayer> StarPlayList { get; set; }
     }
 
     public class UpdateShootingBlitzTeamRequest : IRequest<bool>
@@ -35,7 +35,7 @@ namespace GamesAdmin.Api.GameSettings.Requests
 
         public string Name { get; set; }
 
-        public List<ShootingBlitzPlayer> PlayerList { get; set; }
+        public List<ShootingBlitzPlayer> StarPlayList { get; set; }
     }
 
     public class DeleteShootingBlitzTeamRequest : IRequest<bool>

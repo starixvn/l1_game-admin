@@ -141,10 +141,10 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public bool? IsEnabled { get; set; } = true;
 
         /// <summary>
-        /// 球員列表（用於 CreateTeam, UpdateTeam）
+        /// 明星球員列表（用於 CreateTeam, UpdateTeam）
         /// </summary>
-        [JsonProperty("playerList")]
-        public List<ShootingBlitzPlayer> PlayerList { get; set; }
+        [JsonProperty("starPlayList")]
+        public List<ShootingBlitzPlayer> StarPlayList { get; set; }
 
         #endregion
     }
