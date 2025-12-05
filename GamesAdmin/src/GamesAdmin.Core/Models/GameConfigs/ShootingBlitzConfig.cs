@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace GamesAdmin.Core.Models.GameConfigs
 {
@@ -7,6 +9,12 @@ namespace GamesAdmin.Core.Models.GameConfigs
     /// </summary>
     public class ShootingBlitzConfig
     {
+        public ShootingBlitzConfig()
+        {
+            RtpSetting = new List<ShootingBlitzRtpSetting>();
+            ScoreSetting = new List<ShootingBlitzScoreSetting>();
+        }
+
         /// <summary>
         /// RTP 設定陣列，Game Client 透過 Key 取得對應的 RTP 設定
         /// </summary>
@@ -21,6 +29,32 @@ namespace GamesAdmin.Core.Models.GameConfigs
         /// 每一 Round 能夠贏的最大金額
         /// </summary>
         public double MaxWinRound { get; set; }
+
+        /// <summary>
+        /// 從 JSON 字串填充配置資料
+        /// </summary>
+        public void PopulateFromJson(string jsonData)
+        {
+            if (string.IsNullOrEmpty(jsonData))
+            {
+                return;
+            }
+
+            try
+            {
+                var config = JsonConvert.DeserializeObject<ShootingBlitzConfig>(jsonData);
+                if (config != null)
+                {
+                    this.RtpSetting = config.RtpSetting ?? new List<ShootingBlitzRtpSetting>();
+                    this.ScoreSetting = config.ScoreSetting ?? new List<ShootingBlitzScoreSetting>();
+                    this.MaxWinRound = config.MaxWinRound;
+                }
+            }
+            catch
+            {
+                // 如果 JSON 解析失敗，保持現有值
+            }
+        }
     }
 
     /// <summary>

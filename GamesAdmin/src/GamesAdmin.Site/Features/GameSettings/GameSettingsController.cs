@@ -404,6 +404,18 @@ namespace GamesAdmin.Site.Features.GameSettings
                     viewModel.VideoStreamConfig.PopulateFromJson(viewModel.VideoStreamConfigJson);
                 }
 
+                var shootingBlitzConfig = viewModel.ShootingBlitzConfig;
+
+                if (!string.IsNullOrEmpty(viewModel.ShootingBlitzConfigJson))
+                {
+                    if (viewModel.ShootingBlitzConfig == null)
+                    {
+                        viewModel.ShootingBlitzConfig = new ShootingBlitzConfig();
+                    }
+
+                    viewModel.ShootingBlitzConfig.PopulateFromJson(viewModel.ShootingBlitzConfigJson);
+                }
+
                 var request = new UpdateRequest(
                     new GameInfo(
                         viewModel.Name, 

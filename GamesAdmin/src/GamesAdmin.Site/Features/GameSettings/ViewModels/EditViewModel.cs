@@ -113,6 +113,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public ShootingBlitzConfig ShootingBlitzConfig { get; set; }
 
+        public string ShootingBlitzConfigJson { get; set; }
+
         public IEnumerable<ShootingBlitzRtpConfig> ShootingBlitzRtpConfigs { get; set; }
 
         public IEnumerable<ShootingBlitzTeam> ShootingBlitzTeams { get; set; }

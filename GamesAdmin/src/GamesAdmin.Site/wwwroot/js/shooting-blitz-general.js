@@ -323,53 +323,19 @@ var shootingBlitz = (function () {
             form.addEventListener('submit', function (e) {
                 var config = collectShootingBlitzConfig();
                 
-                // Remove existing hidden inputs
-                document.querySelectorAll('[name^="ShootingBlitzConfig."]').forEach(function (el) {
-                    el.remove();
-                });
+                // Remove existing hidden input
+                var existingInput = document.getElementById('shootingBlitzConfigJson');
+                if (existingInput) {
+                    existingInput.remove();
+                }
                 
-                // Add MaxWinRound
-                var maxWinRoundInput = document.createElement('input');
-                maxWinRoundInput.type = 'hidden';
-                maxWinRoundInput.name = 'ShootingBlitzConfig.MaxWinRound';
-                maxWinRoundInput.value = config.maxWinRound;
-                form.appendChild(maxWinRoundInput);
-                
-                // Add RTP Settings
-                config.rtpSetting.forEach(function (rtpSetting, index) {
-                    var keyInput = document.createElement('input');
-                    keyInput.type = 'hidden';
-                    keyInput.name = 'ShootingBlitzConfig.RtpSetting[' + index + '].Key';
-                    keyInput.value = rtpSetting.key;
-                    form.appendChild(keyInput);
-                    
-                    var rtpConfigIdInput = document.createElement('input');
-                    rtpConfigIdInput.type = 'hidden';
-                    rtpConfigIdInput.name = 'ShootingBlitzConfig.RtpSetting[' + index + '].RtpConfigId';
-                    rtpConfigIdInput.value = rtpSetting.rtpConfigId;
-                    form.appendChild(rtpConfigIdInput);
-                });
-                
-                // Add Score Settings
-                config.scoreSetting.forEach(function (scoreSetting, index) {
-                    var homeScoreInput = document.createElement('input');
-                    homeScoreInput.type = 'hidden';
-                    homeScoreInput.name = 'ShootingBlitzConfig.ScoreSetting[' + index + '].HomeScore';
-                    homeScoreInput.value = scoreSetting.homeScore;
-                    form.appendChild(homeScoreInput);
-                    
-                    var awayScoreInput = document.createElement('input');
-                    awayScoreInput.type = 'hidden';
-                    awayScoreInput.name = 'ShootingBlitzConfig.ScoreSetting[' + index + '].AwayScore';
-                    awayScoreInput.value = scoreSetting.awayScore;
-                    form.appendChild(awayScoreInput);
-                    
-                    var probabilityInput = document.createElement('input');
-                    probabilityInput.type = 'hidden';
-                    probabilityInput.name = 'ShootingBlitzConfig.ScoreSetting[' + index + '].Probability';
-                    probabilityInput.value = scoreSetting.probability;
-                    form.appendChild(probabilityInput);
-                });
+                // Add JSON as hidden input (similar to VideoStreamConfigJson)
+                var hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.id = 'shootingBlitzConfigJson';
+                hiddenInput.name = 'ShootingBlitzConfigJson';
+                hiddenInput.value = JSON.stringify(config);
+                form.appendChild(hiddenInput);
             });
         }
     });
