@@ -540,7 +540,24 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
+                if (request == null)
+                {
+                    sentryClient.CaptureMessage("UpdateShootingBlitzConfigRequest is null");
+                    return StatusCode(400, ShootingBlitzConfigResult.Fail("Request is null"));
+                }
+
+                sentryClient.CaptureMessage($"UpdateShootingBlitzConfig: ActionType={request.ActionType}, TeamId={request.TeamId}, TeamName={request.TeamName}");
+                
                 var result = await mediator.Send(request);
+                
+                if (result == null)
+                {
+                    sentryClient.CaptureMessage("UpdateShootingBlitzConfig result is null");
+                    return StatusCode(500, ShootingBlitzConfigResult.Fail("Result is null"));
+                }
+
+                sentryClient.CaptureMessage($"UpdateShootingBlitzConfig result: Success={result.Success}, Message={result.Message}");
+                
                 return Json(result);
             }
             catch (Exception ex)

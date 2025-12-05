@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameSettings.Requests;
+using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
+using Sentry;
 
 namespace GamesAdmin.Api.GameSettings
 {
@@ -25,15 +27,18 @@ namespace GamesAdmin.Api.GameSettings
         private readonly IGameSettingsService gameService;
         private readonly IShootingBlitzRtpConfigService shootingBlitzRtpConfigService;
         private readonly IShootingBlitzTeamService shootingBlitzTeamService;
+        private readonly ISentryClient sentryClient;
 
         public ShootingBlitzConfigService(
             IGameSettingsService gameService,
             IShootingBlitzRtpConfigService shootingBlitzRtpConfigService,
-            IShootingBlitzTeamService shootingBlitzTeamService)
+            IShootingBlitzTeamService shootingBlitzTeamService,
+            ISentryClient sentryClient)
         {
             this.gameService = gameService;
             this.shootingBlitzRtpConfigService = shootingBlitzRtpConfigService;
             this.shootingBlitzTeamService = shootingBlitzTeamService;
+            this.sentryClient = sentryClient;
         }
 
         public async Task<ShootingBlitzConfigResult> UpdateShootingBlitzConfig(UpdateShootingBlitzConfigRequest request)
@@ -92,20 +97,28 @@ namespace GamesAdmin.Api.GameSettings
                 case ShootingBlitzActionType.CreateTeam:
                     try
                     {
+                        sentryClient.CaptureMessage($"CreateTeam: TeamId={request.TeamId}, TeamName={request.TeamName}, IsEnabled={request.IsEnabled}");
+
                         // Validate required fields
                         if (request.TeamId == null || request.TeamId <= 0)
                         {
+                            sentryClient.CaptureMessage("CreateTeam validation failed: TeamId is null or <= 0");
                             return ShootingBlitzConfigResult.Fail("Team ID is required and must be greater than 0");
                         }
 
                         if (string.IsNullOrWhiteSpace(request.TeamName))
                         {
+                            sentryClient.CaptureMessage("CreateTeam validation failed: TeamName is null or empty");
                             return ShootingBlitzConfigResult.Fail("Team Name is required");
                         }
 
                         // Check if TeamId already exists
-                        if (await shootingBlitzTeamService.IsTeamIdExistsAsync(request.TeamId.Value))
+                        var teamIdExists = await shootingBlitzTeamService.IsTeamIdExistsAsync(request.TeamId.Value);
+                        sentryClient.CaptureMessage($"CreateTeam: IsTeamIdExistsAsync({request.TeamId.Value}) = {teamIdExists}");
+                        
+                        if (teamIdExists)
                         {
+                            sentryClient.CaptureMessage($"CreateTeam failed: Team with Team ID {request.TeamId.Value} already exists");
                             return ShootingBlitzConfigResult.Fail($"Team with Team ID {request.TeamId.Value} already exists");
                         }
 
@@ -116,13 +129,22 @@ namespace GamesAdmin.Api.GameSettings
                             IsEnabled = request.IsEnabled ?? true,
                             PlayerList = request.PlayerList
                         };
+                        
+                        sentryClient.CaptureMessage($"CreateTeam: Calling CreateAsync with TeamId={newTeam.TeamId}, Name={newTeam.Name}");
                         var createdTeam = await shootingBlitzTeamService.CreateAsync(newTeam);
-                        return createdTeam != null 
-                            ? ShootingBlitzConfigResult.OkTeam(createdTeam) 
-                            : ShootingBlitzConfigResult.Fail("Failed to create team. Please check server logs for details.");
+                        
+                        if (createdTeam == null)
+                        {
+                            sentryClient.CaptureMessage("CreateTeam failed: CreateAsync returned null");
+                            return ShootingBlitzConfigResult.Fail("Failed to create team. Please check server logs for details.");
+                        }
+
+                        sentryClient.CaptureMessage($"CreateTeam success: Created team with Id={createdTeam.Id}, TeamId={createdTeam.TeamId}");
+                        return ShootingBlitzConfigResult.OkTeam(createdTeam);
                     }
                     catch (Exception ex)
                     {
+                        sentryClient.CaptureException(ex);
                         return ShootingBlitzConfigResult.Fail($"Failed to create team: {ex.Message}");
                     }
 
