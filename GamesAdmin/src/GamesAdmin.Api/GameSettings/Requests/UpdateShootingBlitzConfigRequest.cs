@@ -36,24 +36,29 @@ namespace GamesAdmin.Api.GameSettings.Requests
         DeleteRtpConfig = 4,
 
         /// <summary>
+        /// 選擇/套用 RTP 配置到遊戲
+        /// </summary>
+        SelectRtpConfig = 5,
+
+        /// <summary>
         /// 查詢所有 Teams
         /// </summary>
-        QueryTeams = 5,
+        QueryTeams = 6,
 
         /// <summary>
         /// 創建 Team
         /// </summary>
-        CreateTeam = 6,
+        CreateTeam = 7,
 
         /// <summary>
         /// 更新 Team
         /// </summary>
-        UpdateTeam = 7,
+        UpdateTeam = 8,
 
         /// <summary>
         /// 刪除 Team
         /// </summary>
-        DeleteTeam = 8
+        DeleteTeam = 9
     }
 
     /// <summary>

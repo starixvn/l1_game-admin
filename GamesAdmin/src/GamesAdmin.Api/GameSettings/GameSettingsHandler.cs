@@ -165,6 +165,12 @@ namespace GamesAdmin.Api.Games
                         ? ShootingBlitzConfigResult.Ok("RTP config deleted successfully") 
                         : ShootingBlitzConfigResult.Fail("Failed to delete RTP config");
 
+                case ShootingBlitzActionType.SelectRtpConfig:
+                    var selectResult = await gameService.SelectShootingBlitzRtpConfig(request.Name, request.RtpConfigId);
+                    return selectResult 
+                        ? ShootingBlitzConfigResult.Ok("RTP config selected successfully") 
+                        : ShootingBlitzConfigResult.Fail("Failed to select RTP config");
+
                 // Note: Team operations (QueryTeams, CreateTeam, UpdateTeam, DeleteTeam) 
                 // are handled by ShootingBlitzTeamHandler via separate endpoint
                 // These cases are reserved for future unified endpoint implementation

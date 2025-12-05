@@ -73,6 +73,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdatePlinkoConfig(string name, PlinkoConfig plinkoConfig);
 
         Task<bool> UpdateShootingBlitzConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, ShootingBlitzConfig shootingBlitzConfig);
+
+        Task<bool> SelectShootingBlitzRtpConfig(string gameName, string rtpConfigId);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -1023,6 +1025,50 @@ namespace GamesAdmin.Api.Games
                 await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
                 await chatBotService.NotifyAdminUpdatedSettings(gameInfo.Name, "ShootingBlitz Config", string.Empty, null);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return false;
+            }
+        }
+
+        public async Task<bool> SelectShootingBlitzRtpConfig(string gameName, string rtpConfigId)
+        {
+            try
+            {
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == gameName);
+                if (gameEntity == null)
+                {
+                    return false;
+                }
+
+                // Initialize ShootingBlitzConfig if null
+                var shootingBlitzConfig = gameEntity.ShootingBlitzConfig ?? new ShootingBlitzConfig();
+
+                // Update the RtpSetting with the selected RtpConfigId
+                if (string.IsNullOrEmpty(rtpConfigId))
+                {
+                    // Clear the RTP setting if no config selected
+                    shootingBlitzConfig.RtpSetting = new List<ShootingBlitzRtpSetting>();
+                }
+                else
+                {
+                    // Set the selected RTP config
+                    shootingBlitzConfig.RtpSetting = new List<ShootingBlitzRtpSetting>
+                    {
+                        new ShootingBlitzRtpSetting { RtpConfigId = rtpConfigId }
+                    };
+                }
+
+                var update = Builders<GameConfigEntity>.Update
+                    .Set(field => field.ShootingBlitzConfig, shootingBlitzConfig);
+
+                await repository.UpdateAsync(config => config.Name == gameName, update);
+
+                await chatBotService.NotifyAdminUpdatedSettings(gameName, "ShootingBlitz RTP Selection", string.Empty, null);
 
                 return true;
             }
