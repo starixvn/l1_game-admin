@@ -96,7 +96,7 @@
                                                 }
                                                 else
                                                 {
-                                                    @(": " + (setting.StakeLevels != null ? string.Join(" - ", setting.StakeLevels.Select(s => s.Stake)) : "N/A"))
+                                                    @(": " + (setting.StakeLevels?.Length > 0 ? string.Join(" - ", setting.StakeLevels.Select(stake => stake.Stake).ToArray()) : string.Join(" - ", setting.BetLevels)))
                                                 }
                                                 break;
                                             default:
@@ -178,7 +178,7 @@
                                                     }
                                                     else
                                                     {
-                                                        @(": " + (setting.StakeLevels != null ? string.Join(" - ", setting.StakeLevels.Select(s => s.Stake)) : "N/A"))
+                                                        @(": " + (setting.StakeLevels?.Length > 0 ? string.Join(" - ", setting.StakeLevels.Select(stake => stake.Stake).ToArray()) : string.Join(" - ", setting.BetLevels)))
                                                     }
                                                     break;
                                                 default:
