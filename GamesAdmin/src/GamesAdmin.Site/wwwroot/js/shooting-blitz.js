@@ -44,124 +44,129 @@ var shootingBlitz = (function () {
     function showCreateRtpModal() {
         document.getElementById('rtpConfigModalTitle').textContent = 'Create RTP Config';
         document.getElementById('rtpConfigId').value = '';
-        document.getElementById('rtpValue').value = '0.95';
-        document.getElementById('bombCountContainer').innerHTML = '';
+        document.getElementById('rtpConfigName').value = '';
         document.getElementById('multiplierStepsTabs').innerHTML = '';
         document.getElementById('multiplierStepsContent').innerHTML = '';
         currentModeCount = 0;
         
-        // Add default bomb counts
-        for (var i = 1; i <= 7; i++) {
-            addBombCountRow(i, 0);
-        }
-        
-        updateProbabilitySum();
         $('#rtpConfigModal').modal('show');
-    }
-
-    function addBombCountRow(bombCount, probability) {
-        var container = document.getElementById('bombCountContainer');
-        var index = container.children.length;
-        var html = '<div class="form-group row bomb-count-row" data-index="' + index + '">' +
-            '<div class="col-4">' +
-            '<input type="number" class="form-control" placeholder="Bomb Count" value="' + (bombCount || '') + '" onchange="shootingBlitz.updateProbabilitySum()" />' +
-            '</div>' +
-            '<div class="col-4">' +
-            '<input type="number" step="0.01" class="form-control probability-input" placeholder="Probability" value="' + (probability || '') + '" onchange="shootingBlitz.updateProbabilitySum()" />' +
-            '</div>' +
-            '<div class="col-4">' +
-            '<button type="button" class="btn btn-danger btn-sm" onclick="shootingBlitz.removeBombCountRow(this)"><i class="icon-trash"></i></button>' +
-            '</div>' +
-            '</div>';
-        container.insertAdjacentHTML('beforeend', html);
-    }
-
-    function removeBombCountRow(btn) {
-        btn.closest('.bomb-count-row').remove();
-        updateProbabilitySum();
-    }
-
-    function updateProbabilitySum() {
-        var inputs = document.querySelectorAll('.probability-input');
-        var sum = 0;
-        inputs.forEach(function (input) {
-            sum += parseFloat(input.value) || 0;
-        });
-        document.getElementById('probabilitySum').textContent = sum.toFixed(4);
     }
 
     function addMultiplierMode(modeData) {
         currentModeCount++;
-        var modeNum = modeData ? modeData.mode : currentModeCount;
+        var opponentCount = modeData ? modeData.opponentCount : currentModeCount;
         var tabId = 'mode-' + currentModeCount;
+        
+        // Extract home/away data
+        var homeData = modeData && modeData.home ? modeData.home : { starPlayerRate: 0.02, startPosition: 3, endPosition: 5 };
+        var awayData = modeData && modeData.away ? modeData.away : { starPlayerRate: 0.02, startPosition: 3, endPosition: 5 };
         
         // Add tab
         var tabsContainer = document.getElementById('multiplierStepsTabs');
         var isFirst = tabsContainer.children.length === 0;
         var tabHtml = '<li class="nav-item">' +
-            '<a class="nav-link' + (isFirst ? ' active' : '') + '" data-toggle="tab" href="#' + tabId + '">Mode ' + modeNum + '</a>' +
+            '<a class="nav-link' + (isFirst ? ' active' : '') + '" data-toggle="tab" href="#' + tabId + '">Opponent ' + opponentCount + '</a>' +
             '</li>';
         tabsContainer.insertAdjacentHTML('beforeend', tabHtml);
         
         // Add tab content
         var contentContainer = document.getElementById('multiplierStepsContent');
-        var contentHtml = '<div class="tab-pane' + (isFirst ? ' active' : '') + '" id="' + tabId + '" data-mode="' + modeNum + '">' +
+        var contentHtml = '<div class="tab-pane' + (isFirst ? ' active' : '') + '" id="' + tabId + '" data-opponent-count="' + opponentCount + '">' +
             '<div class="form-group row">' +
             '<div class="col-4">' +
-            '<label>Mode Number</label>' +
-            '<input type="number" class="form-control mode-number" value="' + modeNum + '" />' +
+            '<label>Opponent Count</label>' +
+            '<input type="number" class="form-control opponent-count" value="' + opponentCount + '" />' +
             '</div>' +
             '<div class="col-8">' +
             '<label>Name</label>' +
             '<input type="text" class="form-control mode-name" value="' + (modeData ? modeData.name : '') + '" />' +
             '</div>' +
             '</div>' +
+            // Home Star Player Settings
+            '<fieldset class="border p-2 mb-2">' +
+            '<legend class="w-auto">Home Star Player Settings</legend>' +
             '<div class="form-group row">' +
             '<div class="col-4">' +
             '<label>Star Player Rate</label>' +
-            '<input type="number" step="0.01" class="form-control star-player-rate" value="' + (modeData ? modeData.starPlayerRate : '0.02') + '" />' +
+            '<input type="number" step="0.001" class="form-control home-star-player-rate" value="' + homeData.starPlayerRate + '" />' +
             '</div>' +
-            '<div class="col-8">' +
-            '<label>Star Position (comma separated)</label>' +
-            '<input type="text" class="form-control star-position" value="' + (modeData && modeData.starPosition ? modeData.starPosition.join(',') : '') + '" />' +
+            '<div class="col-4">' +
+            '<label>Start Position</label>' +
+            '<input type="number" class="form-control home-start-position" value="' + (homeData.startPosition || 3) + '" />' +
+            '</div>' +
+            '<div class="col-4">' +
+            '<label>End Position</label>' +
+            '<input type="number" class="form-control home-end-position" value="' + (homeData.endPosition || 5) + '" />' +
             '</div>' +
             '</div>' +
+            '</fieldset>' +
+            // Away Star Player Settings
+            '<fieldset class="border p-2 mb-2">' +
+            '<legend class="w-auto">Away Star Player Settings</legend>' +
+            '<div class="form-group row">' +
+            '<div class="col-4">' +
+            '<label>Star Player Rate</label>' +
+            '<input type="number" step="0.001" class="form-control away-star-player-rate" value="' + awayData.starPlayerRate + '" />' +
+            '</div>' +
+            '<div class="col-4">' +
+            '<label>Start Position</label>' +
+            '<input type="number" class="form-control away-start-position" value="' + (awayData.startPosition || 3) + '" />' +
+            '</div>' +
+            '<div class="col-4">' +
+            '<label>End Position</label>' +
+            '<input type="number" class="form-control away-end-position" value="' + (awayData.endPosition || 5) + '" />' +
+            '</div>' +
+            '</div>' +
+            '</fieldset>' +
+            // Pays Table
             '<fieldset class="border p-2">' +
-            '<legend class="w-auto">Multiplier Table</legend>' +
-            '<div class="multiplier-table-container"></div>' +
-            '<button type="button" class="btn btn-secondary btn-sm" onclick="shootingBlitz.addMultiplierRow(this)"><i class="icon-plus"></i> Add Row</button>' +
+            '<legend class="w-auto">Pays Table (index+1 = picks)</legend>' +
+            '<div class="pays-table-container"></div>' +
+            '<button type="button" class="btn btn-secondary btn-sm" onclick="shootingBlitz.addPaysRow(this)"><i class="icon-plus"></i> Add Pays</button>' +
             '</fieldset>' +
             '<button type="button" class="btn btn-danger btn-sm mt-2" onclick="shootingBlitz.removeMode(this)"><i class="icon-trash"></i> Remove Mode</button>' +
             '</div>';
         contentContainer.insertAdjacentHTML('beforeend', contentHtml);
         
-        // Add multiplier rows if data provided
-        if (modeData && modeData.multiplier) {
-            var tableContainer = contentContainer.lastElementChild.querySelector('.multiplier-table-container');
-            modeData.multiplier.forEach(function (item) {
-                addMultiplierRowToContainer(tableContainer, item.picks, item.pays);
+        // Add pays rows if data provided
+        if (modeData && modeData.pays) {
+            var tableContainer = contentContainer.lastElementChild.querySelector('.pays-table-container');
+            modeData.pays.forEach(function (paysValue, index) {
+                addPaysRowToContainer(tableContainer, index + 1, paysValue);
             });
         }
     }
 
-    function addMultiplierRow(btn) {
+    function addPaysRow(btn) {
         var container = btn.previousElementSibling;
-        addMultiplierRowToContainer(container, '', '');
+        var currentRows = container.querySelectorAll('.pays-row').length;
+        addPaysRowToContainer(container, currentRows + 1, '');
     }
 
-    function addMultiplierRowToContainer(container, picks, pays) {
-        var html = '<div class="form-group row multiplier-row">' +
+    function addPaysRowToContainer(container, picks, pays) {
+        var html = '<div class="form-group row pays-row">' +
             '<div class="col-4">' +
-            '<input type="number" class="form-control picks-input" placeholder="Picks" value="' + picks + '" />' +
+            '<input type="number" class="form-control picks-display" value="' + picks + '" readonly disabled />' +
+            '<small class="text-muted">Picks (auto)</small>' +
             '</div>' +
             '<div class="col-4">' +
             '<input type="number" step="0.01" class="form-control pays-input" placeholder="Pays" value="' + pays + '" />' +
             '</div>' +
             '<div class="col-4">' +
-            '<button type="button" class="btn btn-danger btn-sm" onclick="this.closest(\'.multiplier-row\').remove()"><i class="icon-trash"></i></button>' +
+            '<button type="button" class="btn btn-danger btn-sm" onclick="shootingBlitz.removePaysRow(this)"><i class="icon-trash"></i></button>' +
             '</div>' +
             '</div>';
         container.insertAdjacentHTML('beforeend', html);
+    }
+
+    function removePaysRow(btn) {
+        var container = btn.closest('.pays-table-container');
+        btn.closest('.pays-row').remove();
+        // Re-number the picks
+        var rows = container.querySelectorAll('.pays-row');
+        rows.forEach(function (row, index) {
+            row.querySelector('.picks-display').value = index + 1;
+        });
     }
 
     function removeMode(btn) {
@@ -189,18 +194,10 @@ var shootingBlitz = (function () {
         
         document.getElementById('rtpConfigModalTitle').textContent = 'Edit RTP Config';
         document.getElementById('rtpConfigId').value = id;
-        document.getElementById('rtpValue').value = config.rtp;
-        document.getElementById('bombCountContainer').innerHTML = '';
+        document.getElementById('rtpConfigName').value = config.name || '';
         document.getElementById('multiplierStepsTabs').innerHTML = '';
         document.getElementById('multiplierStepsContent').innerHTML = '';
         currentModeCount = 0;
-        
-        // Load bomb counts
-        if (config.bombCount) {
-            config.bombCount.forEach(function (bc) {
-                addBombCountRow(bc.bombCount, bc.probability);
-            });
-        }
         
         // Load multiplier steps
         if (config.multiplierSteps) {
@@ -209,59 +206,57 @@ var shootingBlitz = (function () {
             });
         }
         
-        updateProbabilitySum();
         $('#rtpConfigModal').modal('show');
     }
 
     function saveRtpConfig() {
         var id = document.getElementById('rtpConfigId').value;
-        var rtp = parseFloat(document.getElementById('rtpValue').value);
-        
-        // Collect bomb counts
-        var bombCounts = [];
-        document.querySelectorAll('.bomb-count-row').forEach(function (row) {
-            var inputs = row.querySelectorAll('input');
-            if (inputs[0].value && inputs[1].value) {
-                bombCounts.push({
-                    bombCount: parseInt(inputs[0].value),
-                    probability: parseFloat(inputs[1].value)
-                });
-            }
-        });
+        var rtpConfigName = document.getElementById('rtpConfigName').value;
         
         // Collect multiplier steps
         var multiplierSteps = [];
         document.querySelectorAll('#multiplierStepsContent .tab-pane').forEach(function (pane) {
-            var mode = parseInt(pane.querySelector('.mode-number').value);
+            var opponentCount = parseInt(pane.querySelector('.opponent-count').value);
             var name = pane.querySelector('.mode-name').value;
-            var starPlayerRate = parseFloat(pane.querySelector('.star-player-rate').value);
-            var starPositionStr = pane.querySelector('.star-position').value;
-            var starPosition = starPositionStr ? starPositionStr.split(',').map(function (x) { return parseInt(x.trim()); }) : [];
             
-            var multiplier = [];
-            pane.querySelectorAll('.multiplier-row').forEach(function (row) {
-                var picks = parseInt(row.querySelector('.picks-input').value);
-                var pays = parseFloat(row.querySelector('.pays-input').value);
-                if (!isNaN(picks) && !isNaN(pays)) {
-                    multiplier.push({ picks: picks, pays: pays });
+            // Home star player settings
+            var homeStarPlayerRate = parseFloat(pane.querySelector('.home-star-player-rate').value);
+            var homeStartPosition = parseInt(pane.querySelector('.home-start-position').value) || 3;
+            var homeEndPosition = parseInt(pane.querySelector('.home-end-position').value) || 5;
+            
+            // Away star player settings
+            var awayStarPlayerRate = parseFloat(pane.querySelector('.away-star-player-rate').value);
+            var awayStartPosition = parseInt(pane.querySelector('.away-start-position').value) || 3;
+            var awayEndPosition = parseInt(pane.querySelector('.away-end-position').value) || 5;
+            
+            // Collect pays as array (index+1 = picks)
+            var pays = [];
+            pane.querySelectorAll('.pays-row').forEach(function (row) {
+                var paysValue = parseFloat(row.querySelector('.pays-input').value);
+                if (!isNaN(paysValue)) {
+                    pays.push(paysValue);
                 }
             });
             
-            // Sort by picks ascending
-            multiplier.sort(function (a, b) { return a.picks - b.picks; });
-            
             multiplierSteps.push({
-                mode: mode,
+                opponentCount: opponentCount,
                 name: name,
-                starPlayerRate: starPlayerRate,
-                starPosition: starPosition,
-                multiplier: multiplier
+                home: {
+                    starPlayerRate: homeStarPlayerRate,
+                    startPosition: homeStartPosition,
+                    endPosition: homeEndPosition
+                },
+                away: {
+                    starPlayerRate: awayStarPlayerRate,
+                    startPosition: awayStartPosition,
+                    endPosition: awayEndPosition
+                },
+                pays: pays
             });
         });
         
         var data = {
-            rtp: rtp,
-            bombCount: bombCounts,
+            name: rtpConfigName,
             multiplierSteps: multiplierSteps
         };
         
@@ -435,11 +430,9 @@ var shootingBlitz = (function () {
     return {
         toggleSettingTabs: toggleSettingTabs,
         showCreateRtpModal: showCreateRtpModal,
-        addBombCountRow: addBombCountRow,
-        removeBombCountRow: removeBombCountRow,
-        updateProbabilitySum: updateProbabilitySum,
         addMultiplierMode: addMultiplierMode,
-        addMultiplierRow: addMultiplierRow,
+        addPaysRow: addPaysRow,
+        removePaysRow: removePaysRow,
         removeMode: removeMode,
         editRtpConfig: editRtpConfig,
         saveRtpConfig: saveRtpConfig,
