@@ -94,6 +94,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IPlayerInfoService, PlayerInfoService>();
             services.AddScoped<IShootingBlitzRtpConfigService, ShootingBlitzRtpConfigService>();
             services.AddScoped<IShootingBlitzTeamService, ShootingBlitzTeamService>();
+            services.AddScoped<IShootingBlitzConfigService, ShootingBlitzConfigService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddSingleton(RestService.For<IUserServiceApi>(appSettings.GameServers.UserService.Api, refitSettings));

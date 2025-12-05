@@ -57,14 +57,27 @@ public async Task<IActionResult> CreateShootingBlitzRtpConfig([FromBody] CreateS
 ## 2. Handler Guidelines
 
 ### 2.1 Handler Only Calls Service
-- Handler receives `*SiteRequest`
-- Handler calls `gameService.Method(request)`
+- Handler receives `*SiteRequest` or `*Request`
+- Handler calls `gameService.Method(request)` - **pass entire request object**
 - Handler **does NOT call** Refit API directly
+- Handler **does NOT inject** game-specific services (e.g., `IShootingBlitzRtpConfigService`, `IShootingBlitzTeamService`)
+- All game-specific logic should be encapsulated in `IGameSettingsService`
 
 ```csharp
-// ✅ Correct: Handler calls Service
-public Task<ShootingBlitzRtpConfig> Handle(CreateShootingBlitzRtpSiteRequest request, CancellationToken cancellationToken)
-    => gameService.CreateShootingBlitzRtpConfig(request);
+// ✅ Correct: Handler calls Service, passes entire request
+public Task<ShootingBlitzConfigResult> Handle(UpdateShootingBlitzConfigRequest request, CancellationToken cancellationToken)
+    => gameService.UpdateShootingBlitzConfig(request);
+
+// ✅ Correct: Simple game config (like Plinko)
+public Task<bool> Handle(UpdatePlinkoConfigRequest request, CancellationToken cancellationToken)
+    => gameService.UpdatePlinkoConfig(request.Name, request.PlinkoConfig);
+
+// ❌ Wrong: Handler injects game-specific services
+public class GameSettingsHandler
+{
+    private readonly IShootingBlitzRtpConfigService rtpService;  // Don't inject!
+    private readonly IShootingBlitzTeamService teamService;     // Don't inject!
+}
 
 // ❌ Wrong: Handler calls Refit API directly
 public Task<ShootingBlitzRtpConfig> Handle(CreateShootingBlitzRtpSiteRequest request, CancellationToken cancellationToken)
@@ -356,6 +369,74 @@ Task<bool> UpdateConfig(string id, double rtp, List<MultiplierStepsConfig> multi
 // ✅ Correct: Receive single Request parameter
 Task<bool> UpdateConfig(UpdateShootingBlitzRtpSiteRequest request);
 ```
+
+### 8.9 Handler Injects Game-Specific Services
+
+**Problem**: When multiple developers work on different games, each game adds its own services to Handler, making it bloated.
+
+```csharp
+// ❌ Wrong: Handler injects game-specific services
+public class GameSettingsHandler
+{
+    private readonly IGameSettingsService gameService;
+    private readonly IShootingBlitzRtpConfigService shootingBlitzRtpService;  // Game-specific!
+    private readonly IShootingBlitzTeamService shootingBlitzTeamService;       // Game-specific!
+    private readonly IPlinkoRtpService plinkoRtpService;                     // Another game!
+    // ... more games = more services = bloated Handler
+}
+
+// ❌ Wrong: GameSettingsService injects game-specific services
+public class GameSettingsService : IGameSettingsService
+{
+    private readonly IShootingBlitzRtpConfigService rtpService;  // Game-specific service!
+    private readonly IShootingBlitzTeamService teamService;       // Game-specific service!
+    // ... more games = more services = bloated GameSettingsService
+}
+```
+
+**Solution**: Create dedicated Service for games that need independent collections
+- **Handler**: Inject dedicated game service (e.g., `IShootingBlitzConfigService`)
+- **Dedicated Service**: Inject game-specific services internally, handle all game logic
+- **GameSettingsService**: Keep clean, only handle `GameConfigEntity` operations
+- **Benefit**: Handler stays clean, GameSettingsService doesn't get bloated
+
+```csharp
+// ✅ Correct: Handler injects dedicated game service
+public class GameSettingsHandler
+{
+    private readonly IGameSettingsService gameService;
+    private readonly IShootingBlitzConfigService shootingBlitzConfigService;  // Dedicated service!
+    
+    public Task<ShootingBlitzConfigResult> Handle(UpdateShootingBlitzConfigRequest request, CancellationToken cancellationToken)
+        => shootingBlitzConfigService.UpdateShootingBlitzConfig(request);
+}
+
+// ✅ Correct: Dedicated service handles game-specific logic internally
+public class ShootingBlitzConfigService : IShootingBlitzConfigService
+{
+    private readonly IShootingBlitzRtpConfigService rtpService;  // Injected here!
+    private readonly IShootingBlitzTeamService teamService;       // Injected here!
+    private readonly IGameSettingsService gameService;            // For GameConfigEntity operations
+    
+    public async Task<ShootingBlitzConfigResult> UpdateShootingBlitzConfig(UpdateShootingBlitzConfigRequest request)
+    {
+        switch (request.ActionType)
+        {
+            case ShootingBlitzActionType.UpdateConfig:
+                return await gameService.UpdateShootingBlitzConfig(...);  // Use GameSettingsService
+            case ShootingBlitzActionType.QueryRtpConfigs:
+                var rtpConfigs = await rtpService.GetAllAsync();  // Use internal service
+                return ShootingBlitzConfigResult.Ok(rtpConfigs);
+            // ... handle all ActionTypes here
+        }
+    }
+}
+```
+
+**When to use dedicated Service**:
+- ✅ Game needs to operate on **independent collections** (e.g., `ShootingBlitz_rtpConfig`, `ShootingBlitz_team`)
+- ✅ Game has complex logic that doesn't fit in `GameSettingsService`
+- ❌ Simple config updates (like Plinko, Crash) - use `GameSettingsService` directly
 
 ### 8.8 JSON Serialization Case Mismatch (Frontend/Backend)
 

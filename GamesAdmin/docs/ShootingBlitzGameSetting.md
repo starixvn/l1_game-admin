@@ -300,12 +300,92 @@ RTP Tab contains the following feature sections:
 ## 4. API Design
 
 > **Important**: Following AdminSite-CursorRules.md - Single Endpoint Per Game + ActionType Pattern
+> **Architecture**: Handler should NOT inject game-specific services. All logic encapsulated in `IGameSettingsService`.
 
 ### 4.1 Unified ShootingBlitz Config API
 
 | Method | Path | Description |
 |--------|------|-------------|
 | POST | `/api/game_settings/update_shooting_blitz_config` | **Single endpoint** for all ShootingBlitz operations |
+
+### 4.1.1 Handler Pattern (Dedicated Service Pattern)
+
+**Important**: ShootingBlitz needs to operate on **independent collections** (`ShootingBlitz_rtpConfig`, `ShootingBlitz_team`), which is different from other games (Plinko, Crash) that only operate on `GameConfigEntity`.
+
+**Handler should inject dedicated game service**:
+
+```csharp
+// ✅ Correct: Handler injects dedicated game service
+public class GameSettingsHandler
+{
+    private readonly IGameSettingsService gameService;
+    private readonly IShootingBlitzConfigService shootingBlitzConfigService;  // Dedicated service!
+    
+    public Task<ShootingBlitzConfigResult> Handle(UpdateShootingBlitzConfigRequest request, CancellationToken cancellationToken)
+        => shootingBlitzConfigService.UpdateShootingBlitzConfig(request);
+}
+
+// ❌ Wrong: Handler injects game-specific services directly
+public class GameSettingsHandler
+{
+    private readonly IShootingBlitzRtpConfigService rtpService;  // Don't inject!
+    private readonly IShootingBlitzTeamService teamService;      // Don't inject!
+}
+
+// ❌ Wrong: GameSettingsService injects game-specific services
+public class GameSettingsService : IGameSettingsService
+{
+    private readonly IShootingBlitzRtpConfigService rtpService;  // Don't inject here!
+    private readonly IShootingBlitzTeamService teamService;      // Don't inject here!
+}
+```
+
+**Dedicated Service handles all logic** - injects game-specific services internally:
+
+```csharp
+// ✅ Correct: Dedicated service injects game-specific services internally
+public interface IShootingBlitzConfigService
+{
+    Task<ShootingBlitzConfigResult> UpdateShootingBlitzConfig(UpdateShootingBlitzConfigRequest request);
+}
+
+public class ShootingBlitzConfigService : IShootingBlitzConfigService
+{
+    private readonly IGameSettingsService gameService;            // For GameConfigEntity operations
+    private readonly IShootingBlitzRtpConfigService rtpService;    // Injected here!
+    private readonly IShootingBlitzTeamService teamService;       // Injected here!
+    
+    public async Task<ShootingBlitzConfigResult> UpdateShootingBlitzConfig(UpdateShootingBlitzConfigRequest request)
+    {
+        switch (request.ActionType)
+        {
+            case ShootingBlitzActionType.UpdateConfig:
+                // Use GameSettingsService for GameConfigEntity operations
+                var result = await gameService.UpdateShootingBlitzConfig(
+                    request.GameInfo, request.BotSetting, request.EnableSetting, request.ShootingBlitzConfig);
+                return result ? ShootingBlitzConfigResult.Ok("Config updated successfully") 
+                             : ShootingBlitzConfigResult.Fail("Failed to update config");
+            
+            case ShootingBlitzActionType.QueryRtpConfigs:
+                var rtpConfigs = await rtpService.GetAllAsync();  // Use internal service
+                return ShootingBlitzConfigResult.Ok(rtpConfigs);
+            // ... handle all ActionTypes
+        }
+    }
+}
+```
+
+**Benefits**:
+- ✅ Handler stays clean (only injects dedicated service)
+- ✅ `GameSettingsService` stays clean (no game-specific dependencies)
+- ✅ Multiple developers can work on different games without bloating Handler or GameSettingsService
+- ✅ Game-specific logic encapsulated in dedicated Service layer
+- ✅ Follows Single Responsibility Principle
+
+**When to use dedicated Service**:
+- ✅ Game needs to operate on **independent collections** (e.g., `ShootingBlitz_rtpConfig`, `ShootingBlitz_team`)
+- ✅ Game has complex logic that doesn't fit in `GameSettingsService`
+- ❌ Simple config updates (like Plinko, Crash) - use `GameSettingsService` directly
 
 ### 4.2 ActionType Enum
 
@@ -497,6 +577,8 @@ public class ShootingBlitzConfigResult
 ### 5.3 GamesAdmin.Api (API Layer)
 
 > **Note**: Following AdminSite-CursorRules.md - Single Endpoint + Unified Files
+> **Architecture**: Handler should inject **dedicated service** (`IShootingBlitzConfigService`), NOT game-specific services.
+> **Important**: ShootingBlitz needs independent collections, so use dedicated Service pattern (different from Plinko/Crash).
 
 | File | Action | Description |
 |------|--------|-------------|
@@ -504,12 +586,20 @@ public class ShootingBlitzConfigResult
 | `GameSettings/Requests/ShootingBlitzConfigResult.cs` | **New** | Unified Response |
 | `GameSettings/Requests/ShootingBlitzActionType.cs` | **New** | ActionType Enum |
 | `GameSettings/GameSettingsController.cs` | Modify | Add single endpoint for ShootingBlitz |
-| `GameSettings/GameSettingsHandler.cs` | Modify | Add Handler with ActionType dispatch |
-| `GameSettings/GameSettingsService.cs` | Modify | Add methods for each ActionType |
+| `GameSettings/GameSettingsHandler.cs` | Modify | **Inject `IShootingBlitzConfigService`** - only calls `shootingBlitzConfigService.UpdateShootingBlitzConfig(request)` |
+| `GameSettings/ShootingBlitzConfigService.cs` | **New** | **Dedicated Service** - injects `IShootingBlitzRtpConfigService` and `IShootingBlitzTeamService` internally, handles ActionType dispatch |
+| `GameSettings/GameSettingsService.cs` | Modify | **Keep clean** - only handle `GameConfigEntity` operations (UpdateConfig, SelectRtpConfig) |
+| `GameSettings/ShootingBlitzRtpConfigService.cs` | **Keep** | Service for RTP Config operations (used internally by ShootingBlitzConfigService) |
+| `GameSettings/ShootingBlitzTeamService.cs` | **Keep** | Service for Team operations (used internally by ShootingBlitzConfigService) |
 | `_Shared/AutoMapping.cs` | Modify | Add mappings |
-| `Startup.cs` | Modify | Register services |
+| `Startup.cs` | Modify | Register `IShootingBlitzConfigService` |
 
-> **Important**: Do NOT create separate Controller/Handler/Service for RTP or Team - use unified approach
+> **Important**: 
+> - Do NOT create separate Controller/Handler/Service for RTP or Team - use unified approach
+> - **Handler should inject** `IShootingBlitzConfigService` (dedicated service), NOT `IShootingBlitzRtpConfigService` or `IShootingBlitzTeamService`
+> - **ShootingBlitzConfigService** injects game-specific services internally and handles all ActionType dispatch
+> - **GameSettingsService** stays clean - only handles `GameConfigEntity` operations (like Plinko, Crash)
+> - This follows **Dedicated Service Pattern** for games with independent collections
 
 ### 5.4 GamesAdmin.Site (UI Layer)
 
@@ -557,7 +647,13 @@ public class ShootingBlitzConfigResult
    - Use single API endpoint `/api/game_settings/update_shooting_blitz_config`
    - Use `ActionType` enum to distinguish operations (Config, RTP CRUD, Team CRUD)
    - Do NOT create separate endpoints for each CRUD operation
-3. **Unified File Structure** (Following AdminSite-CursorRules.md):
+3. **Handler Pattern** (Dedicated Service Pattern - AdminSite-CursorRules.md Section 8.9):
+   - **Handler**: Inject `IShootingBlitzConfigService` (dedicated service), NOT game-specific services
+   - **ShootingBlitzConfigService**: Inject game-specific services (`IShootingBlitzRtpConfigService`, `IShootingBlitzTeamService`) internally
+   - **GameSettingsService**: Keep clean, only handle `GameConfigEntity` operations (like Plinko, Crash)
+   - **Benefit**: Handler stays clean, `GameSettingsService` doesn't get bloated, multiple developers can work on different games
+   - **When to use**: Games that need to operate on independent collections (different from Plinko/Crash which only use `GameConfigEntity`)
+4. **Unified File Structure** (Following AdminSite-CursorRules.md):
    - Do NOT create separate Controller/Handler/Service for RTP or Team
    - Add to existing `GameSettingsController.cs`, `GamesHandler.cs`, `GameSettingService.cs`
    - Use unified `IGameSettingApi.cs`, do NOT create `IShootingBlitzRtpApi.cs`
