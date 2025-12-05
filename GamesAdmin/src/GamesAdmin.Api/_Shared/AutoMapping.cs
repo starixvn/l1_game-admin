@@ -727,14 +727,16 @@ namespace GamesAdmin.Api._Shared
 
             // ShootingBlitz mappings
             CreateMap<ShootingBlitzRtpConfigEntity, ShootingBlitzRtpConfig>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
-                .ReverseMap();
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
+            CreateMap<ShootingBlitzRtpConfig, ShootingBlitzRtpConfigEntity>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignore Id when creating new entity, MongoDB will generate it
             CreateMap<MultiplierStepsConfigEntity, MultiplierStepsConfig>().ReverseMap();
             CreateMap<StarPlayerSettingsEntity, StarPlayerSettings>().ReverseMap();
 
             CreateMap<ShootingBlitzTeamEntity, ShootingBlitzTeam>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
-                .ReverseMap();
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
+            CreateMap<ShootingBlitzTeam, ShootingBlitzTeamEntity>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignore Id when creating new entity, MongoDB will generate it
             CreateMap<ShootingBlitzPlayerEntity, ShootingBlitzPlayer>().ReverseMap();
         }
     }
