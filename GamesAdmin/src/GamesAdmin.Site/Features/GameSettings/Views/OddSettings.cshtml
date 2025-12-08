@@ -31,6 +31,13 @@
             {
                 <partial name="OddsSettings_Plinko" model="Model" />
             }
+            else if (Model.Type == GamesAdmin.Core.Enumeration.GameType.MinesRNGTurnBase)
+            {
+                <!-- ShootingBlitz: RTP settings are in General Setting Modal's RTP Tab -->
+                <div class="text-muted p-3">
+                    <p>RTP settings for ShootingBlitz are managed in <strong>General Setting → RTP Tab</strong>.</p>
+                </div>
+            }
             else
             {  
                 @if (Model.OtherGameIdsInGroup != null && Model.OtherGameIdsInGroup.Any())

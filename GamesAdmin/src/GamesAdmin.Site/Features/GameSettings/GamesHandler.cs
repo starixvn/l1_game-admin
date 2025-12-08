@@ -52,6 +52,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<CheckServiceStatusRequest, StatusGameResult>
         , IRequestHandler<UpdateSlotBotConfigRequest, bool>
         , IRequestHandler<UpdatePlinkoConfigRequest, string>
+        , IRequestHandler<UpdateShootingBlitzConfigRequest, ShootingBlitzConfigResult>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -66,6 +67,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly GamesSettings gamesSettings;
         private readonly IGameGroupManagementApi gameGroupManagementApi;
+        private readonly IShootingBlitzTeamApi shootingBlitzTeamApi;
 
         public GamesHandler(
             IMapper mapper,
@@ -76,7 +78,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             ICurrencyGroupGameService currencyGroupGameService,
             ISystemSettings systemSettings,
             IGeneralGameSettingService generalGameSettingService,
-            IGameGroupManagementApi gameGroupManagementApi)
+            IGameGroupManagementApi gameGroupManagementApi,
+            IShootingBlitzTeamApi shootingBlitzTeamApi)
         {
             this.mapper = mapper;
             this.gameService = gameService;
@@ -88,6 +91,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.generalGameSettingService = generalGameSettingService;
             this.gamesSettings = GamesSettings.GetGamesSettings();
             this.gameGroupManagementApi = gameGroupManagementApi;
+            this.shootingBlitzTeamApi = shootingBlitzTeamApi;
         }
 
         public async Task<IEnumerable<SelectListItem>> Handle(GetGamesByTypeRequest request, CancellationToken cancellationToken)
@@ -154,6 +158,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.TournamentConfig = game.TournamentConfig;
                 viewModel.VideoStreamConfig = game.VideoStreamConfig;
                 viewModel.PlinkoConfig = game.PlinkoConfig;
+                viewModel.ShootingBlitzConfig = game.ShootingBlitzConfig;
 
                 var gameGroup = await gameGroupManagementApi.GetByGameId(game.Info.GameId);
                 if (gameGroup != null)
@@ -163,7 +168,14 @@ namespace GamesAdmin.Site.Features.GameSettings
                         .Select(g => new SelectListItem(g.Info.DisplayName ?? Game.FromGameName(g.Info.Name).DisplayName, g.Info.GameId.ToString()));
                 }
 
-                ConfigureViewModelByGameType(viewModel, game);
+                if (game.Info.Type == GameType.MinesRNGTurnBase)
+                {
+                    await ConfigureMinesRNGTurnBaseGameAsync(viewModel, game);
+                }
+                else
+                {
+                    ConfigureViewModelByGameType(viewModel, game);
+                }
                 viewModel.DetailsView = GetDetailsView(viewModel.Type);
             }
 
@@ -273,6 +285,27 @@ namespace GamesAdmin.Site.Features.GameSettings
             viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds, game.OddsDisplayNames);
         }
 
+        private async Task ConfigureMinesRNGTurnBaseGameAsync(EditViewModel viewModel, GameConfig game)
+        {
+            viewModel.Type = GameType.MinesRNGTurnBase;
+            viewModel.ShootingBlitzConfig = game.ShootingBlitzConfig;
+
+            // Set default bet limits
+            if (game.BetLimit != null)
+            {
+                viewModel.PayoutViewModel.MinBet = game.BetLimit.MinBet;
+                viewModel.PayoutViewModel.MaxBet = game.BetLimit.MaxBet;
+            }
+
+            // 使用統一端點查詢 RTP 配置
+            var rtpResult = await gameService.UpdateShootingBlitzConfig(new UpdateShootingBlitzConfigRequest
+            {
+                ActionType = ShootingBlitzActionType.QueryRtpConfigs
+            });
+            viewModel.ShootingBlitzRtpConfigs = rtpResult?.RtpConfigs ?? new List<ShootingBlitzRtpConfig>();
+            viewModel.ShootingBlitzTeams = await shootingBlitzTeamApi.GetAll() ?? new List<ShootingBlitzTeam>();
+        }
+
         private void ConfigureDefaultGame(EditViewModel viewModel, GameConfig game)
         {
             viewModel.Type = GameType.AutoRNG;
@@ -313,6 +346,10 @@ namespace GamesAdmin.Site.Features.GameSettings
                 case GameType.Marble:
                 case GameType.AutoRNGIndex:
                     name += "RNG";
+                    break;
+
+                case GameType.MinesRNGTurnBase:
+                    name += "ShootingBlitz";
                     break;
 
                 default:
@@ -486,12 +523,12 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
         }
 
-        public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         {
             switch (request.GameInfo.Type)
             {
                 case GameType.Slots:
-                    return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(
+                    return await gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(
                         request.GameInfo.Name, 
                         request.BotSetting.BotEnabled, 
                         request.GameInfo.EnablePromotionRTP, 
@@ -500,7 +537,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                         request.OtherGameIdsInGroup));
 
                 case GameType.CascadingSlots:
-                    return gameService
+                    return await gameService
                         .UpdateCascadingSlotsConfig(new UpdateCascadingSlotsConfigRequest(
                             request.GameInfo.Name, 
                             request.BotSetting.BotEnabled, 
@@ -510,7 +547,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                             request.OtherGameIdsInGroup));
 
                 case GameType.SlotRNG:
-                    return gameService.UpdateSlotRNGConfig(
+                    return await gameService.UpdateSlotRNGConfig(
                         new UpdateSlotRNGConfigRequest(
                             request.GameInfo, 
                             request.BotSetting, 
@@ -519,7 +556,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                             request.OtherGameIdsInGroup));
 
                 case GameType.Crash:
-                    return gameService.UpdateCrashConfig(
+                    return await gameService.UpdateCrashConfig(
                         new UpdateCrashConfigRequest(
                             request.GameInfo, 
                             request.BotSetting, 
@@ -527,8 +564,20 @@ namespace GamesAdmin.Site.Features.GameSettings
                             request.CrashConfig, 
                             request.OtherGameIdsInGroup));
 
+                case GameType.MinesRNGTurnBase:
+                    var shootingBlitzResult = await gameService.UpdateShootingBlitzConfig(new Requests.UpdateShootingBlitzConfigRequest
+                    {
+                        ActionType = ShootingBlitzActionType.UpdateConfig,
+                        Name = request.GameInfo.Name,
+                        GameInfo = request.GameInfo,
+                        BotSetting = request.BotSetting,
+                        EnableSetting = request.EnableSetting,
+                        ShootingBlitzConfig = request.ShootingBlitzConfig
+                    });
+                    return shootingBlitzResult?.Success ?? false;
+
                 default:
-                    return gameService.UpdateGeneralConfig(
+                    return await gameService.UpdateGeneralConfig(
                         new UpdateGeneralConfigRequest(
                             request.GameInfo, 
                             request.BotSetting, 
@@ -556,7 +605,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 null, // OddsMultipliersConfig
                 null, // TournamentConfig
                 null, // VideoStreamConfig
-                null, //NOSONAR
+                null, // PlinkoConfig
+                null, // ShootingBlitzConfig
                 request.OddsDisplayNames,
                 request.Choices);
 
@@ -576,15 +626,39 @@ namespace GamesAdmin.Site.Features.GameSettings
             var currencyGroups = await currencyGroupService.GetAll();
             var currencyGroupGames = await currencyGroupGameService.GetAll();
 
-            var statusViewModel = gameConfigs?.Any() == true
-                ? new StatusViewModel(
-                    gameConfigs.Select(game => new StatusItemViewModel(game))
-                        .OrderBy(game => game.DisplayName)
-                        .ToList(),
-                    partners.ToList(),
-                    currencyGroups.Where(group => group.Enabled).ToList(),
-                    currencyGroupGames.ToList())
-                : new StatusViewModel(new List<StatusItemViewModel>());
+            // Get ShootingBlitz RTP configs to display in game list
+            var rtpResult = await gameService.UpdateShootingBlitzConfig(new UpdateShootingBlitzConfigRequest
+            {
+                ActionType = ShootingBlitzActionType.QueryRtpConfigs
+            });
+            var rtpConfigLookup = rtpResult?.RtpConfigs?.ToDictionary(c => c.Id, c => c) ?? new Dictionary<string, ShootingBlitzRtpConfig>();
+
+            var gameList = gameConfigs?.Any() == true
+                ? gameConfigs.Select(game =>
+                {
+                    var statusItem = new StatusItemViewModel(game);
+
+                    // Set ShootingBlitz RTP display for MinesRNGTurnBase games
+                    if (game.Info.Type == GameType.MinesRNGTurnBase && game.ShootingBlitzConfig?.RtpSetting?.Any() == true)
+                    {
+                        var rtpNames = game.ShootingBlitzConfig.RtpSetting
+                            .Where(rs => !string.IsNullOrEmpty(rs.RtpConfigId) && rtpConfigLookup.ContainsKey(rs.RtpConfigId))
+                            .Select(rs => $"{rs.Key}: {rtpConfigLookup[rs.RtpConfigId].Name}")
+                            .ToList();
+                        statusItem.ShootingBlitzOddsDisplay = rtpNames.Any() ? string.Join(", ", rtpNames) : "-";
+                    }
+
+                    return statusItem;
+                })
+                .OrderBy(game => game.DisplayName)
+                .ToList()
+                : new List<StatusItemViewModel>();
+
+            var statusViewModel = new StatusViewModel(
+                gameList,
+                partners.ToList(),
+                currencyGroups.Where(group => group.Enabled).ToList(),
+                currencyGroupGames.ToList());
 
             return statusViewModel;
         }
@@ -698,7 +772,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         => await gameService.CheckServiceStatus(request);
 
         public async Task<string> Handle(UpdatePlinkoConfigRequest request, CancellationToken cancellationToken)
-        =>  await gameService.UpdatePlinkoConfig(request);         
-        
+        =>  await gameService.UpdatePlinkoConfig(request);
+
+        public Task<ShootingBlitzConfigResult> Handle(UpdateShootingBlitzConfigRequest request, CancellationToken cancellationToken)
+            => gameService.UpdateShootingBlitzConfig(request);
     }
 }

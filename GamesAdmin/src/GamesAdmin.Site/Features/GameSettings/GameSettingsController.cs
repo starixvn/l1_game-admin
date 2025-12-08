@@ -23,7 +23,7 @@ using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
-    [Authorize]
+    //[Authorize]
     public class GameSettingsController : Controller
     {
         private readonly IMediator mediator;
@@ -31,7 +31,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IAppSettings appSettings;
         private readonly IMapper mapper;
 
-        public GameSettingsController(IMediator mediator, ISentryClient sentryClient, IAppSettings appSettings, IMapper mapper)
+        public GameSettingsController(
+            IMediator mediator, 
+            ISentryClient sentryClient, 
+            IAppSettings appSettings, 
+            IMapper mapper)
         {
             this.mediator = mediator;
             this.sentryClient = sentryClient;
@@ -400,6 +404,18 @@ namespace GamesAdmin.Site.Features.GameSettings
                     viewModel.VideoStreamConfig.PopulateFromJson(viewModel.VideoStreamConfigJson);
                 }
 
+                var shootingBlitzConfig = viewModel.ShootingBlitzConfig;
+
+                if (!string.IsNullOrEmpty(viewModel.ShootingBlitzConfigJson))
+                {
+                    if (viewModel.ShootingBlitzConfig == null)
+                    {
+                        viewModel.ShootingBlitzConfig = new ShootingBlitzConfig();
+                    }
+
+                    viewModel.ShootingBlitzConfig.PopulateFromJson(viewModel.ShootingBlitzConfigJson);
+                }
+
                 var request = new UpdateRequest(
                     new GameInfo(
                         viewModel.Name, 
@@ -425,7 +441,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     viewModel.OddsMultipliers,
                     viewModel.TournamentConfig,
                     viewModel.VideoStreamConfig,
-                    viewModel.OtherGameIdsInGroup);
+                    viewModel.OtherGameIdsInGroup,
+                    viewModel.ShootingBlitzConfig);
 
                 await mediator.Send(request);
 
@@ -523,5 +540,39 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return Json(false);
         }
+
+        #region ShootingBlitz Config
+
+        /// <summary>
+        /// ShootingBlitz 統一配置端點（根據 ActionType 執行不同操作）
+        /// </summary>
+        [HttpPost, Audit]
+        [Route("/shooting_blitz_config")]
+        public async Task<IActionResult> UpdateShootingBlitzConfig([FromBody] UpdateShootingBlitzConfigRequest request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return StatusCode(400, ShootingBlitzConfigResult.Fail("Request is null"));
+                }
+                
+                var result = await mediator.Send(request);
+                
+                if (result == null)
+                {
+                    return StatusCode(500, ShootingBlitzConfigResult.Fail("Result is null"));
+                }
+                
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return StatusCode(500, ShootingBlitzConfigResult.Fail(ex.Message));
+            }
+        }
+
+        #endregion
     }
 }

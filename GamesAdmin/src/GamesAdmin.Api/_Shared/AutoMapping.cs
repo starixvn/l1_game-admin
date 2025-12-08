@@ -9,6 +9,7 @@ using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database;
+using GamesAdmin.Database.Entities.ShootingBlitz;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.DragonTigerFight;
 using GamesAdmin.Database.Entities.Lobby;
@@ -723,6 +724,20 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.BetWin, opt => opt.MapFrom((source) => source.Betwin))
                 .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.OperatorId));
             CreateMap<FootballSlotBetLogEntity, SlotRNGBetHistoryRecord>();
+
+            // ShootingBlitz mappings
+            CreateMap<ShootingBlitzRtpConfigEntity, ShootingBlitzRtpConfig>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
+            CreateMap<ShootingBlitzRtpConfig, ShootingBlitzRtpConfigEntity>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignore Id when creating new entity, MongoDB will generate it
+            CreateMap<MultiplierStepsConfigEntity, MultiplierStepsConfig>().ReverseMap();
+            CreateMap<StarPlayerSettingsEntity, StarPlayerSettings>().ReverseMap();
+
+            CreateMap<ShootingBlitzTeamEntity, ShootingBlitzTeam>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
+            CreateMap<ShootingBlitzTeam, ShootingBlitzTeamEntity>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignore Id when creating new entity, MongoDB will generate it
+            CreateMap<ShootingBlitzPlayerEntity, ShootingBlitzPlayer>().ReverseMap();
         }
     }
 }
