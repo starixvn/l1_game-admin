@@ -53,13 +53,15 @@ namespace GamesAdmin.Api.GameSettings
                         : ShootingBlitzConfigResult.Fail("Failed to update config");
 
                 case ShootingBlitzActionType.QueryRtpConfigs:
-                    var rtpConfigs = await shootingBlitzRtpConfigService.GetAllAsync();
+                    // 如果有指定遊戲名稱，則只查詢該遊戲的 RTP Config
+                    var rtpConfigs = await shootingBlitzRtpConfigService.GetAllAsync(request.Name);
                     return ShootingBlitzConfigResult.Ok(rtpConfigs as IList<ShootingBlitzRtpConfig> ?? new List<ShootingBlitzRtpConfig>(rtpConfigs));
 
                 case ShootingBlitzActionType.CreateRtpConfig:
                     var newConfig = new ShootingBlitzRtpConfig
                     {
                         Name = request.RtpConfigName,
+                        GameName = request.Name, // 設置遊戲名稱
                         MultiplierSteps = request.MultiplierSteps
                     };
                     var createdConfig = await shootingBlitzRtpConfigService.CreateAsync(newConfig);
@@ -71,6 +73,7 @@ namespace GamesAdmin.Api.GameSettings
                     var configToUpdate = new ShootingBlitzRtpConfig
                     {
                         Name = request.RtpConfigName,
+                        GameName = request.Name, // 設置遊戲名稱
                         MultiplierSteps = request.MultiplierSteps
                     };
                     var updateRtpResult = await shootingBlitzRtpConfigService.UpdateAsync(request.RtpConfigId, configToUpdate);

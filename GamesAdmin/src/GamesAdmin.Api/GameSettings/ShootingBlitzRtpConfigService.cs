@@ -14,7 +14,7 @@ namespace GamesAdmin.Api.GameSettings
 {
     public interface IShootingBlitzRtpConfigService
     {
-        Task<IEnumerable<ShootingBlitzRtpConfig>> GetAllAsync();
+        Task<IEnumerable<ShootingBlitzRtpConfig>> GetAllAsync(string gameName = null);
         Task<ShootingBlitzRtpConfig> GetByIdAsync(string id);
         Task<ShootingBlitzRtpConfig> CreateAsync(ShootingBlitzRtpConfig config);
         Task<bool> UpdateAsync(string id, ShootingBlitzRtpConfig config);
@@ -37,11 +37,19 @@ namespace GamesAdmin.Api.GameSettings
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<ShootingBlitzRtpConfig>> GetAllAsync()
+        public async Task<IEnumerable<ShootingBlitzRtpConfig>> GetAllAsync(string gameName = null)
         {
             try
             {
-                var entities = await Task.Run(() => repository.AsQueryable().ToList());
+                var query = repository.AsQueryable();
+                
+                // 如果有指定 gameName，則過濾該遊戲的 RTP Config
+                if (!string.IsNullOrWhiteSpace(gameName))
+                {
+                    query = query.Where(x => x.GameName == gameName);
+                }
+                
+                var entities = await Task.Run(() => query.ToList());
                 return entities.Select(entity => mapper.Map<ShootingBlitzRtpConfig>(entity));
             }
             catch (Exception ex)
@@ -73,6 +81,7 @@ namespace GamesAdmin.Api.GameSettings
                 var entity = new ShootingBlitzRtpConfigEntity
                 {
                     Name = config.Name,
+                    GameName = config.GameName,
                     MultiplierSteps = mapper.Map<List<MultiplierStepsConfigEntity>>(config.MultiplierSteps),
                     Time = DateTime.Now
                 };
@@ -92,6 +101,7 @@ namespace GamesAdmin.Api.GameSettings
             {
                 var update = Builders<ShootingBlitzRtpConfigEntity>.Update
                     .Set(x => x.Name, config.Name)
+                    .Set(x => x.GameName, config.GameName)
                     .Set(x => x.MultiplierSteps, mapper.Map<List<MultiplierStepsConfigEntity>>(config.MultiplierSteps));
 
                 await repository.UpdateAsync(x => x.Id == ObjectId.Parse(id), update);

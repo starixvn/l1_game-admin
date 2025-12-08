@@ -62,7 +62,7 @@
 > **Note**:
 > - `rtpSetting`: Array of RTP mode configurations. Game Client sends `key`, Game Server returns corresponding RTP setting
 >   - `key`: Mode identifier sent by Game Client (e.g., "normal", "live", "1", "2")
->   - `rtpConfigId`: ObjectId reference to `ShootingBlitz_rtpConfig` collection
+>   - `rtpConfigId`: ObjectId reference to `MinesRNGTurnBase_rtpConfig` collection
 > - `scoreSetting`: Random score generator for non-Live Score mode
 >   - `homeScore` / `awayScore`: Predefined score combination
 >   - `probability`: Selection probability for this score combination (all probabilities should sum to 1)
@@ -71,7 +71,7 @@
 ### 2.2 RTP Config Collection (Standalone RTP Configuration)
 
 - **Database**: `minigame`
-- **Collection**: `ShootingBlitz_rtpConfig`
+- **Collection**: `MinesRNGTurnBase_rtpConfig`
 
 ```json
 {
@@ -175,7 +175,7 @@ All ShootingBlitz settings are consolidated in the General Setting Modal:
 | Field | Type | Description |
 |-------|------|-------------|
 | Key | String | Mode identifier sent by Game Client (e.g., "normal", "live", "1", "2") |
-| RTP Config | Dropdown | Select RTP Config (from `ShootingBlitz_rtpConfig`) |
+| RTP Config | Dropdown | Select RTP Config (from `MinesRNGTurnBase_rtpConfig`) |
 
 - ✅ Can dynamically add/remove RTP Setting entries
 - ✅ Each entry has a unique `key` for Game Client to reference
@@ -311,7 +311,7 @@ RTP Tab contains the following feature sections:
 
 ### 4.1.1 Handler Pattern (Dedicated Service Pattern)
 
-**Important**: ShootingBlitz needs to operate on **independent collections** (`ShootingBlitz_rtpConfig`, `ShootingBlitz_teams`), which is different from other games (Plinko, Crash) that only operate on `GameConfigEntity`.
+**Important**: ShootingBlitz needs to operate on **independent collections** (`MinesRNGTurnBase_rtpConfig`, `ShootingBlitz_teams`), which is different from other games (Plinko, Crash) that only operate on `GameConfigEntity`.
 
 **Handler should inject dedicated game service**:
 
@@ -384,7 +384,7 @@ public class ShootingBlitzConfigService : IShootingBlitzConfigService
 - ✅ Follows Single Responsibility Principle
 
 **When to use dedicated Service**:
-- ✅ Game needs to operate on **independent collections** (e.g., `ShootingBlitz_rtpConfig`, `ShootingBlitz_teams`)
+- ✅ Game needs to operate on **independent collections** (e.g., `MinesRNGTurnBase_rtpConfig`, `ShootingBlitz_teams`)
 - ✅ Game has complex logic that doesn't fit in `GameSettingsService`
 - ❌ Simple config updates (like Plinko, Crash) - use `GameSettingsService` directly
 
@@ -548,7 +548,7 @@ public class ShootingBlitzConfigResult
 
 > **Note**: 
 > - All operations use **single endpoint** with `ActionType` to distinguish
-> - Both `rtpConfigId` and `rtpliveConfigId` reference the same `ShootingBlitz_rtpConfig` collection
+> - Both `rtpConfigId` and `rtpliveConfigId` reference the same `MinesRNGTurnBase_rtpConfig` collection
 
 ---
 
@@ -680,7 +680,7 @@ public class ShootingBlitzConfigResult
    - **Admin Site**: 顯示所有 Team（不過濾），列表包含 TeamId, TeamName, IsEnabled
    - **Game API**: 回傳給 Game Client 時只回傳 `isEnabled: true` 的 Team（Game API 負責過濾）
 10. **MongoDB Collection Names**:
-    - RTP Config: `ShootingBlitz_rtpConfig` (shared by normal and live mode)
+    - RTP Config: `MinesRNGTurnBase_rtpConfig` (shared by normal and live mode)
     - Teams: `ShootingBlitz_teams`
 11. **Unified UI Entry Points**:
     - **General Setting** (Game Management → General Setting column): General config + Teams management + **RTP Config management**
@@ -756,7 +756,7 @@ public class ShootingBlitzConfigResult
 }
 ```
 
-> **Note**: All RTP Configs are stored in the same `ShootingBlitz_rtpConfig` collection. Use `name` field for display purposes.
+> **Note**: All RTP Configs are stored in the same `MinesRNGTurnBase_rtpConfig` collection. Use `name` field for display purposes.
 
 ### 8.2 Game Config Example
 
@@ -913,7 +913,7 @@ General Setting Modal: ShootingBlitz
 │   │   ├── [Add RTP Setting] Button
 │   │   └── RTP Setting Rows
 │   │       ├── Key: [Text Input] (e.g., "normal", "live", "high")
-│   │       ├── RTP Config: [Dropdown - ShootingBlitz_rtpConfig]
+│   │       ├── RTP Config: [Dropdown - MinesRNGTurnBase_rtpConfig]
 │   │       └── [Remove] Button
 │   │
 │   └── Score Setting Section (Non-Live Score Mode)
@@ -1037,7 +1037,7 @@ General Setting Modal: ShootingBlitz
                             │                                                           │
                             ▼                                                           ▼
               ┌─────────────────────────┐                              ┌─────────────────────────┐
-              │   ShootingBlitz_teams   │                              │  ShootingBlitz_rtpConfig│
+              │   ShootingBlitz_teams   │                              │  MinesRNGTurnBase_rtpConfig│
               │       (MongoDB)         │                              │       (MongoDB)         │
               └─────────────────────────┘                              │  (shared by normal and  │
                                                                        │   live mode selection)  │

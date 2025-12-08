@@ -11,6 +11,11 @@ namespace GamesAdmin.Core.Models.GameConfigs
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// 遊戲名稱，用於過濾特定遊戲的 RTP Config (e.g., "shootingblitz")
+        /// </summary>
+        public string GameName { get; set; }
+
         public List<MultiplierStepsConfig> MultiplierSteps { get; set; }
     }
 

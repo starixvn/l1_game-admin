@@ -77,7 +77,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public string Key { get; set; }
 
         /// <summary>
-        /// RTP Config 的 ObjectId，參考 ShootingBlitz_rtpConfig collection
+        /// RTP Config 的 ObjectId，參考 MinesRNGTurnBase_rtpConfig collection
         /// </summary>
         public string RtpConfigId { get; set; }
     }

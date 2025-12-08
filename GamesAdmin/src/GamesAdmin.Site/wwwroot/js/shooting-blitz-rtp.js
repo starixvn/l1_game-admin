@@ -284,6 +284,7 @@ var shootingBlitzRtp = (function () {
         
         var data = {
             actionType: id ? ActionType.UpdateRtpConfig : ActionType.CreateRtpConfig,
+            name: gameName, // 傳入遊戲名稱以設置 GameName 字段
             rtpConfigId: id || null,
             rtpConfigName: rtpConfigName,
             multiplierSteps: multiplierSteps

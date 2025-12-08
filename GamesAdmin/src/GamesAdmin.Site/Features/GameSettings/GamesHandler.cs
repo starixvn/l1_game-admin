@@ -297,10 +297,11 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.PayoutViewModel.MaxBet = game.BetLimit.MaxBet;
             }
 
-            // 使用統一端點查詢 RTP 配置
+            // 使用統一端點查詢 RTP 配置，傳入遊戲名稱以過濾特定遊戲的 RTP Config
             var rtpResult = await gameService.UpdateShootingBlitzConfig(new UpdateShootingBlitzConfigRequest
             {
-                ActionType = ShootingBlitzActionType.QueryRtpConfigs
+                ActionType = ShootingBlitzActionType.QueryRtpConfigs,
+                Name = game.Info.Name // 傳入遊戲名稱以過濾
             });
             viewModel.ShootingBlitzRtpConfigs = rtpResult?.RtpConfigs ?? new List<ShootingBlitzRtpConfig>();
             viewModel.ShootingBlitzTeams = await shootingBlitzTeamApi.GetAll() ?? new List<ShootingBlitzTeam>();
@@ -627,6 +628,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             var currencyGroupGames = await currencyGroupGameService.GetAll();
 
             // Get ShootingBlitz RTP configs to display in game list
+            // 不傳入 gameName，查詢所有遊戲的 RTP configs（用於顯示所有遊戲的狀態）
             var rtpResult = await gameService.UpdateShootingBlitzConfig(new UpdateShootingBlitzConfigRequest
             {
                 ActionType = ShootingBlitzActionType.QueryRtpConfigs

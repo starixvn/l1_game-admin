@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities.ShootingBlitz
 {
-    [BsonCollection("ShootingBlitz_rtpConfig")]
+    [BsonCollection("MinesRNGTurnBase_rtpConfig")]
     public class ShootingBlitzRtpConfigEntity : MiniGameBaseEntity
     {
         /// <summary>
@@ -12,6 +12,12 @@ namespace GamesAdmin.Database.Entities.ShootingBlitz
         /// </summary>
         [BsonElement("name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// 遊戲名稱，用於過濾特定遊戲的 RTP Config (e.g., "shootingblitz")
+        /// </summary>
+        [BsonElement("gameName")]
+        public string GameName { get; set; }
 
         [BsonElement("multiplierSteps")]
         public List<MultiplierStepsConfigEntity> MultiplierSteps { get; set; }
